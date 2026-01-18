@@ -30,3 +30,6 @@ Thumbs.db
 
 # fly.io
 fly.toml
+
+# Build
+tmp/
