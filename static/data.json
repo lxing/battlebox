@@ -1,0 +1,1412 @@
+{
+  "battleboxes": [
+    {
+      "slug": "bloomburrow",
+      "decks": [
+        {
+          "slug": "4c-calamity",
+          "name": "4c Calamity",
+          "colors": "wubg",
+          "cards": [
+            {
+              "name": "Beza, the Bounding Spring",
+              "printing": "blb/2",
+              "qty": 3
+            },
+            {
+              "name": "Birds of Paradise",
+              "printing": "blc/81",
+              "qty": 4
+            },
+            {
+              "name": "Breeding Pool",
+              "printing": "gtc/240",
+              "qty": 1
+            },
+            {
+              "name": "Fecund Greenshell",
+              "printing": "blb/171",
+              "qty": 2
+            },
+            {
+              "name": "Firespout",
+              "printing": "clu/190",
+              "qty": 2
+            },
+            {
+              "name": "Flooded Strand",
+              "printing": "mh3/220",
+              "qty": 4
+            },
+            {
+              "name": "Forest",
+              "printing": "mh3/319",
+              "qty": 1
+            },
+            {
+              "name": "Glarb, Calamity's Augur",
+              "printing": "blb/215",
+              "qty": 4
+            },
+            {
+              "name": "Hallowed Fountain",
+              "printing": "rna/251",
+              "qty": 1
+            },
+            {
+              "name": "Helga, Skittish Seer",
+              "printing": "blb/217",
+              "qty": 4
+            },
+            {
+              "name": "Indatha Triome",
+              "printing": "iko/248",
+              "qty": 1
+            },
+            {
+              "name": "Island",
+              "printing": "mh3/312",
+              "qty": 1
+            },
+            {
+              "name": "Leyline Binding",
+              "printing": "dmu/24",
+              "qty": 4
+            },
+            {
+              "name": "Meticulous Archive",
+              "printing": "pmkm/264p",
+              "qty": 1
+            },
+            {
+              "name": "Monumental Henge",
+              "printing": "mh3/222",
+              "qty": 1
+            },
+            {
+              "name": "Mulldrifter",
+              "printing": "mkc/111",
+              "qty": 2
+            },
+            {
+              "name": "Plains",
+              "printing": "mh3/310",
+              "qty": 1
+            },
+            {
+              "name": "Polluted Delta",
+              "printing": "mh3/465",
+              "qty": 3
+            },
+            {
+              "name": "Savai Triome",
+              "printing": "iko/253",
+              "qty": 1
+            },
+            {
+              "name": "Solitude",
+              "printing": "mh2/32",
+              "qty": 4
+            },
+            {
+              "name": "Spara's Headquarters",
+              "printing": "snc/257",
+              "qty": 1
+            },
+            {
+              "name": "Swords to Plowshares",
+              "printing": "blc/109",
+              "qty": 4
+            },
+            {
+              "name": "Temple Garden",
+              "printing": "rtr/248",
+              "qty": 1
+            },
+            {
+              "name": "Up the Beanstalk",
+              "printing": "woe/195",
+              "qty": 4
+            },
+            {
+              "name": "Watery Grave",
+              "printing": "grn/259",
+              "qty": 1
+            },
+            {
+              "name": "Windswept Heath",
+              "printing": "mh3/235",
+              "qty": 4
+            }
+          ],
+          "primer": ""
+        },
+        {
+          "slug": "azorius-cawblade",
+          "name": "Azorius Cawblade",
+          "colors": "wu",
+          "cards": [
+            {
+              "name": "Adarkar Wastes",
+              "printing": "m3c/316",
+              "qty": 3
+            },
+            {
+              "name": "Batterskull",
+              "printing": "nph/130",
+              "qty": 1
+            },
+            {
+              "name": "Brainstorm",
+              "printing": "sta/13",
+              "qty": 4
+            },
+            {
+              "name": "Flooded Strand",
+              "printing": "mh3/220",
+              "qty": 4
+            },
+            {
+              "name": "Hallowed Fountain",
+              "printing": "rna/251",
+              "qty": 4
+            },
+            {
+              "name": "Island",
+              "printing": "blb/268",
+              "qty": 1
+            },
+            {
+              "name": "Kastral, the Windcrested",
+              "printing": "blb/335",
+              "qty": 3
+            },
+            {
+              "name": "Ledger Shredder",
+              "printing": "spg/55",
+              "qty": 4
+            },
+            {
+              "name": "Meticulous Archive",
+              "printing": "pmkm/264p",
+              "qty": 1
+            },
+            {
+              "name": "Otawara, Soaring City",
+              "printing": "neo/271",
+              "qty": 1
+            },
+            {
+              "name": "Plains",
+              "printing": "blb/263",
+              "qty": 1
+            },
+            {
+              "name": "Prismatic Ending",
+              "printing": "mh2/25",
+              "qty": 2
+            },
+            {
+              "name": "Razorgrass Ambush / Razorgrass Field",
+              "printing": "mh3/238",
+              "qty": 1
+            },
+            {
+              "name": "Restless Anchorage",
+              "printing": "lci/280",
+              "qty": 1
+            },
+            {
+              "name": "Seachrome Coast",
+              "printing": "one/258",
+              "qty": 4
+            },
+            {
+              "name": "Season of the Burrow",
+              "printing": "blb/29",
+              "qty": 1
+            },
+            {
+              "name": "Shrike Force",
+              "printing": "blb/31",
+              "qty": 4
+            },
+            {
+              "name": "Spara's Headquarters",
+              "printing": "snc/257",
+              "qty": 1
+            },
+            {
+              "name": "Squadron Hawk",
+              "printing": "ema/31",
+              "qty": 4
+            },
+            {
+              "name": "Stoneforge Mystic",
+              "printing": "wwk/20",
+              "qty": 4
+            },
+            {
+              "name": "Supreme Verdict",
+              "printing": "clu/211",
+              "qty": 3
+            },
+            {
+              "name": "Sword of Feast and Famine",
+              "printing": "2xm/296",
+              "qty": 1
+            },
+            {
+              "name": "Sword of War and Peace",
+              "printing": "nph/161",
+              "qty": 1
+            },
+            {
+              "name": "Swords to Plowshares",
+              "printing": "blc/109",
+              "qty": 4
+            },
+            {
+              "name": "Umezawa's Jitte",
+              "printing": "bok/163",
+              "qty": 1
+            },
+            {
+              "name": "Witch Enchanter / Witch-Blessed Meadow",
+              "printing": "mh3/239",
+              "qty": 1
+            }
+          ],
+          "primer": ""
+        },
+        {
+          "slug": "bant-frogs",
+          "name": "Bant Frogs",
+          "colors": "wug",
+          "cards": [
+            {
+              "name": "Birds of Paradise",
+              "printing": "blc/81",
+              "qty": 4
+            },
+            {
+              "name": "Boseiju, Who Endures",
+              "printing": "pneo/266p",
+              "qty": 1
+            },
+            {
+              "name": "Botanical Sanctum",
+              "printing": "potj/267p",
+              "qty": 4
+            },
+            {
+              "name": "Breeding Pool",
+              "printing": "gtc/240",
+              "qty": 2
+            },
+            {
+              "name": "Bridgeworks Battle / Tanglespan Bridgeworks",
+              "printing": "mh3/249",
+              "qty": 1
+            },
+            {
+              "name": "Clement, the Worrywort",
+              "printing": "blb/209",
+              "qty": 3
+            },
+            {
+              "name": "Dour Port-Mage",
+              "printing": "blb/47",
+              "qty": 4
+            },
+            {
+              "name": "Forest",
+              "printing": "otj/286",
+              "qty": 2
+            },
+            {
+              "name": "Hallowed Fountain",
+              "printing": "rtr/241",
+              "qty": 1
+            },
+            {
+              "name": "Hedge Maze",
+              "printing": "pmkm/262p",
+              "qty": 1
+            },
+            {
+              "name": "Innkeeper's Talent",
+              "printing": "blb/180",
+              "qty": 2
+            },
+            {
+              "name": "Island",
+              "printing": "blb/268",
+              "qty": 1
+            },
+            {
+              "name": "Misty Rainforest",
+              "printing": "mh2/250",
+              "qty": 4
+            },
+            {
+              "name": "Mockingbird",
+              "printing": "blb/61",
+              "qty": 3
+            },
+            {
+              "name": "Nadu, Winged Wisdom",
+              "printing": "mh3/193",
+              "qty": 3
+            },
+            {
+              "name": "Pond Prophet",
+              "printing": "blb/229",
+              "qty": 4
+            },
+            {
+              "name": "Prismatic Ending",
+              "printing": "mh2/25",
+              "qty": 2
+            },
+            {
+              "name": "Spara's Headquarters",
+              "printing": "snc/257",
+              "qty": 1
+            },
+            {
+              "name": "Sunshower Druid",
+              "printing": "blb/195",
+              "qty": 4
+            },
+            {
+              "name": "Swords to Plowshares",
+              "printing": "blc/109",
+              "qty": 4
+            },
+            {
+              "name": "Temple Garden",
+              "printing": "rtr/248",
+              "qty": 1
+            },
+            {
+              "name": "Valley Mightcaller",
+              "printing": "blb/202",
+              "qty": 4
+            },
+            {
+              "name": "Windswept Heath",
+              "printing": "mh3/235",
+              "qty": 4
+            }
+          ],
+          "primer": ""
+        },
+        {
+          "slug": "boros-mice",
+          "name": "Boros Mice",
+          "colors": "wr",
+          "cards": [
+            {
+              "name": "Arid Mesa",
+              "printing": "mh2/244",
+              "qty": 4
+            },
+            {
+              "name": "Battlefield Forge",
+              "printing": "m3c/321",
+              "qty": 4
+            },
+            {
+              "name": "Elegant Parlor",
+              "printing": "pmkm/260p",
+              "qty": 1
+            },
+            {
+              "name": "Emberheart Challenger",
+              "printing": "blb/315",
+              "qty": 4
+            },
+            {
+              "name": "Flowerfoot Swordmaster",
+              "printing": "blb/14",
+              "qty": 2
+            },
+            {
+              "name": "Heartfire Hero",
+              "printing": "blb/138",
+              "qty": 4
+            },
+            {
+              "name": "Inspiring Vantage",
+              "printing": "potj/269p",
+              "qty": 4
+            },
+            {
+              "name": "Lion Sash",
+              "printing": "neo/26",
+              "qty": 1
+            },
+            {
+              "name": "Mabel, Heir to Cragflame",
+              "printing": "blb/224",
+              "qty": 2
+            },
+            {
+              "name": "Manifold Mouse",
+              "printing": "blb/318",
+              "qty": 4
+            },
+            {
+              "name": "Mountain",
+              "printing": "blb/275",
+              "qty": 1
+            },
+            {
+              "name": "Mouse Trapper",
+              "printing": "blb/22",
+              "qty": 2
+            },
+            {
+              "name": "Plains",
+              "printing": "blb/263",
+              "qty": 1
+            },
+            {
+              "name": "Rockface Village",
+              "printing": "blb/259",
+              "qty": 2
+            },
+            {
+              "name": "Sacred Foundry",
+              "printing": "pgrn/254p",
+              "qty": 4
+            },
+            {
+              "name": "Short Bow",
+              "printing": "blb/248",
+              "qty": 1
+            },
+            {
+              "name": "Shuko",
+              "printing": "bok/159",
+              "qty": 1
+            },
+            {
+              "name": "Stoneforge Mystic",
+              "printing": "2xm/31",
+              "qty": 4
+            },
+            {
+              "name": "Sunbaked Canyon",
+              "printing": "mh1/247",
+              "qty": 1
+            },
+            {
+              "name": "Sword of Fire and Ice",
+              "printing": "spg/62",
+              "qty": 1
+            },
+            {
+              "name": "Sword of Light and Shadow",
+              "printing": "acr/100",
+              "qty": 1
+            },
+            {
+              "name": "Swords to Plowshares",
+              "printing": "spg/54",
+              "qty": 4
+            },
+            {
+              "name": "Umezawa's Jitte",
+              "printing": "bok/163",
+              "qty": 1
+            },
+            {
+              "name": "Whiskervale Forerunner",
+              "printing": "blb/301",
+              "qty": 4
+            },
+            {
+              "name": "Witch Enchanter / Witch-Blessed Meadow",
+              "printing": "mh3/239",
+              "qty": 2
+            }
+          ],
+          "primer": "\u003cp\u003ehello world with \u003cspan class=\"card\" data-name=\"Stoneforge Mystic\"\u003eStoneforge Mystic\u003c/span\u003e\u003c/p\u003e"
+        },
+        {
+          "slug": "dimir-rats",
+          "name": "Dimir Rats",
+          "colors": "ub",
+          "cards": [
+            {
+              "name": "Circular Logic",
+              "printing": "dmr/42",
+              "qty": 3
+            },
+            {
+              "name": "Consider",
+              "printing": "clu/84",
+              "qty": 4
+            },
+            {
+              "name": "Dark Withering",
+              "printing": "dmr/79",
+              "qty": 2
+            },
+            {
+              "name": "Darkslick Shores",
+              "printing": "otc/281",
+              "qty": 4
+            },
+            {
+              "name": "Deep Analysis",
+              "printing": "dmr/46",
+              "qty": 2
+            },
+            {
+              "name": "Fatal Push",
+              "printing": "acr/90",
+              "qty": 4
+            },
+            {
+              "name": "Island",
+              "printing": "blb/268",
+              "qty": 2
+            },
+            {
+              "name": "Lord Skitter, Sewer King",
+              "printing": "woe/97",
+              "qty": 3
+            },
+            {
+              "name": "Mudflat Village",
+              "printing": "blb/257",
+              "qty": 1
+            },
+            {
+              "name": "Otawara, Soaring City",
+              "printing": "neo/271",
+              "qty": 1
+            },
+            {
+              "name": "Pack Rat",
+              "printing": "rtr/73",
+              "qty": 4
+            },
+            {
+              "name": "Polluted Delta",
+              "printing": "mh3/224",
+              "qty": 4
+            },
+            {
+              "name": "Psychic Frog",
+              "printing": "mh3/199",
+              "qty": 4
+            },
+            {
+              "name": "Shoreline Looter",
+              "printing": "blb/70",
+              "qty": 4
+            },
+            {
+              "name": "Swamp",
+              "printing": "blb/271",
+              "qty": 1
+            },
+            {
+              "name": "Swarmyard",
+              "printing": "blc/133",
+              "qty": 1
+            },
+            {
+              "name": "Swarmyard Massacre",
+              "printing": "blc/20",
+              "qty": 3
+            },
+            {
+              "name": "Umezawa's Jitte",
+              "printing": "bok/163",
+              "qty": 1
+            },
+            {
+              "name": "Undercity Sewers",
+              "printing": "pmkm/270p",
+              "qty": 1
+            },
+            {
+              "name": "Underground River",
+              "printing": "otc/338",
+              "qty": 4
+            },
+            {
+              "name": "Vren, the Relentless",
+              "printing": "blb/239",
+              "qty": 3
+            },
+            {
+              "name": "Watery Grave",
+              "printing": "gtc/249",
+              "qty": 4
+            }
+          ],
+          "primer": ""
+        },
+        {
+          "slug": "golgari-squirrels",
+          "name": "Golgari Squirrels",
+          "colors": "bg",
+          "cards": [
+            {
+              "name": "Abrupt Decay",
+              "printing": "rtr/141",
+              "qty": 2
+            },
+            {
+              "name": "Blood Artist",
+              "printing": "c17/99",
+              "qty": 1
+            },
+            {
+              "name": "Blooming Marsh",
+              "printing": "otj/266",
+              "qty": 4
+            },
+            {
+              "name": "Boggart Trawler / Boggart Bog",
+              "printing": "mh3/243",
+              "qty": 1
+            },
+            {
+              "name": "Bonecache Overseer",
+              "printing": "blb/85",
+              "qty": 3
+            },
+            {
+              "name": "Boseiju, Who Endures",
+              "printing": "neo/266",
+              "qty": 1
+            },
+            {
+              "name": "Cache Grab",
+              "printing": "blb/167",
+              "qty": 3
+            },
+            {
+              "name": "Camellia, the Seedmiser",
+              "printing": "blb/207",
+              "qty": 3
+            },
+            {
+              "name": "Chatterfang, Squirrel General",
+              "printing": "blc/209",
+              "qty": 3
+            },
+            {
+              "name": "Chitterspitter",
+              "printing": "blc/211",
+              "qty": 1
+            },
+            {
+              "name": "Chord of Calling",
+              "printing": "rvr/134",
+              "qty": 4
+            },
+            {
+              "name": "Chthonian Nightmare",
+              "printing": "mh3/83",
+              "qty": 1
+            },
+            {
+              "name": "Forest",
+              "printing": "blb/278",
+              "qty": 1
+            },
+            {
+              "name": "Gilded Goose",
+              "printing": "blc/83",
+              "qty": 4
+            },
+            {
+              "name": "Haywire Mite",
+              "printing": "blc/274",
+              "qty": 1
+            },
+            {
+              "name": "Llanowar Wastes",
+              "printing": "bro/264",
+              "qty": 4
+            },
+            {
+              "name": "Mudflat Village",
+              "printing": "blb/257",
+              "qty": 1
+            },
+            {
+              "name": "Osteomancer Adept",
+              "printing": "blb/103",
+              "qty": 1
+            },
+            {
+              "name": "Overgrown Tomb",
+              "printing": "rtr/243",
+              "qty": 4
+            },
+            {
+              "name": "Swamp",
+              "printing": "blb/271",
+              "qty": 1
+            },
+            {
+              "name": "Swarmyard",
+              "printing": "blc/133",
+              "qty": 1
+            },
+            {
+              "name": "Thornvault Forager",
+              "printing": "blb/197",
+              "qty": 4
+            },
+            {
+              "name": "Underground Mortuary",
+              "printing": "mkm/271",
+              "qty": 1
+            },
+            {
+              "name": "Verdant Catacombs",
+              "printing": "mh2/260",
+              "qty": 4
+            },
+            {
+              "name": "Vinereap Mentor",
+              "printing": "blb/238",
+              "qty": 4
+            },
+            {
+              "name": "Warren Soultrader",
+              "printing": "mh3/110",
+              "qty": 1
+            },
+            {
+              "name": "Ygra, Eater of All",
+              "printing": "blb/241",
+              "qty": 1
+            }
+          ],
+          "primer": ""
+        },
+        {
+          "slug": "gruul-raccoons",
+          "name": "Gruul Raccoons",
+          "colors": "rg",
+          "cards": [
+            {
+              "name": "Boseiju, Who Endures",
+              "printing": "neo/266",
+              "qty": 1
+            },
+            {
+              "name": "Bridgeworks Battle / Tanglespan Bridgeworks",
+              "printing": "mh3/249",
+              "qty": 2
+            },
+            {
+              "name": "Byway Barterer",
+              "printing": "blb/129",
+              "qty": 4
+            },
+            {
+              "name": "Call of the Herd",
+              "printing": "dmr/153",
+              "qty": 3
+            },
+            {
+              "name": "Commercial District",
+              "printing": "pmkm/259p",
+              "qty": 1
+            },
+            {
+              "name": "Copperline Gorge",
+              "printing": "one/249",
+              "qty": 4
+            },
+            {
+              "name": "Fiery Confluence",
+              "printing": "moc/278",
+              "qty": 2
+            },
+            {
+              "name": "Firebolt",
+              "printing": "jvc/49",
+              "qty": 3
+            },
+            {
+              "name": "Forest",
+              "printing": "blb/278",
+              "qty": 1
+            },
+            {
+              "name": "Grove of the Burnwillows",
+              "printing": "v12/8",
+              "qty": 4
+            },
+            {
+              "name": "Hugs, Grisly Guardian",
+              "printing": "blb/218",
+              "qty": 1
+            },
+            {
+              "name": "Innkeeper's Talent",
+              "printing": "blb/180",
+              "qty": 1
+            },
+            {
+              "name": "Mountain",
+              "printing": "blb/275",
+              "qty": 1
+            },
+            {
+              "name": "Muerra, Trash Tactician",
+              "printing": "blb/227",
+              "qty": 4
+            },
+            {
+              "name": "Punishing Fire",
+              "printing": "cmd/131",
+              "qty": 4
+            },
+            {
+              "name": "Rolling Hamsphere",
+              "printing": "blc/71",
+              "qty": 1
+            },
+            {
+              "name": "Scrapshooter",
+              "printing": "blb/324",
+              "qty": 2
+            },
+            {
+              "name": "Stomping Ground",
+              "printing": "prna/259p",
+              "qty": 4
+            },
+            {
+              "name": "Stump Stomp / Burnwillow Clearing",
+              "printing": "mh3/259",
+              "qty": 1
+            },
+            {
+              "name": "Tender Wildguide",
+              "printing": "blb/325",
+              "qty": 4
+            },
+            {
+              "name": "Wandertale Mentor",
+              "printing": "blb/240",
+              "qty": 4
+            },
+            {
+              "name": "Wild Growth",
+              "printing": "dmr/184",
+              "qty": 4
+            },
+            {
+              "name": "Wooded Foothills",
+              "printing": "mh3/236",
+              "qty": 4
+            }
+          ],
+          "primer": ""
+        },
+        {
+          "slug": "izzet-otters",
+          "name": "Izzet Otters",
+          "colors": "ur",
+          "cards": [
+            {
+              "name": "Bria, Riptide Rogue",
+              "printing": "blb/379",
+              "qty": 1
+            },
+            {
+              "name": "Expressive Iteration",
+              "printing": "slp/13",
+              "qty": 2
+            },
+            {
+              "name": "Fiery Confluence",
+              "printing": "moc/278",
+              "qty": 1
+            },
+            {
+              "name": "Flame of Anor",
+              "printing": "ltr/203",
+              "qty": 3
+            },
+            {
+              "name": "Flare of Denial",
+              "printing": "mh3/62",
+              "qty": 3
+            },
+            {
+              "name": "Island",
+              "printing": "blb/268",
+              "qty": 2
+            },
+            {
+              "name": "Kitsa, Otterball Elite",
+              "printing": "blb/304",
+              "qty": 4
+            },
+            {
+              "name": "Lightning Bolt",
+              "printing": "clu/141",
+              "qty": 4
+            },
+            {
+              "name": "Mountain",
+              "printing": "blb/275",
+              "qty": 1
+            },
+            {
+              "name": "Otawara, Soaring City",
+              "printing": "neo/271",
+              "qty": 1
+            },
+            {
+              "name": "Pearl of Wisdom",
+              "printing": "blb/64",
+              "qty": 4
+            },
+            {
+              "name": "Preordain",
+              "printing": "otc/107",
+              "qty": 4
+            },
+            {
+              "name": "Scalding Tarn",
+              "printing": "mh2/254",
+              "qty": 4
+            },
+            {
+              "name": "Shivan Reef",
+              "printing": "m3c/375",
+              "qty": 4
+            },
+            {
+              "name": "Sink into Stupor / Soporific Springs",
+              "printing": "mh3/241",
+              "qty": 1
+            },
+            {
+              "name": "Spirebluff Canal",
+              "printing": "potj/270p",
+              "qty": 4
+            },
+            {
+              "name": "Steam Vents",
+              "printing": "rtr/247",
+              "qty": 4
+            },
+            {
+              "name": "Stormcatch Mentor",
+              "printing": "blb/234",
+              "qty": 4
+            },
+            {
+              "name": "Thundering Falls",
+              "printing": "pmkm/269p",
+              "qty": 1
+            },
+            {
+              "name": "Thundertrap Trainer",
+              "printing": "blb/78",
+              "qty": 4
+            },
+            {
+              "name": "Valley Floodcaller",
+              "printing": "blb/308",
+              "qty": 4
+            }
+          ],
+          "primer": ""
+        },
+        {
+          "slug": "naya-rabbits",
+          "name": "Naya Rabbits",
+          "colors": "wrg",
+          "cards": [
+            {
+              "name": "Baylen, the Haymaker",
+              "printing": "blb/205",
+              "qty": 3
+            },
+            {
+              "name": "Boseiju, Who Endures",
+              "printing": "neo/266",
+              "qty": 1
+            },
+            {
+              "name": "Brushland",
+              "printing": "bro/259",
+              "qty": 2
+            },
+            {
+              "name": "Caretaker's Talent",
+              "printing": "blb/6",
+              "qty": 3
+            },
+            {
+              "name": "Finneas, Ace Archer",
+              "printing": "blb/212",
+              "qty": 3
+            },
+            {
+              "name": "Forest",
+              "printing": "blb/278",
+              "qty": 1
+            },
+            {
+              "name": "Hop to It",
+              "printing": "blb/16",
+              "qty": 4
+            },
+            {
+              "name": "Jacked Rabbit",
+              "printing": "blc/9",
+              "qty": 3
+            },
+            {
+              "name": "Jetmir's Garden",
+              "printing": "snc/250",
+              "qty": 1
+            },
+            {
+              "name": "Lush Portico",
+              "printing": "pmkm/263p",
+              "qty": 1
+            },
+            {
+              "name": "Pawpatch Recruit",
+              "printing": "blb/187",
+              "qty": 4
+            },
+            {
+              "name": "Plains",
+              "printing": "blb/262",
+              "qty": 1
+            },
+            {
+              "name": "Prismatic Ending",
+              "printing": "mh2/25",
+              "qty": 2
+            },
+            {
+              "name": "Razorverge Thicket",
+              "printing": "one/257",
+              "qty": 4
+            },
+            {
+              "name": "Sacred Foundry",
+              "printing": "pgrn/254p",
+              "qty": 1
+            },
+            {
+              "name": "Season of the Burrow",
+              "printing": "blb/29",
+              "qty": 1
+            },
+            {
+              "name": "Stomping Ground",
+              "printing": "prna/259p",
+              "qty": 1
+            },
+            {
+              "name": "Swords to Plowshares",
+              "printing": "blc/109",
+              "qty": 4
+            },
+            {
+              "name": "Temple Garden",
+              "printing": "grn/258",
+              "qty": 4
+            },
+            {
+              "name": "Valley Questcaller",
+              "printing": "blb/299",
+              "qty": 4
+            },
+            {
+              "name": "Warren Warleader",
+              "printing": "blb/300",
+              "qty": 4
+            },
+            {
+              "name": "Windswept Heath",
+              "printing": "mh3/235",
+              "qty": 4
+            },
+            {
+              "name": "Witch Enchanter / Witch-Blessed Meadow",
+              "printing": "mh3/239",
+              "qty": 1
+            },
+            {
+              "name": "Wooded Foothills",
+              "printing": "mh3/236",
+              "qty": 3
+            }
+          ],
+          "primer": ""
+        },
+        {
+          "slug": "orzhov-bats",
+          "name": "Orzhov Bats",
+          "colors": "wb",
+          "cards": [
+            {
+              "name": "Bloodforged Battle-Axe",
+              "printing": "moc/349",
+              "qty": 1
+            },
+            {
+              "name": "Caves of Koilos",
+              "printing": "dmu/244",
+              "qty": 4
+            },
+            {
+              "name": "Concealed Courtyard",
+              "printing": "potj/268p",
+              "qty": 4
+            },
+            {
+              "name": "Damn",
+              "printing": "lcc/191",
+              "qty": 3
+            },
+            {
+              "name": "Darkstar Augur",
+              "printing": "blb/90",
+              "qty": 4
+            },
+            {
+              "name": "Deep-Cavern Bat",
+              "printing": "lci/102",
+              "qty": 4
+            },
+            {
+              "name": "Essence Channeler",
+              "printing": "blb/12",
+              "qty": 4
+            },
+            {
+              "name": "Godless Shrine",
+              "printing": "prna/248p",
+              "qty": 4
+            },
+            {
+              "name": "Lunar Convocation",
+              "printing": "blb/223",
+              "qty": 4
+            },
+            {
+              "name": "Marsh Flats",
+              "printing": "mh2/248",
+              "qty": 4
+            },
+            {
+              "name": "Mudflat Village",
+              "printing": "blb/257",
+              "qty": 1
+            },
+            {
+              "name": "Plains",
+              "printing": "blb/263",
+              "qty": 1
+            },
+            {
+              "name": "Prismatic Ending",
+              "printing": "mh2/25",
+              "qty": 2
+            },
+            {
+              "name": "Raffine's Tower",
+              "printing": "snc/254",
+              "qty": 1
+            },
+            {
+              "name": "Ruin-Lurker Bat",
+              "printing": "lci/33",
+              "qty": 4
+            },
+            {
+              "name": "Shadowy Backstreet",
+              "printing": "pmkm/268p",
+              "qty": 1
+            },
+            {
+              "name": "Silent Clearing",
+              "printing": "mh1/246",
+              "qty": 1
+            },
+            {
+              "name": "Sorin of House Markov / Sorin, Ravenous Neonate",
+              "printing": "mh3/245",
+              "qty": 1
+            },
+            {
+              "name": "Swamp",
+              "printing": "blb/271",
+              "qty": 1
+            },
+            {
+              "name": "Swords to Plowshares",
+              "printing": "blc/109",
+              "qty": 4
+            },
+            {
+              "name": "The Wandering Emperor",
+              "printing": "neo/316",
+              "qty": 1
+            },
+            {
+              "name": "Vorpal Sword",
+              "printing": "afr/124",
+              "qty": 1
+            },
+            {
+              "name": "Witch Enchanter / Witch-Blessed Meadow",
+              "printing": "mh3/239",
+              "qty": 1
+            },
+            {
+              "name": "Zoraline, Cosmos Caller",
+              "printing": "blb/242",
+              "qty": 4
+            }
+          ],
+          "primer": ""
+        },
+        {
+          "slug": "rakdos-lizards",
+          "name": "Rakdos Lizards",
+          "colors": "br",
+          "cards": [
+            {
+              "name": "Blackcleave Cliffs",
+              "printing": "otc/272",
+              "qty": 4
+            },
+            {
+              "name": "Blood Crypt",
+              "printing": "rtr/238",
+              "qty": 4
+            },
+            {
+              "name": "Bloodstained Mire",
+              "printing": "mh3/216",
+              "qty": 4
+            },
+            {
+              "name": "Delayed Blast Fireball",
+              "printing": "clb/676",
+              "qty": 1
+            },
+            {
+              "name": "Fatal Push",
+              "printing": "acr/90",
+              "qty": 2
+            },
+            {
+              "name": "Fell the Profane / Fell Mire",
+              "printing": "mh3/244",
+              "qty": 1
+            },
+            {
+              "name": "Fiery Temper",
+              "printing": "uma/129",
+              "qty": 3
+            },
+            {
+              "name": "Fireglass Mentor",
+              "printing": "blb/213",
+              "qty": 4
+            },
+            {
+              "name": "Flamecache Gecko",
+              "printing": "blb/135",
+              "qty": 4
+            },
+            {
+              "name": "Gev, Scaled Scorch",
+              "printing": "blb/214",
+              "qty": 4
+            },
+            {
+              "name": "Hired Claw",
+              "printing": "blb/140",
+              "qty": 4
+            },
+            {
+              "name": "Iridescent Vinelasher",
+              "printing": "blb/99",
+              "qty": 4
+            },
+            {
+              "name": "Lightning Bolt",
+              "printing": "clu/141",
+              "qty": 4
+            },
+            {
+              "name": "Mountain",
+              "printing": "blb/275",
+              "qty": 1
+            },
+            {
+              "name": "Mudflat Village",
+              "printing": "blb/257",
+              "qty": 1
+            },
+            {
+              "name": "Party Thrasher",
+              "printing": "mh3/129",
+              "qty": 3
+            },
+            {
+              "name": "Rakdos Carnarium",
+              "printing": "clu/243",
+              "qty": 1
+            },
+            {
+              "name": "Raucous Theater",
+              "printing": "pmkm/266p",
+              "qty": 1
+            },
+            {
+              "name": "Rockface Village",
+              "printing": "blb/259",
+              "qty": 1
+            },
+            {
+              "name": "Sulfurous Springs",
+              "printing": "otc/323",
+              "qty": 4
+            },
+            {
+              "name": "Swamp",
+              "printing": "blb/271",
+              "qty": 1
+            },
+            {
+              "name": "Valley Flamecaller",
+              "printing": "blb/320",
+              "qty": 4
+            }
+          ],
+          "primer": ""
+        }
+      ]
+    }
+  ]
+}
