@@ -7,11 +7,7 @@ import (
 	"fmt"
 	"os"
 	"path/filepath"
-	"regexp"
 	"strings"
-
-	"github.com/yuin/goldmark"
-	"github.com/yuin/goldmark/renderer/html"
 )
 
 type Card struct {
@@ -46,18 +42,9 @@ type Output struct {
 	Battleboxes []Battlebox `json:"battleboxes"`
 }
 
-var cardRefPattern = regexp.MustCompile(`\[\[([^\]]+)\]\]`)
-
 func main() {
 	dataDir := "data"
 	outputPath := "static/data.json"
-
-	md := goldmark.New(
-		goldmark.WithRendererOptions(
-			html.WithUnsafe(),
-			html.WithXHTML(),
-		),
-	)
 
 	var output Output
 
@@ -91,7 +78,7 @@ func main() {
 			}
 
 			deckPath := filepath.Join(bbPath, deckDir.Name())
-			deck, err := processDeck(deckPath, deckDir.Name(), md)
+			deck, err := processDeck(deckPath, deckDir.Name())
 			if err != nil {
 				fmt.Fprintf(os.Stderr, "Error processing deck %s: %v\n", deckDir.Name(), err)
 				continue
@@ -119,7 +106,7 @@ func main() {
 	fmt.Printf("Written: %s (%d bytes)\n", outputPath, len(jsonData))
 }
 
-func processDeck(deckPath, slug string, md goldmark.Markdown) (*Deck, error) {
+func processDeck(deckPath, slug string) (*Deck, error) {
 	// Read manifest
 	manifestPath := filepath.Join(deckPath, "manifest.json")
 	manifestData, err := os.ReadFile(manifestPath)
@@ -141,13 +128,13 @@ func processDeck(deckPath, slug string, md goldmark.Markdown) (*Deck, error) {
 		Guides:    make(map[string]string),
 	}
 
-	// Read and render primer
+	// Read primer (raw text, no rendering)
 	primerPath := filepath.Join(deckPath, "primer.md")
-	if primerData, err := os.ReadFile(primerPath); err == nil && len(primerData) > 0 {
-		deck.Primer = renderMarkdown(md, string(primerData), deck)
+	if primerData, err := os.ReadFile(primerPath); err == nil {
+		deck.Primer = strings.TrimSpace(string(primerData))
 	}
 
-	// Read sideboard guides
+	// Read sideboard guides (raw text)
 	entries, _ := os.ReadDir(deckPath)
 	for _, entry := range entries {
 		name := entry.Name()
@@ -157,25 +144,9 @@ func processDeck(deckPath, slug string, md goldmark.Markdown) (*Deck, error) {
 		guidePath := filepath.Join(deckPath, name)
 		if guideData, err := os.ReadFile(guidePath); err == nil && len(guideData) > 0 {
 			opponentSlug := strings.TrimSuffix(name, ".md")
-			deck.Guides[opponentSlug] = renderMarkdown(md, string(guideData), deck)
+			deck.Guides[opponentSlug] = strings.TrimSpace(string(guideData))
 		}
 	}
 
 	return deck, nil
-}
-
-func renderMarkdown(md goldmark.Markdown, content string, deck *Deck) string {
-	// Transform [[Card Name]] to HTML spans
-	content = cardRefPattern.ReplaceAllStringFunc(content, func(match string) string {
-		cardName := cardRefPattern.FindStringSubmatch(match)[1]
-		return fmt.Sprintf(`<span class="card" data-name="%s">%s</span>`, cardName, cardName)
-	})
-
-	// Render markdown to HTML
-	var buf strings.Builder
-	if err := md.Convert([]byte(content), &buf); err != nil {
-		return content
-	}
-
-	return strings.TrimSpace(buf.String())
 }

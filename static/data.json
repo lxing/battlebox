@@ -533,7 +533,7 @@
               "qty": 2
             }
           ],
-          "primer": "\u003cp\u003ehello world with \u003cspan class=\"card\" data-name=\"Stoneforge Mystic\"\u003eStoneforge Mystic\u003c/span\u003e\u003c/p\u003e"
+          "primer": "hello world with [[Stoneforge Mystic]]"
         },
         {
           "slug": "dimir-rats",
