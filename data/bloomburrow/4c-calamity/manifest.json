@@ -1,0 +1,136 @@
+{
+  "name": "4c Calamity",
+  "colors": "wubg",
+  "cards": [
+    {
+      "name": "Beza, the Bounding Spring",
+      "printing": "blb/2",
+      "qty": 3
+    },
+    {
+      "name": "Birds of Paradise",
+      "printing": "blc/81",
+      "qty": 4
+    },
+    {
+      "name": "Breeding Pool",
+      "printing": "gtc/240",
+      "qty": 1
+    },
+    {
+      "name": "Fecund Greenshell",
+      "printing": "blb/171",
+      "qty": 2
+    },
+    {
+      "name": "Firespout",
+      "printing": "clu/190",
+      "qty": 2
+    },
+    {
+      "name": "Flooded Strand",
+      "printing": "mh3/220",
+      "qty": 4
+    },
+    {
+      "name": "Forest",
+      "printing": "mh3/319",
+      "qty": 1
+    },
+    {
+      "name": "Glarb, Calamity's Augur",
+      "printing": "blb/215",
+      "qty": 4
+    },
+    {
+      "name": "Hallowed Fountain",
+      "printing": "rna/251",
+      "qty": 1
+    },
+    {
+      "name": "Helga, Skittish Seer",
+      "printing": "blb/217",
+      "qty": 4
+    },
+    {
+      "name": "Indatha Triome",
+      "printing": "iko/248",
+      "qty": 1
+    },
+    {
+      "name": "Island",
+      "printing": "mh3/312",
+      "qty": 1
+    },
+    {
+      "name": "Leyline Binding",
+      "printing": "dmu/24",
+      "qty": 4
+    },
+    {
+      "name": "Meticulous Archive",
+      "printing": "pmkm/264p",
+      "qty": 1
+    },
+    {
+      "name": "Monumental Henge",
+      "printing": "mh3/222",
+      "qty": 1
+    },
+    {
+      "name": "Mulldrifter",
+      "printing": "mkc/111",
+      "qty": 2
+    },
+    {
+      "name": "Plains",
+      "printing": "mh3/310",
+      "qty": 1
+    },
+    {
+      "name": "Polluted Delta",
+      "printing": "mh3/465",
+      "qty": 3
+    },
+    {
+      "name": "Savai Triome",
+      "printing": "iko/253",
+      "qty": 1
+    },
+    {
+      "name": "Solitude",
+      "printing": "mh2/32",
+      "qty": 4
+    },
+    {
+      "name": "Spara's Headquarters",
+      "printing": "snc/257",
+      "qty": 1
+    },
+    {
+      "name": "Swords to Plowshares",
+      "printing": "blc/109",
+      "qty": 4
+    },
+    {
+      "name": "Temple Garden",
+      "printing": "rtr/248",
+      "qty": 1
+    },
+    {
+      "name": "Up the Beanstalk",
+      "printing": "woe/195",
+      "qty": 4
+    },
+    {
+      "name": "Watery Grave",
+      "printing": "grn/259",
+      "qty": 1
+    },
+    {
+      "name": "Windswept Heath",
+      "printing": "mh3/235",
+      "qty": 4
+    }
+  ]
+}

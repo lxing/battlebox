@@ -1,0 +1,116 @@
+{
+  "name": "Dimir Rats",
+  "colors": "ub",
+  "cards": [
+    {
+      "name": "Circular Logic",
+      "printing": "dmr/42",
+      "qty": 3
+    },
+    {
+      "name": "Consider",
+      "printing": "clu/84",
+      "qty": 4
+    },
+    {
+      "name": "Dark Withering",
+      "printing": "dmr/79",
+      "qty": 2
+    },
+    {
+      "name": "Darkslick Shores",
+      "printing": "otc/281",
+      "qty": 4
+    },
+    {
+      "name": "Deep Analysis",
+      "printing": "dmr/46",
+      "qty": 2
+    },
+    {
+      "name": "Fatal Push",
+      "printing": "acr/90",
+      "qty": 4
+    },
+    {
+      "name": "Island",
+      "printing": "blb/268",
+      "qty": 2
+    },
+    {
+      "name": "Lord Skitter, Sewer King",
+      "printing": "woe/97",
+      "qty": 3
+    },
+    {
+      "name": "Mudflat Village",
+      "printing": "blb/257",
+      "qty": 1
+    },
+    {
+      "name": "Otawara, Soaring City",
+      "printing": "neo/271",
+      "qty": 1
+    },
+    {
+      "name": "Pack Rat",
+      "printing": "rtr/73",
+      "qty": 4
+    },
+    {
+      "name": "Polluted Delta",
+      "printing": "mh3/224",
+      "qty": 4
+    },
+    {
+      "name": "Psychic Frog",
+      "printing": "mh3/199",
+      "qty": 4
+    },
+    {
+      "name": "Shoreline Looter",
+      "printing": "blb/70",
+      "qty": 4
+    },
+    {
+      "name": "Swamp",
+      "printing": "blb/271",
+      "qty": 1
+    },
+    {
+      "name": "Swarmyard",
+      "printing": "blc/133",
+      "qty": 1
+    },
+    {
+      "name": "Swarmyard Massacre",
+      "printing": "blc/20",
+      "qty": 3
+    },
+    {
+      "name": "Umezawa's Jitte",
+      "printing": "bok/163",
+      "qty": 1
+    },
+    {
+      "name": "Undercity Sewers",
+      "printing": "pmkm/270p",
+      "qty": 1
+    },
+    {
+      "name": "Underground River",
+      "printing": "otc/338",
+      "qty": 4
+    },
+    {
+      "name": "Vren, the Relentless",
+      "printing": "blb/239",
+      "qty": 3
+    },
+    {
+      "name": "Watery Grave",
+      "printing": "gtc/249",
+      "qty": 4
+    }
+  ]
+}

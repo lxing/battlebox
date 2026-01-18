@@ -1,0 +1,111 @@
+{
+  "name": "Izzet Otters",
+  "colors": "ur",
+  "cards": [
+    {
+      "name": "Bria, Riptide Rogue",
+      "printing": "blb/379",
+      "qty": 1
+    },
+    {
+      "name": "Expressive Iteration",
+      "printing": "slp/13",
+      "qty": 2
+    },
+    {
+      "name": "Fiery Confluence",
+      "printing": "moc/278",
+      "qty": 1
+    },
+    {
+      "name": "Flame of Anor",
+      "printing": "ltr/203",
+      "qty": 3
+    },
+    {
+      "name": "Flare of Denial",
+      "printing": "mh3/62",
+      "qty": 3
+    },
+    {
+      "name": "Island",
+      "printing": "blb/268",
+      "qty": 2
+    },
+    {
+      "name": "Kitsa, Otterball Elite",
+      "printing": "blb/304",
+      "qty": 4
+    },
+    {
+      "name": "Lightning Bolt",
+      "printing": "clu/141",
+      "qty": 4
+    },
+    {
+      "name": "Mountain",
+      "printing": "blb/275",
+      "qty": 1
+    },
+    {
+      "name": "Otawara, Soaring City",
+      "printing": "neo/271",
+      "qty": 1
+    },
+    {
+      "name": "Pearl of Wisdom",
+      "printing": "blb/64",
+      "qty": 4
+    },
+    {
+      "name": "Preordain",
+      "printing": "otc/107",
+      "qty": 4
+    },
+    {
+      "name": "Scalding Tarn",
+      "printing": "mh2/254",
+      "qty": 4
+    },
+    {
+      "name": "Shivan Reef",
+      "printing": "m3c/375",
+      "qty": 4
+    },
+    {
+      "name": "Sink into Stupor / Soporific Springs",
+      "printing": "mh3/241",
+      "qty": 1
+    },
+    {
+      "name": "Spirebluff Canal",
+      "printing": "potj/270p",
+      "qty": 4
+    },
+    {
+      "name": "Steam Vents",
+      "printing": "rtr/247",
+      "qty": 4
+    },
+    {
+      "name": "Stormcatch Mentor",
+      "printing": "blb/234",
+      "qty": 4
+    },
+    {
+      "name": "Thundering Falls",
+      "printing": "pmkm/269p",
+      "qty": 1
+    },
+    {
+      "name": "Thundertrap Trainer",
+      "printing": "blb/78",
+      "qty": 4
+    },
+    {
+      "name": "Valley Floodcaller",
+      "printing": "blb/308",
+      "qty": 4
+    }
+  ]
+}

@@ -4,33 +4,66 @@
 A reference website for Magic: The Gathering battleboxes. Provides decklists, sideboard guides, and primers for quick pickup play.
 
 ## Scope
-- 3 battleboxes: Pauper, Premodern, Bloomburrow Tribal (15 decks each)
-- Start with 1 battlebox as prototype
+- 3 battleboxes: Pauper, Premodern, Bloomburrow Tribal
+- Bloomburrow: 11 decks (no sideboards)
+- Pauper/Premodern: 15 decks each (with sideboards)
 
 ## Features
 - **Decklist view** with card images (via Scryfall)
-- **Sideboard guides** against each of the 14 other decks in the battlebox
+- **Sideboard guides** against other decks in the battlebox
 - **Deck primer** covering playstyle and key combos
+- **Card hover preview** for inline card references
 - **Offline support** via PWA, heavily cached
 
 ## Tech Stack
-- Django backend
+- Go backend (single binary, embedded static files)
 - Hosted on fly.io
 - Static-first, aggressive caching
+- Build script combines data + markdown into JSON for serving
 
-## Data
-- Decklists imported from Moxfield
-- Stored as JSON
-- **Must preserve exact Scryfall printing** (set code + collector number, not just card name)
-- Sideboard guides written manually
+## Data Structure
+```
+data/
+  {battlebox}/
+    {deck-slug}/
+      manifest.json    # deck metadata + cards
+      primer.md        # deck primer (markdown)
+      {opponent}.md    # sideboard guide vs opponent (markdown)
+```
 
-## Data Model
+## manifest.json
+```json
+{
+  "name": "Boros Mice",
+  "colors": "wr",
+  "cards": [
+    {
+      "name": "Lightning Bolt",
+      "printing": "lea/161",
+      "qty": 4
+    }
+  ],
+  "sideboard": [...]
+}
 ```
-Battlebox
-  └── Deck
-        ├── name
-        ├── primer (playstyle, combos)
-        ├── cards[] (name, quantity, set, collector_number)
-        ├── sideboard[]
-        └── sideboard_guides{opponent_deck: {in, out, notes}}
+
+Fields:
+- `name`: Display name
+- `colors`: WUBRG lowercase (e.g. "wr", "wubg")
+- `cards`: Mainboard cards with Scryfall printing (set/collector)
+- `sideboard`: Optional, same format as cards
+
+## Markdown Files
+- `primer.md`: Deck strategy, key cards, combos
+- `{opponent-slug}.md`: Sideboard guide against that deck
+
+Use `[[Card Name]]` syntax for inline card references:
+```markdown
+This deck closes games with [[Lightning Bolt]].
+Against control, bring in [[Red Elemental Blast]].
 ```
+
+Card references are resolved against the deck's card list to get the correct printing for Scryfall hover previews.
+
+## Scripts
+- `scripts/fetch_moxfield.py`: Import decks from Moxfield URLs

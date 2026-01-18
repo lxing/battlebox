@@ -1,0 +1,136 @@
+{
+  "name": "Azorius Cawblade",
+  "colors": "wu",
+  "cards": [
+    {
+      "name": "Adarkar Wastes",
+      "printing": "m3c/316",
+      "qty": 3
+    },
+    {
+      "name": "Batterskull",
+      "printing": "nph/130",
+      "qty": 1
+    },
+    {
+      "name": "Brainstorm",
+      "printing": "sta/13",
+      "qty": 4
+    },
+    {
+      "name": "Flooded Strand",
+      "printing": "mh3/220",
+      "qty": 4
+    },
+    {
+      "name": "Hallowed Fountain",
+      "printing": "rna/251",
+      "qty": 4
+    },
+    {
+      "name": "Island",
+      "printing": "blb/268",
+      "qty": 1
+    },
+    {
+      "name": "Kastral, the Windcrested",
+      "printing": "blb/335",
+      "qty": 3
+    },
+    {
+      "name": "Ledger Shredder",
+      "printing": "spg/55",
+      "qty": 4
+    },
+    {
+      "name": "Meticulous Archive",
+      "printing": "pmkm/264p",
+      "qty": 1
+    },
+    {
+      "name": "Otawara, Soaring City",
+      "printing": "neo/271",
+      "qty": 1
+    },
+    {
+      "name": "Plains",
+      "printing": "blb/263",
+      "qty": 1
+    },
+    {
+      "name": "Prismatic Ending",
+      "printing": "mh2/25",
+      "qty": 2
+    },
+    {
+      "name": "Razorgrass Ambush / Razorgrass Field",
+      "printing": "mh3/238",
+      "qty": 1
+    },
+    {
+      "name": "Restless Anchorage",
+      "printing": "lci/280",
+      "qty": 1
+    },
+    {
+      "name": "Seachrome Coast",
+      "printing": "one/258",
+      "qty": 4
+    },
+    {
+      "name": "Season of the Burrow",
+      "printing": "blb/29",
+      "qty": 1
+    },
+    {
+      "name": "Shrike Force",
+      "printing": "blb/31",
+      "qty": 4
+    },
+    {
+      "name": "Spara's Headquarters",
+      "printing": "snc/257",
+      "qty": 1
+    },
+    {
+      "name": "Squadron Hawk",
+      "printing": "ema/31",
+      "qty": 4
+    },
+    {
+      "name": "Stoneforge Mystic",
+      "printing": "wwk/20",
+      "qty": 4
+    },
+    {
+      "name": "Supreme Verdict",
+      "printing": "clu/211",
+      "qty": 3
+    },
+    {
+      "name": "Sword of Feast and Famine",
+      "printing": "2xm/296",
+      "qty": 1
+    },
+    {
+      "name": "Sword of War and Peace",
+      "printing": "nph/161",
+      "qty": 1
+    },
+    {
+      "name": "Swords to Plowshares",
+      "printing": "blc/109",
+      "qty": 4
+    },
+    {
+      "name": "Umezawa's Jitte",
+      "printing": "bok/163",
+      "qty": 1
+    },
+    {
+      "name": "Witch Enchanter / Witch-Blessed Meadow",
+      "printing": "mh3/239",
+      "qty": 1
+    }
+  ]
+}
