@@ -4,117 +4,94 @@
   "cards": [
     {
       "name": "Birds of Paradise",
-      "printing": "blc/81",
       "qty": 4
     },
     {
       "name": "Boseiju, Who Endures",
-      "printing": "pneo/266p",
       "qty": 1
     },
     {
       "name": "Botanical Sanctum",
-      "printing": "potj/267p",
       "qty": 4
     },
     {
       "name": "Breeding Pool",
-      "printing": "gtc/240",
       "qty": 2
     },
     {
       "name": "Bridgeworks Battle / Tanglespan Bridgeworks",
-      "printing": "mh3/249",
       "qty": 1
     },
     {
       "name": "Clement, the Worrywort",
-      "printing": "blb/209",
       "qty": 3
     },
     {
       "name": "Dour Port-Mage",
-      "printing": "blb/47",
       "qty": 4
     },
     {
       "name": "Forest",
-      "printing": "otj/286",
       "qty": 2
     },
     {
       "name": "Hallowed Fountain",
-      "printing": "rtr/241",
       "qty": 1
     },
     {
       "name": "Hedge Maze",
-      "printing": "pmkm/262p",
       "qty": 1
     },
     {
       "name": "Innkeeper's Talent",
-      "printing": "blb/180",
       "qty": 2
     },
     {
       "name": "Island",
-      "printing": "blb/268",
       "qty": 1
     },
     {
       "name": "Misty Rainforest",
-      "printing": "mh2/250",
       "qty": 4
     },
     {
       "name": "Mockingbird",
-      "printing": "blb/61",
       "qty": 3
     },
     {
       "name": "Nadu, Winged Wisdom",
-      "printing": "mh3/193",
       "qty": 3
     },
     {
       "name": "Pond Prophet",
-      "printing": "blb/229",
       "qty": 4
     },
     {
       "name": "Prismatic Ending",
-      "printing": "mh2/25",
       "qty": 2
     },
     {
       "name": "Spara's Headquarters",
-      "printing": "snc/257",
       "qty": 1
     },
     {
       "name": "Sunshower Druid",
-      "printing": "blb/195",
       "qty": 4
     },
     {
       "name": "Swords to Plowshares",
-      "printing": "blc/109",
       "qty": 4
     },
     {
       "name": "Temple Garden",
-      "printing": "rtr/248",
       "qty": 1
     },
     {
       "name": "Valley Mightcaller",
-      "printing": "blb/202",
       "qty": 4
     },
     {
       "name": "Windswept Heath",
-      "printing": "mh3/235",
       "qty": 4
     }
   ]

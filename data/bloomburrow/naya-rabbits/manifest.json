@@ -4,122 +4,98 @@
   "cards": [
     {
       "name": "Baylen, the Haymaker",
-      "printing": "blb/205",
       "qty": 3
     },
     {
       "name": "Boseiju, Who Endures",
-      "printing": "neo/266",
       "qty": 1
     },
     {
       "name": "Brushland",
-      "printing": "bro/259",
       "qty": 2
     },
     {
       "name": "Caretaker's Talent",
-      "printing": "blb/6",
       "qty": 3
     },
     {
       "name": "Finneas, Ace Archer",
-      "printing": "blb/212",
       "qty": 3
     },
     {
       "name": "Forest",
-      "printing": "blb/278",
       "qty": 1
     },
     {
       "name": "Hop to It",
-      "printing": "blb/16",
       "qty": 4
     },
     {
       "name": "Jacked Rabbit",
-      "printing": "blc/9",
       "qty": 3
     },
     {
       "name": "Jetmir's Garden",
-      "printing": "snc/250",
       "qty": 1
     },
     {
       "name": "Lush Portico",
-      "printing": "pmkm/263p",
       "qty": 1
     },
     {
       "name": "Pawpatch Recruit",
-      "printing": "blb/187",
       "qty": 4
     },
     {
       "name": "Plains",
-      "printing": "blb/262",
       "qty": 1
     },
     {
       "name": "Prismatic Ending",
-      "printing": "mh2/25",
       "qty": 2
     },
     {
       "name": "Razorverge Thicket",
-      "printing": "one/257",
       "qty": 4
     },
     {
       "name": "Sacred Foundry",
-      "printing": "pgrn/254p",
       "qty": 1
     },
     {
       "name": "Season of the Burrow",
-      "printing": "blb/29",
       "qty": 1
     },
     {
       "name": "Stomping Ground",
-      "printing": "prna/259p",
       "qty": 1
     },
     {
       "name": "Swords to Plowshares",
-      "printing": "blc/109",
       "qty": 4
     },
     {
       "name": "Temple Garden",
-      "printing": "grn/258",
       "qty": 4
     },
     {
       "name": "Valley Questcaller",
-      "printing": "blb/299",
       "qty": 4
     },
     {
       "name": "Warren Warleader",
-      "printing": "blb/300",
       "qty": 4
     },
     {
       "name": "Windswept Heath",
-      "printing": "mh3/235",
       "qty": 4
     },
     {
       "name": "Witch Enchanter / Witch-Blessed Meadow",
-      "printing": "mh3/239",
       "qty": 1
     },
     {
       "name": "Wooded Foothills",
-      "printing": "mh3/236",
       "qty": 3
     }
   ]

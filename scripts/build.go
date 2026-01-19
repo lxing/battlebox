@@ -3,17 +3,21 @@
 package main
 
 import (
+	"bytes"
 	"encoding/json"
 	"fmt"
+	"net/http"
 	"os"
 	"path/filepath"
 	"strings"
+	"time"
 )
 
 type Card struct {
 	Name     string `json:"name"`
 	Printing string `json:"printing"`
 	Qty      int    `json:"qty"`
+	Type     string `json:"type"` // creature, spell, land
 }
 
 type Manifest struct {
@@ -42,13 +46,43 @@ type Output struct {
 	Battleboxes []Battlebox `json:"battleboxes"`
 }
 
+// Scryfall types
+type ScryfallIdentifier struct {
+	Set     string `json:"set"`
+	Collector string `json:"collector_number"`
+}
+
+type ScryfallRequest struct {
+	Identifiers []ScryfallIdentifier `json:"identifiers"`
+}
+
+type ScryfallCard struct {
+	Set       string `json:"set"`
+	Collector string `json:"collector_number"`
+	TypeLine  string `json:"type_line"`
+}
+
+type ScryfallResponse struct {
+	Data []ScryfallCard `json:"data"`
+}
+
+var typeCache = map[string]string{} // printing -> type
+const cacheFile = ".card-types.json"
+const overridesFileName = "overrides.json"
+
 func main() {
 	dataDir := "data"
 	outputPath := "static/data.json"
 
-	var output Output
+	// Load type cache
+	loadTypeCache()
 
-	// Find all battleboxes
+	projectOverrides := loadOverrides(filepath.Join(dataDir, overridesFileName))
+
+	var output Output
+	var allCards []Card
+
+	// First pass: collect all cards
 	battleboxDirs, err := os.ReadDir(dataDir)
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Error reading data dir: %v\n", err)
@@ -60,17 +94,9 @@ func main() {
 			continue
 		}
 
-		battlebox := Battlebox{
-			Slug:  bbDir.Name(),
-			Decks: []Deck{},
-		}
-
 		bbPath := filepath.Join(dataDir, bbDir.Name())
-		deckDirs, err := os.ReadDir(bbPath)
-		if err != nil {
-			fmt.Fprintf(os.Stderr, "Error reading battlebox %s: %v\n", bbDir.Name(), err)
-			continue
-		}
+		bbOverrides := mergeOverrides(projectOverrides, loadOverrides(filepath.Join(bbPath, overridesFileName)))
+		deckDirs, _ := os.ReadDir(bbPath)
 
 		for _, deckDir := range deckDirs {
 			if !deckDir.IsDir() {
@@ -78,7 +104,50 @@ func main() {
 			}
 
 			deckPath := filepath.Join(bbPath, deckDir.Name())
-			deck, err := processDeck(deckPath, deckDir.Name())
+			deckOverrides := mergeOverrides(bbOverrides, loadOverrides(filepath.Join(deckPath, overridesFileName)))
+			manifestPath := filepath.Join(deckPath, "manifest.json")
+			manifestData, err := os.ReadFile(manifestPath)
+			if err != nil {
+				continue
+			}
+
+			var manifest Manifest
+			if err := json.Unmarshal(manifestData, &manifest); err != nil {
+				continue
+			}
+
+			allCards = append(allCards, applyOverrides(manifest.Cards, deckOverrides)...)
+			allCards = append(allCards, applyOverrides(manifest.Sideboard, deckOverrides)...)
+		}
+	}
+
+	// Fetch missing types from Scryfall
+	fetchMissingTypes(allCards)
+	saveTypeCache()
+
+	// Second pass: build output with types
+	for _, bbDir := range battleboxDirs {
+		if !bbDir.IsDir() {
+			continue
+		}
+
+		battlebox := Battlebox{
+			Slug:  bbDir.Name(),
+			Decks: []Deck{},
+		}
+
+		bbPath := filepath.Join(dataDir, bbDir.Name())
+		bbOverrides := mergeOverrides(projectOverrides, loadOverrides(filepath.Join(bbPath, overridesFileName)))
+		deckDirs, _ := os.ReadDir(bbPath)
+
+		for _, deckDir := range deckDirs {
+			if !deckDir.IsDir() {
+				continue
+			}
+
+			deckPath := filepath.Join(bbPath, deckDir.Name())
+			deckOverrides := mergeOverrides(bbOverrides, loadOverrides(filepath.Join(deckPath, overridesFileName)))
+			deck, err := processDeck(deckPath, deckDir.Name(), deckOverrides)
 			if err != nil {
 				fmt.Fprintf(os.Stderr, "Error processing deck %s: %v\n", deckDir.Name(), err)
 				continue
@@ -106,8 +175,140 @@ func main() {
 	fmt.Printf("Written: %s (%d bytes)\n", outputPath, len(jsonData))
 }
 
-func processDeck(deckPath, slug string) (*Deck, error) {
-	// Read manifest
+func loadTypeCache() {
+	data, err := os.ReadFile(cacheFile)
+	if err != nil {
+		return
+	}
+	json.Unmarshal(data, &typeCache)
+}
+
+func saveTypeCache() {
+	data, _ := json.MarshalIndent(typeCache, "", "  ")
+	os.WriteFile(cacheFile, data, 0644)
+}
+
+func normalizeName(name string) string {
+	return strings.ToLower(strings.TrimSpace(name))
+}
+
+func loadOverrides(path string) map[string]string {
+	data, err := os.ReadFile(path)
+	if err != nil {
+		return map[string]string{}
+	}
+	var raw map[string]string
+	if err := json.Unmarshal(data, &raw); err != nil {
+		return map[string]string{}
+	}
+	normalized := make(map[string]string, len(raw))
+	for k, v := range raw {
+		normalized[normalizeName(k)] = v
+	}
+	return normalized
+}
+
+func mergeOverrides(base, override map[string]string) map[string]string {
+	if len(base) == 0 && len(override) == 0 {
+		return map[string]string{}
+	}
+	out := make(map[string]string, len(base)+len(override))
+	for k, v := range base {
+		out[k] = v
+	}
+	for k, v := range override {
+		out[k] = v
+	}
+	return out
+}
+
+func resolvePrinting(name, manifestPrinting string, overrides map[string]string) string {
+	if v, ok := overrides[normalizeName(name)]; ok {
+		return v
+	}
+	return manifestPrinting
+}
+
+func applyOverrides(cards []Card, overrides map[string]string) []Card {
+	for i := range cards {
+		cards[i].Printing = resolvePrinting(cards[i].Name, cards[i].Printing, overrides)
+	}
+	return cards
+}
+
+func fetchMissingTypes(cards []Card) {
+	// Collect unique printings not in cache
+	needed := map[string]bool{}
+	for _, c := range cards {
+		if _, ok := typeCache[c.Printing]; !ok && c.Printing != "" {
+			needed[c.Printing] = true
+		}
+	}
+
+	if len(needed) == 0 {
+		return
+	}
+
+	fmt.Printf("Fetching %d card types from Scryfall...\n", len(needed))
+
+	// Build identifiers
+	var ids []ScryfallIdentifier
+	for printing := range needed {
+		parts := strings.SplitN(printing, "/", 2)
+		if len(parts) == 2 {
+			ids = append(ids, ScryfallIdentifier{Set: parts[0], Collector: parts[1]})
+		}
+	}
+
+	// Batch fetch (max 75 per request)
+	for i := 0; i < len(ids); i += 75 {
+		end := i + 75
+		if end > len(ids) {
+			end = len(ids)
+		}
+		batch := ids[i:end]
+
+		req := ScryfallRequest{Identifiers: batch}
+		body, _ := json.Marshal(req)
+
+		resp, err := http.Post(
+			"https://api.scryfall.com/cards/collection",
+			"application/json",
+			bytes.NewReader(body),
+		)
+		if err != nil {
+			fmt.Fprintf(os.Stderr, "Scryfall request failed: %v\n", err)
+			continue
+		}
+
+		var result ScryfallResponse
+		json.NewDecoder(resp.Body).Decode(&result)
+		resp.Body.Close()
+
+		for _, card := range result.Data {
+			printing := card.Set + "/" + card.Collector
+			typeCache[printing] = classifyType(card.TypeLine)
+		}
+
+		// Rate limit: 100ms between requests
+		if end < len(ids) {
+			time.Sleep(100 * time.Millisecond)
+		}
+	}
+}
+
+func classifyType(typeLine string) string {
+	tl := strings.ToLower(typeLine)
+	if strings.Contains(tl, "land") {
+		return "land"
+	}
+	if strings.Contains(tl, "creature") {
+		return "creature"
+	}
+	return "spell"
+}
+
+func processDeck(deckPath, slug string, overrides map[string]string) (*Deck, error) {
 	manifestPath := filepath.Join(deckPath, "manifest.json")
 	manifestData, err := os.ReadFile(manifestPath)
 	if err != nil {
@@ -119,6 +320,17 @@ func processDeck(deckPath, slug string) (*Deck, error) {
 		return nil, fmt.Errorf("parsing manifest: %w", err)
 	}
 
+	manifest.Cards = applyOverrides(manifest.Cards, overrides)
+	manifest.Sideboard = applyOverrides(manifest.Sideboard, overrides)
+
+	// Add types to cards
+	for i := range manifest.Cards {
+		manifest.Cards[i].Type = typeCache[manifest.Cards[i].Printing]
+	}
+	for i := range manifest.Sideboard {
+		manifest.Sideboard[i].Type = typeCache[manifest.Sideboard[i].Printing]
+	}
+
 	deck := &Deck{
 		Slug:      slug,
 		Name:      manifest.Name,
@@ -128,13 +340,13 @@ func processDeck(deckPath, slug string) (*Deck, error) {
 		Guides:    make(map[string]string),
 	}
 
-	// Read primer (raw text, no rendering)
+	// Read primer
 	primerPath := filepath.Join(deckPath, "primer.md")
 	if primerData, err := os.ReadFile(primerPath); err == nil {
 		deck.Primer = strings.TrimSpace(string(primerData))
 	}
 
-	// Read sideboard guides (raw text)
+	// Read sideboard guides
 	entries, _ := os.ReadDir(deckPath)
 	for _, entry := range entries {
 		name := entry.Name()

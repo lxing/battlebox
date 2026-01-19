@@ -4,137 +4,110 @@
   "cards": [
     {
       "name": "Abrupt Decay",
-      "printing": "rtr/141",
       "qty": 2
     },
     {
       "name": "Blood Artist",
-      "printing": "c17/99",
       "qty": 1
     },
     {
       "name": "Blooming Marsh",
-      "printing": "otj/266",
       "qty": 4
     },
     {
       "name": "Boggart Trawler / Boggart Bog",
-      "printing": "mh3/243",
       "qty": 1
     },
     {
       "name": "Bonecache Overseer",
-      "printing": "blb/85",
       "qty": 3
     },
     {
       "name": "Boseiju, Who Endures",
-      "printing": "neo/266",
       "qty": 1
     },
     {
       "name": "Cache Grab",
-      "printing": "blb/167",
       "qty": 3
     },
     {
       "name": "Camellia, the Seedmiser",
-      "printing": "blb/207",
       "qty": 3
     },
     {
       "name": "Chatterfang, Squirrel General",
-      "printing": "blc/209",
       "qty": 3
     },
     {
       "name": "Chitterspitter",
-      "printing": "blc/211",
       "qty": 1
     },
     {
       "name": "Chord of Calling",
-      "printing": "rvr/134",
       "qty": 4
     },
     {
       "name": "Chthonian Nightmare",
-      "printing": "mh3/83",
       "qty": 1
     },
     {
       "name": "Forest",
-      "printing": "blb/278",
       "qty": 1
     },
     {
       "name": "Gilded Goose",
-      "printing": "blc/83",
       "qty": 4
     },
     {
       "name": "Haywire Mite",
-      "printing": "blc/274",
       "qty": 1
     },
     {
       "name": "Llanowar Wastes",
-      "printing": "bro/264",
       "qty": 4
     },
     {
       "name": "Mudflat Village",
-      "printing": "blb/257",
       "qty": 1
     },
     {
       "name": "Osteomancer Adept",
-      "printing": "blb/103",
       "qty": 1
     },
     {
       "name": "Overgrown Tomb",
-      "printing": "rtr/243",
       "qty": 4
     },
     {
       "name": "Swamp",
-      "printing": "blb/271",
       "qty": 1
     },
     {
       "name": "Swarmyard",
-      "printing": "blc/133",
       "qty": 1
     },
     {
       "name": "Thornvault Forager",
-      "printing": "blb/197",
       "qty": 4
     },
     {
       "name": "Underground Mortuary",
-      "printing": "mkm/271",
       "qty": 1
     },
     {
       "name": "Verdant Catacombs",
-      "printing": "mh2/260",
       "qty": 4
     },
     {
       "name": "Vinereap Mentor",
-      "printing": "blb/238",
       "qty": 4
     },
     {
       "name": "Warren Soultrader",
-      "printing": "mh3/110",
       "qty": 1
     },
     {
       "name": "Ygra, Eater of All",
-      "printing": "blb/241",
       "qty": 1
     }
   ]

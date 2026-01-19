@@ -6,7 +6,7 @@
 
 body {
   font-family: system-ui, -apple-system, sans-serif;
-  background: #1a1a2e;
+  background: #000;
   color: #eee;
   line-height: 1.6;
   min-height: 100vh;
@@ -29,6 +29,9 @@ body {
 .back:hover { color: #fff; }
 
 h1 {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   font-size: 1.5rem;
   margin-bottom: 1rem;
   border-bottom: 1px solid #333;
@@ -51,7 +54,9 @@ h2 {
 }
 
 .deck-list a {
-  display: block;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   padding: 0.75rem 1rem;
   background: #252540;
   border-radius: 6px;
@@ -65,35 +70,57 @@ h2 {
 }
 
 .colors {
-  font-size: 0.8rem;
-  margin-left: 0.5rem;
-  opacity: 0.7;
+  display: flex;
+  gap: 0.2rem;
 }
+
+.mana-symbol {
+  display: inline-block;
+  width: 1.3rem;
+  height: 1.3rem;
+  background-size: auto 85%;
+  background-repeat: no-repeat;
+  background-position: center;
+  border-radius: 50%;
+}
+
+.mana-symbol::before {
+  content: '';
+  display: block;
+  width: 100%;
+  height: 100%;
+  background: inherit;
+  background-color: transparent;
+  filter: brightness(0);
+  border-radius: 50%;
+}
+
+.mana-w { background-color: #fffef0; background-image: url('/assets/mana/w.svg'); }
+.mana-u { background-color: #0e68ab; background-image: url('/assets/mana/u.svg'); }
+.mana-b { background-color: #2e1a47; background-image: url('/assets/mana/b.svg'); }
+.mana-r { background-color: #d3202a; background-image: url('/assets/mana/r.svg'); background-position: 55% center; }
+.mana-g { background-color: #00752e; background-image: url('/assets/mana/g.svg'); }
 
 /* Card list */
 .card-list {
-  display: grid;
-  gap: 0.25rem;
+  font-size: 0.85rem;
+  line-height: 1.5;
 }
 
-.card-row {
-  display: flex;
-  justify-content: space-between;
-  padding: 0.4rem 0;
-  border-bottom: 1px solid #2a2a4a;
+.card-group {
+  margin-bottom: 0.75rem;
 }
 
-.card-row:last-child {
-  border-bottom: none;
+.card-group-label {
+  color: #888;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  margin-bottom: 0.25rem;
 }
 
 .card-qty {
   color: #888;
-  min-width: 2rem;
-}
-
-.card-name {
-  flex: 1;
+  margin-right: 0.3rem;
 }
 
 /* Card references */
@@ -112,8 +139,23 @@ h2 {
   position: fixed;
   z-index: 1000;
   pointer-events: none;
-  max-width: 250px;
+  width: 250px;
+}
+
+.card-preview img {
+  display: none;
+  width: 100%;
   border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+}
+
+.card-preview-loading {
+  background: #252540;
+  color: #ccc;
+  text-align: center;
+  padding: 0.75rem;
+  border-radius: 12px;
+  font-size: 0.8rem;
   box-shadow: 0 4px 20px rgba(0,0,0,0.5);
 }
 
@@ -124,6 +166,7 @@ h2 {
   border-radius: 6px;
   margin-bottom: 1rem;
   white-space: pre-wrap;
+  font-size: 0.85rem;
 }
 
 /* Guide links */

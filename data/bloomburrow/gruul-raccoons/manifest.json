@@ -4,117 +4,94 @@
   "cards": [
     {
       "name": "Boseiju, Who Endures",
-      "printing": "neo/266",
       "qty": 1
     },
     {
       "name": "Bridgeworks Battle / Tanglespan Bridgeworks",
-      "printing": "mh3/249",
       "qty": 2
     },
     {
       "name": "Byway Barterer",
-      "printing": "blb/129",
       "qty": 4
     },
     {
       "name": "Call of the Herd",
-      "printing": "dmr/153",
       "qty": 3
     },
     {
       "name": "Commercial District",
-      "printing": "pmkm/259p",
       "qty": 1
     },
     {
       "name": "Copperline Gorge",
-      "printing": "one/249",
       "qty": 4
     },
     {
       "name": "Fiery Confluence",
-      "printing": "moc/278",
       "qty": 2
     },
     {
       "name": "Firebolt",
-      "printing": "jvc/49",
       "qty": 3
     },
     {
       "name": "Forest",
-      "printing": "blb/278",
       "qty": 1
     },
     {
       "name": "Grove of the Burnwillows",
-      "printing": "v12/8",
       "qty": 4
     },
     {
       "name": "Hugs, Grisly Guardian",
-      "printing": "blb/218",
       "qty": 1
     },
     {
       "name": "Innkeeper's Talent",
-      "printing": "blb/180",
       "qty": 1
     },
     {
       "name": "Mountain",
-      "printing": "blb/275",
       "qty": 1
     },
     {
       "name": "Muerra, Trash Tactician",
-      "printing": "blb/227",
       "qty": 4
     },
     {
       "name": "Punishing Fire",
-      "printing": "cmd/131",
       "qty": 4
     },
     {
       "name": "Rolling Hamsphere",
-      "printing": "blc/71",
       "qty": 1
     },
     {
       "name": "Scrapshooter",
-      "printing": "blb/324",
       "qty": 2
     },
     {
       "name": "Stomping Ground",
-      "printing": "prna/259p",
       "qty": 4
     },
     {
       "name": "Stump Stomp / Burnwillow Clearing",
-      "printing": "mh3/259",
       "qty": 1
     },
     {
       "name": "Tender Wildguide",
-      "printing": "blb/325",
       "qty": 4
     },
     {
       "name": "Wandertale Mentor",
-      "printing": "blb/240",
       "qty": 4
     },
     {
       "name": "Wild Growth",
-      "printing": "dmr/184",
       "qty": 4
     },
     {
       "name": "Wooded Foothills",
-      "printing": "mh3/236",
       "qty": 4
     }
   ]

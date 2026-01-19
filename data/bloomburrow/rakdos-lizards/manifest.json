@@ -4,112 +4,90 @@
   "cards": [
     {
       "name": "Blackcleave Cliffs",
-      "printing": "otc/272",
       "qty": 4
     },
     {
       "name": "Blood Crypt",
-      "printing": "rtr/238",
       "qty": 4
     },
     {
       "name": "Bloodstained Mire",
-      "printing": "mh3/216",
       "qty": 4
     },
     {
       "name": "Delayed Blast Fireball",
-      "printing": "clb/676",
       "qty": 1
     },
     {
       "name": "Fatal Push",
-      "printing": "acr/90",
       "qty": 2
     },
     {
       "name": "Fell the Profane / Fell Mire",
-      "printing": "mh3/244",
       "qty": 1
     },
     {
       "name": "Fiery Temper",
-      "printing": "uma/129",
       "qty": 3
     },
     {
       "name": "Fireglass Mentor",
-      "printing": "blb/213",
       "qty": 4
     },
     {
       "name": "Flamecache Gecko",
-      "printing": "blb/135",
       "qty": 4
     },
     {
       "name": "Gev, Scaled Scorch",
-      "printing": "blb/214",
       "qty": 4
     },
     {
       "name": "Hired Claw",
-      "printing": "blb/140",
       "qty": 4
     },
     {
       "name": "Iridescent Vinelasher",
-      "printing": "blb/99",
       "qty": 4
     },
     {
       "name": "Lightning Bolt",
-      "printing": "clu/141",
       "qty": 4
     },
     {
       "name": "Mountain",
-      "printing": "blb/275",
       "qty": 1
     },
     {
       "name": "Mudflat Village",
-      "printing": "blb/257",
       "qty": 1
     },
     {
       "name": "Party Thrasher",
-      "printing": "mh3/129",
       "qty": 3
     },
     {
       "name": "Rakdos Carnarium",
-      "printing": "clu/243",
       "qty": 1
     },
     {
       "name": "Raucous Theater",
-      "printing": "pmkm/266p",
       "qty": 1
     },
     {
       "name": "Rockface Village",
-      "printing": "blb/259",
       "qty": 1
     },
     {
       "name": "Sulfurous Springs",
-      "printing": "otc/323",
       "qty": 4
     },
     {
       "name": "Swamp",
-      "printing": "blb/271",
       "qty": 1
     },
     {
       "name": "Valley Flamecaller",
-      "printing": "blb/320",
       "qty": 4
     }
   ]

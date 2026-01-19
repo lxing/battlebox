@@ -1,0 +1,1 @@
+The only thing more terrifying than a [[Shrike Force]] is a [[Shrike Force]] carrying an [[Umezawa's Jitte]]. Revive the ancient terror of Caw-Blade, now juiced up with the most jacked shrikes, hawks, and owls in Valley's skies.

@@ -1,8 +1,10 @@
 package main
 
 import (
+	"crypto/tls"
 	"embed"
 	"encoding/json"
+	"flag"
 	"io/fs"
 	"log"
 	"net/http"
@@ -17,11 +19,10 @@ var staticFiles embed.FS
 //go:embed all:data
 var dataFiles embed.FS
 
+var useTailscale = flag.Bool("ts", false, "serve over Tailscale")
+
 func main() {
-	port := os.Getenv("PORT")
-	if port == "" {
-		port = "8080"
-	}
+	flag.Parse()
 
 	mux := http.NewServeMux()
 
@@ -32,12 +33,10 @@ func main() {
 	staticFS, _ := fs.Sub(staticFiles, "static")
 	fileServer := http.FileServer(http.FS(staticFS))
 	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		// Add aggressive caching headers for static assets
 		if strings.HasPrefix(r.URL.Path, "/assets/") {
 			w.Header().Set("Cache-Control", "public, max-age=31536000, immutable")
 		}
 
-		// SPA fallback: serve index.html for non-file routes
 		p := r.URL.Path
 		if p != "/" && !strings.Contains(path.Base(p), ".") {
 			r.URL.Path = "/"
@@ -46,26 +45,60 @@ func main() {
 		fileServer.ServeHTTP(w, r)
 	})
 
-	log.Printf("Starting server on :%s", port)
-	log.Fatal(http.ListenAndServe(":"+port, mux))
+	if *useTailscale {
+		if !IsTailscaleAvailable() {
+			log.Fatal("Tailscale not available")
+		}
+
+		hostname := GetTailscaleHostname()
+		if hostname == "" {
+			log.Fatal("Could not get Tailscale hostname")
+		}
+
+		tailscaleIP := GetTailscaleIP()
+		if tailscaleIP == "" {
+			log.Fatal("Could not get Tailscale IP")
+		}
+
+		certManager := NewCertManager(hostname)
+		if err := certManager.fetchCert(); err != nil {
+			log.Fatalf("Failed to fetch initial certificate: %v", err)
+		}
+
+		addr := tailscaleIP + ":8443"
+		server := &http.Server{
+			Addr: addr,
+			TLSConfig: &tls.Config{
+				GetCertificate: certManager.GetCertificate,
+				MinVersion:     tls.VersionTLS12,
+			},
+			Handler: mux,
+		}
+
+		log.Printf("Serving on Tailscale: https://%s:8443", hostname)
+		log.Fatal(server.ListenAndServeTLS("", ""))
+	} else {
+		port := os.Getenv("PORT")
+		if port == "" {
+			port = "8080"
+		}
+		log.Printf("Starting server on :%s", port)
+		log.Fatal(http.ListenAndServe(":"+port, mux))
+	}
 }
 
 func handleDecks(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 	w.Header().Set("Cache-Control", "public, max-age=3600")
 
-	// /api/decks/ -> list all battleboxes
-	// /api/decks/{battlebox}/ -> list decks in battlebox
-	// /api/decks/{battlebox}/{deck} -> specific deck
-
 	parts := strings.Split(strings.Trim(r.URL.Path, "/"), "/")
 
 	switch len(parts) {
-	case 2: // /api/decks/
+	case 2:
 		listBattleboxes(w)
-	case 3: // /api/decks/{battlebox}/
+	case 3:
 		listDecks(w, parts[2])
-	case 4: // /api/decks/{battlebox}/{deck}
+	case 4:
 		getDeck(w, parts[2], parts[3])
 	default:
 		http.Error(w, "not found", http.StatusNotFound)

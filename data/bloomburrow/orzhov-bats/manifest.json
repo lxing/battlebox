@@ -4,122 +4,98 @@
   "cards": [
     {
       "name": "Bloodforged Battle-Axe",
-      "printing": "moc/349",
       "qty": 1
     },
     {
       "name": "Caves of Koilos",
-      "printing": "dmu/244",
       "qty": 4
     },
     {
       "name": "Concealed Courtyard",
-      "printing": "potj/268p",
       "qty": 4
     },
     {
       "name": "Damn",
-      "printing": "lcc/191",
       "qty": 3
     },
     {
       "name": "Darkstar Augur",
-      "printing": "blb/90",
       "qty": 4
     },
     {
       "name": "Deep-Cavern Bat",
-      "printing": "lci/102",
       "qty": 4
     },
     {
       "name": "Essence Channeler",
-      "printing": "blb/12",
       "qty": 4
     },
     {
       "name": "Godless Shrine",
-      "printing": "prna/248p",
       "qty": 4
     },
     {
       "name": "Lunar Convocation",
-      "printing": "blb/223",
       "qty": 4
     },
     {
       "name": "Marsh Flats",
-      "printing": "mh2/248",
       "qty": 4
     },
     {
       "name": "Mudflat Village",
-      "printing": "blb/257",
       "qty": 1
     },
     {
       "name": "Plains",
-      "printing": "blb/263",
       "qty": 1
     },
     {
       "name": "Prismatic Ending",
-      "printing": "mh2/25",
       "qty": 2
     },
     {
       "name": "Raffine's Tower",
-      "printing": "snc/254",
       "qty": 1
     },
     {
       "name": "Ruin-Lurker Bat",
-      "printing": "lci/33",
       "qty": 4
     },
     {
       "name": "Shadowy Backstreet",
-      "printing": "pmkm/268p",
       "qty": 1
     },
     {
       "name": "Silent Clearing",
-      "printing": "mh1/246",
       "qty": 1
     },
     {
       "name": "Sorin of House Markov / Sorin, Ravenous Neonate",
-      "printing": "mh3/245",
       "qty": 1
     },
     {
       "name": "Swamp",
-      "printing": "blb/271",
       "qty": 1
     },
     {
       "name": "Swords to Plowshares",
-      "printing": "blc/109",
       "qty": 4
     },
     {
       "name": "The Wandering Emperor",
-      "printing": "neo/316",
       "qty": 1
     },
     {
       "name": "Vorpal Sword",
-      "printing": "afr/124",
       "qty": 1
     },
     {
       "name": "Witch Enchanter / Witch-Blessed Meadow",
-      "printing": "mh3/239",
       "qty": 1
     },
     {
       "name": "Zoraline, Cosmos Caller",
-      "printing": "blb/242",
       "qty": 4
     }
   ]

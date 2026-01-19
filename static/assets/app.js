@@ -4,14 +4,17 @@
   let data = null;
   let cardImageCache = {};
   let previewEl = null;
-
-  // Color symbols
-  const colorSymbols = {
-    w: '⚪', u: '🔵', b: '⚫', r: '🔴', g: '🟢'
-  };
+  let previewImg = null;
+  let previewStatus = null;
 
   function formatColors(colors) {
-    return colors.split('').map(c => colorSymbols[c] || c).join('');
+    return colors.split('').map(c =>
+      `<span class="mana-symbol mana-${c}"></span>`
+    ).join('');
+  }
+
+  function capitalize(str) {
+    return str.charAt(0).toUpperCase() + str.slice(1);
   }
 
   // Transform [[Card Name]] to spans
@@ -24,8 +27,34 @@
   }
 
   function findCard(deck, name) {
-    return deck.cards.find(c => c.name === name) ||
-           (deck.sideboard || []).find(c => c.name === name);
+    const normalize = s => s.toLowerCase().trim();
+    const target = normalize(name);
+    return deck.cards.find(c => normalize(c.name) === target) ||
+           (deck.sideboard || []).find(c => normalize(c.name) === target);
+  }
+
+  function renderCardsByType(cards) {
+    const groups = { creature: [], spell: [], land: [] };
+    cards.forEach(c => {
+      const type = c.type || 'spell';
+      if (groups[type]) groups[type].push(c);
+    });
+
+    const labels = { creature: 'Creatures', spell: 'Spells', land: 'Lands' };
+    let html = '';
+
+    for (const type of ['creature', 'spell', 'land']) {
+      const group = groups[type];
+      if (group.length === 0) continue;
+      const count = group.reduce((sum, c) => sum + c.qty, 0);
+      html += `<div class="card-group">`;
+      html += `<div class="card-group-label">${labels[type]} (${count})</div>`;
+      html += group.map(c =>
+        `<div class="card-row"><span class="card-qty">${c.qty}</span><span class="card" data-name="${c.name}" data-printing="${c.printing}">${c.name}</span></div>`
+      ).join('');
+      html += `</div>`;
+    }
+    return html;
   }
 
   // Scryfall image URL
@@ -46,12 +75,30 @@
       if (!url) return;
 
       if (!previewEl) {
-        previewEl = document.createElement('img');
+        previewEl = document.createElement('div');
         previewEl.className = 'card-preview';
+        previewStatus = document.createElement('div');
+        previewStatus.className = 'card-preview-loading';
+        previewStatus.textContent = 'Loading...';
+        previewImg = document.createElement('img');
+        previewEl.appendChild(previewStatus);
+        previewEl.appendChild(previewImg);
+        previewImg.addEventListener('load', () => {
+          previewStatus.style.display = 'none';
+          previewImg.style.display = 'block';
+        });
+        previewImg.addEventListener('error', () => {
+          previewStatus.textContent = 'Image unavailable';
+          previewStatus.style.display = 'block';
+          previewImg.style.display = 'none';
+        });
         document.body.appendChild(previewEl);
       }
 
-      previewEl.src = url;
+      previewStatus.textContent = 'Loading...';
+      previewStatus.style.display = 'block';
+      previewImg.style.display = 'none';
+      previewImg.src = url;
       previewEl.style.display = 'block';
       positionPreview(e);
     });
@@ -72,8 +119,10 @@
   function positionPreview(e) {
     const x = e.clientX + 15;
     const y = e.clientY + 15;
-    previewEl.style.left = Math.min(x, window.innerWidth - 270) + 'px';
-    previewEl.style.top = Math.min(y, window.innerHeight - 370) + 'px';
+    const width = previewEl.offsetWidth || 250;
+    const height = previewEl.offsetHeight || 360;
+    previewEl.style.left = Math.min(x, window.innerWidth - width - 20) + 'px';
+    previewEl.style.top = Math.min(y, window.innerHeight - height - 20) + 'px';
   }
 
   // Router
@@ -97,7 +146,7 @@
       <h1>Battlebox</h1>
       <ul class="deck-list">
         ${data.battleboxes.map(bb => `
-          <li><a href="#/${bb.slug}">${bb.slug} <span class="colors">(${bb.decks.length} decks)</span></a></li>
+          <li><a href="#/${bb.slug}">${capitalize(bb.slug)} <span class="colors">(${bb.decks.length} decks)</span></a></li>
         `).join('')}
       </ul>
     `;
@@ -109,7 +158,7 @@
 
     app.innerHTML = `
       <a href="#/" class="back">← Battleboxes</a>
-      <h1>${bb.slug}</h1>
+      <h1>${capitalize(bb.slug)}</h1>
       <ul class="deck-list">
         ${bb.decks.map(d => `
           <li><a href="#/${bb.slug}/${d.slug}">
@@ -130,7 +179,7 @@
     const guideKeys = Object.keys(deck.guides || {});
 
     app.innerHTML = `
-      <a href="#/${bb.slug}" class="back">← ${bb.slug}</a>
+      <a href="#/${bb.slug}" class="back">← ${capitalize(bb.slug)}</a>
       <h1>${deck.name} <span class="colors">${formatColors(deck.colors)}</span></h1>
 
       <h2>Primer</h2>
@@ -138,23 +187,13 @@
 
       <h2>Decklist</h2>
       <div class="card-list">
-        ${deck.cards.map(c => `
-          <div class="card-row">
-            <span class="card-qty">${c.qty}</span>
-            <span class="card-name card" data-name="${c.name}" data-printing="${c.printing}">${c.name}</span>
-          </div>
-        `).join('')}
+        ${renderCardsByType(deck.cards)}
       </div>
 
       ${deck.sideboard && deck.sideboard.length ? `
         <h2>Sideboard</h2>
         <div class="card-list">
-          ${deck.sideboard.map(c => `
-            <div class="card-row">
-              <span class="card-qty">${c.qty}</span>
-              <span class="card-name card" data-name="${c.name}" data-printing="${c.printing}">${c.name}</span>
-            </div>
-          `).join('')}
+          ${deck.sideboard.map(c => `<div class="card-row"><span class="card-qty">${c.qty}</span><span class="card" data-name="${c.name}" data-printing="${c.printing}">${c.name}</span></div>`).join('')}
         </div>
       ` : ''}
 
