@@ -19,10 +19,12 @@
 
   // Transform [[Card Name]] to spans
   function transformCardRefs(text, deck) {
-    return text.replace(/\[\[([^\]]+)\]\]/g, (_, name) => {
-      const card = findCard(deck, name);
+    return text.replace(/\[\[([^\]|]+)(?:\|([^\]]+))?\]\]/g, (_, left, right) => {
+      const display = left.trim();
+      const targetName = (right || left).trim();
+      const card = findCard(deck, targetName);
       const printing = card ? card.printing : '';
-      return `<span class="card" data-name="${name}" data-printing="${printing}">${name}</span>`;
+      return `<span class="card" data-name="${targetName}" data-printing="${printing}">${display}</span>`;
     });
   }
 

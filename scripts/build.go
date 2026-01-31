@@ -185,6 +185,9 @@ func loadTypeCache() {
 
 func saveTypeCache() {
 	data, _ := json.MarshalIndent(typeCache, "", "  ")
+	if existing, err := os.ReadFile(cacheFile); err == nil && bytes.Equal(existing, data) {
+		return
+	}
 	os.WriteFile(cacheFile, data, 0644)
 }
 

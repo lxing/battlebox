@@ -1,0 +1,3 @@
+Chitter your opponents to madness! Use discard enablers like [[Pack Rat]], [[Shoreline Looter]], and [[Psychic Frog]] (fake rat) to dump undercosted spells like [[Circular Logic]], [[Dark Withering]], and [[Deep Analysis]]. Once things are under control, swarm the battlefield with endless rats powered by [[Lord Skitter|Lord Skitter, Sewer King]] and [[Vren|Vren, the Relentless]].
+
+Classic rat equipment [[Umezawa's Jitte]] makes a return to mow down smol animals. If your opponent's board gets out of hand, summon the ultimate plague of vermin with [[Swarmyard Massacre]]!

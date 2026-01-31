@@ -1,0 +1,3 @@
+Frogs hop in and out of your hand and leave a splash everywhere! Get the core engine of [[Clement|Clement, the Worrywort]] and [[Dour Port-Mage]] croaking to cycle frogs ad infinitum. Then drop big payoffs like [[Sunshower Druid]], [[Pond Prophet]], and [[Valley Mightcaller]] to turn those recasts into pure value.
+
+If your opponents aren't drenched yet, summon the rare Egyption Pepe [[Nadu|Nadu, Winged Wisdom]] to turn all your frog targeting into a gigawatt laser that will send your opponents to the shadow realm!

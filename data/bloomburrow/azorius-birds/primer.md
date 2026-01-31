@@ -1,1 +1,3 @@
-The only thing more terrifying than a [[Shrike Force]] is a [[Shrike Force]] carrying an [[Umezawa's Jitte]]. Revive the ancient terror of Caw-Blade, now juiced up with the most jacked shrikes, hawks, and owls in Valley's skies.
+The only thing more terrifying than a [[Shrike Force]] is a Shrike Force carrying an [[Umezawa's Jitte]]! Revive the ancient terror of Caw-Blade, now juiced up with the most jacked [[shrikes|Shrike Force]], [[hawks|Squadron Hawk]], [[bluejays|Kastral, the Windcrested]], and [[owls|Ledger Shredder]] in Valley.
+
+Stabilize with loads of [[removal|Swords to Plowshares]], [[sweepers|Supreme Verdict]], and [[Batterskull]] like a classic control deck. Eke out card advantage with the [[Brainstorm]] + [[Squadron Hawk]] combo and [[Kastral|Kastral, the Windcrested]]. Pull ahead in tempo by hitting with a [[Sword of Feast and Famine]]-equipped birb, and sweep these inferior critters from your skies!

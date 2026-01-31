@@ -46,7 +46,7 @@
             },
             {
               "name": "Forest",
-              "printing": "mh3/319",
+              "printing": "blb/278",
               "qty": 1,
               "type": "land"
             },
@@ -76,7 +76,7 @@
             },
             {
               "name": "Island",
-              "printing": "mh3/312",
+              "printing": "blb/268",
               "qty": 1,
               "type": "land"
             },
@@ -106,7 +106,7 @@
             },
             {
               "name": "Plains",
-              "printing": "mh3/310",
+              "printing": "blb/263",
               "qty": 1,
               "type": "land"
             },
@@ -165,7 +165,7 @@
               "type": "land"
             }
           ],
-          "primer": "Evoke the terror of high-cost elementals! [[Glarb, Calamity's Augur]] digs them off the top of your library and [[Helga, Skittish Seer]] generates oodles of mana to power them out. Accelerate with [[Birds of Paradise]] and Helga, stabilize with some fatties, then bury your opponents in nonstop value.\n\nThere is a big-butt subtheme where [[Fecund Greenshell]] plays well with Helga, Glarb, and [[Beza, the Bounding Spring]].\n\nEngines:\n- [[Up the Beanstalk]]\n- [[Glarb, Calamity's Augur]]\n- [[Helga, Skittish Seer]]\n\nFat Elementals:\n- [[Beza, the Bounding Spring]]\n- [[Solitude]]\n- [[Fecund Greenshell]]\n- [[Mulldrifter]]\n- [[Leyline Binding]] (honorary mention)"
+          "primer": "Evoke the terror of high-cost elementals! [[Glarb|Glarb, Calamity's Augur]] digs them off the top of your library and [[Helga|Helga, Skittish Seer]] generates oodles of mana to power them out. Accelerate with [[Birds of Paradise]] and Helga, stabilize with [[Beza|Beza, the Bounding Spring]] and [[Leyline Binding]], then bury your opponents in nonstop value courtesy of [[Solitude]] and [[Mulldrifter]].\n\nIn prolonged battles, pull ahead with the big-butt subtheme where [[Fecund Greenshell]] turns every [[Helga|Helga, Skittish Seer]], [[Glarb|Glarb, Calamity's Augur]], and [[Beza|Beza, the Bounding Spring]] into a land drop.\n\nTip: drop an early [[Up the Beanstalk]] to keep the cards flowing."
         },
         {
           "slug": "azorius-birds",
@@ -329,7 +329,7 @@
               "type": "land"
             }
           ],
-          "primer": "The only thing more terrifying than a [[Shrike Force]] is a [[Shrike Force]] carrying an [[Umezawa's Jitte]]. Revive the ancient terror of Caw-Blade, now juiced up with the most jacked shrikes, hawks, and owls in Valley's skies."
+          "primer": "The only thing more terrifying than a [[Shrike Force]] is a Shrike Force carrying an [[Umezawa's Jitte]]! Revive the ancient terror of Caw-Blade, now juiced up with the most jacked [[shrikes|Shrike Force]], [[hawks|Squadron Hawk]], [[bluejays|Kastral, the Windcrested]], and [[owls|Ledger Shredder]] in Valley.\n\nStabilize with loads of [[removal|Swords to Plowshares]], [[sweepers|Supreme Verdict]], and [[Batterskull]] like a classic control deck. Eke out card advantage with the [[Brainstorm]] + [[Squadron Hawk]] combo and [[Kastral|Kastral, the Windcrested]]. Pull ahead in tempo by hitting with a [[Sword of Feast and Famine]]-equipped birb, and sweep these inferior critters from your skies!"
         },
         {
           "slug": "bant-frogs",
@@ -344,7 +344,7 @@
             },
             {
               "name": "Boseiju, Who Endures",
-              "printing": "pneo/266p",
+              "printing": "neo/266",
               "qty": 1,
               "type": "land"
             },
@@ -380,7 +380,7 @@
             },
             {
               "name": "Forest",
-              "printing": "otj/286",
+              "printing": "blb/278",
               "qty": 2,
               "type": "land"
             },
@@ -475,7 +475,7 @@
               "type": "land"
             }
           ],
-          "primer": ""
+          "primer": "Frogs hop in and out of your hand and leave a splash everywhere! Get the core engine of [[Clement|Clement, the Worrywort]] and [[Dour Port-Mage]] croaking to cycle frogs ad infinitum. Then drop big payoffs like [[Sunshower Druid]], [[Pond Prophet]], and [[Valley Mightcaller]] to turn those recasts into pure value.\n\nIf your opponents aren't drenched yet, summon the rare Egyption Pepe [[Nadu|Nadu, Winged Wisdom]] to turn all your frog targeting into a gigawatt laser that will send your opponents to the shadow realm!"
         },
         {
           "slug": "boros-mice",
@@ -633,7 +633,7 @@
               "type": "land"
             }
           ],
-          "primer": "Pow!!! Squeak your opponents into submission. This deck runs on an engine of two card types: Valiant enablers that generate repeatable targeting, and Valiant payoffs that generate value on being targeted.\n\nKeep a balance of both enablers and payoffs to generate constant pressure against your opponents. [[Emberheart Challenger]] and [[Whiskervale Forerunner]] provide a steady stream of card advantage in the long game. To assemble the ultimate mouse, tutor up [[Sword of Fire and Ice]] and [[Sword of Light and Shadow]] as an unstoppable finisher.\n\nEnablers:\n- [[Stoneforge Mystic]] -\u003e [[Shuko]] + other equipment\n- [[Manifold Mouse]]\n- [[Mabel, Heir to Cragflame]]\n- [[Rockface Village]]\n\nPayoffs:\n- [[Emberheart Challenger]]\n- [[Whiskervale Forerunner]]\n- [[Heartfire Hero]]\n- [[Mouse Trapper]]\n- [[Flowerfoot Swordmaster]]"
+          "primer": "Squeak! Pow your opponents into submission with an engine of Valiant enablers like [[Shuko]], [[Manifold Mouse]], and [[Mabel|Mabel, Heir to Cragflame]] that generate repeatable targeting, and Valiant payoffs that generate value on being targeted.\n\nKeep a balance of enablers and payoffs to generate constant pressure. [[Heartfire Hero]] and [[Flowerfoot Swordmaster]] come out of the gates swinging from turn one. [[Emberheart Challenger]] and [[Whiskervale Forerunner]] provide a stream of card advantage in long games. To assemble the ultimate mouse, tutor up [[Sword of Fire and Ice]] and [[Sword of Light and Shadow]] as an unstoppable finisher.\n\nTip: target [[Emberheart Challenger]] before playing your land drop if possible!"
         },
         {
           "slug": "dimir-rats",
@@ -773,7 +773,7 @@
               "type": "land"
             }
           ],
-          "primer": ""
+          "primer": "Chitter your opponents to madness! Use discard enablers like [[Pack Rat]], [[Shoreline Looter]], and [[Psychic Frog]] (fake rat) to dump undercosted spells like [[Circular Logic]], [[Dark Withering]], and [[Deep Analysis]]. Once things are under control, swarm the battlefield with endless rats powered by [[Lord Skitter|Lord Skitter, Sewer King]] and [[Vren|Vren, the Relentless]].\n\nClassic rat equipment [[Umezawa's Jitte]] makes a return to mow down smol animals. If your opponent's board gets out of hand, summon the ultimate plague of vermin with [[Swarmyard Massacre]]!"
         },
         {
           "slug": "golgari-squirrels",
@@ -1089,7 +1089,7 @@
               "type": "land"
             }
           ],
-          "primer": ""
+          "primer": "One raccoon's trash is a planeswalker's treasure! Spend unholy amounts of mana to generate nonstop value for your Expend payoffs in [[Wandertale Mentor]], [[Muerra|Muerra, Trash Tactician]], and [[Byway Barterer]].\n\nThe deck features loads of acceleration and mana sinks for you to churn through triggers. Flashback [[Call of the Herd]] and [[Firebolt]] to easily hit the 4-mana threshold. [[Punishing Fire]] and [[Grove of the Burnwillows]] also achieve this, while serving double duty mopping up every small animal in Valley. Once you hit endgame, [[Rolling Hamsphere]] and [[Hugs|Hugs, Grisly Guardian]] will seal the lid.\n\nTip: if you don't need them, hang on to your extra copies of [[Utopia Sprawl]] and [[Wild Growth]]. They're perfect for bumping 3-mana spells up to the 4-mana sweet spot to trigger Expend."
         },
         {
           "slug": "izzet-otters",
@@ -1223,7 +1223,7 @@
               "type": "creature"
             }
           ],
-          "primer": ""
+          "primer": "Ride a tidal wave of lightning and drown your opponents in Prowess triggers! Otters blaze the way with [[Valley Floodcaller]], [[Stormcatch Mentor]], and [[Bria|Bria, Riptide Rogue]] converting spells into buffs that can blow away a life total in one or two hits. An eight pack of burn and [[Flare of Denial]] rounds out the disruption suite.\n\nBetween [[Expressive Iteration]], [[Flame of Anor]], [[Pearl of Wisdom]], [[Kitsa|Kitsa, Otterball Elite]], and [[Thundertrap Trainer]], the deck packs avalanche of card advantage - way more than any other animal type. You will never run out of cards!"
         },
         {
           "slug": "naya-rabbits",
@@ -1298,7 +1298,7 @@
             },
             {
               "name": "Plains",
-              "printing": "blb/262",
+              "printing": "blb/263",
               "qty": 1,
               "type": "land"
             },
@@ -1375,7 +1375,7 @@
               "type": "land"
             }
           ],
-          "primer": ""
+          "primer": "Few strategies can withstand the sheer weight of rabbit fornication! Spam tokens everywhere with go-wide rabbits. This deck is packed to the brim with token generators and payoffs.\n\nFlood the board with [[Pawpatch Recruit]], [[Hop to It]], and [[Jacked Rabbit]]. [[Baylen|Baylen, the Haymaker]] and [[Caretaker's Talent]] will accrue value as you build up your bunnies. Then stick one of the numerous anthem effects between [[Warren Warleader]], [[Finneas|Finneas, Ace Archer]], and [[Valley Questcaller]] to complete the steamroll.\n\nTip: rabbits are unstoppable when they get a full warren rolling, but lack reach and are susceptible to sweepers. Be mindful of overextension!"
         },
         {
           "slug": "orzhov-bats",
@@ -1667,7 +1667,7 @@
               "type": "creature"
             }
           ],
-          "primer": ""
+          "primer": "Use your forked tongue to lick your opponents and your own eyeballs at the same time! Lizards get straight to the point with early aggression and burn to finish your opponents off. Use [[Iridescent Vinelasher]] and [[Hired Claw]] to get in early hits, then scale up the damage with [[Gev|Gev, Scaled Scorch]] and [[Valley Flamecaller]].\n\n[[Fireglass Mentor]], [[Flamecache Gecko]], and [[Party Thrasher]] provide loads of card selection and light card advantage in the midgame. The last two feed a light discard subtheme with [[Fiery Temper]].\n\nTip: Hang onto your extra land drops. A [[Vinelasher|Iridescent Vinelasher]] and offspring with [[Flamecaller|Valley Flamecaller]] and [[Bloodstained Mire]] equals 8 damage to the face in the late game!"
         }
       ]
     }

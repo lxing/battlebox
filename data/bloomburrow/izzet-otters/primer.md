@@ -1,0 +1,3 @@
+Ride a tidal wave of lightning and drown your opponents in Prowess triggers! Otters blaze the way with [[Valley Floodcaller]], [[Stormcatch Mentor]], and [[Bria|Bria, Riptide Rogue]] converting spells into buffs that can blow away a life total in one or two hits. An eight pack of burn and [[Flare of Denial]] rounds out the disruption suite.
+
+Between [[Expressive Iteration]], [[Flame of Anor]], [[Pearl of Wisdom]], [[Kitsa|Kitsa, Otterball Elite]], and [[Thundertrap Trainer]], the deck packs avalanche of card advantage - way more than any other animal type. You will never run out of cards!

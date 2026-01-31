@@ -2,15 +2,17 @@ root = "."
 tmp_dir = "tmp"
 
 [build]
-  cmd = "go build -o ./tmp/main ."
+  cmd = "./build.sh && go build -o ./tmp/main ."
   bin = "./tmp/main"
+  env = ["DEV=1"]
   args_bin = ["-ts"]
   delay = 1000
   exclude_dir = ["tmp", "vendor", "node_modules"]
+  exclude_file = [".card-types.json", "static/data.json"]
   exclude_regex = ["_test.go"]
   exclude_unchanged = false
   follow_symlink = false
-  include_ext = ["go", "html", "css", "js", "json"]
+  include_ext = ["go", "html", "css", "js", "json", "md"]
   kill_delay = "2s"
   send_interrupt = true
   stop_on_error = true

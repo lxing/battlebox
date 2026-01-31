@@ -33,9 +33,9 @@ func main() {
 	staticFS, _ := fs.Sub(staticFiles, "static")
 	fileServer := http.FileServer(http.FS(staticFS))
 	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		if strings.HasPrefix(r.URL.Path, "/assets/") {
-			w.Header().Set("Cache-Control", "public, max-age=31536000, immutable")
-		}
+	if strings.HasPrefix(r.URL.Path, "/assets/") && os.Getenv("DEV") == "" {
+		w.Header().Set("Cache-Control", "public, max-age=31536000, immutable")
+	}
 
 		p := r.URL.Path
 		if p != "/" && !strings.Contains(path.Base(p), ".") {

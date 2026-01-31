@@ -1,16 +1,5 @@
-Pow!!! Squeak your opponents into submission. This deck runs on an engine of two card types: Valiant enablers that generate repeatable targeting, and Valiant payoffs that generate value on being targeted.
+Squeak! Pow your opponents into submission with an engine of Valiant enablers like [[Shuko]], [[Manifold Mouse]], and [[Mabel|Mabel, Heir to Cragflame]] that generate repeatable targeting, and Valiant payoffs that generate value on being targeted.
 
-Keep a balance of both enablers and payoffs to generate constant pressure against your opponents. [[Emberheart Challenger]] and [[Whiskervale Forerunner]] provide a steady stream of card advantage in the long game. To assemble the ultimate mouse, tutor up [[Sword of Fire and Ice]] and [[Sword of Light and Shadow]] as an unstoppable finisher.
+Keep a balance of enablers and payoffs to generate constant pressure. [[Heartfire Hero]] and [[Flowerfoot Swordmaster]] come out of the gates swinging from turn one. [[Emberheart Challenger]] and [[Whiskervale Forerunner]] provide a stream of card advantage in long games. To assemble the ultimate mouse, tutor up [[Sword of Fire and Ice]] and [[Sword of Light and Shadow]] as an unstoppable finisher.
 
-Enablers:
-- [[Stoneforge Mystic]] -> [[Shuko]] + other equipment
-- [[Manifold Mouse]]
-- [[Mabel, Heir to Cragflame]]
-- [[Rockface Village]]
-
-Payoffs:
-- [[Emberheart Challenger]]
-- [[Whiskervale Forerunner]]
-- [[Heartfire Hero]]
-- [[Mouse Trapper]]
-- [[Flowerfoot Swordmaster]]
+Tip: target [[Emberheart Challenger]] before playing your land drop if possible!

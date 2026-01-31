@@ -107,6 +107,12 @@ h2 {
   line-height: 1.5;
 }
 
+.card-row {
+  display: flex;
+  align-items: baseline;
+  gap: 0.4rem;
+}
+
 .card-group {
   margin-bottom: 0.75rem;
 }
@@ -120,7 +126,9 @@ h2 {
 
 .card-qty {
   color: #888;
-  margin-right: 0.3rem;
+  width: 2ch;
+  text-align: right;
+  flex: 0 0 2ch;
 }
 
 /* Card references */
