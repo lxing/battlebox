@@ -308,6 +308,20 @@
 
       ${careWarningHtml}
       <details class="collapsible" open>
+        <summary>Decklist</summary>
+        <div class="collapsible-body">
+          <div class="decklist-grid${hasSideboard ? '' : ' single'}">
+            <div class="decklist-col">
+              <div class="card-list">
+                ${renderCardsByType(deck.cards)}
+              </div>
+            </div>
+            ${sideboardHtml}
+          </div>
+        </div>
+      </details>
+
+      <details class="collapsible" open>
         <summary>Primer</summary>
         <div class="collapsible-body">
           <div class="primer">${primerHtml}</div>
@@ -328,20 +342,6 @@
           </div>
         </details>
       ` : ''}
-
-      <details class="collapsible" open>
-        <summary>Decklist</summary>
-        <div class="collapsible-body">
-          <div class="decklist-grid${hasSideboard ? '' : ' single'}">
-            <div class="decklist-col">
-              <div class="card-list">
-                ${renderCardsByType(deck.cards)}
-              </div>
-            </div>
-            ${sideboardHtml}
-          </div>
-        </div>
-      </details>
 
       
     `;
