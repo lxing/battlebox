@@ -24,14 +24,14 @@ A reference website for Magic: The Gathering battleboxes. Provides decklists, si
 ## Data Structure
 ```
 data/
-  overrides.json           # project-level card printing overrides
+  printings.json           # project-level card printings
   {battlebox}/
-    overrides.json         # battlebox-level overrides
+    printings.json         # battlebox-level printings
     {deck-slug}/
       manifest.json    # deck metadata + cards
       primer.md        # deck primer (markdown)
       {opponent}.md    # sideboard guide vs opponent (markdown)
-      overrides.json   # deck-level overrides
+      printings.json   # deck-level printings
 ```
 
 ## manifest.json
@@ -52,11 +52,11 @@ data/
 Fields:
 - `name`: Display name
 - `colors`: WUBRG lowercase (e.g. "wr", "wubg")
-- `cards`: Mainboard cards (printing resolved via overrides)
+- `cards`: Mainboard cards (printing resolved via printings files)
 - `sideboard`: Optional, same format as cards
 
-## Overrides
-Override files are JSON maps of `card name -> printing` where `printing` is `set/collector_number`:
+## Printings
+Printing files are JSON maps of `card name -> printing` where `printing` is `set/collector_number`:
 ```json
 {
   "Lightning Bolt": "lea/161",
@@ -65,11 +65,11 @@ Override files are JSON maps of `card name -> printing` where `printing` is `set
 ```
 
 Resolution order (last wins):
-1. `data/overrides.json` (project-level)
-2. `data/{battlebox}/overrides.json`
-3. `data/{battlebox}/{deck-slug}/overrides.json`
+1. `data/printings.json` (project-level)
+2. `data/{battlebox}/printings.json`
+3. `data/{battlebox}/{deck-slug}/printings.json`
 
-Decklists can omit `printing` entirely; the build script resolves printings via overrides.
+Decklists omit `printing`; the build script resolves printings via the printings files.
 
 ## Markdown Files
 - `primer.md`: Deck strategy, key cards, combos

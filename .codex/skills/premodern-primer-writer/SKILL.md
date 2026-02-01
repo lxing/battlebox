@@ -20,7 +20,7 @@ Create concise, accurate primers for battlebox decks that focus on gameplay and 
    - Use `[[Card Name]]` references for notable cards that appear in the decklist.
    - Length: ~150–250 words, concise and practical.
    - **Do not** include a sideboard section unless explicitly requested.
-4. **Integrity**: Do not edit `manifest.json` or any overrides while writing primers.
+4. **Integrity**: Do not edit `manifest.json` or any printings files while writing primers.
 
 ## Notes
 - Paraphrase sources; do not copy long quotes.

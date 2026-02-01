@@ -90,7 +90,7 @@ type ScryfallResponse struct {
 
 var typeCache = map[string]string{} // printing -> type
 const cacheFile = ".card-types.json"
-const overridesFileName = "overrides.json"
+const printingsFileName = "printings.json"
 
 func main() {
 	dataDir := "data"
@@ -99,7 +99,7 @@ func main() {
 	// Load type cache
 	loadTypeCache()
 
-	projectOverrides := loadOverrides(filepath.Join(dataDir, overridesFileName))
+	projectPrintings := loadPrintings(filepath.Join(dataDir, printingsFileName))
 
 	var output Output
 	var allCards []Card
@@ -118,7 +118,7 @@ func main() {
 		}
 
 		bbPath := filepath.Join(dataDir, bbDir.Name())
-		bbOverrides := mergeOverrides(projectOverrides, loadOverrides(filepath.Join(bbPath, overridesFileName)))
+		bbPrintings := mergePrintings(projectPrintings, loadPrintings(filepath.Join(bbPath, printingsFileName)))
 		deckDirs, _ := os.ReadDir(bbPath)
 
 		for _, deckDir := range deckDirs {
@@ -127,7 +127,7 @@ func main() {
 			}
 
 			deckPath := filepath.Join(bbPath, deckDir.Name())
-			deckOverrides := mergeOverrides(bbOverrides, loadOverrides(filepath.Join(deckPath, overridesFileName)))
+			deckPrintings := mergePrintings(bbPrintings, loadPrintings(filepath.Join(deckPath, printingsFileName)))
 			manifestPath := filepath.Join(deckPath, "manifest.json")
 			manifestData, err := os.ReadFile(manifestPath)
 			if err != nil {
@@ -139,8 +139,8 @@ func main() {
 				continue
 			}
 
-			applyOverrides(manifest.Cards, deckOverrides, bbDir.Name(), deckDir.Name(), &missing)
-			applyOverrides(manifest.Sideboard, deckOverrides, bbDir.Name(), deckDir.Name(), &missing)
+			applyPrintings(manifest.Cards, deckPrintings, bbDir.Name(), deckDir.Name(), &missing)
+			applyPrintings(manifest.Sideboard, deckPrintings, bbDir.Name(), deckDir.Name(), &missing)
 			allCards = append(allCards, manifest.Cards...)
 			allCards = append(allCards, manifest.Sideboard...)
 		}
@@ -156,7 +156,7 @@ func main() {
 			}
 			return missing[i].Card < missing[j].Card
 		})
-		fmt.Fprintln(os.Stderr, "Missing printings in overrides:")
+		fmt.Fprintln(os.Stderr, "Missing printings in printings files:")
 		for _, m := range missing {
 			fmt.Fprintf(os.Stderr, "- %s/%s: %s\n", m.Battlebox, m.Deck, m.Card)
 		}
@@ -179,7 +179,7 @@ func main() {
 		}
 
 		bbPath := filepath.Join(dataDir, bbDir.Name())
-		bbOverrides := mergeOverrides(projectOverrides, loadOverrides(filepath.Join(bbPath, overridesFileName)))
+		bbPrintings := mergePrintings(projectPrintings, loadPrintings(filepath.Join(bbPath, printingsFileName)))
 		deckDirs, _ := os.ReadDir(bbPath)
 
 		for _, deckDir := range deckDirs {
@@ -188,8 +188,8 @@ func main() {
 			}
 
 			deckPath := filepath.Join(bbPath, deckDir.Name())
-			deckOverrides := mergeOverrides(bbOverrides, loadOverrides(filepath.Join(deckPath, overridesFileName)))
-			deck, err := processDeck(deckPath, deckDir.Name(), bbDir.Name(), deckOverrides)
+			deckPrintings := mergePrintings(bbPrintings, loadPrintings(filepath.Join(deckPath, printingsFileName)))
+			deck, err := processDeck(deckPath, deckDir.Name(), bbDir.Name(), deckPrintings)
 			if err != nil {
 				fmt.Fprintf(os.Stderr, "Error processing deck %s/%s: %v\n", bbDir.Name(), deckDir.Name(), err)
 				os.Exit(1)
@@ -237,7 +237,7 @@ func normalizeName(name string) string {
 	return strings.ToLower(strings.TrimSpace(name))
 }
 
-func loadOverrides(path string) map[string]string {
+func loadPrintings(path string) map[string]string {
 	data, err := os.ReadFile(path)
 	if err != nil {
 		return map[string]string{}
@@ -253,24 +253,24 @@ func loadOverrides(path string) map[string]string {
 	return normalized
 }
 
-func mergeOverrides(base, override map[string]string) map[string]string {
-	if len(base) == 0 && len(override) == 0 {
+func mergePrintings(base, extra map[string]string) map[string]string {
+	if len(base) == 0 && len(extra) == 0 {
 		return map[string]string{}
 	}
-	out := make(map[string]string, len(base)+len(override))
+	out := make(map[string]string, len(base)+len(extra))
 	for k, v := range base {
 		out[k] = v
 	}
-	for k, v := range override {
+	for k, v := range extra {
 		out[k] = v
 	}
 	return out
 }
 
-func applyOverrides(cards []Card, overrides map[string]string, battlebox, deck string, missing *[]MissingPrinting) {
+func applyPrintings(cards []Card, printings map[string]string, battlebox, deck string, missing *[]MissingPrinting) {
 	for i := range cards {
 		cards[i].Printing = ""
-		if v, ok := overrides[normalizeName(cards[i].Name)]; ok {
+		if v, ok := printings[normalizeName(cards[i].Name)]; ok {
 			cards[i].Printing = v
 		} else if missing != nil {
 			*missing = append(*missing, MissingPrinting{
@@ -354,7 +354,7 @@ func classifyType(typeLine string) string {
 	return "spell"
 }
 
-func processDeck(deckPath, slug, battlebox string, overrides map[string]string) (*Deck, error) {
+func processDeck(deckPath, slug, battlebox string, printings map[string]string) (*Deck, error) {
 	manifestPath := filepath.Join(deckPath, "manifest.json")
 	manifestData, err := os.ReadFile(manifestPath)
 	if err != nil {
@@ -366,8 +366,8 @@ func processDeck(deckPath, slug, battlebox string, overrides map[string]string) 
 		return nil, fmt.Errorf("parsing manifest: %w", err)
 	}
 
-	applyOverrides(manifest.Cards, overrides, battlebox, slug, nil)
-	applyOverrides(manifest.Sideboard, overrides, battlebox, slug, nil)
+	applyPrintings(manifest.Cards, printings, battlebox, slug, nil)
+	applyPrintings(manifest.Sideboard, printings, battlebox, slug, nil)
 
 	// Add types to cards
 	for i := range manifest.Cards {

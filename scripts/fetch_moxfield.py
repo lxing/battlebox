@@ -82,7 +82,7 @@ def parse_deck(deck_name: str, deck_contents: str, include_sideboard: bool = Fal
     """
     cards = []
     sideboard = []
-    overrides = {}
+    printings = {}
     current_board = cards
 
     # Pattern variations:
@@ -109,7 +109,7 @@ def parse_deck(deck_name: str, deck_contents: str, include_sideboard: bool = Fal
                 printing = f"{actual_set.lower()}/{actual_num}"
             else:
                 printing = f"{set_code.lower()}/{collector_num}"
-            overrides[name] = printing
+            printings[name] = printing
             card = {
                 "name": name,
                 "qty": int(qty)
@@ -127,7 +127,7 @@ def parse_deck(deck_name: str, deck_contents: str, include_sideboard: bool = Fal
     if include_sideboard and sideboard:
         deck["sideboard"] = sideboard
 
-    return slugify(deck_name), deck, overrides
+    return slugify(deck_name), deck, printings
 
 
 def fetch_and_save(url: str, battlebox: str, driver, include_sideboard: bool = False) -> None:
@@ -159,7 +159,7 @@ def fetch_and_save(url: str, battlebox: str, driver, include_sideboard: bool = F
 
         print(f"Fetched: {deck_name}")
 
-        slug, deck, overrides = parse_deck(deck_name, deck_contents, include_sideboard=include_sideboard)
+        slug, deck, printings = parse_deck(deck_name, deck_contents, include_sideboard=include_sideboard)
 
         # Save to data/{battlebox}/{slug}/manifest.json
         deck_dir = Path(__file__).parent.parent / "data" / battlebox / slug
@@ -169,9 +169,9 @@ def fetch_and_save(url: str, battlebox: str, driver, include_sideboard: bool = F
         with open(manifest_path, 'w') as f:
             json.dump(deck, f, indent=2)
 
-        overrides_path = deck_dir / "overrides.json"
-        with open(overrides_path, 'w') as f:
-            json.dump(overrides, f, indent=2)
+        printings_path = deck_dir / "printings.json"
+        with open(printings_path, 'w') as f:
+            json.dump(printings, f, indent=2)
 
         # Create empty primer.md if it doesn't exist
         primer_path = deck_dir / "primer.md"
