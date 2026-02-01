@@ -177,22 +177,70 @@ h2 {
   font-size: 0.85rem;
 }
 
-/* Guide links */
-.guide-list {
+/* Matchup guides */
+.matchup-guides {
+  background: #252540;
+  border-radius: 6px;
+  padding: 0.5rem 0.75rem;
+  margin: 1rem 0;
+}
+
+.matchup-guides[open] {
+  border: 1px solid #353560;
+}
+
+.matchup-guides summary {
+  cursor: pointer;
+  font-weight: 600;
   list-style: none;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
 
-.guide-list li {
-  margin-bottom: 0.25rem;
+.matchup-guides summary::-webkit-details-marker {
+  display: none;
 }
 
-.guide-list a {
-  color: #7eb8ff;
-  text-decoration: none;
+.matchup-guides summary::after {
+  content: '+';
+  color: #888;
+  font-weight: 700;
 }
 
-.guide-list a:hover {
-  text-decoration: underline;
+.matchup-guides[open] summary::after {
+  content: '-';
+}
+
+.guide-panel {
+  padding: 0.75rem 0 0.25rem;
+}
+
+.guide-select {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.5rem;
+  font-size: 0.85rem;
+  color: #aaa;
+}
+
+.guide-select select {
+  background: #1b1b2e;
+  color: #eee;
+  border: 1px solid #353560;
+  border-radius: 6px;
+  padding: 0.35rem 0.5rem;
+  font-size: 0.85rem;
+}
+
+.guide-box {
+  font-size: 0.85rem;
+  line-height: 1.5;
+}
+
+.guide-box p {
+  margin: 0.5rem 0;
 }
 
 /* Loading */

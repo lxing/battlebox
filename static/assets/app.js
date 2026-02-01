@@ -209,6 +209,11 @@
     const md = createMarkdownRenderer(deck);
     const primerHtml = deck.primer ? md.render(deck.primer) : '<em>No primer yet</em>';
     const guideKeys = Object.keys(deck.guides || {});
+    const guideOptions = guideKeys.map(k => {
+      const opponent = bb.decks.find(d => d.slug === k);
+      const name = opponent ? opponent.name : k;
+      return `<option value="${k}">${name}</option>`;
+    }).join('');
 
     app.innerHTML = `
       <a href="#/${bb.slug}" class="back">← ${capitalize(bb.slug)}</a>
@@ -216,6 +221,21 @@
 
       <h2>Primer</h2>
       <div class="primer">${primerHtml}</div>
+
+      ${guideKeys.length ? `
+        <details class="matchup-guides">
+          <summary>Matchup Guides</summary>
+          <div class="guide-panel">
+            <div class="guide-select">
+              <label for="guide-select">Opponent</label>
+              <select id="guide-select">
+                ${guideOptions}
+              </select>
+            </div>
+            <div class="guide-box" id="guide-box"></div>
+          </div>
+        </details>
+      ` : ''}
 
       <h2>Decklist</h2>
       <div class="card-list">
@@ -229,17 +249,18 @@
         </div>
       ` : ''}
 
-      ${guideKeys.length ? `
-        <h2>Sideboard Guides</h2>
-        <ul class="guide-list">
-          ${guideKeys.map(k => {
-            const opponent = bb.decks.find(d => d.slug === k);
-            const name = opponent ? opponent.name : k;
-            return `<li><a href="#/${bb.slug}/${deck.slug}/${k}">vs ${name}</a></li>`;
-          }).join('')}
-        </ul>
-      ` : ''}
+      
     `;
+
+    if (guideKeys.length) {
+      const select = document.getElementById('guide-select');
+      const guideBox = document.getElementById('guide-box');
+      const renderGuide = (key) => {
+        guideBox.innerHTML = md.render(deck.guides[key] || '');
+      };
+      renderGuide(select.value || guideKeys[0]);
+      select.addEventListener('change', () => renderGuide(select.value));
+    }
   }
 
   function renderGuide(bbSlug, deckSlug, opponentSlug) {
@@ -258,7 +279,7 @@
 
     app.innerHTML = `
       <a href="#/${bb.slug}/${deck.slug}" class="back">← ${deck.name}</a>
-      <h1>vs ${opponentName}</h1>
+      <h1>${opponentName}</h1>
       <div class="primer">${guideHtml}</div>
     `;
   }
