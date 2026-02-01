@@ -1,8 +1,9 @@
 +2 [[Aura of Silence]]
-+1 [[Disenchant]]
-+1 [[Haunting Echoes]]
++2 [[Disenchant]]
++1 [[Akroma's Vengeance]]
 -2 [[Wrath of God]]
 -1 [[Phyrexian Furnace]]
+-1 [[Skeletal Scrying]]
 -1 [[Gerrard's Verdict]]
 
-Disrupt their engines and keep them off key enchantments. Use artifact/enchantment hate to slow their setup, then pressure with [[Exalted Angel]] or token pressure from [[Decree of Justice]].
+Disrupt their enchantment engine and keep them off key permanents. Use [[Vindicate]] and your artifact/enchantment hate to break up their setup before committing a finisher.
