@@ -31,16 +31,14 @@ def slugify(name: str) -> str:
     return slug
 
 
-def fetch_deck(url: str, visible: bool = False) -> str:
-    """Fetch deck export text from Moxfield using headless Chrome."""
+def fetch_deck(url: str) -> str:
+    """Fetch deck export text from Moxfield using Chrome."""
     # Extract deck ID from URL
     match = re.search(r'/decks/([^/]+)', url)
     if not match:
         raise ValueError(f"Invalid Moxfield URL: {url}")
 
     chrome_options = Options()
-    if not visible:
-        chrome_options.add_argument("--headless=new")
     driver = webdriver.Chrome(options=chrome_options)
 
     try:
@@ -75,7 +73,7 @@ def fetch_deck(url: str, visible: bool = False) -> str:
         driver.quit()
 
 
-def parse_deck(deck_name: str, deck_contents: str, include_sideboard: bool = False) -> dict:
+def parse_deck(deck_name: str, deck_contents: str, include_sideboard: bool = False):
     """
     Parse Moxfield export format into battlebox JSON.
 
@@ -84,6 +82,7 @@ def parse_deck(deck_name: str, deck_contents: str, include_sideboard: bool = Fal
     """
     cards = []
     sideboard = []
+    overrides = {}
     current_board = cards
 
     # Pattern variations:
@@ -110,9 +109,9 @@ def parse_deck(deck_name: str, deck_contents: str, include_sideboard: bool = Fal
                 printing = f"{actual_set.lower()}/{actual_num}"
             else:
                 printing = f"{set_code.lower()}/{collector_num}"
+            overrides[name] = printing
             card = {
                 "name": name,
-                "printing": printing,
                 "qty": int(qty)
             }
             current_board.append(card)
@@ -128,7 +127,7 @@ def parse_deck(deck_name: str, deck_contents: str, include_sideboard: bool = Fal
     if include_sideboard and sideboard:
         deck["sideboard"] = sideboard
 
-    return slugify(deck_name), deck
+    return slugify(deck_name), deck, overrides
 
 
 def fetch_and_save(url: str, battlebox: str, driver, include_sideboard: bool = False) -> None:
@@ -160,7 +159,7 @@ def fetch_and_save(url: str, battlebox: str, driver, include_sideboard: bool = F
 
         print(f"Fetched: {deck_name}")
 
-        slug, deck = parse_deck(deck_name, deck_contents, include_sideboard=include_sideboard)
+        slug, deck, overrides = parse_deck(deck_name, deck_contents, include_sideboard=include_sideboard)
 
         # Save to data/{battlebox}/{slug}/manifest.json
         deck_dir = Path(__file__).parent.parent / "data" / battlebox / slug
@@ -169,6 +168,10 @@ def fetch_and_save(url: str, battlebox: str, driver, include_sideboard: bool = F
         manifest_path = deck_dir / "manifest.json"
         with open(manifest_path, 'w') as f:
             json.dump(deck, f, indent=2)
+
+        overrides_path = deck_dir / "overrides.json"
+        with open(overrides_path, 'w') as f:
+            json.dump(overrides, f, indent=2)
 
         # Create empty primer.md if it doesn't exist
         primer_path = deck_dir / "primer.md"
@@ -186,12 +189,9 @@ def main():
     parser.add_argument("urls", nargs="+", help="Moxfield deck URL(s)")
     parser.add_argument("--battlebox", "-b", default="bloomburrow", help="Battlebox name (default: bloomburrow)")
     parser.add_argument("--sideboard", "-s", action="store_true", help="Include sideboard")
-    parser.add_argument("--visible", "-v", action="store_true", help="Show browser (Moxfield blocks headless)")
     args = parser.parse_args()
 
     chrome_options = Options()
-    if not args.visible:
-        chrome_options.add_argument("--headless=new")
     driver = webdriver.Chrome(options=chrome_options)
 
     try:
