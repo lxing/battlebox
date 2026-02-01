@@ -57,6 +57,42 @@
     return md;
   }
 
+  function renderGuideContent(md, guide) {
+    let ins = [];
+    let outs = [];
+    let prose = '';
+    if (typeof guide === 'string') {
+      prose = guide.trim();
+    } else if (guide) {
+      ins = Array.isArray(guide.in) ? guide.in : [];
+      outs = Array.isArray(guide.out) ? guide.out : [];
+      prose = (guide.text || '').trim();
+    }
+    let html = '';
+
+    if (ins.length || outs.length) {
+      const renderItems = (items) => items.map(item => `<li>${md.renderInline(item)}</li>`).join('');
+      html += `
+        <div class="guide-plan">
+          <div class="guide-plan-col">
+            <div class="guide-plan-title">In</div>
+            <ul class="guide-plan-list">${renderItems(ins)}</ul>
+          </div>
+          <div class="guide-plan-col">
+            <div class="guide-plan-title">Out</div>
+            <ul class="guide-plan-list">${renderItems(outs)}</ul>
+          </div>
+        </div>
+      `;
+    }
+
+    if (prose) {
+      html += `<div class="guide-prose">${md.render(prose)}</div>`;
+    }
+
+    return html || '<em>No guide yet</em>';
+  }
+
   function findCard(deck, name) {
     const normalize = s => s.toLowerCase().trim();
     const target = normalize(name);
@@ -256,7 +292,8 @@
       const select = document.getElementById('guide-select');
       const guideBox = document.getElementById('guide-box');
       const renderGuide = (key) => {
-        guideBox.innerHTML = md.render(deck.guides[key] || '');
+      const guideData = deck.guides[key] || '';
+      guideBox.innerHTML = renderGuideContent(md, guideData);
       };
       renderGuide(select.value || guideKeys[0]);
       select.addEventListener('change', () => renderGuide(select.value));
@@ -275,7 +312,7 @@
     const opponent = bb.decks.find(d => d.slug === opponentSlug);
     const opponentName = opponent ? opponent.name : opponentSlug;
     const md = createMarkdownRenderer(deck);
-    const guideHtml = md.render(guide);
+    const guideHtml = renderGuideContent(md, guide);
 
     app.innerHTML = `
       <a href="#/${bb.slug}/${deck.slug}" class="back">← ${deck.name}</a>

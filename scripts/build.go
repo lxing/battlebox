@@ -9,7 +9,9 @@ import (
 	"net/http"
 	"os"
 	"path/filepath"
+	"regexp"
 	"sort"
+	"strconv"
 	"strings"
 	"time"
 )
@@ -29,13 +31,13 @@ type Manifest struct {
 }
 
 type Deck struct {
-	Slug      string            `json:"slug"`
-	Name      string            `json:"name"`
-	Colors    string            `json:"colors"`
-	Cards     []Card            `json:"cards"`
-	Sideboard []Card            `json:"sideboard,omitempty"`
-	Primer    string            `json:"primer"`
-	Guides    map[string]string `json:"guides,omitempty"`
+	Slug      string                  `json:"slug"`
+	Name      string                  `json:"name"`
+	Colors    string                  `json:"colors"`
+	Cards     []Card                  `json:"cards"`
+	Sideboard []Card                  `json:"sideboard,omitempty"`
+	Primer    string                  `json:"primer"`
+	Guides    map[string]MatchupGuide `json:"guides,omitempty"`
 }
 
 type Battlebox struct {
@@ -47,11 +49,24 @@ type Output struct {
 	Battleboxes []Battlebox `json:"battleboxes"`
 }
 
+type MatchupGuide struct {
+	In   []string `json:"in,omitempty"`
+	Out  []string `json:"out,omitempty"`
+	Text string   `json:"text,omitempty"`
+}
+
 type MissingPrinting struct {
 	Battlebox string
 	Deck      string
 	Card      string
 }
+
+type guideCardInfo struct {
+	Qty  int
+	Type string
+}
+
+var guideCountRE = regexp.MustCompile(`^(\d+)\s*x?\s+(.*)$`)
 
 // Scryfall types
 type ScryfallIdentifier struct {
@@ -174,8 +189,8 @@ func main() {
 			deckOverrides := mergeOverrides(bbOverrides, loadOverrides(filepath.Join(deckPath, overridesFileName)))
 			deck, err := processDeck(deckPath, deckDir.Name(), bbDir.Name(), deckOverrides)
 			if err != nil {
-				fmt.Fprintf(os.Stderr, "Error processing deck %s: %v\n", deckDir.Name(), err)
-				continue
+				fmt.Fprintf(os.Stderr, "Error processing deck %s/%s: %v\n", bbDir.Name(), deckDir.Name(), err)
+				os.Exit(1)
 			}
 
 			battlebox.Decks = append(battlebox.Decks, *deck)
@@ -372,7 +387,7 @@ func processDeck(deckPath, slug, battlebox string, overrides map[string]string) 
 		Colors:    manifest.Colors,
 		Cards:     manifest.Cards,
 		Sideboard: manifest.Sideboard,
-		Guides:    make(map[string]string),
+		Guides:    make(map[string]MatchupGuide),
 	}
 
 	// Read primer
@@ -382,6 +397,9 @@ func processDeck(deckPath, slug, battlebox string, overrides map[string]string) 
 	}
 
 	// Read sideboard guides
+	mainboardIndex := indexCards(manifest.Cards)
+	sideboardIndex := indexCards(manifest.Sideboard)
+
 	entries, _ := os.ReadDir(deckPath)
 	for _, entry := range entries {
 		name := entry.Name()
@@ -391,9 +409,166 @@ func processDeck(deckPath, slug, battlebox string, overrides map[string]string) 
 		guidePath := filepath.Join(deckPath, name)
 		if guideData, err := os.ReadFile(guidePath); err == nil && len(guideData) > 0 {
 			opponentSlug := strings.TrimSuffix(name, ".md")
-			deck.Guides[opponentSlug] = strings.TrimSpace(string(guideData))
+			guide := parseGuide(string(guideData))
+			if err := validateGuide(guide, mainboardIndex, sideboardIndex); err != nil {
+				return nil, fmt.Errorf("guide %s: %w", opponentSlug, err)
+			}
+			deck.Guides[opponentSlug] = guide
 		}
 	}
 
 	return deck, nil
+}
+
+func parseGuide(raw string) MatchupGuide {
+	text := strings.ReplaceAll(raw, "\r\n", "\n")
+	lines := strings.Split(text, "\n")
+
+	var ins []string
+	var outs []string
+	i := 0
+	for ; i < len(lines); i++ {
+		line := strings.TrimSpace(lines[i])
+		if line == "" {
+			i++
+			break
+		}
+		if strings.HasPrefix(line, "+") {
+			item := strings.TrimSpace(strings.TrimPrefix(line, "+"))
+			if item != "" {
+				ins = append(ins, item)
+			}
+			continue
+		}
+		if strings.HasPrefix(line, "-") {
+			item := strings.TrimSpace(strings.TrimPrefix(line, "-"))
+			if item != "" {
+				outs = append(outs, item)
+			}
+			continue
+		}
+		break
+	}
+
+	remaining := strings.TrimSpace(strings.Join(lines[i:], "\n"))
+
+	return MatchupGuide{
+		In:   ins,
+		Out:  outs,
+		Text: remaining,
+	}
+}
+
+func indexCards(cards []Card) map[string]guideCardInfo {
+	index := make(map[string]guideCardInfo, len(cards))
+	for _, card := range cards {
+		name := normalizeName(card.Name)
+		if name == "" {
+			continue
+		}
+		entry := index[name]
+		entry.Qty += card.Qty
+		if entry.Type == "" {
+			entry.Type = card.Type
+		}
+		index[name] = entry
+	}
+	return index
+}
+
+func parseGuideLine(line string) (int, string) {
+	line = strings.TrimSpace(line)
+	if line == "" {
+		return 0, ""
+	}
+	match := guideCountRE.FindStringSubmatch(line)
+	if match == nil {
+		return 1, line
+	}
+	qty, err := strconv.Atoi(match[1])
+	if err != nil || qty <= 0 {
+		return 1, strings.TrimSpace(match[2])
+	}
+	return qty, strings.TrimSpace(match[2])
+}
+
+func extractCardName(input string) string {
+	name := strings.TrimSpace(input)
+	if strings.HasPrefix(name, "[[") && strings.HasSuffix(name, "]]") {
+		inner := strings.TrimSuffix(strings.TrimPrefix(name, "[["), "]]")
+		parts := strings.SplitN(inner, "|", 2)
+		if len(parts) == 2 {
+			return strings.TrimSpace(parts[1])
+		}
+		return strings.TrimSpace(parts[0])
+	}
+	return name
+}
+
+func validateGuide(guide MatchupGuide, mainboard, sideboard map[string]guideCardInfo) error {
+	inCounts := map[string]int{}
+	outCounts := map[string]int{}
+
+	for _, entry := range guide.In {
+		qty, name := parseGuideLine(entry)
+		name = extractCardName(name)
+		if name == "" {
+			continue
+		}
+		key := normalizeName(name)
+		inCounts[key] += qty
+	}
+
+	for _, entry := range guide.Out {
+		qty, name := parseGuideLine(entry)
+		name = extractCardName(name)
+		if name == "" {
+			continue
+		}
+		key := normalizeName(name)
+		outCounts[key] += qty
+	}
+
+	inCount := 0
+	outCount := 0
+	inLandCount := 0
+	outLandCount := 0
+
+	for name, qty := range inCounts {
+		info, ok := sideboard[name]
+		if !ok {
+			return fmt.Errorf("IN card not in sideboard: %s", name)
+		}
+		if qty > info.Qty {
+			return fmt.Errorf("IN card exceeds sideboard count: %s (%d > %d)", name, qty, info.Qty)
+		}
+		if info.Type == "land" {
+			inLandCount += qty
+		}
+		inCount += qty
+	}
+
+	for name, qty := range outCounts {
+		info, ok := mainboard[name]
+		if !ok {
+			return fmt.Errorf("OUT card not in mainboard: %s", name)
+		}
+		if qty > info.Qty {
+			return fmt.Errorf("OUT card exceeds mainboard count: %s (%d > %d)", name, qty, info.Qty)
+		}
+		if info.Type == "land" {
+			outLandCount += qty
+		}
+		outCount += qty
+	}
+
+	if inCount != outCount {
+		return fmt.Errorf("IN/OUT mismatch: %d in vs %d out", inCount, outCount)
+	}
+
+	if outLandCount > 0 && inLandCount == 0 {
+		return fmt.Errorf("OUT includes land without any land in")
+	}
+
+	return nil
 }
