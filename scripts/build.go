@@ -496,11 +496,7 @@ func extractCardName(input string) string {
 	name := strings.TrimSpace(input)
 	if strings.HasPrefix(name, "[[") && strings.HasSuffix(name, "]]") {
 		inner := strings.TrimSuffix(strings.TrimPrefix(name, "[["), "]]")
-		parts := strings.SplitN(inner, "|", 2)
-		if len(parts) == 2 {
-			return strings.TrimSpace(parts[1])
-		}
-		return strings.TrimSpace(parts[0])
+		return strings.TrimSpace(inner)
 	}
 	return name
 }
@@ -531,9 +527,6 @@ func validateGuide(guide MatchupGuide, mainboard, sideboard map[string]guideCard
 
 	inCount := 0
 	outCount := 0
-	inLandCount := 0
-	outLandCount := 0
-
 	for name, qty := range inCounts {
 		info, ok := sideboard[name]
 		if !ok {
@@ -541,9 +534,6 @@ func validateGuide(guide MatchupGuide, mainboard, sideboard map[string]guideCard
 		}
 		if qty > info.Qty {
 			return fmt.Errorf("IN card exceeds sideboard count: %s (%d > %d)", name, qty, info.Qty)
-		}
-		if info.Type == "land" {
-			inLandCount += qty
 		}
 		inCount += qty
 	}
@@ -556,18 +546,11 @@ func validateGuide(guide MatchupGuide, mainboard, sideboard map[string]guideCard
 		if qty > info.Qty {
 			return fmt.Errorf("OUT card exceeds mainboard count: %s (%d > %d)", name, qty, info.Qty)
 		}
-		if info.Type == "land" {
-			outLandCount += qty
-		}
 		outCount += qty
 	}
 
 	if inCount != outCount {
 		return fmt.Errorf("IN/OUT mismatch: %d in vs %d out", inCount, outCount)
-	}
-
-	if outLandCount > 0 && inLandCount == 0 {
-		return fmt.Errorf("OUT includes land without any land in")
 	}
 
 	return nil
