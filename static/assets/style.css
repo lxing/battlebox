@@ -174,8 +174,8 @@ h2 {
 /* Card hover preview */
 .card-preview {
   position: fixed;
-  z-index: 1000;
-  pointer-events: none;
+  z-index: 2000;
+  pointer-events: auto;
   width: 250px;
   height: 350px;
   aspect-ratio: 63 / 88;

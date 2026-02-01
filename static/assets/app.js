@@ -195,6 +195,11 @@
         previewImg = document.createElement('img');
         previewEl.appendChild(previewStatus);
         previewEl.appendChild(previewImg);
+        previewEl.addEventListener('click', (e) => {
+          e.preventDefault();
+          e.stopPropagation();
+          hidePreview();
+        });
         previewImg.addEventListener('load', () => {
           previewStatus.style.display = 'none';
           previewImg.style.display = 'block';
@@ -218,9 +223,10 @@
     });
 
     app.addEventListener('mouseout', (e) => {
-      if (e.target.classList.contains('card') && previewEl) {
-        previewEl.style.display = 'none';
-      }
+      if (!e.target.classList.contains('card') || !previewEl) return;
+      if (e.relatedTarget && previewEl.contains(e.relatedTarget)) return;
+      if (previewEl.matches && previewEl.matches(':hover')) return;
+      previewEl.style.display = 'none';
     });
   }
 
