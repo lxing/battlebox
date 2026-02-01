@@ -163,6 +163,7 @@ h2 {
   cursor: pointer;
   text-decoration: underline dotted;
   text-underline-offset: 2px;
+  position: relative;
 }
 
 .card:hover {
@@ -171,10 +172,12 @@ h2 {
 
 /* Card hover preview */
 .card-preview {
-  position: fixed;
+  position: absolute;
   z-index: 1000;
   pointer-events: none;
   width: 250px;
+  left: var(--preview-left, calc(100% + 12px));
+  top: var(--preview-top, -8px);
 }
 
 .card-preview img {

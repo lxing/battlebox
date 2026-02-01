@@ -144,6 +144,39 @@
   }
 
   // Card hover preview
+  function positionPreviewAtEvent(cardEl, e) {
+    if (!previewEl || !cardEl) return;
+    const rect = cardEl.getBoundingClientRect();
+    const width = previewEl.offsetWidth || 250;
+    const height = previewEl.offsetHeight || 360;
+    const margin = 10;
+
+    let x = e.clientX - rect.left;
+    let y = e.clientY - rect.top;
+    let absX = rect.left + x;
+    let absY = rect.top + y;
+
+    if (absX + width + margin > window.innerWidth) {
+      absX = Math.max(margin, window.innerWidth - width - margin);
+      x = absX - rect.left;
+    }
+    if (absX < margin) {
+      absX = margin;
+      x = absX - rect.left;
+    }
+    if (absY + height + margin > window.innerHeight) {
+      absY = Math.max(margin, window.innerHeight - height - margin);
+      y = absY - rect.top;
+    }
+    if (absY < margin) {
+      absY = margin;
+      y = absY - rect.top;
+    }
+
+    cardEl.style.setProperty('--preview-left', `${x}px`);
+    cardEl.style.setProperty('--preview-top', `${y}px`);
+  }
+
   function setupCardHover() {
     app.addEventListener('mouseover', (e) => {
       if (!e.target.classList.contains('card')) return;
@@ -171,21 +204,17 @@
           previewStatus.style.display = 'block';
           previewImg.style.display = 'none';
         });
-        document.body.appendChild(previewEl);
       }
 
+      if (previewEl.parentNode !== e.target) {
+        e.target.appendChild(previewEl);
+      }
       previewStatus.textContent = 'Loading...';
       previewStatus.style.display = 'block';
       previewImg.style.display = 'none';
       previewImg.src = url;
       previewEl.style.display = 'block';
-      positionPreview(e);
-    });
-
-    app.addEventListener('mousemove', (e) => {
-      if (previewEl && previewEl.style.display === 'block') {
-        positionPreview(e);
-      }
+      positionPreviewAtEvent(e.target, e);
     });
 
     app.addEventListener('mouseout', (e) => {
@@ -193,15 +222,6 @@
         previewEl.style.display = 'none';
       }
     });
-  }
-
-  function positionPreview(e) {
-    const x = e.clientX + 15;
-    const y = e.clientY + 15;
-    const width = previewEl.offsetWidth || 250;
-    const height = previewEl.offsetHeight || 360;
-    previewEl.style.left = Math.min(x, window.innerWidth - width - 20) + 'px';
-    previewEl.style.top = Math.min(y, window.innerHeight - height - 20) + 'px';
   }
 
   function hidePreview() {
