@@ -17,15 +17,44 @@
     return str.charAt(0).toUpperCase() + str.slice(1);
   }
 
-  // Transform [[Card Name]] to spans
-  function transformCardRefs(text, deck) {
-    return text.replace(/\[\[([^\]|]+)(?:\|([^\]]+))?\]\]/g, (_, left, right) => {
-      const display = left.trim();
-      const targetName = (right || left).trim();
-      const card = findCard(deck, targetName);
-      const printing = card ? card.printing : '';
-      return `<span class="card" data-name="${targetName}" data-printing="${printing}">${display}</span>`;
+  function createMarkdownRenderer(deck) {
+    const md = window.markdownit({
+      html: false,
+      linkify: true,
+      breaks: true
     });
+
+    md.inline.ruler.before('emphasis', 'card_refs', (state, silent) => {
+      const src = state.src;
+      const start = state.pos;
+      if (src.charCodeAt(start) !== 0x5B || src.charCodeAt(start + 1) !== 0x5B) return false;
+
+      const close = src.indexOf(']]', start + 2);
+      if (close === -1) return false;
+
+      const raw = src.slice(start + 2, close);
+      const parts = raw.split('|');
+      const display = (parts[0] || '').trim();
+      const target = (parts[1] || parts[0] || '').trim();
+      if (!display) return false;
+
+      if (!silent) {
+        const token = state.push('card_ref', '', 0);
+        token.meta = { display, target };
+      }
+
+      state.pos = close + 2;
+      return true;
+    });
+
+    md.renderer.rules.card_ref = (tokens, idx) => {
+      const { display, target } = tokens[idx].meta;
+      const card = findCard(deck, target);
+      const printing = card ? card.printing : '';
+      return `<span class="card" data-name="${target}" data-printing="${printing}">${md.utils.escapeHtml(display)}</span>`;
+    };
+
+    return md;
   }
 
   function findCard(deck, name) {
@@ -177,7 +206,8 @@
     const deck = bb.decks.find(d => d.slug === deckSlug);
     if (!deck) return renderNotFound();
 
-    const primerHtml = deck.primer ? transformCardRefs(deck.primer, deck) : '<em>No primer yet</em>';
+    const md = createMarkdownRenderer(deck);
+    const primerHtml = deck.primer ? md.render(deck.primer) : '<em>No primer yet</em>';
     const guideKeys = Object.keys(deck.guides || {});
 
     app.innerHTML = `
@@ -223,7 +253,8 @@
 
     const opponent = bb.decks.find(d => d.slug === opponentSlug);
     const opponentName = opponent ? opponent.name : opponentSlug;
-    const guideHtml = transformCardRefs(guide, deck);
+    const md = createMarkdownRenderer(deck);
+    const guideHtml = md.render(guide);
 
     app.innerHTML = `
       <a href="#/${bb.slug}/${deck.slug}" class="back">← ${deck.name}</a>
