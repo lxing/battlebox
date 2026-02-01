@@ -257,7 +257,7 @@
     const md = createMarkdownRenderer(deck);
     const primerHtml = deck.primer ? md.render(deck.primer) : '<em>No primer yet</em>';
     const careWarningHtml = deck.premodern_care_warning ? `
-      <div class="care-warning">⚠️ This deck contains Reserved List cards and/or cards that spiked in price with Premodern popularity. Handle and shuffle with care!</div>
+      <div class="care-warning">⚠️ This deck contains Reserved List cards and/or cards that spiked in price with Premodern popularity. Handle and shuffle with care! ⚠️</div>
     ` : '';
     const guideKeys = Object.keys(deck.guides || {});
     const guideOptions = guideKeys.map(k => {
