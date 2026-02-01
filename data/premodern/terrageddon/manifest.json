@@ -120,5 +120,6 @@
       "name": "Zuran Orb",
       "qty": 2
     }
-  ]
+  ],
+  "premodern_care_warning": true
 }

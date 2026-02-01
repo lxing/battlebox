@@ -24,20 +24,22 @@ type Card struct {
 }
 
 type Manifest struct {
-	Name      string `json:"name"`
-	Colors    string `json:"colors"`
-	Cards     []Card `json:"cards"`
-	Sideboard []Card `json:"sideboard,omitempty"`
+	Name                 string `json:"name"`
+	Colors               string `json:"colors"`
+	PremodernCareWarning bool   `json:"premodern_care_warning,omitempty"`
+	Cards                []Card `json:"cards"`
+	Sideboard            []Card `json:"sideboard,omitempty"`
 }
 
 type Deck struct {
-	Slug      string                  `json:"slug"`
-	Name      string                  `json:"name"`
-	Colors    string                  `json:"colors"`
-	Cards     []Card                  `json:"cards"`
-	Sideboard []Card                  `json:"sideboard,omitempty"`
-	Primer    string                  `json:"primer"`
-	Guides    map[string]MatchupGuide `json:"guides,omitempty"`
+	Slug                 string                  `json:"slug"`
+	Name                 string                  `json:"name"`
+	Colors               string                  `json:"colors"`
+	PremodernCareWarning bool                    `json:"premodern_care_warning,omitempty"`
+	Cards                []Card                  `json:"cards"`
+	Sideboard            []Card                  `json:"sideboard,omitempty"`
+	Primer               string                  `json:"primer"`
+	Guides               map[string]MatchupGuide `json:"guides,omitempty"`
 }
 
 type Battlebox struct {
@@ -378,12 +380,13 @@ func processDeck(deckPath, slug, battlebox string, printings map[string]string) 
 	}
 
 	deck := &Deck{
-		Slug:      slug,
-		Name:      manifest.Name,
-		Colors:    manifest.Colors,
-		Cards:     manifest.Cards,
-		Sideboard: manifest.Sideboard,
-		Guides:    make(map[string]MatchupGuide),
+		Slug:                 slug,
+		Name:                 manifest.Name,
+		Colors:               manifest.Colors,
+		PremodernCareWarning: manifest.PremodernCareWarning,
+		Cards:                manifest.Cards,
+		Sideboard:            manifest.Sideboard,
+		Guides:               make(map[string]MatchupGuide),
 	}
 
 	// Read primer

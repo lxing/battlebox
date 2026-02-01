@@ -84,5 +84,6 @@
       "name": "Powder Keg",
       "qty": 3
     }
-  ]
+  ],
+  "premodern_care_warning": true
 }

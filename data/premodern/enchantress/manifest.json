@@ -112,5 +112,6 @@
       "name": "Xantid Swarm",
       "qty": 3
     }
-  ]
+  ],
+  "premodern_care_warning": true
 }

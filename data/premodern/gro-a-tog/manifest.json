@@ -108,5 +108,6 @@
       "name": "Winter Orb",
       "qty": 1
     }
-  ]
+  ],
+  "premodern_care_warning": true
 }

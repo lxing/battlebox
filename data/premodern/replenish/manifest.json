@@ -108,5 +108,6 @@
       "name": "Swords to Plowshares",
       "qty": 1
     }
-  ]
+  ],
+  "premodern_care_warning": true
 }
