@@ -9,6 +9,7 @@ import (
 	"net/http"
 	"os"
 	"path/filepath"
+	"sort"
 	"strings"
 	"time"
 )
@@ -46,9 +47,15 @@ type Output struct {
 	Battleboxes []Battlebox `json:"battleboxes"`
 }
 
+type MissingPrinting struct {
+	Battlebox string
+	Deck      string
+	Card      string
+}
+
 // Scryfall types
 type ScryfallIdentifier struct {
-	Set     string `json:"set"`
+	Set       string `json:"set"`
 	Collector string `json:"collector_number"`
 }
 
@@ -81,6 +88,7 @@ func main() {
 
 	var output Output
 	var allCards []Card
+	var missing []MissingPrinting
 
 	// First pass: collect all cards
 	battleboxDirs, err := os.ReadDir(dataDir)
@@ -116,9 +124,26 @@ func main() {
 				continue
 			}
 
-			allCards = append(allCards, applyOverrides(manifest.Cards, deckOverrides)...)
-			allCards = append(allCards, applyOverrides(manifest.Sideboard, deckOverrides)...)
+			allCards = append(allCards, applyOverrides(manifest.Cards, deckOverrides, bbDir.Name(), deckDir.Name(), &missing)...)
+			allCards = append(allCards, applyOverrides(manifest.Sideboard, deckOverrides, bbDir.Name(), deckDir.Name(), &missing)...)
 		}
+	}
+
+	if len(missing) > 0 {
+		sort.Slice(missing, func(i, j int) bool {
+			if missing[i].Battlebox != missing[j].Battlebox {
+				return missing[i].Battlebox < missing[j].Battlebox
+			}
+			if missing[i].Deck != missing[j].Deck {
+				return missing[i].Deck < missing[j].Deck
+			}
+			return missing[i].Card < missing[j].Card
+		})
+		fmt.Fprintln(os.Stderr, "Missing printings in overrides:")
+		for _, m := range missing {
+			fmt.Fprintf(os.Stderr, "- %s/%s: %s\n", m.Battlebox, m.Deck, m.Card)
+		}
+		os.Exit(1)
 	}
 
 	// Fetch missing types from Scryfall
@@ -147,7 +172,7 @@ func main() {
 
 			deckPath := filepath.Join(bbPath, deckDir.Name())
 			deckOverrides := mergeOverrides(bbOverrides, loadOverrides(filepath.Join(deckPath, overridesFileName)))
-			deck, err := processDeck(deckPath, deckDir.Name(), deckOverrides)
+			deck, err := processDeck(deckPath, deckDir.Name(), bbDir.Name(), deckOverrides)
 			if err != nil {
 				fmt.Fprintf(os.Stderr, "Error processing deck %s: %v\n", deckDir.Name(), err)
 				continue
@@ -225,16 +250,23 @@ func mergeOverrides(base, override map[string]string) map[string]string {
 	return out
 }
 
-func resolvePrinting(name, manifestPrinting string, overrides map[string]string) string {
-	if v, ok := overrides[normalizeName(name)]; ok {
-		return v
-	}
-	return manifestPrinting
+func resolvePrinting(name string, overrides map[string]string) (string, bool) {
+	v, ok := overrides[normalizeName(name)]
+	return v, ok
 }
 
-func applyOverrides(cards []Card, overrides map[string]string) []Card {
+func applyOverrides(cards []Card, overrides map[string]string, battlebox, deck string, missing *[]MissingPrinting) []Card {
 	for i := range cards {
-		cards[i].Printing = resolvePrinting(cards[i].Name, cards[i].Printing, overrides)
+		cards[i].Printing = ""
+		if v, ok := resolvePrinting(cards[i].Name, overrides); ok {
+			cards[i].Printing = v
+		} else if missing != nil {
+			*missing = append(*missing, MissingPrinting{
+				Battlebox: battlebox,
+				Deck:      deck,
+				Card:      cards[i].Name,
+			})
+		}
 	}
 	return cards
 }
@@ -311,7 +343,7 @@ func classifyType(typeLine string) string {
 	return "spell"
 }
 
-func processDeck(deckPath, slug string, overrides map[string]string) (*Deck, error) {
+func processDeck(deckPath, slug, battlebox string, overrides map[string]string) (*Deck, error) {
 	manifestPath := filepath.Join(deckPath, "manifest.json")
 	manifestData, err := os.ReadFile(manifestPath)
 	if err != nil {
@@ -323,8 +355,8 @@ func processDeck(deckPath, slug string, overrides map[string]string) (*Deck, err
 		return nil, fmt.Errorf("parsing manifest: %w", err)
 	}
 
-	manifest.Cards = applyOverrides(manifest.Cards, overrides)
-	manifest.Sideboard = applyOverrides(manifest.Sideboard, overrides)
+	manifest.Cards = applyOverrides(manifest.Cards, overrides, battlebox, slug, nil)
+	manifest.Sideboard = applyOverrides(manifest.Sideboard, overrides, battlebox, slug, nil)
 
 	// Add types to cards
 	for i := range manifest.Cards {

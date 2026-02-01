@@ -1,0 +1,112 @@
+{
+  "name": "Replenish",
+  "colors": "",
+  "cards": [
+    {
+      "name": "Adarkar Wastes",
+      "qty": 4
+    },
+    {
+      "name": "Ancient Tomb",
+      "qty": 4
+    },
+    {
+      "name": "Attunement",
+      "qty": 4
+    },
+    {
+      "name": "City of Traitors",
+      "qty": 2
+    },
+    {
+      "name": "Flooded Strand",
+      "qty": 4
+    },
+    {
+      "name": "Frantic Search",
+      "qty": 3
+    },
+    {
+      "name": "Intuition",
+      "qty": 3
+    },
+    {
+      "name": "Island",
+      "qty": 3
+    },
+    {
+      "name": "Mana Leak",
+      "qty": 3
+    },
+    {
+      "name": "Opalescence",
+      "qty": 4
+    },
+    {
+      "name": "Parallax Tide",
+      "qty": 4
+    },
+    {
+      "name": "Parallax Wave",
+      "qty": 4
+    },
+    {
+      "name": "Plains",
+      "qty": 3
+    },
+    {
+      "name": "Replenish",
+      "qty": 4
+    },
+    {
+      "name": "Riftstone Portal",
+      "qty": 1
+    },
+    {
+      "name": "Seal of Cleansing",
+      "qty": 3
+    },
+    {
+      "name": "Skycloud Expanse",
+      "qty": 4
+    },
+    {
+      "name": "Swords to Plowshares",
+      "qty": 3
+    }
+  ],
+  "sideboard": [
+    {
+      "name": "Abeyance",
+      "qty": 1
+    },
+    {
+      "name": "Blue Elemental Blast",
+      "qty": 2
+    },
+    {
+      "name": "Chill",
+      "qty": 2
+    },
+    {
+      "name": "Fact or Fiction",
+      "qty": 2
+    },
+    {
+      "name": "Meddling Mage",
+      "qty": 3
+    },
+    {
+      "name": "Orim's Chant",
+      "qty": 2
+    },
+    {
+      "name": "Stifle",
+      "qty": 2
+    },
+    {
+      "name": "Swords to Plowshares",
+      "qty": 1
+    }
+  ]
+}

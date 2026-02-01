@@ -1,0 +1,100 @@
+{
+  "name": "Sligh",
+  "colors": "",
+  "cards": [
+    {
+      "name": "Ball Lightning",
+      "qty": 3
+    },
+    {
+      "name": "Barbarian Ring",
+      "qty": 2
+    },
+    {
+      "name": "Bloodstained Mire",
+      "qty": 4
+    },
+    {
+      "name": "Cursed Scroll",
+      "qty": 2
+    },
+    {
+      "name": "Fireblast",
+      "qty": 4
+    },
+    {
+      "name": "Grim Lavamancer",
+      "qty": 4
+    },
+    {
+      "name": "Incinerate",
+      "qty": 4
+    },
+    {
+      "name": "Jackal Pup",
+      "qty": 4
+    },
+    {
+      "name": "Lava Dart",
+      "qty": 2
+    },
+    {
+      "name": "Lightning Bolt",
+      "qty": 4
+    },
+    {
+      "name": "Mogg Fanatic",
+      "qty": 4
+    },
+    {
+      "name": "Mountain",
+      "qty": 10
+    },
+    {
+      "name": "Price of Progress",
+      "qty": 2
+    },
+    {
+      "name": "Seal of Fire",
+      "qty": 4
+    },
+    {
+      "name": "Sulfuric Vortex",
+      "qty": 3
+    },
+    {
+      "name": "Wooded Foothills",
+      "qty": 4
+    }
+  ],
+  "sideboard": [
+    {
+      "name": "Anarchy",
+      "qty": 2
+    },
+    {
+      "name": "Crash",
+      "qty": 1
+    },
+    {
+      "name": "Overload",
+      "qty": 3
+    },
+    {
+      "name": "Price of Progress",
+      "qty": 2
+    },
+    {
+      "name": "Pyroblast",
+      "qty": 3
+    },
+    {
+      "name": "Pyrokinesis",
+      "qty": 2
+    },
+    {
+      "name": "Red Elemental Blast",
+      "qty": 2
+    }
+  ]
+}

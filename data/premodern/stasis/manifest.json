@@ -1,0 +1,88 @@
+{
+  "name": "Stasis",
+  "colors": "",
+  "cards": [
+    {
+      "name": "Arcane Denial",
+      "qty": 4
+    },
+    {
+      "name": "Black Vise",
+      "qty": 4
+    },
+    {
+      "name": "Boomerang",
+      "qty": 1
+    },
+    {
+      "name": "Chain of Vapor",
+      "qty": 4
+    },
+    {
+      "name": "Counterspell",
+      "qty": 3
+    },
+    {
+      "name": "Daze",
+      "qty": 3
+    },
+    {
+      "name": "Foil",
+      "qty": 2
+    },
+    {
+      "name": "Forsaken City",
+      "qty": 4
+    },
+    {
+      "name": "Gush",
+      "qty": 4
+    },
+    {
+      "name": "Impulse",
+      "qty": 4
+    },
+    {
+      "name": "Island",
+      "qty": 19
+    },
+    {
+      "name": "Mana Short",
+      "qty": 1
+    },
+    {
+      "name": "Stasis",
+      "qty": 4
+    },
+    {
+      "name": "Thwart",
+      "qty": 3
+    }
+  ],
+  "sideboard": [
+    {
+      "name": "Blue Elemental Blast",
+      "qty": 3
+    },
+    {
+      "name": "Chill",
+      "qty": 3
+    },
+    {
+      "name": "Gaea's Blessing",
+      "qty": 2
+    },
+    {
+      "name": "Hydroblast",
+      "qty": 3
+    },
+    {
+      "name": "Mana Short",
+      "qty": 1
+    },
+    {
+      "name": "Powder Keg",
+      "qty": 3
+    }
+  ]
+}

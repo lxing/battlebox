@@ -1,0 +1,112 @@
+{
+  "name": "Goblins",
+  "colors": "",
+  "cards": [
+    {
+      "name": "Forest",
+      "qty": 1
+    },
+    {
+      "name": "Gempalm Incinerator",
+      "qty": 4
+    },
+    {
+      "name": "Goblin King",
+      "qty": 1
+    },
+    {
+      "name": "Goblin Lackey",
+      "qty": 4
+    },
+    {
+      "name": "Goblin Matron",
+      "qty": 4
+    },
+    {
+      "name": "Goblin Piledriver",
+      "qty": 4
+    },
+    {
+      "name": "Goblin Ringleader",
+      "qty": 4
+    },
+    {
+      "name": "Goblin Sharpshooter",
+      "qty": 1
+    },
+    {
+      "name": "Goblin Warchief",
+      "qty": 4
+    },
+    {
+      "name": "Karplusan Forest",
+      "qty": 4
+    },
+    {
+      "name": "Mogg Fanatic",
+      "qty": 4
+    },
+    {
+      "name": "Mountain",
+      "qty": 9
+    },
+    {
+      "name": "Naturalize",
+      "qty": 2
+    },
+    {
+      "name": "Rishadan Port",
+      "qty": 4
+    },
+    {
+      "name": "Siege-Gang Commander",
+      "qty": 3
+    },
+    {
+      "name": "Skirk Prospector",
+      "qty": 1
+    },
+    {
+      "name": "Wasteland",
+      "qty": 2
+    },
+    {
+      "name": "Wooded Foothills",
+      "qty": 4
+    }
+  ],
+  "sideboard": [
+    {
+      "name": "Anarchy",
+      "qty": 2
+    },
+    {
+      "name": "Goblin Tinkerer",
+      "qty": 1
+    },
+    {
+      "name": "Naturalize",
+      "qty": 2
+    },
+    {
+      "name": "Pyroblast",
+      "qty": 2
+    },
+    {
+      "name": "Pyrokinesis",
+      "qty": 2
+    },
+    {
+      "name": "Red Elemental Blast",
+      "qty": 1
+    },
+    {
+      "name": "Tormod's Crypt",
+      "qty": 3
+    },
+    {
+      "name": "Tranquil Domain",
+      "qty": 2
+    }
+  ]
+}

@@ -1,0 +1,112 @@
+{
+  "name": "BW Control",
+  "colors": "",
+  "cards": [
+    {
+      "name": "Caves of Koilos",
+      "qty": 4
+    },
+    {
+      "name": "Decree of Justice",
+      "qty": 4
+    },
+    {
+      "name": "Disenchant",
+      "qty": 1
+    },
+    {
+      "name": "Duress",
+      "qty": 4
+    },
+    {
+      "name": "Dust Bowl",
+      "qty": 2
+    },
+    {
+      "name": "Eternal Dragon",
+      "qty": 3
+    },
+    {
+      "name": "Exalted Angel",
+      "qty": 4
+    },
+    {
+      "name": "Gerrard's Verdict",
+      "qty": 4
+    },
+    {
+      "name": "Phyrexian Furnace",
+      "qty": 1
+    },
+    {
+      "name": "Plains",
+      "qty": 9
+    },
+    {
+      "name": "Reflecting Pool",
+      "qty": 2
+    },
+    {
+      "name": "Skeletal Scrying",
+      "qty": 3
+    },
+    {
+      "name": "Swamp",
+      "qty": 9
+    },
+    {
+      "name": "Swords to Plowshares",
+      "qty": 4
+    },
+    {
+      "name": "Vindicate",
+      "qty": 4
+    },
+    {
+      "name": "Wrath of God",
+      "qty": 2
+    }
+  ],
+  "sideboard": [
+    {
+      "name": "Akroma's Vengeance",
+      "qty": 1
+    },
+    {
+      "name": "Aura of Silence",
+      "qty": 2
+    },
+    {
+      "name": "Circle of Protection: Red",
+      "qty": 1
+    },
+    {
+      "name": "Disenchant",
+      "qty": 2
+    },
+    {
+      "name": "Engineered Plague",
+      "qty": 2
+    },
+    {
+      "name": "Haunting Echoes",
+      "qty": 1
+    },
+    {
+      "name": "Infest",
+      "qty": 2
+    },
+    {
+      "name": "Silver Knight",
+      "qty": 2
+    },
+    {
+      "name": "Tormod's Crypt",
+      "qty": 1
+    },
+    {
+      "name": "Warmth",
+      "qty": 1
+    }
+  ]
+}

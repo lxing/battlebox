@@ -1,0 +1,172 @@
+{
+  "name": "RecSur",
+  "colors": "",
+  "cards": [
+    {
+      "name": "Birds of Paradise",
+      "qty": 4
+    },
+    {
+      "name": "Bone Shredder",
+      "qty": 1
+    },
+    {
+      "name": "Cabal Therapy",
+      "qty": 4
+    },
+    {
+      "name": "City of Brass",
+      "qty": 2
+    },
+    {
+      "name": "Deranged Hermit",
+      "qty": 1
+    },
+    {
+      "name": "Forest",
+      "qty": 9
+    },
+    {
+      "name": "Gaea's Cradle",
+      "qty": 1
+    },
+    {
+      "name": "Genesis",
+      "qty": 1
+    },
+    {
+      "name": "Ghitu Slinger",
+      "qty": 1
+    },
+    {
+      "name": "Great Whale",
+      "qty": 1
+    },
+    {
+      "name": "Krosan Tusker",
+      "qty": 1
+    },
+    {
+      "name": "Llanowar Wastes",
+      "qty": 4
+    },
+    {
+      "name": "Masticore",
+      "qty": 1
+    },
+    {
+      "name": "Mesmeric Fiend",
+      "qty": 1
+    },
+    {
+      "name": "Mountain",
+      "qty": 1
+    },
+    {
+      "name": "Nantuko Vigilante",
+      "qty": 1
+    },
+    {
+      "name": "Phantom Nishoba",
+      "qty": 1
+    },
+    {
+      "name": "Ravenous Baloth",
+      "qty": 1
+    },
+    {
+      "name": "Recurring Nightmare",
+      "qty": 2
+    },
+    {
+      "name": "Shard Phoenix",
+      "qty": 1
+    },
+    {
+      "name": "Spike Feeder",
+      "qty": 1
+    },
+    {
+      "name": "Squee, Goblin Nabob",
+      "qty": 1
+    },
+    {
+      "name": "Survival of the Fittest",
+      "qty": 4
+    },
+    {
+      "name": "Swamp",
+      "qty": 3
+    },
+    {
+      "name": "Undiscovered Paradise",
+      "qty": 1
+    },
+    {
+      "name": "Wall of Blossoms",
+      "qty": 4
+    },
+    {
+      "name": "Wall of Roots",
+      "qty": 4
+    },
+    {
+      "name": "Withered Wretch",
+      "qty": 1
+    },
+    {
+      "name": "Yavimaya Elder",
+      "qty": 1
+    },
+    {
+      "name": "Yavimaya Granger",
+      "qty": 1
+    }
+  ],
+  "sideboard": [
+    {
+      "name": "Avalanche Riders",
+      "qty": 1
+    },
+    {
+      "name": "Bone Shredder",
+      "qty": 1
+    },
+    {
+      "name": "Lobotomy",
+      "qty": 2
+    },
+    {
+      "name": "Masticore",
+      "qty": 1
+    },
+    {
+      "name": "Naturalize",
+      "qty": 3
+    },
+    {
+      "name": "Shard Phoenix",
+      "qty": 1
+    },
+    {
+      "name": "Smother",
+      "qty": 1
+    },
+    {
+      "name": "Spike Feeder",
+      "qty": 1
+    },
+    {
+      "name": "Tsabo's Web",
+      "qty": 2
+    },
+    {
+      "name": "Uktabi Orangutan",
+      "qty": 1
+    },
+    {
+      "name": "Withered Wretch",
+      "qty": 1
+    }
+  ]
+}

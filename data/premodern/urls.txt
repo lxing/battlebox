@@ -1,0 +1,18 @@
+battlebox: premodern
+sideboard: yes
+urls:
+https://moxfield.com/decks/-TgipY0-R02DO_UFecklrw
+https://moxfield.com/decks/BWAcKcl3fk26fNLUJb7EhQ
+https://moxfield.com/decks/vDvwCVA1J0uPu5F5xLu0Sg
+https://moxfield.com/decks/ey2aYJWnpESOpvGmLfgrFQ
+https://moxfield.com/decks/PmtdLlbzpUODT23_T74dBg
+https://moxfield.com/decks/5vR34SINNEaY3gVXaBIKrA
+https://moxfield.com/decks/NYjepLGcok2Ymbaz5aERHg
+https://moxfield.com/decks/wnkSJ_Dau0-mN8FRbK7LGQ
+https://moxfield.com/decks/kPMPcfPQ7kWJvC78oWlM2Q
+https://moxfield.com/decks/Sc_EF47Ul0m3INfcTDikzA
+https://moxfield.com/decks/XUldxSM2cUGeW5kygnEgUQ
+https://moxfield.com/decks/xBqMfwW18E6OlWWtUXm_fQ
+https://moxfield.com/decks/m0OaAEFK7UG07nI3sPKVFw
+https://moxfield.com/decks/q6Qp99eJZkmj1SEsRl_C5A
+https://moxfield.com/decks/UTDx2D98wUeREbobhukHxw

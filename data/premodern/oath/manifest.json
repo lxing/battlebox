@@ -1,0 +1,108 @@
+{
+  "name": "Oath",
+  "colors": "",
+  "cards": [
+    {
+      "name": "Brushland",
+      "qty": 4
+    },
+    {
+      "name": "Mishra's Factory",
+      "qty": 4
+    },
+    {
+      "name": "Mox Diamond",
+      "qty": 4
+    },
+    {
+      "name": "Oath of Druids",
+      "qty": 4
+    },
+    {
+      "name": "Rishadan Port",
+      "qty": 4
+    },
+    {
+      "name": "Snow-Covered Forest",
+      "qty": 3
+    },
+    {
+      "name": "Snow-Covered Plains",
+      "qty": 1
+    },
+    {
+      "name": "Sphere of Resistance",
+      "qty": 4
+    },
+    {
+      "name": "Swords to Plowshares",
+      "qty": 4
+    },
+    {
+      "name": "Sylvan Library",
+      "qty": 4
+    },
+    {
+      "name": "Terravore",
+      "qty": 4
+    },
+    {
+      "name": "Thermokarst",
+      "qty": 4
+    },
+    {
+      "name": "Treetop Village",
+      "qty": 4
+    },
+    {
+      "name": "Wasteland",
+      "qty": 4
+    },
+    {
+      "name": "Windswept Heath",
+      "qty": 4
+    },
+    {
+      "name": "Winter's Grasp",
+      "qty": 4
+    }
+  ],
+  "sideboard": [
+    {
+      "name": "Aura of Silence",
+      "qty": 1
+    },
+    {
+      "name": "Call of the Herd",
+      "qty": 4
+    },
+    {
+      "name": "Cursed Totem",
+      "qty": 2
+    },
+    {
+      "name": "Enlightened Tutor",
+      "qty": 1
+    },
+    {
+      "name": "Naturalize",
+      "qty": 2
+    },
+    {
+      "name": "Ray of Revelation",
+      "qty": 1
+    },
+    {
+      "name": "Seal of Cleansing",
+      "qty": 1
+    },
+    {
+      "name": "Tormod's Crypt",
+      "qty": 1
+    },
+    {
+      "name": "Zuran Orb",
+      "qty": 2
+    }
+  ]
+}

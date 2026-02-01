@@ -1,0 +1,152 @@
+{
+  "name": "The Rock",
+  "colors": "",
+  "cards": [
+    {
+      "name": "Birds of Paradise",
+      "qty": 4
+    },
+    {
+      "name": "Blastoderm",
+      "qty": 2
+    },
+    {
+      "name": "Cabal Therapy",
+      "qty": 2
+    },
+    {
+      "name": "Chainer's Edict",
+      "qty": 1
+    },
+    {
+      "name": "Duress",
+      "qty": 4
+    },
+    {
+      "name": "Dust Bowl",
+      "qty": 1
+    },
+    {
+      "name": "Forest",
+      "qty": 6
+    },
+    {
+      "name": "Krosan Tusker",
+      "qty": 1
+    },
+    {
+      "name": "Living Wish",
+      "qty": 2
+    },
+    {
+      "name": "Llanowar Wastes",
+      "qty": 4
+    },
+    {
+      "name": "Naturalize",
+      "qty": 2
+    },
+    {
+      "name": "Pernicious Deed",
+      "qty": 3
+    },
+    {
+      "name": "Ravenous Baloth",
+      "qty": 3
+    },
+    {
+      "name": "Recurring Nightmare",
+      "qty": 2
+    },
+    {
+      "name": "Smother",
+      "qty": 1
+    },
+    {
+      "name": "Spiritmonger",
+      "qty": 1
+    },
+    {
+      "name": "Swamp",
+      "qty": 7
+    },
+    {
+      "name": "Tranquil Thicket",
+      "qty": 1
+    },
+    {
+      "name": "Treetop Village",
+      "qty": 4
+    },
+    {
+      "name": "Vendetta",
+      "qty": 2
+    },
+    {
+      "name": "Volrath's Stronghold",
+      "qty": 1
+    },
+    {
+      "name": "Wall of Blossoms",
+      "qty": 4
+    },
+    {
+      "name": "Yavimaya Elder",
+      "qty": 2
+    }
+  ],
+  "sideboard": [
+    {
+      "name": "Bone Shredder",
+      "qty": 1
+    },
+    {
+      "name": "Dust Bowl",
+      "qty": 1
+    },
+    {
+      "name": "Engineered Plague",
+      "qty": 2
+    },
+    {
+      "name": "Genesis",
+      "qty": 1
+    },
+    {
+      "name": "Haunting Echoes",
+      "qty": 1
+    },
+    {
+      "name": "Nantuko Vigilante",
+      "qty": 1
+    },
+    {
+      "name": "Naturalize",
+      "qty": 1
+    },
+    {
+      "name": "Ravenous Baloth",
+      "qty": 1
+    },
+    {
+      "name": "Smother",
+      "qty": 1
+    },
+    {
+      "name": "Spiritmonger",
+      "qty": 1
+    },
+    {
+      "name": "Tormod's Crypt",
+      "qty": 2
+    },
+    {
+      "name": "Wasteland",
+      "qty": 1
+    },
+    {
+      "name": "Withered Wretch",
+      "qty": 1
+    }
+  ]
+}

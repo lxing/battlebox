@@ -1,0 +1,132 @@
+{
+  "name": "Landstill",
+  "colors": "",
+  "cards": [
+    {
+      "name": "Adarkar Wastes",
+      "qty": 4
+    },
+    {
+      "name": "Coastal Tower",
+      "qty": 2
+    },
+    {
+      "name": "Counterspell",
+      "qty": 4
+    },
+    {
+      "name": "Decree of Justice",
+      "qty": 3
+    },
+    {
+      "name": "Disenchant",
+      "qty": 3
+    },
+    {
+      "name": "Dust Bowl",
+      "qty": 2
+    },
+    {
+      "name": "Fact or Fiction",
+      "qty": 3
+    },
+    {
+      "name": "Faerie Conclave",
+      "qty": 2
+    },
+    {
+      "name": "Flooded Strand",
+      "qty": 4
+    },
+    {
+      "name": "Forbid",
+      "qty": 1
+    },
+    {
+      "name": "Humility",
+      "qty": 1
+    },
+    {
+      "name": "Impulse",
+      "qty": 4
+    },
+    {
+      "name": "Island",
+      "qty": 4
+    },
+    {
+      "name": "Mana Leak",
+      "qty": 4
+    },
+    {
+      "name": "Mishra's Factory",
+      "qty": 4
+    },
+    {
+      "name": "Phyrexian Furnace",
+      "qty": 1
+    },
+    {
+      "name": "Plains",
+      "qty": 3
+    },
+    {
+      "name": "Standstill",
+      "qty": 4
+    },
+    {
+      "name": "Stifle",
+      "qty": 1
+    },
+    {
+      "name": "Swords to Plowshares",
+      "qty": 4
+    },
+    {
+      "name": "Wrath of God",
+      "qty": 2
+    }
+  ],
+  "sideboard": [
+    {
+      "name": "Annul",
+      "qty": 2
+    },
+    {
+      "name": "Blue Elemental Blast",
+      "qty": 3
+    },
+    {
+      "name": "Circle of Protection: Red",
+      "qty": 2
+    },
+    {
+      "name": "Decree of Justice",
+      "qty": 1
+    },
+    {
+      "name": "Disenchant",
+      "qty": 1
+    },
+    {
+      "name": "Hydroblast",
+      "qty": 1
+    },
+    {
+      "name": "Phyrexian Furnace",
+      "qty": 1
+    },
+    {
+      "name": "Seal of Cleansing",
+      "qty": 1
+    },
+    {
+      "name": "Stifle",
+      "qty": 2
+    },
+    {
+      "name": "Wrath of God",
+      "qty": 1
+    }
+  ]
+}

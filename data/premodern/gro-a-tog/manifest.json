@@ -1,0 +1,112 @@
+{
+  "name": "Gro-a-Tog",
+  "colors": "",
+  "cards": [
+    {
+      "name": "Armageddon",
+      "qty": 2
+    },
+    {
+      "name": "City of Brass",
+      "qty": 4
+    },
+    {
+      "name": "Counterspell",
+      "qty": 4
+    },
+    {
+      "name": "Daze",
+      "qty": 1
+    },
+    {
+      "name": "Fire / Ice",
+      "qty": 2
+    },
+    {
+      "name": "Flooded Strand",
+      "qty": 4
+    },
+    {
+      "name": "Gush",
+      "qty": 4
+    },
+    {
+      "name": "Island",
+      "qty": 8
+    },
+    {
+      "name": "Meddling Mage",
+      "qty": 4
+    },
+    {
+      "name": "Mox Diamond",
+      "qty": 4
+    },
+    {
+      "name": "Opt",
+      "qty": 4
+    },
+    {
+      "name": "Plains",
+      "qty": 1
+    },
+    {
+      "name": "Portent",
+      "qty": 4
+    },
+    {
+      "name": "Psychatog",
+      "qty": 2
+    },
+    {
+      "name": "Quirion Dryad",
+      "qty": 4
+    },
+    {
+      "name": "Sleight of Hand",
+      "qty": 3
+    },
+    {
+      "name": "Swords to Plowshares",
+      "qty": 4
+    },
+    {
+      "name": "Undiscovered Paradise",
+      "qty": 1
+    }
+  ],
+  "sideboard": [
+    {
+      "name": "Annul",
+      "qty": 2
+    },
+    {
+      "name": "Call of the Herd",
+      "qty": 3
+    },
+    {
+      "name": "Disenchant",
+      "qty": 3
+    },
+    {
+      "name": "Engineered Plague",
+      "qty": 2
+    },
+    {
+      "name": "Psychatog",
+      "qty": 1
+    },
+    {
+      "name": "Pyroclasm",
+      "qty": 2
+    },
+    {
+      "name": "Ray of Revelation",
+      "qty": 1
+    },
+    {
+      "name": "Winter Orb",
+      "qty": 1
+    }
+  ]
+}

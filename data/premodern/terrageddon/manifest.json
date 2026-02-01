@@ -1,0 +1,124 @@
+{
+  "name": "TerraGeddon",
+  "colors": "",
+  "cards": [
+    {
+      "name": "Armageddon",
+      "qty": 4
+    },
+    {
+      "name": "Brushland",
+      "qty": 4
+    },
+    {
+      "name": "Call of the Herd",
+      "qty": 2
+    },
+    {
+      "name": "Exalted Angel",
+      "qty": 2
+    },
+    {
+      "name": "Forest",
+      "qty": 3
+    },
+    {
+      "name": "Mox Diamond",
+      "qty": 4
+    },
+    {
+      "name": "Naturalize",
+      "qty": 2
+    },
+    {
+      "name": "Nimble Mongoose",
+      "qty": 4
+    },
+    {
+      "name": "Plains",
+      "qty": 3
+    },
+    {
+      "name": "Rishadan Port",
+      "qty": 2
+    },
+    {
+      "name": "Rith's Grove",
+      "qty": 2
+    },
+    {
+      "name": "Secluded Steppe",
+      "qty": 1
+    },
+    {
+      "name": "Swords to Plowshares",
+      "qty": 4
+    },
+    {
+      "name": "Sylvan Library",
+      "qty": 4
+    },
+    {
+      "name": "Terravore",
+      "qty": 4
+    },
+    {
+      "name": "Tranquil Thicket",
+      "qty": 1
+    },
+    {
+      "name": "Treetop Village",
+      "qty": 2
+    },
+    {
+      "name": "Wasteland",
+      "qty": 4
+    },
+    {
+      "name": "Weathered Wayfarer",
+      "qty": 4
+    },
+    {
+      "name": "Windswept Heath",
+      "qty": 4
+    }
+  ],
+  "sideboard": [
+    {
+      "name": "Cataclysm",
+      "qty": 2
+    },
+    {
+      "name": "Circle of Protection: Red",
+      "qty": 1
+    },
+    {
+      "name": "Cursed Totem",
+      "qty": 2
+    },
+    {
+      "name": "Disenchant",
+      "qty": 2
+    },
+    {
+      "name": "Last Breath",
+      "qty": 1
+    },
+    {
+      "name": "Reprisal",
+      "qty": 1
+    },
+    {
+      "name": "Tormod's Crypt",
+      "qty": 2
+    },
+    {
+      "name": "Warmth",
+      "qty": 2
+    },
+    {
+      "name": "Zuran Orb",
+      "qty": 2
+    }
+  ]
+}

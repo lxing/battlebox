@@ -1,0 +1,116 @@
+{
+  "name": "Enchantress",
+  "colors": "",
+  "cards": [
+    {
+      "name": "Argothian Enchantress",
+      "qty": 4
+    },
+    {
+      "name": "Brushland",
+      "qty": 4
+    },
+    {
+      "name": "Elephant Grass",
+      "qty": 4
+    },
+    {
+      "name": "Enchantress's Presence",
+      "qty": 4
+    },
+    {
+      "name": "Enlightened Tutor",
+      "qty": 1
+    },
+    {
+      "name": "Exploration",
+      "qty": 3
+    },
+    {
+      "name": "Forest",
+      "qty": 6
+    },
+    {
+      "name": "Mirri's Guile",
+      "qty": 4
+    },
+    {
+      "name": "Mobilization",
+      "qty": 1
+    },
+    {
+      "name": "Opalescence",
+      "qty": 1
+    },
+    {
+      "name": "Parallax Wave",
+      "qty": 1
+    },
+    {
+      "name": "Plains",
+      "qty": 3
+    },
+    {
+      "name": "Replenish",
+      "qty": 2
+    },
+    {
+      "name": "Seal of Cleansing",
+      "qty": 3
+    },
+    {
+      "name": "Serra's Sanctum",
+      "qty": 3
+    },
+    {
+      "name": "Solitary Confinement",
+      "qty": 1
+    },
+    {
+      "name": "Sterling Grove",
+      "qty": 4
+    },
+    {
+      "name": "Wild Growth",
+      "qty": 4
+    },
+    {
+      "name": "Windswept Heath",
+      "qty": 4
+    },
+    {
+      "name": "Wooded Foothills",
+      "qty": 2
+    },
+    {
+      "name": "Worship",
+      "qty": 1
+    }
+  ],
+  "sideboard": [
+    {
+      "name": "Aura of Silence",
+      "qty": 3
+    },
+    {
+      "name": "Sacred Ground",
+      "qty": 2
+    },
+    {
+      "name": "Swords to Plowshares",
+      "qty": 3
+    },
+    {
+      "name": "Tormod's Crypt",
+      "qty": 2
+    },
+    {
+      "name": "Tsabo's Web",
+      "qty": 2
+    },
+    {
+      "name": "Xantid Swarm",
+      "qty": 3
+    }
+  ]
+}

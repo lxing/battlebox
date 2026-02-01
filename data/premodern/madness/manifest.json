@@ -1,0 +1,100 @@
+{
+  "name": "Madness",
+  "colors": "",
+  "cards": [
+    {
+      "name": "Arrogant Wurm",
+      "qty": 3
+    },
+    {
+      "name": "Basking Rootwalla",
+      "qty": 4
+    },
+    {
+      "name": "Careful Study",
+      "qty": 4
+    },
+    {
+      "name": "City of Brass",
+      "qty": 1
+    },
+    {
+      "name": "Counterspell",
+      "qty": 4
+    },
+    {
+      "name": "Daze",
+      "qty": 4
+    },
+    {
+      "name": "Forest",
+      "qty": 6
+    },
+    {
+      "name": "Frantic Search",
+      "qty": 4
+    },
+    {
+      "name": "Gilded Drake",
+      "qty": 1
+    },
+    {
+      "name": "Island",
+      "qty": 7
+    },
+    {
+      "name": "Squee, Goblin Nabob",
+      "qty": 4
+    },
+    {
+      "name": "Survival of the Fittest",
+      "qty": 4
+    },
+    {
+      "name": "Wasteland",
+      "qty": 4
+    },
+    {
+      "name": "Waterfront Bouncer",
+      "qty": 1
+    },
+    {
+      "name": "Wild Mongrel",
+      "qty": 4
+    },
+    {
+      "name": "Wonder",
+      "qty": 1
+    },
+    {
+      "name": "Yavimaya Coast",
+      "qty": 4
+    }
+  ],
+  "sideboard": [
+    {
+      "name": "Blue Elemental Blast",
+      "qty": 2
+    },
+    {
+      "name": "Cave-In",
+      "qty": 2
+    },
+    {
+      "name": "Hydroblast",
+      "qty": 2
+    },
+    {
+      "name": "Naturalize",
+      "qty": 3
+    },
+    {
+      "name": "Pyrokinesis",
+      "qty": 4
+    },
+    {
+      "name": "Tsabo's Web",
+      "qty": 2
+    }
+  ]
+}

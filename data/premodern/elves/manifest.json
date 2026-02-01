@@ -1,0 +1,132 @@
+{
+  "name": "Elves",
+  "colors": "",
+  "cards": [
+    {
+      "name": "Anger",
+      "qty": 1
+    },
+    {
+      "name": "Caller of the Claw",
+      "qty": 1
+    },
+    {
+      "name": "Deranged Hermit",
+      "qty": 2
+    },
+    {
+      "name": "Forest",
+      "qty": 9
+    },
+    {
+      "name": "Fyndhorn Elves",
+      "qty": 4
+    },
+    {
+      "name": "Gaea's Cradle",
+      "qty": 4
+    },
+    {
+      "name": "Kamahl, Fist of Krosa",
+      "qty": 1
+    },
+    {
+      "name": "Llanowar Elves",
+      "qty": 4
+    },
+    {
+      "name": "Masticore",
+      "qty": 1
+    },
+    {
+      "name": "Mountain",
+      "qty": 1
+    },
+    {
+      "name": "Multani's Acolyte",
+      "qty": 4
+    },
+    {
+      "name": "Nantuko Vigilante",
+      "qty": 1
+    },
+    {
+      "name": "Priest of Titania",
+      "qty": 4
+    },
+    {
+      "name": "Quirion Ranger",
+      "qty": 4
+    },
+    {
+      "name": "Squee, Goblin Nabob",
+      "qty": 1
+    },
+    {
+      "name": "Survival of the Fittest",
+      "qty": 4
+    },
+    {
+      "name": "Tangle Wire",
+      "qty": 4
+    },
+    {
+      "name": "Wellwisher",
+      "qty": 1
+    },
+    {
+      "name": "Wirewood Symbiote",
+      "qty": 4
+    },
+    {
+      "name": "Wooded Foothills",
+      "qty": 4
+    },
+    {
+      "name": "Yavimaya Granger",
+      "qty": 1
+    }
+  ],
+  "sideboard": [
+    {
+      "name": "Biorhythm",
+      "qty": 2
+    },
+    {
+      "name": "Caller of the Claw",
+      "qty": 1
+    },
+    {
+      "name": "Druid Lyrist",
+      "qty": 1
+    },
+    {
+      "name": "Elvish Champion",
+      "qty": 1
+    },
+    {
+      "name": "Genesis",
+      "qty": 1
+    },
+    {
+      "name": "Goblin Sharpshooter",
+      "qty": 1
+    },
+    {
+      "name": "Naturalize",
+      "qty": 4
+    },
+    {
+      "name": "Uktabi Orangutan",
+      "qty": 1
+    },
+    {
+      "name": "Wellwisher",
+      "qty": 1
+    },
+    {
+      "name": "Winter Orb",
+      "qty": 2
+    }
+  ]
+}
