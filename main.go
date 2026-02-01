@@ -23,6 +23,7 @@ var useTailscale = flag.Bool("ts", false, "serve over Tailscale")
 
 func main() {
 	flag.Parse()
+	dev := os.Getenv("DEV") != ""
 
 	mux := http.NewServeMux()
 
@@ -33,9 +34,11 @@ func main() {
 	staticFS, _ := fs.Sub(staticFiles, "static")
 	fileServer := http.FileServer(http.FS(staticFS))
 	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-	if strings.HasPrefix(r.URL.Path, "/assets/") && os.Getenv("DEV") == "" {
-		w.Header().Set("Cache-Control", "public, max-age=31536000, immutable")
-	}
+		if dev {
+			w.Header().Set("Cache-Control", "no-store")
+		} else if strings.HasPrefix(r.URL.Path, "/assets/") {
+			w.Header().Set("Cache-Control", "public, max-age=31536000, immutable")
+		}
 
 		p := r.URL.Path
 		if p != "/" && !strings.Contains(path.Base(p), ".") {
@@ -89,7 +92,11 @@ func main() {
 
 func handleDecks(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
-	w.Header().Set("Cache-Control", "public, max-age=3600")
+	if os.Getenv("DEV") != "" {
+		w.Header().Set("Cache-Control", "no-store")
+	} else {
+		w.Header().Set("Cache-Control", "public, max-age=3600")
+	}
 
 	parts := strings.Split(strings.Trim(r.URL.Path, "/"), "/")
 
