@@ -476,20 +476,24 @@ func indexCards(cards []Card) map[string]guideCardInfo {
 	return index
 }
 
-func parseGuideLine(line string) (int, string) {
+func parseGuideLine(line string) (int, string, error) {
 	line = strings.TrimSpace(line)
 	if line == "" {
-		return 0, ""
+		return 0, "", nil
 	}
 	match := guideCountRE.FindStringSubmatch(line)
 	if match == nil {
-		return 1, line
+		return 0, "", fmt.Errorf("missing quantity: %s", line)
 	}
 	qty, err := strconv.Atoi(match[1])
 	if err != nil || qty <= 0 {
-		return 1, strings.TrimSpace(match[2])
+		return 0, "", fmt.Errorf("invalid quantity: %s", line)
 	}
-	return qty, strings.TrimSpace(match[2])
+	name := strings.TrimSpace(match[2])
+	if name == "" {
+		return 0, "", fmt.Errorf("missing card name: %s", line)
+	}
+	return qty, name, nil
 }
 
 func extractCardName(input string) string {
@@ -506,7 +510,10 @@ func validateGuide(guide MatchupGuide, mainboard, sideboard map[string]guideCard
 	outCounts := map[string]int{}
 
 	for _, entry := range guide.In {
-		qty, name := parseGuideLine(entry)
+		qty, name, err := parseGuideLine(entry)
+		if err != nil {
+			return fmt.Errorf("IN line: %w", err)
+		}
 		name = extractCardName(name)
 		if name == "" {
 			continue
@@ -516,7 +523,10 @@ func validateGuide(guide MatchupGuide, mainboard, sideboard map[string]guideCard
 	}
 
 	for _, entry := range guide.Out {
-		qty, name := parseGuideLine(entry)
+		qty, name, err := parseGuideLine(entry)
+		if err != nil {
+			return fmt.Errorf("OUT line: %w", err)
+		}
 		name = extractCardName(name)
 		if name == "" {
 			continue
