@@ -161,7 +161,8 @@ h2 {
 .card {
   color: #7eb8ff;
   cursor: pointer;
-  border-bottom: 1px dotted #7eb8ff;
+  text-decoration: underline dotted;
+  text-underline-offset: 2px;
 }
 
 .card:hover {
