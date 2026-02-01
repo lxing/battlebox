@@ -107,6 +107,17 @@ h2 {
   line-height: 1.5;
 }
 
+.decklist-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
+  gap: 2rem;
+  align-items: start;
+}
+
+.decklist-grid.single {
+  grid-template-columns: minmax(0, 1fr);
+}
+
 .card-row {
   display: flex;
   align-items: baseline;
@@ -122,6 +133,12 @@ h2 {
   font-size: 0.75rem;
   text-transform: uppercase;
   margin-bottom: 0.25rem;
+}
+
+@media (max-width: 400px) {
+  .decklist-grid {
+    grid-template-columns: 1fr;
+  }
 }
 
 .card-qty {

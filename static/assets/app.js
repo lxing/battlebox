@@ -123,6 +123,19 @@
     return html;
   }
 
+  function renderCardGroup(cards, label) {
+    if (!cards || cards.length === 0) return '';
+    const count = cards.reduce((sum, c) => sum + c.qty, 0);
+    return `
+      <div class="card-group">
+        <div class="card-group-label">${label} (${count})</div>
+        ${cards.map(c =>
+          `<div class="card-row"><span class="card-qty">${c.qty}</span><span class="card" data-name="${c.name}" data-printing="${c.printing}">${c.name}</span></div>`
+        ).join('')}
+      </div>
+    `;
+  }
+
   // Scryfall image URL
   function getImageUrl(printing) {
     if (!printing) return null;
@@ -250,6 +263,15 @@
       return `<option value="${k}">${name}</option>`;
     }).join('');
 
+    const hasSideboard = deck.sideboard && deck.sideboard.length;
+    const sideboardHtml = hasSideboard ? `
+      <div class="decklist-col">
+        <div class="card-list">
+          ${renderCardGroup(deck.sideboard, 'Sideboard')}
+        </div>
+      </div>
+    ` : '';
+
     app.innerHTML = `
       <a href="#/${bb.slug}" class="back">← ${capitalize(bb.slug)}</a>
       <h1>${deck.name} <span class="colors">${formatColors(deck.colors)}</span></h1>
@@ -273,16 +295,14 @@
       ` : ''}
 
       <h2>Decklist</h2>
-      <div class="card-list">
-        ${renderCardsByType(deck.cards)}
-      </div>
-
-      ${deck.sideboard && deck.sideboard.length ? `
-        <h2>Sideboard</h2>
-        <div class="card-list">
-          ${deck.sideboard.map(c => `<div class="card-row"><span class="card-qty">${c.qty}</span><span class="card" data-name="${c.name}" data-printing="${c.printing}">${c.name}</span></div>`).join('')}
+      <div class="decklist-grid${hasSideboard ? '' : ' single'}">
+        <div class="decklist-col">
+          <div class="card-list">
+            ${renderCardsByType(deck.cards)}
+          </div>
         </div>
-      ` : ''}
+        ${sideboardHtml}
+      </div>
 
       
     `;
