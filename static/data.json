@@ -34,9 +34,9 @@
             },
             {
               "name": "Supreme Verdict",
-              "printing": "",
+              "printing": "clu/211",
               "qty": 3,
-              "type": ""
+              "type": "spell"
             },
             {
               "name": "Flooded Strand",
@@ -1668,6 +1668,2637 @@
             }
           ],
           "primer": "Use your forked tongue to lick your opponents and your own eyeballs at the same time! Lizards get straight to the point with early aggression and burn to finish your opponents off. Use [[Iridescent Vinelasher]] and [[Hired Claw]] to get in early hits, then scale up the damage with [[Gev|Gev, Scaled Scorch]] and [[Valley Flamecaller]].\n\n[[Fireglass Mentor]], [[Flamecache Gecko]], and [[Party Thrasher]] provide loads of card selection and light card advantage in the midgame. The last two feed a light discard subtheme with [[Fiery Temper]].\n\nTip: Hang onto your extra land drops. A [[Vinelasher|Iridescent Vinelasher]] and offspring with [[Flamecaller|Valley Flamecaller]] and [[Bloodstained Mire]] equals 8 damage to the face in the late game!"
+        }
+      ]
+    },
+    {
+      "slug": "pauper",
+      "decks": []
+    },
+    {
+      "slug": "premodern",
+      "decks": [
+        {
+          "slug": "bw-control",
+          "name": "BW Control",
+          "colors": "",
+          "cards": [
+            {
+              "name": "Caves of Koilos",
+              "printing": "apc/140",
+              "qty": 4,
+              "type": "land"
+            },
+            {
+              "name": "Decree of Justice",
+              "printing": "scg/8",
+              "qty": 4,
+              "type": "spell"
+            },
+            {
+              "name": "Disenchant",
+              "printing": "7ed/13",
+              "qty": 1,
+              "type": "spell"
+            },
+            {
+              "name": "Duress",
+              "printing": "dmr/81",
+              "qty": 4,
+              "type": "spell"
+            },
+            {
+              "name": "Dust Bowl",
+              "printing": "mmq/316",
+              "qty": 2,
+              "type": "land"
+            },
+            {
+              "name": "Eternal Dragon",
+              "printing": "scg/12",
+              "qty": 3,
+              "type": "creature"
+            },
+            {
+              "name": "Exalted Angel",
+              "printing": "ons/28",
+              "qty": 4,
+              "type": "creature"
+            },
+            {
+              "name": "Gerrard's Verdict",
+              "printing": "dmr/358",
+              "qty": 4,
+              "type": "spell"
+            },
+            {
+              "name": "Phyrexian Furnace",
+              "printing": "wth/155",
+              "qty": 1,
+              "type": "spell"
+            },
+            {
+              "name": "Plains",
+              "printing": "mkm/278",
+              "qty": 9,
+              "type": "land"
+            },
+            {
+              "name": "Reflecting Pool",
+              "printing": "cns/210",
+              "qty": 2,
+              "type": "land"
+            },
+            {
+              "name": "Skeletal Scrying",
+              "printing": "c14/162",
+              "qty": 3,
+              "type": "spell"
+            },
+            {
+              "name": "Swamp",
+              "printing": "cmm/443",
+              "qty": 9,
+              "type": "land"
+            },
+            {
+              "name": "Swords to Plowshares",
+              "printing": "dmr/275",
+              "qty": 4,
+              "type": "spell"
+            },
+            {
+              "name": "Vindicate",
+              "printing": "brc/131",
+              "qty": 4,
+              "type": "spell"
+            },
+            {
+              "name": "Wrath of God",
+              "printing": "dmr/279",
+              "qty": 2,
+              "type": "spell"
+            }
+          ],
+          "sideboard": [
+            {
+              "name": "Akroma's Vengeance",
+              "printing": "ons/2",
+              "qty": 1,
+              "type": "spell"
+            },
+            {
+              "name": "Aura of Silence",
+              "printing": "c15/60",
+              "qty": 2,
+              "type": "spell"
+            },
+            {
+              "name": "Circle of Protection: Red",
+              "printing": "4ed/17",
+              "qty": 1,
+              "type": "spell"
+            },
+            {
+              "name": "Disenchant",
+              "printing": "7ed/13",
+              "qty": 2,
+              "type": "spell"
+            },
+            {
+              "name": "Engineered Plague",
+              "printing": "7ed/133",
+              "qty": 2,
+              "type": "spell"
+            },
+            {
+              "name": "Haunting Echoes",
+              "printing": "m11/99",
+              "qty": 1,
+              "type": "spell"
+            },
+            {
+              "name": "Infest",
+              "printing": "cn2/139",
+              "qty": 2,
+              "type": "spell"
+            },
+            {
+              "name": "Silver Knight",
+              "printing": "scg/23",
+              "qty": 2,
+              "type": "creature"
+            },
+            {
+              "name": "Tormod's Crypt",
+              "printing": "dmr/388",
+              "qty": 1,
+              "type": "spell"
+            },
+            {
+              "name": "Warmth",
+              "printing": "6ed/52",
+              "qty": 1,
+              "type": "spell"
+            }
+          ],
+          "primer": "BW Control is a classic old-school control deck: few threats, lots of efficient interaction, and a wide spread of answers. The plan is to neutralize the opponent’s game plan, stretch the game, and win late with resilient finishers like [[Exalted Angel]] and [[Eternal Dragon]].\n\n## Early game\nUse [[Duress]] and [[Gerrard's Verdict]] to strip key spells and slow the opponent’s development. Back that up with flexible removal like [[Swords to Plowshares]] and [[Vindicate]] to keep the board clear while you trade resources.\n\n## Midgame\n[[Wrath of God]] resets the board when you fall behind, and [[Skeletal Scrying]] provides burst card advantage at instant speed. [[Phyrexian Furnace]] gives targeted graveyard interaction and can recycle itself when it is no longer relevant. [[Eternal Dragon]] helps ensure land drops early and returns later as a long-game threat.\n\n## Closing the game\n[[Exalted Angel]] stabilizes against aggressive decks and turns races around. [[Decree of Justice]] is your most flexible finisher; the cycling mode is often the safer line and plays well through counter-heavy matchups, while hard-casting can close quickly when the coast is clear.\n\n## Sideboard overview\n[[Circle of Protection: Red]] and [[Warmth]] are the primary tools against red damage. [[Aura of Silence]] and extra [[Disenchant]] cover artifacts and enchantments. [[Infest]] helps against go-wide creature decks, and [[Haunting Echoes]] plus [[Tormod's Crypt]] reinforce the graveyard plan. [[Engineered Plague]] and [[Silver Knight]] are additional matchup-specific tools."
+        },
+        {
+          "slug": "elves",
+          "name": "Elves",
+          "colors": "",
+          "cards": [
+            {
+              "name": "Anger",
+              "printing": "jud/77",
+              "qty": 1,
+              "type": "creature"
+            },
+            {
+              "name": "Caller of the Claw",
+              "printing": "lgn/121",
+              "qty": 1,
+              "type": "creature"
+            },
+            {
+              "name": "Deranged Hermit",
+              "printing": "ulg/101",
+              "qty": 2,
+              "type": "creature"
+            },
+            {
+              "name": "Forest",
+              "printing": "dmr/410",
+              "qty": 9,
+              "type": "land"
+            },
+            {
+              "name": "Fyndhorn Elves",
+              "printing": "p30a/3",
+              "qty": 4,
+              "type": "creature"
+            },
+            {
+              "name": "Gaea's Cradle",
+              "printing": "usg/321",
+              "qty": 4,
+              "type": "land"
+            },
+            {
+              "name": "Kamahl, Fist of Krosa",
+              "printing": "dmr/344",
+              "qty": 1,
+              "type": "creature"
+            },
+            {
+              "name": "Llanowar Elves",
+              "printing": "pdmu/1★",
+              "qty": 4,
+              "type": "creature"
+            },
+            {
+              "name": "Masticore",
+              "printing": "uds/134",
+              "qty": 1,
+              "type": "creature"
+            },
+            {
+              "name": "Mountain",
+              "printing": "dmr/409",
+              "qty": 1,
+              "type": "land"
+            },
+            {
+              "name": "Multani's Acolyte",
+              "printing": "ulg/108",
+              "qty": 4,
+              "type": "creature"
+            },
+            {
+              "name": "Nantuko Vigilante",
+              "printing": "lgn/132",
+              "qty": 1,
+              "type": "creature"
+            },
+            {
+              "name": "Priest of Titania",
+              "printing": "usg/270",
+              "qty": 4,
+              "type": "creature"
+            },
+            {
+              "name": "Quirion Ranger",
+              "printing": "vis/117",
+              "qty": 4,
+              "type": "creature"
+            },
+            {
+              "name": "Squee, Goblin Nabob",
+              "printing": "mmq/214",
+              "qty": 1,
+              "type": "creature"
+            },
+            {
+              "name": "Survival of the Fittest",
+              "printing": "exo/129",
+              "qty": 4,
+              "type": "spell"
+            },
+            {
+              "name": "Tangle Wire",
+              "printing": "nem/139",
+              "qty": 4,
+              "type": "spell"
+            },
+            {
+              "name": "Wellwisher",
+              "printing": "ons/300",
+              "qty": 1,
+              "type": "creature"
+            },
+            {
+              "name": "Wirewood Symbiote",
+              "printing": "scg/133",
+              "qty": 4,
+              "type": "creature"
+            },
+            {
+              "name": "Wooded Foothills",
+              "printing": "mh3/441",
+              "qty": 4,
+              "type": "land"
+            },
+            {
+              "name": "Yavimaya Granger",
+              "printing": "ulg/118",
+              "qty": 1,
+              "type": "creature"
+            }
+          ],
+          "sideboard": [
+            {
+              "name": "Biorhythm",
+              "printing": "ons/247",
+              "qty": 2,
+              "type": "spell"
+            },
+            {
+              "name": "Caller of the Claw",
+              "printing": "lgn/121",
+              "qty": 1,
+              "type": "creature"
+            },
+            {
+              "name": "Druid Lyrist",
+              "printing": "ody/238",
+              "qty": 1,
+              "type": "creature"
+            },
+            {
+              "name": "Elvish Champion",
+              "printing": "inv/186",
+              "qty": 1,
+              "type": "creature"
+            },
+            {
+              "name": "Genesis",
+              "printing": "jud/117",
+              "qty": 1,
+              "type": "creature"
+            },
+            {
+              "name": "Goblin Sharpshooter",
+              "printing": "ons/207",
+              "qty": 1,
+              "type": "creature"
+            },
+            {
+              "name": "Naturalize",
+              "printing": "ktk/142",
+              "qty": 4,
+              "type": "spell"
+            },
+            {
+              "name": "Uktabi Orangutan",
+              "printing": "vis/123",
+              "qty": 1,
+              "type": "creature"
+            },
+            {
+              "name": "Wellwisher",
+              "printing": "ons/300",
+              "qty": 1,
+              "type": "creature"
+            },
+            {
+              "name": "Winter Orb",
+              "printing": "5ed/408",
+              "qty": 2,
+              "type": "spell"
+            }
+          ],
+          "primer": ""
+        },
+        {
+          "slug": "enchantress",
+          "name": "Enchantress",
+          "colors": "",
+          "cards": [
+            {
+              "name": "Argothian Enchantress",
+              "printing": "ema/158",
+              "qty": 4,
+              "type": "creature"
+            },
+            {
+              "name": "Brushland",
+              "printing": "7ed/326",
+              "qty": 4,
+              "type": "land"
+            },
+            {
+              "name": "Elephant Grass",
+              "printing": "vis/104",
+              "qty": 4,
+              "type": "spell"
+            },
+            {
+              "name": "Enchantress's Presence",
+              "printing": "c18/141",
+              "qty": 4,
+              "type": "spell"
+            },
+            {
+              "name": "Enlightened Tutor",
+              "printing": "dmr/263",
+              "qty": 1,
+              "type": "spell"
+            },
+            {
+              "name": "Exploration",
+              "printing": "dmr/339",
+              "qty": 3,
+              "type": "spell"
+            },
+            {
+              "name": "Forest",
+              "printing": "dmr/410",
+              "qty": 6,
+              "type": "land"
+            },
+            {
+              "name": "Mirri's Guile",
+              "printing": "tmp/236",
+              "qty": 4,
+              "type": "spell"
+            },
+            {
+              "name": "Mobilization",
+              "printing": "c14/81",
+              "qty": 1,
+              "type": "spell"
+            },
+            {
+              "name": "Opalescence",
+              "printing": "uds/13",
+              "qty": 1,
+              "type": "spell"
+            },
+            {
+              "name": "Parallax Wave",
+              "printing": "nem/17",
+              "qty": 1,
+              "type": "spell"
+            },
+            {
+              "name": "Plains",
+              "printing": "mkm/278",
+              "qty": 3,
+              "type": "land"
+            },
+            {
+              "name": "Replenish",
+              "printing": "uds/15",
+              "qty": 2,
+              "type": "spell"
+            },
+            {
+              "name": "Seal of Cleansing",
+              "printing": "nem/18",
+              "qty": 3,
+              "type": "spell"
+            },
+            {
+              "name": "Serra's Sanctum",
+              "printing": "usg/325",
+              "qty": 3,
+              "type": "land"
+            },
+            {
+              "name": "Solitary Confinement",
+              "printing": "mh2/265",
+              "qty": 1,
+              "type": "spell"
+            },
+            {
+              "name": "Sterling Grove",
+              "printing": "mh2/293",
+              "qty": 4,
+              "type": "spell"
+            },
+            {
+              "name": "Wild Growth",
+              "printing": "mkc/195",
+              "qty": 4,
+              "type": "spell"
+            },
+            {
+              "name": "Windswept Heath",
+              "printing": "mh3/235",
+              "qty": 4,
+              "type": "land"
+            },
+            {
+              "name": "Wooded Foothills",
+              "printing": "mh3/441",
+              "qty": 2,
+              "type": "land"
+            },
+            {
+              "name": "Worship",
+              "printing": "usg/57",
+              "qty": 1,
+              "type": "spell"
+            }
+          ],
+          "sideboard": [
+            {
+              "name": "Aura of Silence",
+              "printing": "c15/60",
+              "qty": 3,
+              "type": "spell"
+            },
+            {
+              "name": "Sacred Ground",
+              "printing": "7ed/36",
+              "qty": 2,
+              "type": "spell"
+            },
+            {
+              "name": "Swords to Plowshares",
+              "printing": "dmr/275",
+              "qty": 3,
+              "type": "spell"
+            },
+            {
+              "name": "Tormod's Crypt",
+              "printing": "dmr/388",
+              "qty": 2,
+              "type": "spell"
+            },
+            {
+              "name": "Tsabo's Web",
+              "printing": "inv/317",
+              "qty": 2,
+              "type": "spell"
+            },
+            {
+              "name": "Xantid Swarm",
+              "printing": "ema/193",
+              "qty": 3,
+              "type": "creature"
+            }
+          ],
+          "primer": ""
+        },
+        {
+          "slug": "goblins",
+          "name": "Goblins",
+          "colors": "",
+          "cards": [
+            {
+              "name": "Forest",
+              "printing": "dmr/410",
+              "qty": 1,
+              "type": "land"
+            },
+            {
+              "name": "Gempalm Incinerator",
+              "printing": "dmr/322",
+              "qty": 4,
+              "type": "creature"
+            },
+            {
+              "name": "Goblin King",
+              "printing": "7ed/190",
+              "qty": 1,
+              "type": "creature"
+            },
+            {
+              "name": "Goblin Lackey",
+              "printing": "usg/190",
+              "qty": 4,
+              "type": "creature"
+            },
+            {
+              "name": "Goblin Matron",
+              "printing": "dmr/323",
+              "qty": 4,
+              "type": "creature"
+            },
+            {
+              "name": "Goblin Piledriver",
+              "printing": "ons/205",
+              "qty": 4,
+              "type": "creature"
+            },
+            {
+              "name": "Goblin Ringleader",
+              "printing": "apc/62",
+              "qty": 4,
+              "type": "creature"
+            },
+            {
+              "name": "Goblin Sharpshooter",
+              "printing": "ons/207",
+              "qty": 1,
+              "type": "creature"
+            },
+            {
+              "name": "Goblin Warchief",
+              "printing": "scg/97",
+              "qty": 4,
+              "type": "creature"
+            },
+            {
+              "name": "Karplusan Forest",
+              "printing": "7ed/336",
+              "qty": 4,
+              "type": "land"
+            },
+            {
+              "name": "Mogg Fanatic",
+              "printing": "tmp/190",
+              "qty": 4,
+              "type": "creature"
+            },
+            {
+              "name": "Mountain",
+              "printing": "dmr/409",
+              "qty": 9,
+              "type": "land"
+            },
+            {
+              "name": "Naturalize",
+              "printing": "ktk/142",
+              "qty": 2,
+              "type": "spell"
+            },
+            {
+              "name": "Rishadan Port",
+              "printing": "mmq/324",
+              "qty": 4,
+              "type": "land"
+            },
+            {
+              "name": "Siege-Gang Commander",
+              "printing": "dmr/330",
+              "qty": 3,
+              "type": "creature"
+            },
+            {
+              "name": "Skirk Prospector",
+              "printing": "ons/230",
+              "qty": 1,
+              "type": "creature"
+            },
+            {
+              "name": "Wasteland",
+              "printing": "tmp/330",
+              "qty": 2,
+              "type": "land"
+            },
+            {
+              "name": "Wooded Foothills",
+              "printing": "mh3/441",
+              "qty": 4,
+              "type": "land"
+            }
+          ],
+          "sideboard": [
+            {
+              "name": "Anarchy",
+              "printing": "ice/170",
+              "qty": 2,
+              "type": "spell"
+            },
+            {
+              "name": "Goblin Tinkerer",
+              "printing": "mir/180",
+              "qty": 1,
+              "type": "creature"
+            },
+            {
+              "name": "Naturalize",
+              "printing": "ktk/142",
+              "qty": 2,
+              "type": "spell"
+            },
+            {
+              "name": "Pyroblast",
+              "printing": "ice/213",
+              "qty": 2,
+              "type": "spell"
+            },
+            {
+              "name": "Pyrokinesis",
+              "printing": "all/78",
+              "qty": 2,
+              "type": "spell"
+            },
+            {
+              "name": "Red Elemental Blast",
+              "printing": "3ed/171",
+              "qty": 1,
+              "type": "spell"
+            },
+            {
+              "name": "Tormod's Crypt",
+              "printing": "dmr/388",
+              "qty": 3,
+              "type": "spell"
+            },
+            {
+              "name": "Tranquil Domain",
+              "printing": "mir/245",
+              "qty": 2,
+              "type": "spell"
+            }
+          ],
+          "primer": ""
+        },
+        {
+          "slug": "gro-a-tog",
+          "name": "Gro-a-Tog",
+          "colors": "",
+          "cards": [
+            {
+              "name": "Armageddon",
+              "printing": "6ed/4",
+              "qty": 2,
+              "type": "spell"
+            },
+            {
+              "name": "City of Brass",
+              "printing": "7ed/327",
+              "qty": 4,
+              "type": "land"
+            },
+            {
+              "name": "Counterspell",
+              "printing": "dmr/281",
+              "qty": 4,
+              "type": "spell"
+            },
+            {
+              "name": "Daze",
+              "printing": "nem/30",
+              "qty": 1,
+              "type": "spell"
+            },
+            {
+              "name": "Fire / Ice",
+              "printing": "apc/128",
+              "qty": 2,
+              "type": "spell"
+            },
+            {
+              "name": "Flooded Strand",
+              "printing": "ons/316",
+              "qty": 4,
+              "type": "land"
+            },
+            {
+              "name": "Gush",
+              "printing": "mmq/82",
+              "qty": 4,
+              "type": "spell"
+            },
+            {
+              "name": "Island",
+              "printing": "inv/336",
+              "qty": 8,
+              "type": "land"
+            },
+            {
+              "name": "Meddling Mage",
+              "printing": "pls/116",
+              "qty": 4,
+              "type": "creature"
+            },
+            {
+              "name": "Mox Diamond",
+              "printing": "sth/138",
+              "qty": 4,
+              "type": "spell"
+            },
+            {
+              "name": "Opt",
+              "printing": "inv/64",
+              "qty": 4,
+              "type": "spell"
+            },
+            {
+              "name": "Plains",
+              "printing": "mkm/278",
+              "qty": 1,
+              "type": "land"
+            },
+            {
+              "name": "Portent",
+              "printing": "ice/90",
+              "qty": 4,
+              "type": "spell"
+            },
+            {
+              "name": "Psychatog",
+              "printing": "ody/292",
+              "qty": 2,
+              "type": "creature"
+            },
+            {
+              "name": "Quirion Dryad",
+              "printing": "pls/89",
+              "qty": 4,
+              "type": "creature"
+            },
+            {
+              "name": "Sleight of Hand",
+              "printing": "7ed/98",
+              "qty": 3,
+              "type": "spell"
+            },
+            {
+              "name": "Swords to Plowshares",
+              "printing": "dmr/275",
+              "qty": 4,
+              "type": "spell"
+            },
+            {
+              "name": "Undiscovered Paradise",
+              "printing": "vis/167",
+              "qty": 1,
+              "type": "land"
+            }
+          ],
+          "sideboard": [
+            {
+              "name": "Annul",
+              "printing": "usg/59",
+              "qty": 2,
+              "type": "spell"
+            },
+            {
+              "name": "Call of the Herd",
+              "printing": "tsb/74",
+              "qty": 3,
+              "type": "spell"
+            },
+            {
+              "name": "Disenchant",
+              "printing": "7ed/13",
+              "qty": 3,
+              "type": "spell"
+            },
+            {
+              "name": "Engineered Plague",
+              "printing": "7ed/133",
+              "qty": 2,
+              "type": "spell"
+            },
+            {
+              "name": "Psychatog",
+              "printing": "ody/292",
+              "qty": 1,
+              "type": "creature"
+            },
+            {
+              "name": "Pyroclasm",
+              "printing": "7ed/209",
+              "qty": 2,
+              "type": "spell"
+            },
+            {
+              "name": "Ray of Revelation",
+              "printing": "jud/20",
+              "qty": 1,
+              "type": "spell"
+            },
+            {
+              "name": "Winter Orb",
+              "printing": "5ed/408",
+              "qty": 1,
+              "type": "spell"
+            }
+          ],
+          "primer": ""
+        },
+        {
+          "slug": "landstill",
+          "name": "Landstill",
+          "colors": "",
+          "cards": [
+            {
+              "name": "Adarkar Wastes",
+              "printing": "7ed/325",
+              "qty": 4,
+              "type": "land"
+            },
+            {
+              "name": "Coastal Tower",
+              "printing": "inv/321",
+              "qty": 2,
+              "type": "land"
+            },
+            {
+              "name": "Counterspell",
+              "printing": "dmr/281",
+              "qty": 4,
+              "type": "spell"
+            },
+            {
+              "name": "Decree of Justice",
+              "printing": "scg/8",
+              "qty": 3,
+              "type": "spell"
+            },
+            {
+              "name": "Disenchant",
+              "printing": "7ed/13",
+              "qty": 3,
+              "type": "spell"
+            },
+            {
+              "name": "Dust Bowl",
+              "printing": "mmq/316",
+              "qty": 2,
+              "type": "land"
+            },
+            {
+              "name": "Fact or Fiction",
+              "printing": "inv/57",
+              "qty": 3,
+              "type": "spell"
+            },
+            {
+              "name": "Faerie Conclave",
+              "printing": "ulg/139",
+              "qty": 2,
+              "type": "land"
+            },
+            {
+              "name": "Flooded Strand",
+              "printing": "ons/316",
+              "qty": 4,
+              "type": "land"
+            },
+            {
+              "name": "Forbid",
+              "printing": "exo/35",
+              "qty": 1,
+              "type": "spell"
+            },
+            {
+              "name": "Humility",
+              "printing": "tmp/24",
+              "qty": 1,
+              "type": "spell"
+            },
+            {
+              "name": "Impulse",
+              "printing": "dmr/287",
+              "qty": 4,
+              "type": "spell"
+            },
+            {
+              "name": "Island",
+              "printing": "inv/336",
+              "qty": 4,
+              "type": "land"
+            },
+            {
+              "name": "Mana Leak",
+              "printing": "sth/36",
+              "qty": 4,
+              "type": "spell"
+            },
+            {
+              "name": "Mishra's Factory",
+              "printing": "dmr/251",
+              "qty": 4,
+              "type": "land"
+            },
+            {
+              "name": "Phyrexian Furnace",
+              "printing": "wth/155",
+              "qty": 1,
+              "type": "spell"
+            },
+            {
+              "name": "Plains",
+              "printing": "mkm/278",
+              "qty": 3,
+              "type": "land"
+            },
+            {
+              "name": "Standstill",
+              "printing": "ody/102",
+              "qty": 4,
+              "type": "spell"
+            },
+            {
+              "name": "Stifle",
+              "printing": "scg/52",
+              "qty": 1,
+              "type": "spell"
+            },
+            {
+              "name": "Swords to Plowshares",
+              "printing": "dmr/275",
+              "qty": 4,
+              "type": "spell"
+            },
+            {
+              "name": "Wrath of God",
+              "printing": "dmr/279",
+              "qty": 2,
+              "type": "spell"
+            }
+          ],
+          "sideboard": [
+            {
+              "name": "Annul",
+              "printing": "usg/59",
+              "qty": 2,
+              "type": "spell"
+            },
+            {
+              "name": "Blue Elemental Blast",
+              "printing": "4ed/63",
+              "qty": 3,
+              "type": "spell"
+            },
+            {
+              "name": "Circle of Protection: Red",
+              "printing": "tmp/11",
+              "qty": 2,
+              "type": "spell"
+            },
+            {
+              "name": "Decree of Justice",
+              "printing": "scg/8",
+              "qty": 1,
+              "type": "spell"
+            },
+            {
+              "name": "Disenchant",
+              "printing": "7ed/13",
+              "qty": 1,
+              "type": "spell"
+            },
+            {
+              "name": "Hydroblast",
+              "printing": "ice/72",
+              "qty": 1,
+              "type": "spell"
+            },
+            {
+              "name": "Phyrexian Furnace",
+              "printing": "wth/155",
+              "qty": 1,
+              "type": "spell"
+            },
+            {
+              "name": "Seal of Cleansing",
+              "printing": "nem/18",
+              "qty": 1,
+              "type": "spell"
+            },
+            {
+              "name": "Stifle",
+              "printing": "scg/52",
+              "qty": 2,
+              "type": "spell"
+            },
+            {
+              "name": "Wrath of God",
+              "printing": "dmr/279",
+              "qty": 1,
+              "type": "spell"
+            }
+          ],
+          "primer": ""
+        },
+        {
+          "slug": "madness",
+          "name": "Madness",
+          "colors": "",
+          "cards": [
+            {
+              "name": "Arrogant Wurm",
+              "printing": "tor/120",
+              "qty": 3,
+              "type": "creature"
+            },
+            {
+              "name": "Basking Rootwalla",
+              "printing": "tor/121",
+              "qty": 4,
+              "type": "creature"
+            },
+            {
+              "name": "Careful Study",
+              "printing": "ody/70",
+              "qty": 4,
+              "type": "spell"
+            },
+            {
+              "name": "City of Brass",
+              "printing": "7ed/327",
+              "qty": 1,
+              "type": "land"
+            },
+            {
+              "name": "Counterspell",
+              "printing": "dmr/281",
+              "qty": 4,
+              "type": "spell"
+            },
+            {
+              "name": "Daze",
+              "printing": "nem/30",
+              "qty": 4,
+              "type": "spell"
+            },
+            {
+              "name": "Forest",
+              "printing": "dmr/410",
+              "qty": 6,
+              "type": "land"
+            },
+            {
+              "name": "Frantic Search",
+              "printing": "dmr/285",
+              "qty": 4,
+              "type": "spell"
+            },
+            {
+              "name": "Gilded Drake",
+              "printing": "usg/76",
+              "qty": 1,
+              "type": "creature"
+            },
+            {
+              "name": "Island",
+              "printing": "inv/336",
+              "qty": 7,
+              "type": "land"
+            },
+            {
+              "name": "Squee, Goblin Nabob",
+              "printing": "mmq/214",
+              "qty": 4,
+              "type": "creature"
+            },
+            {
+              "name": "Survival of the Fittest",
+              "printing": "exo/129",
+              "qty": 4,
+              "type": "spell"
+            },
+            {
+              "name": "Wasteland",
+              "printing": "tmp/330",
+              "qty": 4,
+              "type": "land"
+            },
+            {
+              "name": "Waterfront Bouncer",
+              "printing": "mmq/114",
+              "qty": 1,
+              "type": "creature"
+            },
+            {
+              "name": "Wild Mongrel",
+              "printing": "ody/283",
+              "qty": 4,
+              "type": "creature"
+            },
+            {
+              "name": "Wonder",
+              "printing": "jud/54",
+              "qty": 1,
+              "type": "creature"
+            },
+            {
+              "name": "Yavimaya Coast",
+              "printing": "apc/143",
+              "qty": 4,
+              "type": "land"
+            }
+          ],
+          "sideboard": [
+            {
+              "name": "Blue Elemental Blast",
+              "printing": "4ed/63",
+              "qty": 2,
+              "type": "spell"
+            },
+            {
+              "name": "Cave-In",
+              "printing": "mmq/180",
+              "qty": 2,
+              "type": "spell"
+            },
+            {
+              "name": "Hydroblast",
+              "printing": "ice/72",
+              "qty": 2,
+              "type": "spell"
+            },
+            {
+              "name": "Naturalize",
+              "printing": "ktk/142",
+              "qty": 3,
+              "type": "spell"
+            },
+            {
+              "name": "Pyrokinesis",
+              "printing": "all/78",
+              "qty": 4,
+              "type": "spell"
+            },
+            {
+              "name": "Tsabo's Web",
+              "printing": "inv/317",
+              "qty": 2,
+              "type": "spell"
+            }
+          ],
+          "primer": ""
+        },
+        {
+          "slug": "oath",
+          "name": "Oath",
+          "colors": "",
+          "cards": [
+            {
+              "name": "Brushland",
+              "printing": "7ed/326",
+              "qty": 4,
+              "type": "land"
+            },
+            {
+              "name": "Mishra's Factory",
+              "printing": "dmr/251",
+              "qty": 4,
+              "type": "land"
+            },
+            {
+              "name": "Mox Diamond",
+              "printing": "sth/138",
+              "qty": 4,
+              "type": "spell"
+            },
+            {
+              "name": "Oath of Druids",
+              "printing": "exo/115",
+              "qty": 4,
+              "type": "spell"
+            },
+            {
+              "name": "Rishadan Port",
+              "printing": "a25/246",
+              "qty": 4,
+              "type": "land"
+            },
+            {
+              "name": "Snow-Covered Forest",
+              "printing": "khm/284",
+              "qty": 3,
+              "type": "land"
+            },
+            {
+              "name": "Snow-Covered Plains",
+              "printing": "khm/276",
+              "qty": 1,
+              "type": "land"
+            },
+            {
+              "name": "Sphere of Resistance",
+              "printing": "exo/139",
+              "qty": 4,
+              "type": "spell"
+            },
+            {
+              "name": "Swords to Plowshares",
+              "printing": "dmr/275",
+              "qty": 4,
+              "type": "spell"
+            },
+            {
+              "name": "Sylvan Library",
+              "printing": "ema/187",
+              "qty": 4,
+              "type": "spell"
+            },
+            {
+              "name": "Terravore",
+              "printing": "ody/278",
+              "qty": 4,
+              "type": "creature"
+            },
+            {
+              "name": "Thermokarst",
+              "printing": "ice/268",
+              "qty": 4,
+              "type": "spell"
+            },
+            {
+              "name": "Treetop Village",
+              "printing": "ulg/143",
+              "qty": 4,
+              "type": "land"
+            },
+            {
+              "name": "Wasteland",
+              "printing": "tmp/330",
+              "qty": 4,
+              "type": "land"
+            },
+            {
+              "name": "Windswept Heath",
+              "printing": "mh3/235",
+              "qty": 4,
+              "type": "land"
+            },
+            {
+              "name": "Winter's Grasp",
+              "printing": "tmp/265",
+              "qty": 4,
+              "type": "spell"
+            }
+          ],
+          "sideboard": [
+            {
+              "name": "Aura of Silence",
+              "printing": "c15/60",
+              "qty": 1,
+              "type": "spell"
+            },
+            {
+              "name": "Call of the Herd",
+              "printing": "tsb/74",
+              "qty": 4,
+              "type": "spell"
+            },
+            {
+              "name": "Cursed Totem",
+              "printing": "mir/299",
+              "qty": 2,
+              "type": "spell"
+            },
+            {
+              "name": "Enlightened Tutor",
+              "printing": "dmr/263",
+              "qty": 1,
+              "type": "spell"
+            },
+            {
+              "name": "Naturalize",
+              "printing": "ktk/142",
+              "qty": 2,
+              "type": "spell"
+            },
+            {
+              "name": "Ray of Revelation",
+              "printing": "dka/17",
+              "qty": 1,
+              "type": "spell"
+            },
+            {
+              "name": "Seal of Cleansing",
+              "printing": "nem/18",
+              "qty": 1,
+              "type": "spell"
+            },
+            {
+              "name": "Tormod's Crypt",
+              "printing": "dmr/388",
+              "qty": 1,
+              "type": "spell"
+            },
+            {
+              "name": "Zuran Orb",
+              "printing": "ice/350",
+              "qty": 2,
+              "type": "spell"
+            }
+          ],
+          "primer": ""
+        },
+        {
+          "slug": "recsur",
+          "name": "RecSur",
+          "colors": "",
+          "cards": [
+            {
+              "name": "Birds of Paradise",
+              "printing": "7ed/231",
+              "qty": 4,
+              "type": "creature"
+            },
+            {
+              "name": "Bone Shredder",
+              "printing": "ulg/49",
+              "qty": 1,
+              "type": "creature"
+            },
+            {
+              "name": "Cabal Therapy",
+              "printing": "jud/62",
+              "qty": 4,
+              "type": "spell"
+            },
+            {
+              "name": "City of Brass",
+              "printing": "7ed/327",
+              "qty": 2,
+              "type": "land"
+            },
+            {
+              "name": "Deranged Hermit",
+              "printing": "ulg/101",
+              "qty": 1,
+              "type": "creature"
+            },
+            {
+              "name": "Forest",
+              "printing": "dmr/410",
+              "qty": 9,
+              "type": "land"
+            },
+            {
+              "name": "Gaea's Cradle",
+              "printing": "usg/321",
+              "qty": 1,
+              "type": "land"
+            },
+            {
+              "name": "Genesis",
+              "printing": "jud/117",
+              "qty": 1,
+              "type": "creature"
+            },
+            {
+              "name": "Ghitu Slinger",
+              "printing": "ulg/77",
+              "qty": 1,
+              "type": "creature"
+            },
+            {
+              "name": "Great Whale",
+              "printing": "usg/77",
+              "qty": 1,
+              "type": "creature"
+            },
+            {
+              "name": "Krosan Tusker",
+              "printing": "ons/272",
+              "qty": 1,
+              "type": "creature"
+            },
+            {
+              "name": "Llanowar Wastes",
+              "printing": "apc/141",
+              "qty": 4,
+              "type": "land"
+            },
+            {
+              "name": "Masticore",
+              "printing": "uds/134",
+              "qty": 1,
+              "type": "creature"
+            },
+            {
+              "name": "Mesmeric Fiend",
+              "printing": "tor/69",
+              "qty": 1,
+              "type": "creature"
+            },
+            {
+              "name": "Mountain",
+              "printing": "dmr/409",
+              "qty": 1,
+              "type": "land"
+            },
+            {
+              "name": "Nantuko Vigilante",
+              "printing": "lgn/132",
+              "qty": 1,
+              "type": "creature"
+            },
+            {
+              "name": "Phantom Nishoba",
+              "printing": "dmr/361",
+              "qty": 1,
+              "type": "creature"
+            },
+            {
+              "name": "Ravenous Baloth",
+              "printing": "ons/278",
+              "qty": 1,
+              "type": "creature"
+            },
+            {
+              "name": "Recurring Nightmare",
+              "printing": "exo/72",
+              "qty": 2,
+              "type": "spell"
+            },
+            {
+              "name": "Shard Phoenix",
+              "printing": "sth/97",
+              "qty": 1,
+              "type": "creature"
+            },
+            {
+              "name": "Spike Feeder",
+              "printing": "sth/118",
+              "qty": 1,
+              "type": "creature"
+            },
+            {
+              "name": "Squee, Goblin Nabob",
+              "printing": "mmq/214",
+              "qty": 1,
+              "type": "creature"
+            },
+            {
+              "name": "Survival of the Fittest",
+              "printing": "exo/129",
+              "qty": 4,
+              "type": "spell"
+            },
+            {
+              "name": "Swamp",
+              "printing": "cmm/443",
+              "qty": 3,
+              "type": "land"
+            },
+            {
+              "name": "Undiscovered Paradise",
+              "printing": "vis/167",
+              "qty": 1,
+              "type": "land"
+            },
+            {
+              "name": "Wall of Blossoms",
+              "printing": "sth/125",
+              "qty": 4,
+              "type": "creature"
+            },
+            {
+              "name": "Wall of Roots",
+              "printing": "mir/253",
+              "qty": 4,
+              "type": "creature"
+            },
+            {
+              "name": "Withered Wretch",
+              "printing": "lgn/86",
+              "qty": 1,
+              "type": "creature"
+            },
+            {
+              "name": "Yavimaya Elder",
+              "printing": "uds/124",
+              "qty": 1,
+              "type": "creature"
+            },
+            {
+              "name": "Yavimaya Granger",
+              "printing": "ulg/118",
+              "qty": 1,
+              "type": "creature"
+            }
+          ],
+          "sideboard": [
+            {
+              "name": "Avalanche Riders",
+              "printing": "ulg/74",
+              "qty": 1,
+              "type": "creature"
+            },
+            {
+              "name": "Bone Shredder",
+              "printing": "ulg/49",
+              "qty": 1,
+              "type": "creature"
+            },
+            {
+              "name": "Lobotomy",
+              "printing": "tmp/267",
+              "qty": 2,
+              "type": "spell"
+            },
+            {
+              "name": "Masticore",
+              "printing": "uds/134",
+              "qty": 1,
+              "type": "creature"
+            },
+            {
+              "name": "Naturalize",
+              "printing": "ktk/142",
+              "qty": 3,
+              "type": "spell"
+            },
+            {
+              "name": "Shard Phoenix",
+              "printing": "sth/97",
+              "qty": 1,
+              "type": "creature"
+            },
+            {
+              "name": "Smother",
+              "printing": "ons/170",
+              "qty": 1,
+              "type": "spell"
+            },
+            {
+              "name": "Spike Feeder",
+              "printing": "sth/118",
+              "qty": 1,
+              "type": "creature"
+            },
+            {
+              "name": "Tsabo's Web",
+              "printing": "inv/317",
+              "qty": 2,
+              "type": "spell"
+            },
+            {
+              "name": "Uktabi Orangutan",
+              "printing": "vis/123",
+              "qty": 1,
+              "type": "creature"
+            },
+            {
+              "name": "Withered Wretch",
+              "printing": "lgn/86",
+              "qty": 1,
+              "type": "creature"
+            }
+          ],
+          "primer": ""
+        },
+        {
+          "slug": "replenish",
+          "name": "Replenish",
+          "colors": "",
+          "cards": [
+            {
+              "name": "Adarkar Wastes",
+              "printing": "7ed/325",
+              "qty": 4,
+              "type": "land"
+            },
+            {
+              "name": "Ancient Tomb",
+              "printing": "tmp/315",
+              "qty": 4,
+              "type": "land"
+            },
+            {
+              "name": "Attunement",
+              "printing": "usg/61",
+              "qty": 4,
+              "type": "spell"
+            },
+            {
+              "name": "City of Traitors",
+              "printing": "exo/143",
+              "qty": 2,
+              "type": "land"
+            },
+            {
+              "name": "Flooded Strand",
+              "printing": "ons/316",
+              "qty": 4,
+              "type": "land"
+            },
+            {
+              "name": "Frantic Search",
+              "printing": "ulg/32",
+              "qty": 3,
+              "type": "spell"
+            },
+            {
+              "name": "Intuition",
+              "printing": "tmp/70",
+              "qty": 3,
+              "type": "spell"
+            },
+            {
+              "name": "Island",
+              "printing": "inv/336",
+              "qty": 3,
+              "type": "land"
+            },
+            {
+              "name": "Mana Leak",
+              "printing": "sth/36",
+              "qty": 3,
+              "type": "spell"
+            },
+            {
+              "name": "Opalescence",
+              "printing": "uds/13",
+              "qty": 4,
+              "type": "spell"
+            },
+            {
+              "name": "Parallax Tide",
+              "printing": "nem/37",
+              "qty": 4,
+              "type": "spell"
+            },
+            {
+              "name": "Parallax Wave",
+              "printing": "nem/17",
+              "qty": 4,
+              "type": "spell"
+            },
+            {
+              "name": "Plains",
+              "printing": "mkm/278",
+              "qty": 3,
+              "type": "land"
+            },
+            {
+              "name": "Replenish",
+              "printing": "uds/15",
+              "qty": 4,
+              "type": "spell"
+            },
+            {
+              "name": "Riftstone Portal",
+              "printing": "jud/143",
+              "qty": 1,
+              "type": "land"
+            },
+            {
+              "name": "Seal of Cleansing",
+              "printing": "nem/18",
+              "qty": 3,
+              "type": "spell"
+            },
+            {
+              "name": "Skycloud Expanse",
+              "printing": "ody/327",
+              "qty": 4,
+              "type": "land"
+            },
+            {
+              "name": "Swords to Plowshares",
+              "printing": "dmr/275",
+              "qty": 3,
+              "type": "spell"
+            }
+          ],
+          "sideboard": [
+            {
+              "name": "Abeyance",
+              "printing": "wth/1",
+              "qty": 1,
+              "type": "spell"
+            },
+            {
+              "name": "Blue Elemental Blast",
+              "printing": "4ed/63",
+              "qty": 2,
+              "type": "spell"
+            },
+            {
+              "name": "Chill",
+              "printing": "tmp/56",
+              "qty": 2,
+              "type": "spell"
+            },
+            {
+              "name": "Fact or Fiction",
+              "printing": "inv/57",
+              "qty": 2,
+              "type": "spell"
+            },
+            {
+              "name": "Meddling Mage",
+              "printing": "pls/116",
+              "qty": 3,
+              "type": "creature"
+            },
+            {
+              "name": "Orim's Chant",
+              "printing": "pls/11",
+              "qty": 2,
+              "type": "spell"
+            },
+            {
+              "name": "Stifle",
+              "printing": "scg/52",
+              "qty": 2,
+              "type": "spell"
+            },
+            {
+              "name": "Swords to Plowshares",
+              "printing": "dmr/275",
+              "qty": 1,
+              "type": "spell"
+            }
+          ],
+          "primer": ""
+        },
+        {
+          "slug": "sligh",
+          "name": "Sligh",
+          "colors": "",
+          "cards": [
+            {
+              "name": "Ball Lightning",
+              "printing": "btd/35",
+              "qty": 3,
+              "type": "creature"
+            },
+            {
+              "name": "Barbarian Ring",
+              "printing": "ody/313",
+              "qty": 2,
+              "type": "land"
+            },
+            {
+              "name": "Bloodstained Mire",
+              "printing": "ons/313",
+              "qty": 4,
+              "type": "land"
+            },
+            {
+              "name": "Cursed Scroll",
+              "printing": "tmp/281",
+              "qty": 2,
+              "type": "spell"
+            },
+            {
+              "name": "Fireblast",
+              "printing": "vis/79",
+              "qty": 4,
+              "type": "spell"
+            },
+            {
+              "name": "Grim Lavamancer",
+              "printing": "dmr/324",
+              "qty": 4,
+              "type": "creature"
+            },
+            {
+              "name": "Incinerate",
+              "printing": "mir/184",
+              "qty": 4,
+              "type": "spell"
+            },
+            {
+              "name": "Jackal Pup",
+              "printing": "tmp/183",
+              "qty": 4,
+              "type": "creature"
+            },
+            {
+              "name": "Lava Dart",
+              "printing": "jud/94",
+              "qty": 2,
+              "type": "spell"
+            },
+            {
+              "name": "Lightning Bolt",
+              "printing": "4ed/208",
+              "qty": 4,
+              "type": "spell"
+            },
+            {
+              "name": "Mogg Fanatic",
+              "printing": "tmp/190",
+              "qty": 4,
+              "type": "creature"
+            },
+            {
+              "name": "Mountain",
+              "printing": "dmr/409",
+              "qty": 10,
+              "type": "land"
+            },
+            {
+              "name": "Price of Progress",
+              "printing": "exo/95",
+              "qty": 2,
+              "type": "spell"
+            },
+            {
+              "name": "Seal of Fire",
+              "printing": "nem/98",
+              "qty": 4,
+              "type": "spell"
+            },
+            {
+              "name": "Sulfuric Vortex",
+              "printing": "dmr/332",
+              "qty": 3,
+              "type": "spell"
+            },
+            {
+              "name": "Wooded Foothills",
+              "printing": "mh3/441",
+              "qty": 4,
+              "type": "land"
+            }
+          ],
+          "sideboard": [
+            {
+              "name": "Anarchy",
+              "printing": "ice/170",
+              "qty": 2,
+              "type": "spell"
+            },
+            {
+              "name": "Crash",
+              "printing": "mmq/186",
+              "qty": 1,
+              "type": "spell"
+            },
+            {
+              "name": "Overload",
+              "printing": "inv/157",
+              "qty": 3,
+              "type": "spell"
+            },
+            {
+              "name": "Price of Progress",
+              "printing": "exo/95",
+              "qty": 2,
+              "type": "spell"
+            },
+            {
+              "name": "Pyroblast",
+              "printing": "5ed/262",
+              "qty": 3,
+              "type": "spell"
+            },
+            {
+              "name": "Pyrokinesis",
+              "printing": "all/78",
+              "qty": 2,
+              "type": "spell"
+            },
+            {
+              "name": "Red Elemental Blast",
+              "printing": "4ed/218",
+              "qty": 2,
+              "type": "spell"
+            }
+          ],
+          "primer": ""
+        },
+        {
+          "slug": "stasis",
+          "name": "Stasis",
+          "colors": "",
+          "cards": [
+            {
+              "name": "Arcane Denial",
+              "printing": "all/22b",
+              "qty": 4,
+              "type": "spell"
+            },
+            {
+              "name": "Black Vise",
+              "printing": "4ed/299",
+              "qty": 4,
+              "type": "spell"
+            },
+            {
+              "name": "Boomerang",
+              "printing": "mir/56",
+              "qty": 1,
+              "type": "spell"
+            },
+            {
+              "name": "Chain of Vapor",
+              "printing": "ons/73",
+              "qty": 4,
+              "type": "spell"
+            },
+            {
+              "name": "Counterspell",
+              "printing": "dmr/281",
+              "qty": 3,
+              "type": "spell"
+            },
+            {
+              "name": "Daze",
+              "printing": "nem/30",
+              "qty": 3,
+              "type": "spell"
+            },
+            {
+              "name": "Foil",
+              "printing": "pcy/34",
+              "qty": 2,
+              "type": "spell"
+            },
+            {
+              "name": "Forsaken City",
+              "printing": "pls/139",
+              "qty": 4,
+              "type": "land"
+            },
+            {
+              "name": "Gush",
+              "printing": "mmq/82",
+              "qty": 4,
+              "type": "spell"
+            },
+            {
+              "name": "Impulse",
+              "printing": "dmr/287",
+              "qty": 4,
+              "type": "spell"
+            },
+            {
+              "name": "Island",
+              "printing": "brc/32",
+              "qty": 19,
+              "type": "land"
+            },
+            {
+              "name": "Mana Short",
+              "printing": "7ed/86",
+              "qty": 1,
+              "type": "spell"
+            },
+            {
+              "name": "Stasis",
+              "printing": "5ed/127",
+              "qty": 4,
+              "type": "spell"
+            },
+            {
+              "name": "Thwart",
+              "printing": "mmq/108",
+              "qty": 3,
+              "type": "spell"
+            }
+          ],
+          "sideboard": [
+            {
+              "name": "Blue Elemental Blast",
+              "printing": "4ed/63",
+              "qty": 3,
+              "type": "spell"
+            },
+            {
+              "name": "Chill",
+              "printing": "tmp/56",
+              "qty": 3,
+              "type": "spell"
+            },
+            {
+              "name": "Gaea's Blessing",
+              "printing": "tsb/77",
+              "qty": 2,
+              "type": "spell"
+            },
+            {
+              "name": "Hydroblast",
+              "printing": "ice/72",
+              "qty": 3,
+              "type": "spell"
+            },
+            {
+              "name": "Mana Short",
+              "printing": "7ed/86",
+              "qty": 1,
+              "type": "spell"
+            },
+            {
+              "name": "Powder Keg",
+              "printing": "uds/136",
+              "qty": 3,
+              "type": "spell"
+            }
+          ],
+          "primer": ""
+        },
+        {
+          "slug": "stiflenought",
+          "name": "Stiflenought",
+          "colors": "",
+          "cards": [
+            {
+              "name": "Chain of Vapor",
+              "printing": "ons/73",
+              "qty": 2,
+              "type": "spell"
+            },
+            {
+              "name": "Counterspell",
+              "printing": "6ed/61",
+              "qty": 4,
+              "type": "spell"
+            },
+            {
+              "name": "Daze",
+              "printing": "nem/30",
+              "qty": 3,
+              "type": "spell"
+            },
+            {
+              "name": "Flash of Insight",
+              "printing": "jud/40",
+              "qty": 2,
+              "type": "spell"
+            },
+            {
+              "name": "Foil",
+              "printing": "pcy/34",
+              "qty": 4,
+              "type": "spell"
+            },
+            {
+              "name": "Gush",
+              "printing": "mmq/82",
+              "qty": 4,
+              "type": "spell"
+            },
+            {
+              "name": "Impulse",
+              "printing": "vis/34",
+              "qty": 4,
+              "type": "spell"
+            },
+            {
+              "name": "Island",
+              "printing": "inv/336",
+              "qty": 16,
+              "type": "land"
+            },
+            {
+              "name": "Mishra's Factory",
+              "printing": "dmr/251",
+              "qty": 2,
+              "type": "land"
+            },
+            {
+              "name": "Opt",
+              "printing": "inv/64",
+              "qty": 3,
+              "type": "spell"
+            },
+            {
+              "name": "Phyrexian Dreadnought",
+              "printing": "mir/315",
+              "qty": 4,
+              "type": "creature"
+            },
+            {
+              "name": "Portent",
+              "printing": "ice/90",
+              "qty": 4,
+              "type": "spell"
+            },
+            {
+              "name": "Stifle",
+              "printing": "scg/52",
+              "qty": 4,
+              "type": "spell"
+            },
+            {
+              "name": "Vision Charm",
+              "printing": "vis/49",
+              "qty": 4,
+              "type": "spell"
+            }
+          ],
+          "sideboard": [
+            {
+              "name": "Annul",
+              "printing": "usg/59",
+              "qty": 3,
+              "type": "spell"
+            },
+            {
+              "name": "Blue Elemental Blast",
+              "printing": "4ed/63",
+              "qty": 2,
+              "type": "spell"
+            },
+            {
+              "name": "Chain of Vapor",
+              "printing": "ons/73",
+              "qty": 1,
+              "type": "spell"
+            },
+            {
+              "name": "Flash of Insight",
+              "printing": "jud/40",
+              "qty": 1,
+              "type": "spell"
+            },
+            {
+              "name": "Hydroblast",
+              "printing": "ice/72",
+              "qty": 2,
+              "type": "spell"
+            },
+            {
+              "name": "Misdirection",
+              "printing": "mmq/87",
+              "qty": 2,
+              "type": "spell"
+            },
+            {
+              "name": "Parallax Tide",
+              "printing": "nem/37",
+              "qty": 3,
+              "type": "spell"
+            },
+            {
+              "name": "Powder Keg",
+              "printing": "uds/136",
+              "qty": 1,
+              "type": "spell"
+            }
+          ],
+          "primer": ""
+        },
+        {
+          "slug": "terrageddon",
+          "name": "TerraGeddon",
+          "colors": "",
+          "cards": [
+            {
+              "name": "Armageddon",
+              "printing": "p02/12",
+              "qty": 4,
+              "type": "spell"
+            },
+            {
+              "name": "Brushland",
+              "printing": "7ed/326",
+              "qty": 4,
+              "type": "land"
+            },
+            {
+              "name": "Call of the Herd",
+              "printing": "tsb/74",
+              "qty": 2,
+              "type": "spell"
+            },
+            {
+              "name": "Exalted Angel",
+              "printing": "ons/28",
+              "qty": 2,
+              "type": "creature"
+            },
+            {
+              "name": "Forest",
+              "printing": "dmr/410",
+              "qty": 3,
+              "type": "land"
+            },
+            {
+              "name": "Mox Diamond",
+              "printing": "sth/138",
+              "qty": 4,
+              "type": "spell"
+            },
+            {
+              "name": "Naturalize",
+              "printing": "ktk/142",
+              "qty": 2,
+              "type": "spell"
+            },
+            {
+              "name": "Nimble Mongoose",
+              "printing": "ody/258",
+              "qty": 4,
+              "type": "creature"
+            },
+            {
+              "name": "Plains",
+              "printing": "mkm/278",
+              "qty": 3,
+              "type": "land"
+            },
+            {
+              "name": "Rishadan Port",
+              "printing": "mmq/324",
+              "qty": 2,
+              "type": "land"
+            },
+            {
+              "name": "Rith's Grove",
+              "printing": "pls/141",
+              "qty": 2,
+              "type": "land"
+            },
+            {
+              "name": "Secluded Steppe",
+              "printing": "ons/324",
+              "qty": 1,
+              "type": "land"
+            },
+            {
+              "name": "Swords to Plowshares",
+              "printing": "dmr/275",
+              "qty": 4,
+              "type": "spell"
+            },
+            {
+              "name": "Sylvan Library",
+              "printing": "dmr/350",
+              "qty": 4,
+              "type": "spell"
+            },
+            {
+              "name": "Terravore",
+              "printing": "ody/278",
+              "qty": 4,
+              "type": "creature"
+            },
+            {
+              "name": "Tranquil Thicket",
+              "printing": "ons/326",
+              "qty": 1,
+              "type": "land"
+            },
+            {
+              "name": "Treetop Village",
+              "printing": "ulg/143",
+              "qty": 2,
+              "type": "land"
+            },
+            {
+              "name": "Wasteland",
+              "printing": "tmp/330",
+              "qty": 4,
+              "type": "land"
+            },
+            {
+              "name": "Weathered Wayfarer",
+              "printing": "ons/59",
+              "qty": 4,
+              "type": "creature"
+            },
+            {
+              "name": "Windswept Heath",
+              "printing": "ons/328",
+              "qty": 4,
+              "type": "land"
+            }
+          ],
+          "sideboard": [
+            {
+              "name": "Cataclysm",
+              "printing": "exo/3",
+              "qty": 2,
+              "type": "spell"
+            },
+            {
+              "name": "Circle of Protection: Red",
+              "printing": "4ed/17",
+              "qty": 1,
+              "type": "spell"
+            },
+            {
+              "name": "Cursed Totem",
+              "printing": "mir/299",
+              "qty": 2,
+              "type": "spell"
+            },
+            {
+              "name": "Disenchant",
+              "printing": "7ed/13",
+              "qty": 2,
+              "type": "spell"
+            },
+            {
+              "name": "Last Breath",
+              "printing": "mmq/27",
+              "qty": 1,
+              "type": "spell"
+            },
+            {
+              "name": "Reprisal",
+              "printing": "all/13a",
+              "qty": 1,
+              "type": "spell"
+            },
+            {
+              "name": "Tormod's Crypt",
+              "printing": "dmr/388",
+              "qty": 2,
+              "type": "spell"
+            },
+            {
+              "name": "Warmth",
+              "printing": "tmp/51",
+              "qty": 2,
+              "type": "spell"
+            },
+            {
+              "name": "Zuran Orb",
+              "printing": "ice/350",
+              "qty": 2,
+              "type": "spell"
+            }
+          ],
+          "primer": ""
+        },
+        {
+          "slug": "the-rock",
+          "name": "The Rock",
+          "colors": "",
+          "cards": [
+            {
+              "name": "Birds of Paradise",
+              "printing": "dmr/336",
+              "qty": 4,
+              "type": "creature"
+            },
+            {
+              "name": "Blastoderm",
+              "printing": "nem/102",
+              "qty": 2,
+              "type": "creature"
+            },
+            {
+              "name": "Cabal Therapy",
+              "printing": "ema/83",
+              "qty": 2,
+              "type": "spell"
+            },
+            {
+              "name": "Chainer's Edict",
+              "printing": "dmr/300",
+              "qty": 1,
+              "type": "spell"
+            },
+            {
+              "name": "Duress",
+              "printing": "dmr/81",
+              "qty": 4,
+              "type": "spell"
+            },
+            {
+              "name": "Dust Bowl",
+              "printing": "mmq/316",
+              "qty": 1,
+              "type": "land"
+            },
+            {
+              "name": "Forest",
+              "printing": "dmr/410",
+              "qty": 6,
+              "type": "land"
+            },
+            {
+              "name": "Krosan Tusker",
+              "printing": "cmm/302",
+              "qty": 1,
+              "type": "creature"
+            },
+            {
+              "name": "Living Wish",
+              "printing": "a25/179",
+              "qty": 2,
+              "type": "spell"
+            },
+            {
+              "name": "Llanowar Wastes",
+              "printing": "apc/141",
+              "qty": 4,
+              "type": "land"
+            },
+            {
+              "name": "Naturalize",
+              "printing": "ktk/142",
+              "qty": 2,
+              "type": "spell"
+            },
+            {
+              "name": "Pernicious Deed",
+              "printing": "a25/212",
+              "qty": 3,
+              "type": "spell"
+            },
+            {
+              "name": "Ravenous Baloth",
+              "printing": "c13/165",
+              "qty": 3,
+              "type": "creature"
+            },
+            {
+              "name": "Recurring Nightmare",
+              "printing": "exo/72",
+              "qty": 2,
+              "type": "spell"
+            },
+            {
+              "name": "Smother",
+              "printing": "wwk/68",
+              "qty": 1,
+              "type": "spell"
+            },
+            {
+              "name": "Spiritmonger",
+              "printing": "dmr/202",
+              "qty": 1,
+              "type": "creature"
+            },
+            {
+              "name": "Swamp",
+              "printing": "cmm/443",
+              "qty": 7,
+              "type": "land"
+            },
+            {
+              "name": "Tranquil Thicket",
+              "printing": "mkc/309",
+              "qty": 1,
+              "type": "land"
+            },
+            {
+              "name": "Treetop Village",
+              "printing": "j22/827",
+              "qty": 4,
+              "type": "land"
+            },
+            {
+              "name": "Vendetta",
+              "printing": "roe/130",
+              "qty": 2,
+              "type": "spell"
+            },
+            {
+              "name": "Volrath's Stronghold",
+              "printing": "sth/143",
+              "qty": 1,
+              "type": "land"
+            },
+            {
+              "name": "Wall of Blossoms",
+              "printing": "mh1/190",
+              "qty": 4,
+              "type": "creature"
+            },
+            {
+              "name": "Yavimaya Elder",
+              "printing": "m3c/254",
+              "qty": 2,
+              "type": "creature"
+            }
+          ],
+          "sideboard": [
+            {
+              "name": "Bone Shredder",
+              "printing": "mh2/272",
+              "qty": 1,
+              "type": "creature"
+            },
+            {
+              "name": "Dust Bowl",
+              "printing": "mmq/316",
+              "qty": 1,
+              "type": "land"
+            },
+            {
+              "name": "Engineered Plague",
+              "printing": "7ed/133",
+              "qty": 2,
+              "type": "spell"
+            },
+            {
+              "name": "Genesis",
+              "printing": "mh1/166",
+              "qty": 1,
+              "type": "creature"
+            },
+            {
+              "name": "Haunting Echoes",
+              "printing": "ody/142",
+              "qty": 1,
+              "type": "spell"
+            },
+            {
+              "name": "Nantuko Vigilante",
+              "printing": "mkc/177",
+              "qty": 1,
+              "type": "creature"
+            },
+            {
+              "name": "Naturalize",
+              "printing": "ktk/142",
+              "qty": 1,
+              "type": "spell"
+            },
+            {
+              "name": "Ravenous Baloth",
+              "printing": "c13/165",
+              "qty": 1,
+              "type": "creature"
+            },
+            {
+              "name": "Smother",
+              "printing": "wwk/68",
+              "qty": 1,
+              "type": "spell"
+            },
+            {
+              "name": "Spiritmonger",
+              "printing": "dmr/202",
+              "qty": 1,
+              "type": "creature"
+            },
+            {
+              "name": "Tormod's Crypt",
+              "printing": "dmr/388",
+              "qty": 2,
+              "type": "spell"
+            },
+            {
+              "name": "Wasteland",
+              "printing": "mb2/115",
+              "qty": 1,
+              "type": "land"
+            },
+            {
+              "name": "Withered Wretch",
+              "printing": "scd/120",
+              "qty": 1,
+              "type": "creature"
+            }
+          ],
+          "primer": ""
         }
       ]
     }

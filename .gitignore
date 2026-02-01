@@ -34,3 +34,4 @@ fly.toml
 # Build
 tmp/
 .card-types.json
+static/data.json
