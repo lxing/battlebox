@@ -2,7 +2,6 @@
 (function() {
   const app = document.getElementById('app');
   let data = null;
-  let cardImageCache = {};
   let previewEl = null;
   let previewImg = null;
   let previewStatus = null;

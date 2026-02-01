@@ -139,8 +139,10 @@ func main() {
 				continue
 			}
 
-			allCards = append(allCards, applyOverrides(manifest.Cards, deckOverrides, bbDir.Name(), deckDir.Name(), &missing)...)
-			allCards = append(allCards, applyOverrides(manifest.Sideboard, deckOverrides, bbDir.Name(), deckDir.Name(), &missing)...)
+			applyOverrides(manifest.Cards, deckOverrides, bbDir.Name(), deckDir.Name(), &missing)
+			applyOverrides(manifest.Sideboard, deckOverrides, bbDir.Name(), deckDir.Name(), &missing)
+			allCards = append(allCards, manifest.Cards...)
+			allCards = append(allCards, manifest.Sideboard...)
 		}
 	}
 
@@ -265,15 +267,10 @@ func mergeOverrides(base, override map[string]string) map[string]string {
 	return out
 }
 
-func resolvePrinting(name string, overrides map[string]string) (string, bool) {
-	v, ok := overrides[normalizeName(name)]
-	return v, ok
-}
-
-func applyOverrides(cards []Card, overrides map[string]string, battlebox, deck string, missing *[]MissingPrinting) []Card {
+func applyOverrides(cards []Card, overrides map[string]string, battlebox, deck string, missing *[]MissingPrinting) {
 	for i := range cards {
 		cards[i].Printing = ""
-		if v, ok := resolvePrinting(cards[i].Name, overrides); ok {
+		if v, ok := overrides[normalizeName(cards[i].Name)]; ok {
 			cards[i].Printing = v
 		} else if missing != nil {
 			*missing = append(*missing, MissingPrinting{
@@ -283,7 +280,6 @@ func applyOverrides(cards []Card, overrides map[string]string, battlebox, deck s
 			})
 		}
 	}
-	return cards
 }
 
 func fetchMissingTypes(cards []Card) {
@@ -370,8 +366,8 @@ func processDeck(deckPath, slug, battlebox string, overrides map[string]string) 
 		return nil, fmt.Errorf("parsing manifest: %w", err)
 	}
 
-	manifest.Cards = applyOverrides(manifest.Cards, overrides, battlebox, slug, nil)
-	manifest.Sideboard = applyOverrides(manifest.Sideboard, overrides, battlebox, slug, nil)
+	applyOverrides(manifest.Cards, overrides, battlebox, slug, nil)
+	applyOverrides(manifest.Sideboard, overrides, battlebox, slug, nil)
 
 	// Add types to cards
 	for i := range manifest.Cards {
