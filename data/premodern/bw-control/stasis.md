@@ -6,4 +6,4 @@
 -1 [[Swords to Plowshares]]
 -1 [[Gerrard's Verdict]]
 
-Break up the lock pieces and keep pressure on their resources. Prioritize removing [[Stasis]] and mana denial before committing threats.
+Break up the lock pieces and prioritize removing [[Stasis]] and their mana denial.

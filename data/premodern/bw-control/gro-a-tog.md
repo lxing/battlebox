@@ -5,4 +5,4 @@
 -1 [[Phyrexian Furnace]]
 -1 [[Skeletal Scrying]]
 
-Play a patient game around soft counters. Use discard to clear key spells, answer mana artifacts, and keep pressure light until you can stick a finisher.
+Play a patient game around soft counters and prioritize answers for [[Quirion Dryad]] and [[Psychatog]].

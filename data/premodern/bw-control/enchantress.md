@@ -6,4 +6,4 @@
 -1 [[Skeletal Scrying]]
 -1 [[Gerrard's Verdict]]
 
-Disrupt their enchantment engine and keep them off key permanents. Use [[Vindicate]] and your artifact/enchantment hate to break up their setup before committing a finisher.
+Disrupt their enchantment engine and keep them off key permanents.

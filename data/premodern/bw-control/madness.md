@@ -5,4 +5,4 @@
 -1 [[Phyrexian Furnace]]
 -1 [[Skeletal Scrying]]
 
-Pressure their graveyard and keep [[Survival of the Fittest]] off the table. Sweep small creatures, then answer their big threats with [[Swords to Plowshares]].
+Pressure their graveyard and keep [[Survival of the Fittest]] off the table.

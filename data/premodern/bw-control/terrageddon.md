@@ -4,4 +4,4 @@
 -1 [[Skeletal Scrying]]
 -1 [[Gerrard's Verdict]]
 
-Respect land destruction and avoid overcommitting to the board. Use removal to buy time, then stabilize with a hard-to-answer finisher.
+Respect land destruction, especially [[Armageddon]], and avoid overcommitting to the board.

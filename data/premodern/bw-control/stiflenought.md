@@ -5,4 +5,4 @@
 -1 [[Phyrexian Furnace]]
 -1 [[Gerrard's Verdict]]
 
-Keep [[Swords to Plowshares]] and [[Vindicate]] for [[Phyrexian Dreadnought]]. Play around soft counters and avoid tapping out into a quick threat.
+Keep [[Swords to Plowshares]] and [[Vindicate]] for [[Phyrexian Dreadnought]] and play around soft counters.

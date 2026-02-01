@@ -7,4 +7,4 @@
 -1 [[Skeletal Scrying]]
 -1 [[Decree of Justice]]
 
-Break up the graveyard loop and remove [[Survival of the Fittest]]. Use sweepers to reset the board, then win the long game with a protected finisher.
+Break up the graveyard loop and remove [[Survival of the Fittest]].

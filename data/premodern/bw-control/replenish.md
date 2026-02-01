@@ -7,4 +7,4 @@
 -2 [[Wrath of God]]
 -1 [[Phyrexian Furnace]]
 
-Focus on stopping [[Replenish]] and its payoffs. Keep their enchantments off the table and use graveyard hate to punish a big turn.
+Focus on stopping [[Replenish]] and its payoffs, using graveyard hate to punish a big turn.

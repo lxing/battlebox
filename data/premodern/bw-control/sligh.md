@@ -6,4 +6,4 @@
 -2 [[Gerrard's Verdict]]
 -1 [[Phyrexian Furnace]]
 
-Stabilize your life total early and make their burn inefficient. Land a protection piece, trade removal for threats, and close the game safely.
+Stabilize your life total early and make their burn inefficient.

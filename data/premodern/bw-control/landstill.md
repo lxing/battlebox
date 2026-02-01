@@ -5,4 +5,4 @@
 -2 [[Swords to Plowshares]]
 -1 [[Phyrexian Furnace]]
 
-Avoid overextending into [[Standstill]]. Trade resources, protect your land drops, and use [[Vindicate]] on key lands or lock pieces before turning the corner.
+Avoid overextending into [[Standstill]] and use [[Vindicate]] on key lands or lock pieces.

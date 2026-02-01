@@ -6,4 +6,4 @@
 -1 [[Skeletal Scrying]]
 -1 [[Gerrard's Verdict]]
 
-Shut off [[Oath of Druids]] and tax their artifacts. Keep removal for their large creature and avoid giving them free Oath triggers when possible.
+Shut off [[Oath of Druids]] and tax their artifacts while keeping removal for [[Terravore]].

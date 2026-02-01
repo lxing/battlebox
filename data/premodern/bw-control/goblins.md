@@ -8,4 +8,4 @@
 -1 [[Phyrexian Furnace]]
 -1 [[Skeletal Scrying]]
 
-Survive the early turns and stop [[Goblin Lackey]] from snowballing. Sweep the board, land a protection piece, and close with [[Exalted Angel]] or tokens.
+Survive the early turns and stop [[Goblin Lackey]] from snowballing.
