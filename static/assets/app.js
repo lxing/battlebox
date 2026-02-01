@@ -153,24 +153,26 @@
     if (!previewEl || !cardEl) return;
     const rect = cardEl.getBoundingClientRect();
     const width = previewEl.offsetWidth || 250;
-    const height = previewEl.offsetHeight || 360;
+    const height = previewEl.offsetHeight || 350;
     const margin = 10;
+    const viewportW = (window.visualViewport && window.visualViewport.width) || document.documentElement.clientWidth;
+    const viewportH = (window.visualViewport && window.visualViewport.height) || document.documentElement.clientHeight;
 
     let x = e.clientX - rect.left;
     let y = e.clientY - rect.top;
     let absX = rect.left + x;
     let absY = rect.top + y;
 
-    if (absX + width + margin > window.innerWidth) {
-      absX = Math.max(margin, window.innerWidth - width - margin);
+    if (absX + width + margin > viewportW) {
+      absX = Math.max(margin, viewportW - width - margin);
       x = absX - rect.left;
     }
     if (absX < margin) {
       absX = margin;
       x = absX - rect.left;
     }
-    if (absY + height + margin > window.innerHeight) {
-      absY = Math.max(margin, window.innerHeight - height - margin);
+    if (absY + height + margin > viewportH) {
+      absY = Math.max(margin, viewportH - height - margin);
       y = absY - rect.top;
     }
     if (absY < margin) {
