@@ -194,28 +194,18 @@ h2 {
 }
 
 /* Primer */
-.primer {
-  background: #252540;
-  padding: 1rem;
-  border-radius: 6px;
-  margin-bottom: 1rem;
-  white-space: pre-wrap;
-  font-size: 0.85rem;
-}
-
-/* Matchup guides */
-.matchup-guides {
+details.collapsible {
   background: #252540;
   border-radius: 6px;
   padding: 0.5rem 0.75rem;
   margin: 1rem 0;
 }
 
-.matchup-guides[open] {
+details.collapsible[open] {
   border: 1px solid #353560;
 }
 
-.matchup-guides summary {
+details.collapsible summary {
   cursor: pointer;
   font-weight: 600;
   list-style: none;
@@ -224,22 +214,32 @@ h2 {
   justify-content: space-between;
 }
 
-.matchup-guides summary::-webkit-details-marker {
+details.collapsible summary::-webkit-details-marker {
   display: none;
 }
 
-.matchup-guides summary::after {
+details.collapsible summary::after {
   content: '+';
   color: #888;
   font-weight: 700;
 }
 
-.matchup-guides[open] summary::after {
+details.collapsible[open] summary::after {
   content: '-';
 }
 
-.guide-panel {
+.collapsible-body {
   padding: 0.75rem 0 0.25rem;
+}
+
+.primer {
+  white-space: pre-wrap;
+  font-size: 0.85rem;
+}
+
+/* Matchup guides */
+.guide-panel {
+  padding: 0;
 }
 
 .guide-select {

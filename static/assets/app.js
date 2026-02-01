@@ -287,13 +287,17 @@
       <h1>${deck.name} <span class="colors">${formatColors(deck.colors)}</span></h1>
 
       ${careWarningHtml}
-      <h2>Primer</h2>
-      <div class="primer">${primerHtml}</div>
+      <details class="collapsible" open>
+        <summary>Primer</summary>
+        <div class="collapsible-body">
+          <div class="primer">${primerHtml}</div>
+        </div>
+      </details>
 
       ${guideKeys.length ? `
-        <details class="matchup-guides">
+        <details class="collapsible matchup-guides">
           <summary>Matchup Guides</summary>
-          <div class="guide-panel">
+          <div class="collapsible-body guide-panel">
             <div class="guide-select">
               <label for="guide-select">Opponent</label>
               <select id="guide-select">
@@ -305,15 +309,19 @@
         </details>
       ` : ''}
 
-      <h2>Decklist</h2>
-      <div class="decklist-grid${hasSideboard ? '' : ' single'}">
-        <div class="decklist-col">
-          <div class="card-list">
-            ${renderCardsByType(deck.cards)}
+      <details class="collapsible" open>
+        <summary>Decklist</summary>
+        <div class="collapsible-body">
+          <div class="decklist-grid${hasSideboard ? '' : ' single'}">
+            <div class="decklist-col">
+              <div class="card-list">
+                ${renderCardsByType(deck.cards)}
+              </div>
+            </div>
+            ${sideboardHtml}
           </div>
         </div>
-        ${sideboardHtml}
-      </div>
+      </details>
 
       
     `;
