@@ -16,7 +16,20 @@
     return str.charAt(0).toUpperCase() + str.slice(1);
   }
 
-  function createMarkdownRenderer(deck) {
+  function normalizeName(name) {
+    return name.toLowerCase().trim();
+  }
+
+  function resolvePrinting(target, printingsList) {
+    const key = normalizeName(target);
+    if (!key) return '';
+    for (const printings of printingsList) {
+      if (printings && printings[key]) return printings[key];
+    }
+    return '';
+  }
+
+  function createMarkdownRenderer(printingsList) {
     const md = window.markdownit({
       html: false,
       linkify: true,
@@ -48,15 +61,14 @@
 
     md.renderer.rules.card_ref = (tokens, idx) => {
       const { display, target } = tokens[idx].meta;
-      const card = findCard(deck, target);
-      const printing = card ? card.printing : '';
+      const printing = resolvePrinting(target, printingsList);
       return `<span class="card" data-name="${target}" data-printing="${printing}">${md.utils.escapeHtml(display)}</span>`;
     };
 
     return md;
   }
 
-  function renderGuideContent(md, guide) {
+  function renderGuideContent(mdPlan, mdProse, guide) {
     let ins = [];
     let outs = [];
     let prose = '';
@@ -70,7 +82,7 @@
     let html = '';
 
     if (ins.length || outs.length) {
-      const renderItems = (items) => items.map(item => `<li>${md.renderInline(item)}</li>`).join('');
+      const renderItems = (items) => items.map(item => `<li>${mdPlan.renderInline(item)}</li>`).join('');
       html += `
         <div class="guide-plan">
           <div class="guide-plan-col">
@@ -86,17 +98,10 @@
     }
 
     if (prose) {
-      html += `<div class="guide-prose">${md.render(prose)}</div>`;
+      html += `<div class="guide-prose">${mdProse.render(prose)}</div>`;
     }
 
     return html || '<em>No guide yet</em>';
-  }
-
-  function findCard(deck, name) {
-    const normalize = s => s.toLowerCase().trim();
-    const target = normalize(name);
-    return deck.cards.find(c => normalize(c.name) === target) ||
-           (deck.sideboard || []).find(c => normalize(c.name) === target);
   }
 
   function renderCardsByType(cards) {
@@ -281,8 +286,9 @@
     const deck = bb.decks.find(d => d.slug === deckSlug);
     if (!deck) return renderNotFound();
 
-    const md = createMarkdownRenderer(deck);
-    const primerHtml = deck.primer ? md.render(deck.primer) : '<em>No primer yet</em>';
+    const deckPrintings = deck.printings || {};
+    const mdSelf = createMarkdownRenderer([deckPrintings]);
+    const primerHtml = deck.primer ? mdSelf.render(deck.primer) : '<em>No primer yet</em>';
     const careWarningHtml = deck.premodern_care_warning ? `
       <div class="care-warning">⚠️ This deck contains Reserved List cards and/or cards that spiked in price with Premodern popularity. Handle and shuffle with care! ⚠️</div>
     ` : '';
@@ -350,8 +356,11 @@
       const select = document.getElementById('guide-select');
       const guideBox = document.getElementById('guide-box');
       const renderGuide = (key) => {
-      const guideData = deck.guides[key] || '';
-      guideBox.innerHTML = renderGuideContent(md, guideData);
+        const guideData = deck.guides[key] || '';
+        const opponent = bb.decks.find(d => d.slug === key);
+        const opponentPrintings = opponent ? opponent.printings || {} : {};
+        const mdProse = createMarkdownRenderer([opponentPrintings, deckPrintings]);
+        guideBox.innerHTML = renderGuideContent(mdSelf, mdProse, guideData);
       };
       renderGuide(select.value || guideKeys[0]);
       select.addEventListener('change', () => renderGuide(select.value));
@@ -369,8 +378,11 @@
 
     const opponent = bb.decks.find(d => d.slug === opponentSlug);
     const opponentName = opponent ? opponent.name : opponentSlug;
-    const md = createMarkdownRenderer(deck);
-    const guideHtml = renderGuideContent(md, guide);
+    const deckPrintings = deck.printings || {};
+    const opponentPrintings = opponent ? opponent.printings || {} : {};
+    const mdPlan = createMarkdownRenderer([deckPrintings]);
+    const mdProse = createMarkdownRenderer([opponentPrintings, deckPrintings]);
+    const guideHtml = renderGuideContent(mdPlan, mdProse, guide);
 
     app.innerHTML = `
       <a href="#/${bb.slug}/${deck.slug}" class="back">← ${deck.name}</a>

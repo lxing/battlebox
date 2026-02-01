@@ -36,6 +36,7 @@ type Deck struct {
 	Name                 string                  `json:"name"`
 	Colors               string                  `json:"colors"`
 	PremodernCareWarning bool                    `json:"premodern_care_warning,omitempty"`
+	Printings            map[string]string       `json:"printings,omitempty"`
 	Cards                []Card                  `json:"cards"`
 	Sideboard            []Card                  `json:"sideboard,omitempty"`
 	Primer               string                  `json:"primer"`
@@ -384,9 +385,23 @@ func processDeck(deckPath, slug, battlebox string, printings map[string]string) 
 		Name:                 manifest.Name,
 		Colors:               manifest.Colors,
 		PremodernCareWarning: manifest.PremodernCareWarning,
+		Printings:            map[string]string{},
 		Cards:                manifest.Cards,
 		Sideboard:            manifest.Sideboard,
 		Guides:               make(map[string]MatchupGuide),
+	}
+
+	for _, card := range manifest.Cards {
+		key := normalizeName(card.Name)
+		if key != "" {
+			deck.Printings[key] = card.Printing
+		}
+	}
+	for _, card := range manifest.Sideboard {
+		key := normalizeName(card.Name)
+		if key != "" {
+			deck.Printings[key] = card.Printing
+		}
 	}
 
 	// Read primer
