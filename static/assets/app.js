@@ -204,8 +204,15 @@
     previewEl.style.top = Math.min(y, window.innerHeight - height - 20) + 'px';
   }
 
+  function hidePreview() {
+    if (previewEl) {
+      previewEl.style.display = 'none';
+    }
+  }
+
   // Router
   function route() {
+    hidePreview();
     const hash = location.hash.slice(1) || '/';
     const parts = hash.split('/').filter(Boolean);
 
