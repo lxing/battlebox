@@ -1,7 +1,7 @@
 // Battlebox SPA
 (function() {
   const app = document.getElementById('app');
-  let data = null;
+  let data = { index: null, battleboxes: {} };
   let previewEl = null;
   let previewImg = null;
   let previewStatus = null;
@@ -302,8 +302,17 @@
     previewAnchor = null;
   }
 
+  async function loadBattlebox(bbSlug) {
+    if (data.battleboxes[bbSlug]) return data.battleboxes[bbSlug];
+    const res = await fetch(`/data/${bbSlug}.json`);
+    if (!res.ok) return null;
+    const bb = await res.json();
+    data.battleboxes[bbSlug] = bb;
+    return bb;
+  }
+
   // Router
-  function route() {
+  async function route() {
     hidePreview();
     const hash = location.hash.slice(1) || '/';
     const parts = hash.split('/').filter(Boolean);
@@ -313,9 +322,9 @@
     } else if (parts.length === 1) {
       renderBattlebox(parts[0]);
     } else if (parts.length === 2) {
-      renderDeck(parts[0], parts[1]);
+      await renderDeck(parts[0], parts[1]);
     } else if (parts.length === 3) {
-      renderGuide(parts[0], parts[1], parts[2]);
+      await renderGuide(parts[0], parts[1], parts[2]);
     }
   }
 
@@ -323,7 +332,7 @@
     app.innerHTML = `
       <h1>Battlebox</h1>
       <ul class="deck-list">
-        ${data.battleboxes.map(bb => `
+        ${data.index.battleboxes.map(bb => `
           <li><a href="#/${bb.slug}">${capitalize(bb.slug)} <span class="colors">(${bb.decks.length} decks)</span></a></li>
         `).join('')}
       </ul>
@@ -331,7 +340,7 @@
   }
 
   function renderBattlebox(bbSlug) {
-    const bb = data.battleboxes.find(b => b.slug === bbSlug);
+    const bb = data.index.battleboxes.find(b => b.slug === bbSlug);
     if (!bb) return renderNotFound();
 
     app.innerHTML = `
@@ -347,8 +356,8 @@
     `;
   }
 
-  function renderDeck(bbSlug, deckSlug) {
-    const bb = data.battleboxes.find(b => b.slug === bbSlug);
+  async function renderDeck(bbSlug, deckSlug) {
+    const bb = await loadBattlebox(bbSlug);
     if (!bb) return renderNotFound();
     const deck = bb.decks.find(d => d.slug === deckSlug);
     if (!deck) return renderNotFound();
@@ -433,8 +442,8 @@
     }
   }
 
-  function renderGuide(bbSlug, deckSlug, opponentSlug) {
-    const bb = data.battleboxes.find(b => b.slug === bbSlug);
+  async function renderGuide(bbSlug, deckSlug, opponentSlug) {
+    const bb = await loadBattlebox(bbSlug);
     if (!bb) return renderNotFound();
     const deck = bb.decks.find(d => d.slug === deckSlug);
     if (!deck) return renderNotFound();
@@ -468,12 +477,12 @@
   async function init() {
     app.innerHTML = '<div class="loading">Loading...</div>';
 
-    const res = await fetch('/data.json');
-    data = await res.json();
+    const res = await fetch('/data/index.json');
+    data.index = await res.json();
 
     setupCardHover();
     window.addEventListener('hashchange', route);
-    route();
+    await route();
   }
 
   init();

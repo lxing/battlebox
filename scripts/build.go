@@ -52,6 +52,22 @@ type Output struct {
 	Battleboxes []Battlebox `json:"battleboxes"`
 }
 
+type DeckIndex struct {
+	Slug                 string `json:"slug"`
+	Name                 string `json:"name"`
+	Colors               string `json:"colors"`
+	PremodernCareWarning bool   `json:"premodern_care_warning,omitempty"`
+}
+
+type BattleboxIndex struct {
+	Slug  string      `json:"slug"`
+	Decks []DeckIndex `json:"decks"`
+}
+
+type IndexOutput struct {
+	Battleboxes []BattleboxIndex `json:"battleboxes"`
+}
+
 type MatchupGuide struct {
 	In   []string `json:"in,omitempty"`
 	Out  []string `json:"out,omitempty"`
@@ -97,7 +113,8 @@ const printingsFileName = "printings.json"
 
 func main() {
 	dataDir := "data"
-	outputPath := "static/data.json"
+	outputDir := filepath.Join("static", "data")
+	indexPath := filepath.Join(outputDir, "index.json")
 
 	// Load type cache
 	loadTypeCache()
@@ -105,6 +122,7 @@ func main() {
 	projectPrintings := loadPrintings(filepath.Join(dataDir, printingsFileName))
 
 	var output Output
+	var indexOutput IndexOutput
 	var allCards []Card
 	var missing []MissingPrinting
 
@@ -202,22 +220,55 @@ func main() {
 		}
 
 		output.Battleboxes = append(output.Battleboxes, battlebox)
+		indexEntry := BattleboxIndex{
+			Slug:  battlebox.Slug,
+			Decks: make([]DeckIndex, 0, len(battlebox.Decks)),
+		}
+		for _, deck := range battlebox.Decks {
+			indexEntry.Decks = append(indexEntry.Decks, DeckIndex{
+				Slug:                 deck.Slug,
+				Name:                 deck.Name,
+				Colors:               deck.Colors,
+				PremodernCareWarning: deck.PremodernCareWarning,
+			})
+		}
+		indexOutput.Battleboxes = append(indexOutput.Battleboxes, indexEntry)
 		fmt.Printf("Processed battlebox: %s (%d decks)\n", bbDir.Name(), len(battlebox.Decks))
 	}
 
-	// Write output
-	jsonData, err := json.MarshalIndent(output, "", "  ")
+	// Write per-battlebox data
+	if err := os.MkdirAll(outputDir, 0755); err != nil {
+		fmt.Fprintf(os.Stderr, "Error creating output dir: %v\n", err)
+		os.Exit(1)
+	}
+
+	for _, battlebox := range output.Battleboxes {
+		bbPath := filepath.Join(outputDir, battlebox.Slug+".json")
+		jsonData, err := json.MarshalIndent(battlebox, "", "  ")
+		if err != nil {
+			fmt.Fprintf(os.Stderr, "Error marshaling JSON for %s: %v\n", battlebox.Slug, err)
+			os.Exit(1)
+		}
+		if err := os.WriteFile(bbPath, jsonData, 0644); err != nil {
+			fmt.Fprintf(os.Stderr, "Error writing output: %v\n", err)
+			os.Exit(1)
+		}
+		fmt.Printf("Written: %s (%d bytes)\n", bbPath, len(jsonData))
+	}
+
+	// Write index
+	jsonData, err := json.MarshalIndent(indexOutput, "", "  ")
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Error marshaling JSON: %v\n", err)
 		os.Exit(1)
 	}
 
-	if err := os.WriteFile(outputPath, jsonData, 0644); err != nil {
+	if err := os.WriteFile(indexPath, jsonData, 0644); err != nil {
 		fmt.Fprintf(os.Stderr, "Error writing output: %v\n", err)
 		os.Exit(1)
 	}
 
-	fmt.Printf("Written: %s (%d bytes)\n", outputPath, len(jsonData))
+	fmt.Printf("Written: %s (%d bytes)\n", indexPath, len(jsonData))
 }
 
 func loadTypeCache() {

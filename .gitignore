@@ -35,3 +35,4 @@ fly.toml
 tmp/
 .card-types.json
 static/data.json
+static/data/

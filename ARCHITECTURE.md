@@ -5,7 +5,7 @@ This repository builds a static, offline-friendly SPA for Magic: The Gathering b
 ## Code Structure
 
 - `main.go`: Go HTTP server. Serves the SPA and exposes a small JSON API backed by prebuilt data.
-- `scripts/build.go`: Build pipeline. Reads deck data/markdown, resolves card printings, fetches card types from Scryfall, and writes `static/data.json`.
+- `scripts/build.go`: Build pipeline. Reads deck data/markdown, resolves card printings, fetches card types from Scryfall, and writes `static/data/index.json` plus per-battlebox JSON files in `static/data/`.
 - `build.sh`: Convenience wrapper for the build script.
 - `data/`: Source content for battleboxes and decks.
   - `data/printings.json`: Project-level card printings.
@@ -17,14 +17,15 @@ This repository builds a static, offline-friendly SPA for Magic: The Gathering b
 - `static/`: SPA assets and generated data.
   - `static/index.html`: SPA shell.
   - `static/assets/*`: Frontend assets.
-  - `static/data.json`: Generated dataset consumed by the SPA.
+  - `static/data/index.json`: Battlebox index consumed by the SPA.
+  - `static/data/<battlebox>.json`: Per-battlebox datasets loaded on demand.
 - `.card-types.json`: Cached mapping of `printing -> type` to avoid repeated Scryfall calls.
 
 ## Purpose and Data Flow
 
 1. Source data lives under `data/` as JSON manifests and markdown content.
 2. The build step (`scripts/build.go`, via `build.sh`) loads and merges printings, resolves card printings, and fetches card type lines from Scryfall when missing.
-3. The build step writes `static/data.json` with battleboxes, decks, cards, and guides.
+3. The build step writes `static/data/index.json` plus per-battlebox JSON files with decks, cards, and guides.
 4. The Go server (`main.go`) serves the SPA and the generated data for the frontend.
 
 ## Printing Resolution Behavior
