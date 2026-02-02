@@ -2,4 +2,4 @@ Evoke the terror of high-cost elementals! [[Glarb|Glarb, Calamity's Augur]] digs
 
 In prolonged battles, pull ahead with the big-butt subtheme where [[Fecund Greenshell]] turns every [[Helga|Helga, Skittish Seer]], [[Glarb|Glarb, Calamity's Augur]], and [[Beza|Beza, the Bounding Spring]] into a land drop.
 
-Tip: drop an early [[Up the Beanstalk]] to keep the cards flowing.
+Tip: Drop an early [[Up the Beanstalk]] to keep the cards flowing.

@@ -1,10 +1,12 @@
-Replenish is a combo-control deck that fills the graveyard with enchantments, then brings them all back at once for a devastating swing. [[Attunement]] and [[Frantic Search]] load the graveyard while keeping your hand stocked, and [[Replenish]] returns key pieces such as [[Opalescence]], [[Parallax Tide]], and [[Parallax Wave]]. Fast mana from [[Ancient Tomb]] and [[City of Traitors]] lets you set up quickly while still holding up interaction.
+Replenish is a combo-control deck that fills the graveyard with enchantments, then brings them all back at once with the namesake [[Replenish]] for a devastating swing. [[Attunement]] and [[Frantic Search]] load the graveyard while keeping your hand stocked, and key pieces such as [[Opalescence]], [[Parallax Tide]], and [[Parallax Wave]] convert the critical turn into complete board dominance. Fast mana from [[Ancient Tomb]] and [[City of Traitors]] lets you setup incredibly quickly.
 
 ### Early game
-Use cantrips and looters to sculpt your hand and set up the graveyard. [[Attunement]] is the most efficient way to discard enchantments while drawing fresh cards. Protect yourself with [[Mana Leak]] or [[Swords to Plowshares]] as you assemble the Replenish turn, and use your mana acceleration to stay ahead on tempo.
+Use cantrips and looters to sculpt your hand and set up the graveyard. [[Attunement]] is the most efficient way to discard enchantments while drawing fresh cards. Protect yourself with [[Mana Leak]] or [[Swords to Plowshares]].
 
 ### Midgame
-Look for a window to resolve [[Replenish]] with impact. [[Opalescence]] plus [[Parallax Wave]] or [[Parallax Tide]] can lock down the board and clear blockers. [[Intuition]] often finds the right mix of pieces and redundancy, especially when you already have a discard outlet.
+Dig hard for [[Replenish]] and try to resolve it with a stocked graveyard. [[Intuition]] can be used to tutor up three copies of [[Replenish]] or three value enchantments, it's not hard to setup a terrible choice.
+
+Even without reanimation, [[Parallax Wave]] and [[Parallax Tide]] combo with [[Seal of Cleansing]] for very nasty board state manipulation. With the enters trigger on the stack, destroy them with [[Seal of Cleansing]], which triggers the exit clause. Stack resolution causes the exit clause to resolve first, then you remove all their lands and creatures permanantly...then you can do it all over again later with [[Replenish]]! 
 
 ### Closing the game
-Once your enchantments return, the game usually ends quickly. Animated permanents from [[Opalescence]] provide a fast clock, and the Parallax enchantments can remove their remaining defenses. Continue to use countermagic to protect the board and avoid giving the opponent a clean answer to your engine.
+Once you pop the combo, the game usually ends quickly. [[Opalescence]] provides a really fast clock, in tandem with the Parallax enchantments obliterating their board state.
