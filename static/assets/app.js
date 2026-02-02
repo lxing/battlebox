@@ -5,6 +5,8 @@
   let previewEl = null;
   let previewImg = null;
   let previewStatus = null;
+  let previewToken = 0;
+  let previewUrl = '';
 
   function formatColors(colors) {
     return colors.split('').map(c =>
@@ -213,15 +215,6 @@
     previewImg = document.createElement('img');
     previewEl.appendChild(previewStatus);
     previewEl.appendChild(previewImg);
-    previewImg.addEventListener('load', () => {
-      previewStatus.style.display = 'none';
-      previewImg.style.display = 'block';
-    });
-    previewImg.addEventListener('error', () => {
-      previewStatus.textContent = 'Image unavailable';
-      previewStatus.style.display = 'block';
-      previewImg.style.display = 'none';
-    });
     previewEl.addEventListener('mouseleave', (e) => {
       if (!previewAnchor) return;
       const cardEl = previewAnchor.el;
@@ -237,6 +230,11 @@
     if (!printing) return;
     const url = getImageUrl(printing);
     if (!url) return;
+    if (previewAnchor && previewAnchor.el === cardEl && previewEl && previewEl.style.display !== 'none' && previewUrl === url) {
+      positionPreviewAtPoint(e.clientX, e.clientY);
+      return;
+    }
+    previewUrl = url;
     ensurePreviewEl();
     if (previewEl.parentNode !== document.body) {
       document.body.appendChild(previewEl);
@@ -244,7 +242,25 @@
     previewStatus.textContent = 'Loading...';
     previewStatus.style.display = 'block';
     previewImg.style.display = 'none';
-    previewImg.src = url;
+    // Preload to avoid noisy aborted image requests when hover changes quickly.
+    const token = ++previewToken;
+    const img = new Image();
+    img.className = previewImg.className;
+    img.alt = previewImg.alt || '';
+    img.onload = () => {
+      if (token !== previewToken || previewUrl !== url) return;
+      previewStatus.style.display = 'none';
+      img.style.display = 'block';
+      previewEl.replaceChild(img, previewImg);
+      previewImg = img;
+    };
+    img.onerror = () => {
+      if (token !== previewToken || previewUrl !== url) return;
+      previewStatus.textContent = 'Image unavailable';
+      previewStatus.style.display = 'block';
+      previewImg.style.display = 'none';
+    };
+    img.src = url;
     previewEl.style.display = 'block';
     positionPreviewAtPoint(e.clientX, e.clientY);
     const rect = cardEl.getBoundingClientRect();
@@ -266,21 +282,20 @@
     }, true);
 
     if (prefersHover) {
-      app.addEventListener('mouseover', (e) => {
+      app.addEventListener('pointerenter', (e) => {
         const cardEl = getCardTarget(e);
         if (!cardEl) return;
         if (e.relatedTarget && cardEl.contains(e.relatedTarget)) return;
         openPreview(cardEl, e);
-      });
+      }, true);
 
-      app.addEventListener('mouseout', (e) => {
+      app.addEventListener('pointerleave', (e) => {
         const cardEl = getCardTarget(e);
         if (!cardEl || !previewEl) return;
         if (e.relatedTarget && cardEl.contains(e.relatedTarget)) return;
         if (e.relatedTarget && previewEl.contains(e.relatedTarget)) return;
-        if (previewEl.matches && previewEl.matches(':hover')) return;
         hidePreview();
-      });
+      }, true);
     } else {
       app.addEventListener('click', (e) => {
         const cardEl = getCardTarget(e);
@@ -300,6 +315,7 @@
       previewEl.style.display = 'none';
     }
     previewAnchor = null;
+    previewToken += 1;
   }
 
   async function loadBattlebox(bbSlug) {
