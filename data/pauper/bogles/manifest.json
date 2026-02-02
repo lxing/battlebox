@@ -1,0 +1,96 @@
+{
+  "name": "Bogles",
+  "colors": "",
+  "cards": [
+    {
+      "name": "Abundant Growth",
+      "qty": 4
+    },
+    {
+      "name": "Ancestral Mask",
+      "qty": 4
+    },
+    {
+      "name": "Armadillo Cloak",
+      "qty": 4
+    },
+    {
+      "name": "Ash Barrens",
+      "qty": 3
+    },
+    {
+      "name": "Cartouche of Solidarity",
+      "qty": 2
+    },
+    {
+      "name": "Ethereal Armor",
+      "qty": 4
+    },
+    {
+      "name": "Forest",
+      "qty": 11
+    },
+    {
+      "name": "Gladecover Scout",
+      "qty": 4
+    },
+    {
+      "name": "Malevolent Rumble",
+      "qty": 4
+    },
+    {
+      "name": "Plains",
+      "qty": 3
+    },
+    {
+      "name": "Ram Through",
+      "qty": 1
+    },
+    {
+      "name": "Rancor",
+      "qty": 4
+    },
+    {
+      "name": "Sentinel's Eyes",
+      "qty": 1
+    },
+    {
+      "name": "Silhana Ledgewalker",
+      "qty": 3
+    },
+    {
+      "name": "Slippery Bogle",
+      "qty": 4
+    },
+    {
+      "name": "Utopia Sprawl",
+      "qty": 4
+    }
+  ],
+  "sideboard": [
+    {
+      "name": "Blighted Agent",
+      "qty": 4
+    },
+    {
+      "name": "Crimson Acolyte",
+      "qty": 3
+    },
+    {
+      "name": "Glistener Elf",
+      "qty": 4
+    },
+    {
+      "name": "Island",
+      "qty": 1
+    },
+    {
+      "name": "Lifelink",
+      "qty": 1
+    },
+    {
+      "name": "Tamiyo's Safekeeping",
+      "qty": 2
+    }
+  ]
+}

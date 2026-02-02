@@ -1,0 +1,108 @@
+{
+  "name": "Madness Burn",
+  "colors": "",
+  "cards": [
+    {
+      "name": "Alms of the Vein",
+      "qty": 4
+    },
+    {
+      "name": "Drossforge Bridge",
+      "qty": 4
+    },
+    {
+      "name": "Faithless Looting",
+      "qty": 4
+    },
+    {
+      "name": "Fiery Temper",
+      "qty": 4
+    },
+    {
+      "name": "Galvanic Blast",
+      "qty": 4
+    },
+    {
+      "name": "Goblin Tomb Raider",
+      "qty": 4
+    },
+    {
+      "name": "Grab the Prize",
+      "qty": 3
+    },
+    {
+      "name": "Great Furnace",
+      "qty": 4
+    },
+    {
+      "name": "Highway Robbery",
+      "qty": 2
+    },
+    {
+      "name": "Jagged Barrens",
+      "qty": 4
+    },
+    {
+      "name": "Kitchen Imp",
+      "qty": 4
+    },
+    {
+      "name": "Lightning Bolt",
+      "qty": 4
+    },
+    {
+      "name": "Mountain",
+      "qty": 1
+    },
+    {
+      "name": "Rakdos Carnarium",
+      "qty": 1
+    },
+    {
+      "name": "Razortrap Gorge",
+      "qty": 1
+    },
+    {
+      "name": "Sneaky Snacker",
+      "qty": 4
+    },
+    {
+      "name": "Swamp",
+      "qty": 1
+    },
+    {
+      "name": "Vault of Whispers",
+      "qty": 3
+    },
+    {
+      "name": "Voldaren Epicure",
+      "qty": 4
+    }
+  ],
+  "sideboard": [
+    {
+      "name": "End the Festivities",
+      "qty": 3
+    },
+    {
+      "name": "Gorilla Shaman",
+      "qty": 3
+    },
+    {
+      "name": "Pyroblast",
+      "qty": 2
+    },
+    {
+      "name": "Relic of Progenitus",
+      "qty": 1
+    },
+    {
+      "name": "Tithing Blade / Consuming Sepulcher",
+      "qty": 3
+    },
+    {
+      "name": "Trespasser's Curse",
+      "qty": 3
+    }
+  ]
+}

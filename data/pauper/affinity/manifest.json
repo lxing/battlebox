@@ -1,0 +1,124 @@
+{
+  "name": "Affinity",
+  "colors": "",
+  "cards": [
+    {
+      "name": "Blood Fountain",
+      "qty": 3
+    },
+    {
+      "name": "Candy Trail",
+      "qty": 2
+    },
+    {
+      "name": "Cast Down",
+      "qty": 2
+    },
+    {
+      "name": "Deadly Dispute",
+      "qty": 4
+    },
+    {
+      "name": "Drossforge Bridge",
+      "qty": 4
+    },
+    {
+      "name": "Galvanic Blast",
+      "qty": 4
+    },
+    {
+      "name": "Great Furnace",
+      "qty": 2
+    },
+    {
+      "name": "Ichor Wellspring",
+      "qty": 4
+    },
+    {
+      "name": "Kenku Artificer",
+      "qty": 2
+    },
+    {
+      "name": "Krark-Clan Shaman",
+      "qty": 2
+    },
+    {
+      "name": "Makeshift Munitions",
+      "qty": 1
+    },
+    {
+      "name": "Mistvault Bridge",
+      "qty": 4
+    },
+    {
+      "name": "Myr Enforcer",
+      "qty": 4
+    },
+    {
+      "name": "Nihil Spellbomb",
+      "qty": 2
+    },
+    {
+      "name": "Reckoner's Bargain",
+      "qty": 4
+    },
+    {
+      "name": "Refurbished Familiar",
+      "qty": 4
+    },
+    {
+      "name": "Seat of the Synod",
+      "qty": 3
+    },
+    {
+      "name": "Silverbluff Bridge",
+      "qty": 2
+    },
+    {
+      "name": "Swamp",
+      "qty": 1
+    },
+    {
+      "name": "Thoughtcast",
+      "qty": 2
+    },
+    {
+      "name": "Toxin Analysis",
+      "qty": 1
+    },
+    {
+      "name": "Vault of Whispers",
+      "qty": 3
+    }
+  ],
+  "sideboard": [
+    {
+      "name": "Cast Down",
+      "qty": 2
+    },
+    {
+      "name": "Cast into the Fire",
+      "qty": 2
+    },
+    {
+      "name": "Gorilla Shaman",
+      "qty": 4
+    },
+    {
+      "name": "Krark-Clan Shaman",
+      "qty": 1
+    },
+    {
+      "name": "Pyroblast",
+      "qty": 1
+    },
+    {
+      "name": "Red Elemental Blast",
+      "qty": 4
+    },
+    {
+      "name": "Toxin Analysis",
+      "qty": 1
+    }
+  ]
+}

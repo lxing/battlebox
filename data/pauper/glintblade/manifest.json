@@ -1,0 +1,100 @@
+{
+  "name": "Glintblade",
+  "colors": "",
+  "cards": [
+    {
+      "name": "Ancient Den",
+      "qty": 3
+    },
+    {
+      "name": "Bojuka Bog",
+      "qty": 2
+    },
+    {
+      "name": "Cast Down",
+      "qty": 4
+    },
+    {
+      "name": "Glint Hawk",
+      "qty": 4
+    },
+    {
+      "name": "Goldmire Bridge",
+      "qty": 4
+    },
+    {
+      "name": "Inspiring Overseer",
+      "qty": 4
+    },
+    {
+      "name": "Kor Skyfisher",
+      "qty": 4
+    },
+    {
+      "name": "Lembas",
+      "qty": 4
+    },
+    {
+      "name": "Novice Inspector",
+      "qty": 4
+    },
+    {
+      "name": "Orzhov Basilica",
+      "qty": 3
+    },
+    {
+      "name": "Plains",
+      "qty": 5
+    },
+    {
+      "name": "Refurbished Familiar",
+      "qty": 4
+    },
+    {
+      "name": "Suffocating Fumes",
+      "qty": 2
+    },
+    {
+      "name": "Thraben Charm",
+      "qty": 2
+    },
+    {
+      "name": "Thraben Inspector",
+      "qty": 4
+    },
+    {
+      "name": "Tithing Blade / Consuming Sepulcher",
+      "qty": 4
+    },
+    {
+      "name": "Vault of Whispers",
+      "qty": 3
+    }
+  ],
+  "sideboard": [
+    {
+      "name": "Arms of Hadar",
+      "qty": 2
+    },
+    {
+      "name": "Duress",
+      "qty": 2
+    },
+    {
+      "name": "Dust to Dust",
+      "qty": 4
+    },
+    {
+      "name": "Lone Missionary",
+      "qty": 2
+    },
+    {
+      "name": "Okiba-Gang Shinobi",
+      "qty": 2
+    },
+    {
+      "name": "Revoke Existence",
+      "qty": 3
+    }
+  ]
+}

@@ -1,0 +1,88 @@
+{
+  "name": "White Weenie",
+  "colors": "",
+  "cards": [
+    {
+      "name": "Battle Screech",
+      "qty": 4
+    },
+    {
+      "name": "Eagles of the North",
+      "qty": 3
+    },
+    {
+      "name": "Guardians' Pledge",
+      "qty": 3
+    },
+    {
+      "name": "Idyllic Grange",
+      "qty": 2
+    },
+    {
+      "name": "Journey to Nowhere",
+      "qty": 1
+    },
+    {
+      "name": "Kor Skyfisher",
+      "qty": 4
+    },
+    {
+      "name": "Lunarch Veteran / Luminous Phantom",
+      "qty": 3
+    },
+    {
+      "name": "Militia Bugler",
+      "qty": 4
+    },
+    {
+      "name": "Novice Inspector",
+      "qty": 4
+    },
+    {
+      "name": "Plains",
+      "qty": 17
+    },
+    {
+      "name": "Prismatic Strands",
+      "qty": 3
+    },
+    {
+      "name": "Raffine's Informant",
+      "qty": 4
+    },
+    {
+      "name": "Thraben Charm",
+      "qty": 4
+    },
+    {
+      "name": "Thraben Inspector",
+      "qty": 4
+    }
+  ],
+  "sideboard": [
+    {
+      "name": "Dust to Dust",
+      "qty": 4
+    },
+    {
+      "name": "Journey to Nowhere",
+      "qty": 2
+    },
+    {
+      "name": "Lone Missionary",
+      "qty": 2
+    },
+    {
+      "name": "Prismatic Strands",
+      "qty": 1
+    },
+    {
+      "name": "Revoke Existence",
+      "qty": 3
+    },
+    {
+      "name": "Standard Bearer",
+      "qty": 3
+    }
+  ]
+}

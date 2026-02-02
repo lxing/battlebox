@@ -1,0 +1,92 @@
+{
+  "name": "Delver",
+  "colors": "",
+  "cards": [
+    {
+      "name": "Brainstorm",
+      "qty": 4
+    },
+    {
+      "name": "Consider",
+      "qty": 1
+    },
+    {
+      "name": "Counterspell",
+      "qty": 4
+    },
+    {
+      "name": "Cryptic Serpent",
+      "qty": 4
+    },
+    {
+      "name": "Deem Inferior",
+      "qty": 4
+    },
+    {
+      "name": "Deep Analysis",
+      "qty": 2
+    },
+    {
+      "name": "Delver of Secrets / Insectile Aberration",
+      "qty": 4
+    },
+    {
+      "name": "Island",
+      "qty": 16
+    },
+    {
+      "name": "L\u00f3rien Revealed",
+      "qty": 4
+    },
+    {
+      "name": "Mental Note",
+      "qty": 3
+    },
+    {
+      "name": "Murmuring Mystic",
+      "qty": 1
+    },
+    {
+      "name": "Ponder",
+      "qty": 2
+    },
+    {
+      "name": "Spell Pierce",
+      "qty": 3
+    },
+    {
+      "name": "Thought Scour",
+      "qty": 4
+    },
+    {
+      "name": "Tolarian Terror",
+      "qty": 4
+    }
+  ],
+  "sideboard": [
+    {
+      "name": "Annul",
+      "qty": 3
+    },
+    {
+      "name": "Blue Elemental Blast",
+      "qty": 3
+    },
+    {
+      "name": "Dispel",
+      "qty": 2
+    },
+    {
+      "name": "Hydroblast",
+      "qty": 4
+    },
+    {
+      "name": "Murmuring Mystic",
+      "qty": 1
+    },
+    {
+      "name": "Steel Sabotage",
+      "qty": 2
+    }
+  ]
+}

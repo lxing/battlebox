@@ -1,0 +1,92 @@
+{
+  "name": "Broodscale",
+  "colors": "",
+  "cards": [
+    {
+      "name": "Basking Broodscale",
+      "qty": 4
+    },
+    {
+      "name": "Chromatic Star",
+      "qty": 4
+    },
+    {
+      "name": "Deadly Dispute",
+      "qty": 4
+    },
+    {
+      "name": "Duress",
+      "qty": 4
+    },
+    {
+      "name": "Energy Refractor",
+      "qty": 2
+    },
+    {
+      "name": "Eviscerator's Insight",
+      "qty": 3
+    },
+    {
+      "name": "Foreboding Landscape",
+      "qty": 4
+    },
+    {
+      "name": "Forest",
+      "qty": 5
+    },
+    {
+      "name": "Ichor Wellspring",
+      "qty": 4
+    },
+    {
+      "name": "Malevolent Rumble",
+      "qty": 4
+    },
+    {
+      "name": "Nadier's Nightblade",
+      "qty": 3
+    },
+    {
+      "name": "Sadistic Glee",
+      "qty": 4
+    },
+    {
+      "name": "Snakeskin Veil",
+      "qty": 4
+    },
+    {
+      "name": "Swamp",
+      "qty": 7
+    },
+    {
+      "name": "Tree of Tales",
+      "qty": 2
+    },
+    {
+      "name": "Wizard's Rockets",
+      "qty": 2
+    }
+  ],
+  "sideboard": [
+    {
+      "name": "Circle of Protection: Blue",
+      "qty": 2
+    },
+    {
+      "name": "Drown in Sorrow",
+      "qty": 4
+    },
+    {
+      "name": "Mesmeric Fiend",
+      "qty": 2
+    },
+    {
+      "name": "Snuff Out",
+      "qty": 3
+    },
+    {
+      "name": "Weather the Storm",
+      "qty": 4
+    }
+  ]
+}

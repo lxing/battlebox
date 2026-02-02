@@ -1,0 +1,108 @@
+{
+  "name": "Skred",
+  "colors": "",
+  "cards": [
+    {
+      "name": "Augur of Bolas",
+      "qty": 2
+    },
+    {
+      "name": "Azure Fleet Admiral",
+      "qty": 1
+    },
+    {
+      "name": "Brainstorm",
+      "qty": 4
+    },
+    {
+      "name": "Breath Weapon",
+      "qty": 2
+    },
+    {
+      "name": "Counterspell",
+      "qty": 4
+    },
+    {
+      "name": "Crimson Fleet Commodore",
+      "qty": 1
+    },
+    {
+      "name": "Lightning Bolt",
+      "qty": 4
+    },
+    {
+      "name": "L\u00f3rien Revealed",
+      "qty": 4
+    },
+    {
+      "name": "Lose Focus",
+      "qty": 1
+    },
+    {
+      "name": "Murmuring Mystic",
+      "qty": 2
+    },
+    {
+      "name": "Perilous Landscape",
+      "qty": 2
+    },
+    {
+      "name": "Ponder",
+      "qty": 4
+    },
+    {
+      "name": "Preordain",
+      "qty": 2
+    },
+    {
+      "name": "Skred",
+      "qty": 4
+    },
+    {
+      "name": "Snow-Covered Island",
+      "qty": 9
+    },
+    {
+      "name": "Snow-Covered Mountain",
+      "qty": 3
+    },
+    {
+      "name": "Spell Pierce",
+      "qty": 3
+    },
+    {
+      "name": "Tolarian Terror",
+      "qty": 4
+    },
+    {
+      "name": "Volatile Fjord",
+      "qty": 4
+    }
+  ],
+  "sideboard": [
+    {
+      "name": "Annul",
+      "qty": 2
+    },
+    {
+      "name": "Breath Weapon",
+      "qty": 1
+    },
+    {
+      "name": "Cast into the Fire",
+      "qty": 2
+    },
+    {
+      "name": "Gorilla Shaman",
+      "qty": 2
+    },
+    {
+      "name": "Hydroblast",
+      "qty": 4
+    },
+    {
+      "name": "Pyroblast",
+      "qty": 4
+    }
+  ]
+}

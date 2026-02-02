@@ -1,5 +1,18 @@
 battlebox: pauper
-sideboard: no
+sideboard: yes
 urls:
-- https://moxfield.com/decks/...
-- https://moxfield.com/decks/...
+https://moxfield.com/decks/x65DQM8-DEWmcPqFTQmbNw
+https://moxfield.com/decks/nWG_33ZZNk64QfSwGemjfg
+https://moxfield.com/decks/eFcHZYlaa0arzshU8kivbg
+https://moxfield.com/decks/gpK6I1VpjkqH1LFkG45FfQ
+https://moxfield.com/decks/XFFmfz5jWUGGjs6VRKdqqg
+https://moxfield.com/decks/2UccQP8LhEaY_lh-1JYOEw
+https://moxfield.com/decks/_l9ecsgoyUaFvD-EJKU-Pg
+https://moxfield.com/decks/YhcAaR6hV0iR1dFimqlGGw
+https://moxfield.com/decks/lFbtjUiXF0-NDGZlnXLCtw
+https://moxfield.com/decks/Ys1I8wYHOk6i1di9dE8f9g
+https://moxfield.com/decks/XU5H19vNaEWa6IeU8RJGcQ
+https://moxfield.com/decks/ggNOg-bS10O0WhMget9Whw
+https://moxfield.com/decks/M8Ba-NCqVUiod0MkEmc4Nw
+https://moxfield.com/decks/yLGy6c_fiUSbFq4XL7HldQ
+https://moxfield.com/decks/MMspAynzK0GU3lUYRVI6mA
