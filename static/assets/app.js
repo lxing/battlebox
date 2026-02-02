@@ -340,7 +340,13 @@
     } else if (parts.length === 2) {
       await renderDeck(parts[0], parts[1]);
     } else if (parts.length === 3) {
-      await renderGuide(parts[0], parts[1], parts[2]);
+      if (parts[2] === 'matchup') {
+        await renderDeck(parts[0], parts[1]);
+      } else {
+        await renderDeck(parts[0], parts[1], parts[2]);
+      }
+    } else if (parts.length === 4 && parts[2] === 'matchup') {
+      await renderDeck(parts[0], parts[1], parts[3]);
     }
   }
 
@@ -372,7 +378,7 @@
     `;
   }
 
-  async function renderDeck(bbSlug, deckSlug) {
+  async function renderDeck(bbSlug, deckSlug, selectedGuide) {
     const bb = await loadBattlebox(bbSlug);
     if (!bb) return renderNotFound();
     const deck = bb.decks.find(d => d.slug === deckSlug);
@@ -427,7 +433,7 @@
       </details>
 
       ${guideKeys.length ? `
-        <details class="collapsible matchup-guides">
+        <details class="collapsible matchup-guides" open>
           <summary>Matchup Guides</summary>
           <div class="collapsible-body guide-panel">
             <div class="guide-select">
@@ -453,33 +459,20 @@
         const mdProse = createMarkdownRenderer([opponentPrintings, deckPrintings]);
         guideBox.innerHTML = renderGuideContent(mdSelf, mdProse, guideData);
       };
-      renderGuide(select.value || guideKeys[0]);
-      select.addEventListener('change', () => renderGuide(select.value));
+      const initialGuide = selectedGuide && guideKeys.includes(selectedGuide)
+        ? selectedGuide
+        : (select.value || guideKeys[0]);
+      select.value = initialGuide;
+      renderGuide(initialGuide);
+      select.addEventListener('change', () => {
+        const key = select.value;
+        renderGuide(key);
+        const nextHash = `#/${bb.slug}/${deck.slug}/matchup/${key}`;
+        if (location.hash !== nextHash) {
+          history.replaceState(null, '', nextHash);
+        }
+      });
     }
-  }
-
-  async function renderGuide(bbSlug, deckSlug, opponentSlug) {
-    const bb = await loadBattlebox(bbSlug);
-    if (!bb) return renderNotFound();
-    const deck = bb.decks.find(d => d.slug === deckSlug);
-    if (!deck) return renderNotFound();
-
-    const guide = (deck.guides || {})[opponentSlug];
-    if (!guide) return renderNotFound();
-
-    const opponent = bb.decks.find(d => d.slug === opponentSlug);
-    const opponentName = opponent ? opponent.name : opponentSlug;
-    const deckPrintings = deck.printings || {};
-    const opponentPrintings = opponent ? opponent.printings || {} : {};
-    const mdPlan = createMarkdownRenderer([deckPrintings]);
-    const mdProse = createMarkdownRenderer([opponentPrintings, deckPrintings]);
-    const guideHtml = renderGuideContent(mdPlan, mdProse, guide);
-
-    app.innerHTML = `
-      <a href="#/${bb.slug}/${deck.slug}" class="back">← ${deck.name}</a>
-      <h1>${opponentName}</h1>
-      <div class="primer">${guideHtml}</div>
-    `;
   }
 
   function renderNotFound() {
