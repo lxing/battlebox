@@ -6,5 +6,5 @@ Prioritize an cheap mana development and an enchantress effect. A start of [[Wil
 ### Midgame
 With the core engine online, you can sculpt your hand and lock the game. Use [[Sterling Grove]] or [[Enlightened Tutor]] to find silver bullets, and lean on [[Solitary Confinement]] or [[Worship]] when you need to completely shut off combat. [[Seal of Cleansing]] and [[Parallax Wave]] provide reasonable interaction against any board presence the prison pieces cannot handle.
 
-### Closing the game
+### Endgame
 Finish by converting your board into a win condition. [[Opalescence]] plus [[Parallax Wave]] can give you a dominant board state, while [[Mobilization]] provides a steady stream of soldiers if the game stalls. Once you are drawing multiple cards a turn and producing large mana from [[Serra's Sanctum]], your late game is completely inevitable.

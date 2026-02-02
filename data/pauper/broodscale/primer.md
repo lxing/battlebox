@@ -6,5 +6,5 @@ Lead with fixing and cheap artifacts like [[Chromatic Star]] and [[Ichor Wellspr
 ### Midgame
 Assemble the combo and protect it with [[Snakeskin Veil]]. If the combo isn’t safe yet, you can grind with [[Deadly Dispute]] and [[Eviscerator's Insight]] to keep cards flowing while maintaining artifact density for future turns.
 
-### Closing the game
-Once the loop is live, win immediately with infinite drain from [[Nadier's Nightblade]] or by attacking with a massive Broodscale. When opponents are holding interaction, take the slower line and force them to answer your resource engine before you commit.
+### Endgame
+Once the loop is live, win instantly with infinite drain from [[Nadier's Nightblade]] or by attacking with a massive Broodscale. When opponents are holding interaction, take the slower line and force them to answer your resource engine before you commit.

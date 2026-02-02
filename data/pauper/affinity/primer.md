@@ -1,10 +1,10 @@
-Affinity uses artifact lands and cheap artifacts to power fast affinity spells and steady card advantage. This list leans on [[Ichor Wellspring]] and [[Blood Fountain]] as fuel for [[Deadly Dispute]] and [[Reckoner's Bargain]], while [[Galvanic Blast]] and [[Cast Down]] keep opposing threats in check.
+Affinity uses artifact lands and cheap artifacts to power fast affinity spells. Various sacrifice effects also give an amazing recursion engine; this deck is an unmatched prallel of terrifying speed and grind capability. Most decks dedicate a huge slice of sideboard to Affinity for good reason.
 
 ### Early game
-Develop artifacts and mana so [[Thoughtcast]] and [[Myr Enforcer]] are online quickly. Your cheap artifacts and artifact lands turn on early discounted threats while stocking the board for later sacrifice value.
+Develop as many cheap artifacts as you can, then chain them into [[Thoughtcast]] and [[Myr Enforcer]] before cashing them in for [[Deadly Dispute]] and [[Reckoner's Bargain]]. As ridiculous as it sounds, this is the early game for Affinity.
 
 ### Midgame
-Use sacrifice timing to turn expendable artifacts into cards and life while keeping affinity counts high. [[Refurbished Familiar]] and [[Kenku Artificer]] apply pressure, and a well-timed [[Krark-Clan Shaman]] can reset go-wide boards without losing your larger bodies.
+Grind away with [[Refurbished Familiar]]. In the event someone is faster than you, [[Krark-Clan Shaman]] and optionally [[Toxin Analysis]] will completely shutdown any board state. Construct a flying brick shithouse with [[Kenku Artificer]] and [[Drossforge Bridge]] or [[Mistvault Bridge]].
 
-### Closing the game
-Close with oversized threats like [[Myr Enforcer]] backed by reach from [[Galvanic Blast]] or attrition from [[Makeshift Munitions]]. The deck often wins by converting extra artifacts into damage while staying ahead on resources.
+### Endgame
+Recur [[Myr Enforcer]] and [[Refurbished Familiar]] with [[Blood Fountain]]. After enough chip damage, one or two [[Galvanic Blast]] will very quickly end a game. The singleton [[Makeshift Munitions]] is also very good at attrition with all the sacrifice fodder. This deck can come back from incredibly far behind, so never give up!

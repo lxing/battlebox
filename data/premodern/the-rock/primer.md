@@ -1,10 +1,10 @@
-The Rock is a black‑green midrange deck built on disruption, removal, and resilient threats. It opens with hand disruption like [[Duress]] and [[Cabal Therapy]], then stabilizes with efficient blockers and sweepers such as [[Pernicious Deed]]. The deck wins by grinding down resources and sticking hard‑to‑answer threats like [[Ravenous Baloth]] or [[Treetop Village]].
+The Rock is a black‑green midrange deck built on disruption, removal, and resilient threats. It opens with hand disruption like [[Duress]] and [[Cabal Therapy]], then stabilizes with efficient blockers and sweepers such as [[Pernicious Deed]]. The deck wins by grinding down resources and sticking highly efficient and well-costed threats.
 
 ### Early game
-Lead with discard to break up opposing plans and protect your curve. [[Birds of Paradise]] accelerates you into key spells, while [[Wall of Blossoms]] keeps cards flowing. Use early removal to trade efficiently and set up a favorable midgame.
+Accelerate with [[Birds of Paradise]] and [[Yavimaya Elder]] while defending with [[Wall of Blossoms]]. Use early removal and discard to trade efficiently.
 
 ### Midgame
-This is where The Rock dominates. [[Pernicious Deed]] resets the board when needed, and [[Living Wish]] gives you flexible access to silver‑bullet creatures. [[Blastoderm]] provides a fast clock that can close games before opponents recover. Manage your resources carefully so you can keep presenting threats while holding answers.
+This is where The Rock dominates. [[Pernicious Deed]] will stabilize any large boards, and [[Living Wish]] lets you branch into inevitability with [[Genesis]], removal with [[Bone Shredder]], or pure combat with [[Spiritmonger]]. [[Blastoderm]] is a fast clock that can close games out of nowhere. Continue to sprinkle in disruption as needed with your varied removal/discard suite and oneoff [[Dust Bowl]]. 
 
-### Closing the game
-Finish with a steady stream of threats and manlands. [[Ravenous Baloth]] stabilizes life totals, and [[Treetop Village]] keeps pressure on even through sweepers. The deck wins by staying ahead on cards and forcing opponents into inefficient trades until they run out of answers.
+### Endgame
+Finish with a nonstop stream of threats and manlands. [[Recurring Nightmare]] is an excellent endgame and chains well with [[Wall of Blossoms]], [[Living Wish]] targets, and general fatties.

@@ -6,5 +6,5 @@ Open with cantrips to smooth your draws and find interaction. Use [[Skred]] and 
 ### Midgame
 Once your graveyard is stocked, land [[Tolarian Terror]] and shift to protecting it. [[Lórien Revealed]] keeps lands flowing and provides extra card selection, while [[Murmuring Mystic]] can take over longer games by generating a board from your spell density.
 
-### Closing the game
+### Endgame
 Finish by riding a protected threat to the finish line. A single [[Tolarian Terror]] backed by counters often ends games quickly, and Mystic tokens provide a backup plan when the game goes long.

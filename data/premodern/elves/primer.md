@@ -6,5 +6,5 @@ Lead with mana creatures like [[Llanowar Elves]] and [[Fyndhorn Elves]], then pr
 ### Midgame
 Use [[Survival of the Fittest]] to chain into impact cards such as [[Deranged Hermit]] or [[Kamahl, Fist of Krosa]], or grab answers like [[Nantuko Vigilante]] at the right moment. With [[Anger]] in the graveyard, your draws shift from setup to immediate pressure. [[Tangle Wire]] is a strong tempo bridge when you are ahead on board but need time to convert mana into a finish.
 
-### Closing the game
+### Endgame
 Close by overwhelming the board with Cradle-fueled turns, pumping with [[Kamahl, Fist of Krosa]], or generating a wide threat with [[Deranged Hermit]]. [[Masticore]] is a strong standalone threat when you have a million mana. [[Caller of the Claw]] and [[Genesis]] provide strong resilience against removal and board wipes

@@ -6,5 +6,5 @@ Develop your mana with [[Birds of Paradise]] and stabilize with defensive bodies
 ### Midgame
 Use [[Survival of the Fittest]] into [[Squee, Goblin Nabob]] and [[Genesis]] to setup the endless value engine. Silver bullets like [[Bone Shredder]], [[Ghitu Slinger]], [[Shard Phoenix]], and [[Masticore]] let you liquidate all sorts of board states. Value creatures like [[Deranged Hermit]], [[Yavimaya Elder]], [[Yavimaya Granger]] build your board state while you dig for [[Recurring Nightmare]].
 
-### Closing the game
+### Endgame
 Recursion loops give you the grindiest endgame out of the entire battlebox. A big fatty like [[Phantom Nishoba]] ends game against aggro. [[Deranged Hermit]] and [[Recurring Nightmare]] yields three fresh squirrels per turn. You may also go for an infinite combo finish: [[Great Whale]] with [[Recurring Nightmare]] and another creature will generate infinite mana and ETB triggers, which you can then convert into infinite life with [[Spike Feeder]], infinite creatures with [[Deranged Hermit]], infinite pings with [[Masticore]]...the list goes on. The only thing that can stop you is graveyard hate.

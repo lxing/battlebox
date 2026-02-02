@@ -6,5 +6,5 @@ Develop your board with cheap creatures and artifacts, then start looping them w
 ### Midgame
 Grind value by reusing your artifact ETB effects. [[Refurbished Familiar]] adds a disruptive element and helps close games as you strip cards from the opponent’s hand. Your creature base supports steady chip damage while your removal keeps opposing threats in check.
 
-### Closing the game
+### Endgame
 Win by out‑valuing opponents and pushing incremental damage through the air. Once you’ve accumulated enough material, a sequence of flyers backed by removal finishes the game while the opponent struggles to keep up with your repeated card advantage.

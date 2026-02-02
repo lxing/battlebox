@@ -6,5 +6,5 @@ Prioritize land drops and setup. [[Khalni Garden]] gives you early blockers and 
 ### Midgame
 Take over with repeatable advantage. [[Thorn of the Black Rose]] delivers the monarch, and [[Avenging Hunter]] brings the initiative, forcing opponents to answer your steady stream of cards. [[Crypt Rats]] functions as a flexible sweeper to reset wide boards when you are ahead on resources.
 
-### Closing the game
+### Endgame
 Once you have the game under control, win by attrition. Recursive value from [[Witch's Cottage]] or a large [[Crypt Rats]] activation can finish games, and [[Troll of Khazad-dûm]] provides a sturdy threat once the opponent is out of answers.

@@ -8,5 +8,5 @@ Dig hard for [[Replenish]] and try to resolve it with a stocked graveyard. [[Int
 
 Even without reanimation, [[Parallax Wave]] and [[Parallax Tide]] combo with [[Seal of Cleansing]] for very nasty board state manipulation. With the enters trigger on the stack, destroy them with [[Seal of Cleansing]], which triggers the exit clause. Stack resolution causes the exit clause to resolve first, then you remove all their lands and creatures permanantly...then you can do it all over again later with [[Replenish]]! 
 
-### Closing the game
+### Endgame
 Once you pop the combo, the game usually ends quickly. [[Opalescence]] provides a really fast clock, in tandem with the Parallax enchantments obliterating their board state.

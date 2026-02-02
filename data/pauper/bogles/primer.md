@@ -4,7 +4,7 @@ Bogles is a GW hexproof aura deck: stick a protected creature, then stack effici
 Mulligan toward a hexproof creature plus a couple of auras or fixing. Use [[Utopia Sprawl]] and [[Abundant Growth]] to smooth mana and keep the spells flowing, then land a threat before you start piling on enchantments.
 
 ### Midgame
-Stack your best damage auras first and prioritize evasion. [[Rancor]] and [[Armadillo Cloak]] help you win races, while [[Cartouche of Solidarity]] can leave behind an extra body to play around sacrifice effects.
+Stack your best damage auras first and prioritize evasion. [[Armadillo Cloak]] will win you any damage race, while [[Cartouche of Solidarity]] and [[Malevolent Rumble]] provide some extra fodder against sacrifice effects.
 
-### Closing the game
-Once a single creature is large enough, push damage through and avoid giving opponents windows to break the chain. Bogles is strongest at racing, but it can be vulnerable to edicts or counterspells, so keep a backup creature or token when possible.
+### Endgame
+[[Ancestral Mask]]. Hulk Smash.

@@ -6,5 +6,5 @@ Focus on setup and survival. [[Growth Spiral]] and [[Lórien Revealed]] help acc
 ### Midgame
 Once you have mana and cards, start locking combat. Rotate fogs and counterspells like [[Arcane Denial]] and [[Disrupt]] to stop key noncombat threats. [[Weather the Storm]] and [[Radiant Fountain]] provide life buffers that buy more time.
 
-### Closing the game
+### Endgame
 Win by decking the opponent. [[Stream of Thought]] recycles your fogs and interaction so you can outlast the opposing threats, then draw or mill them out while keeping combat locked down.

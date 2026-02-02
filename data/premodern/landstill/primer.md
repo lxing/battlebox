@@ -6,5 +6,5 @@ Focus on development and interaction. Use [[Impulse]] to find lands and answers 
 ### Midgame
 Midgame is all about card advantage. Aim to resolve [[Standstill]] on a board state you can win with manlands. Drop [[Fact or Fiction]] whenever the opportunity presents itself. Trade to neutralize opposing threats the entire time.
 
-### Closing the game
+### Endgame
 After you have the edge in resources, convert your sustained land drops into a kill with [[Decree of Justice]]. [[Humility]] is an excellent lock piece to embarrass creature decks.

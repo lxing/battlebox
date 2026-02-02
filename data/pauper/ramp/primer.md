@@ -6,5 +6,5 @@ Focus on ramping: attach [[Utopia Sprawl]] or [[Wild Growth]] early and pair the
 ### Midgame
 Cascade chains take over. A resolved [[Boarding Party]] or [[Annoyed Altisaur]] swings the tempo heavily in your favor, and [[Avenging Hunter]] pressures with the initiative. Your creatures are large enough to dominate combat and force unfavorable trades.
 
-### Closing the game
+### Endgame
 Close by overwhelming the board with huge threats. You often win by chaining multiple cascade creatures in successive turns, or by protecting the initiative and letting dungeon triggers bury the opponent in advantage.

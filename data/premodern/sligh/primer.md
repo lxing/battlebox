@@ -1,10 +1,10 @@
-Sligh is a classic red aggro deck that pressures life totals from the first turn and finishes with reach. Cheap threats like [[Jackal Pup]] and [[Mogg Fanatic]] set the pace, while burn spells such as [[Lightning Bolt]] and [[Incinerate]] let you convert early damage into a quick finish. [[Grim Lavamancer]] and [[Fireblast]] give the deck staying power when the game goes long.
+Sligh is a classic red aggro deck that pressures life totals from the first turn and finishes with reach. Cheap threats like [[Jackal Pup]] and [[Mogg Fanatic]] set the pace, while burn spells such as [[Lightning Bolt]] and [[Incinerate]] let you convert early damage into a quick finish. [[Grim Lavamancer]], [[Sulfuric Vortex]], and [[Cursed Scroll]] give the deck surprising staying power.
 
 ### Early game
-Curve out with one-drops and start attacking immediately. [[Jackal Pup]] and [[Mogg Fanatic]] are ideal openers, and [[Grim Lavamancer]] turns your spells into repeatable damage. Use burn to clear blockers rather than to go upstairs if it keeps your attacks flowing.
+Curve out with one-drops and start attacking immediately. [[Jackal Pup]] and [[Mogg Fanatic]] are ideal openers. Mulligan hard for a good curve.
 
 ### Midgame
-As hands empty, prioritize damage efficiency. [[Ball Lightning]] and [[Fireblast]] can swing races in a single turn, and [[Seal of Fire]] lets you bank damage while keeping mana open. Use [[Bloodstained Mire]] and [[Wooded Foothills]] to thin and fuel Lavamancer when you need extra reach.
+Get in with your heavy hitter [[Ball Lightning]]. With a million burn spells, you'll have to exercise judgment on clearing blockers to get through damage, disrupting your opponent's creatures, or just going to the face. The right choice is going to the face a lot more often than you would expect. Use [[Bloodstained Mire]] and [[Wooded Foothills]] to thin and fuel Lavamancer.
 
-### Closing the game
-Close with burst damage and direct burn. Sequencing matters: try to force blocks and then finish with [[Fireblast]] or a double-spell turn. The deck wins by squeezing every point of damage from its early creatures while preserving just enough burn to finish the last few life points.
+### Endgame
+The repeatable engines [[Grim Lavamancer]], [[Sulfuric Vortex]], and [[Cursed Scroll]] provide quite a bit of inevitability if your opponent is low enough. Finish them with a big burst from [[Fireblast]] and [[Price of Progress]].

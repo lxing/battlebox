@@ -6,5 +6,5 @@ Establish a board quickly with low‑cost creatures and artifacts. [[Voldaren Ep
 ### Midgame
 Leverage burst damage. [[Goblin Bushwhacker]] turns a board of tokens into a lethal attack, and burn spells like [[Lightning Bolt]], [[Chain Lightning]], and [[Galvanic Blast]] clear blockers or go to the face. [[Experimental Synthesizer]] keeps the cards coming through your cheap spells.
 
-### Closing the game
+### Endgame
 Finish by chaining burn and a final wide attack. Even if the board stalls, direct damage and sacrificed artifacts keep pressure high, and a late Bushwhacker often supplies the last points.

@@ -6,5 +6,5 @@ Use cantrips and setup tools like [[Brainstorm]] and [[Lórien Revealed]] to hit
 ### Midgame
 Start looping ETB creatures. [[Mulldrifter]] and [[Fallaji Archaeologist]] provide cards and selection, and [[Ephemerate]] multiplies their value. If you find [[Archaeomancer]], you can rebuy key spells and maintain a soft lock with counterspells or removal.
 
-### Closing the game
+### Endgame
 Win through attrition and air power. Repeated [[Mulldrifter]] triggers and tokens from [[Murmuring Mystic]] eventually overwhelm opponents, while your interaction ensures they never get back ahead on tempo.

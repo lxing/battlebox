@@ -6,5 +6,5 @@ Use cantrips like [[Opt]] and [[Portent]] to smooth draws and find either a thre
 ### Midgame
 Once a threat sticks, switch into a tempo posture. If you're ahead on board, [[Armageddon]] is basically an instant win. Be strategic about your disruption: if [[Quirion Dryad]] and [[Psychatog]] can steamroll an opposing creature, it's probably not worth countering or removing.
 
-### Closing the game
+### Endgame
 Befitting the deck name, keep chaining cantrips to grow your threats out of control. Keep angling for a favorable [[Armageddon]]. Gush is the only source of card advantage, but it's a great one.

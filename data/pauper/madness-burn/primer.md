@@ -6,5 +6,5 @@ Lead with cheap threats and a discard outlet. [[Voldaren Epicure]] sets up madne
 ### Midgame
 Keep pressure on while refueling. [[Kitchen Imp]] and [[Sneaky Snacker]] apply evasive damage, and draw‑discard effects like [[Grab the Prize]] or [[Highway Robbery]] keep your hand stocked with burn. Use your removal to clear blockers and keep the life total moving down.
 
-### Closing the game
+### Endgame
 Finish with direct damage. A chain of madness spells plus [[Lightning Bolt]] often ends the game even through stabilization, and your remaining creatures can close the last points if the opponent runs out of answers.
