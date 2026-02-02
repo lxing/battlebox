@@ -1,18 +1,18 @@
 {
   "name": "Gardens",
-  "colors": "bg",
+  "colors": "brg",
   "cards": [
     {
       "name": "Avenging Hunter",
-      "qty": 3
+      "qty": 1
     },
     {
       "name": "Blood Fountain",
       "qty": 1
     },
     {
-      "name": "Bojuka Bog",
-      "qty": 2
+      "name": "Campfire",
+      "qty": 1
     },
     {
       "name": "Cast Down",
@@ -28,10 +28,22 @@
     },
     {
       "name": "Defile",
-      "qty": 4
+      "qty": 3
     },
     {
-      "name": "Duress",
+      "name": "Eviscerator's Insight",
+      "qty": 2
+    },
+    {
+      "name": "Fanatical Offering",
+      "qty": 2
+    },
+    {
+      "name": "Forest",
+      "qty": 1
+    },
+    {
+      "name": "Geothermal Bog",
       "qty": 1
     },
     {
@@ -40,7 +52,7 @@
     },
     {
       "name": "Ichor Wellspring",
-      "qty": 4
+      "qty": 2
     },
     {
       "name": "Khalni Garden",
@@ -48,11 +60,15 @@
     },
     {
       "name": "Lembas",
-      "qty": 2
+      "qty": 4
     },
     {
-      "name": "Reckoner's Bargain",
-      "qty": 3
+      "name": "Mountain",
+      "qty": 1
+    },
+    {
+      "name": "Nihil Spellbomb",
+      "qty": 1
     },
     {
       "name": "Snuff Out",
@@ -60,49 +76,53 @@
     },
     {
       "name": "Spinning Darkness",
-      "qty": 2
+      "qty": 1
     },
     {
       "name": "Swamp",
-      "qty": 10
+      "qty": 8
     },
     {
       "name": "Thorn of the Black Rose",
-      "qty": 3
+      "qty": 2
     },
     {
       "name": "Tithing Blade / Consuming Sepulcher",
-      "qty": 4
+      "qty": 2
     },
     {
       "name": "Troll of Khazad-d\u00fbm",
+      "qty": 3
+    },
+    {
+      "name": "Twisted Landscape",
       "qty": 2
     },
     {
       "name": "Witch's Cottage",
       "qty": 1
+    },
+    {
+      "name": "Writhing Chrysalis",
+      "qty": 4
     }
   ],
   "sideboard": [
     {
-      "name": "Drown in Sorrow",
-      "qty": 2
+      "name": "Ancient Grudge",
+      "qty": 3
     },
     {
-      "name": "Duress",
-      "qty": 1
-    },
-    {
-      "name": "Fangren Marauder",
+      "name": "Breath Weapon",
       "qty": 2
     },
     {
       "name": "Relic of Progenitus",
-      "qty": 2
+      "qty": 4
     },
     {
       "name": "Troublemaker Ouphe",
-      "qty": 4
+      "qty": 2
     },
     {
       "name": "Weather the Storm",

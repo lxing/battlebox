@@ -1,12 +1,16 @@
 {
+  "Ancient Grudge": "mm3/88",
+  "Campfire": "cmm/374",
   "Crypt Rats": "mh1/84",
   "Defile": "mh1/86",
+  "Fanatical Offering": "lci/105",
+  "Geothermal Bog": "dmu/247",
   "Haunted Mire": "blc/311",
   "Khalni Garden": "arc/127",
   "Spinning Darkness": "wth/81",
   "Thorn of the Black Rose": "cmr/154",
-  "Troll of Khazad-dûm": "ltr/111",
-  "Witch's Cottage": "eld/249",
-  "Fangren Marauder": "mbs/79",
-  "Troublemaker Ouphe": "woe/194"
+  "Troll of Khazad-d\u00fbm": "ltr/111",
+  "Troublemaker Ouphe": "woe/194",
+  "Twisted Landscape": "mh3/232",
+  "Witch's Cottage": "eld/249"
 }

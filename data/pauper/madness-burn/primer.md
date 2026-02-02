@@ -1,10 +1,10 @@
-Madness Burn is a BR aggressive deck that combines burn spells with the madness mechanic for explosive damage. [[Faithless Looting]], [[Voldaren Epicure]], and other discard outlets let you cast [[Fiery Temper]] and [[Alms of the Vein]] for reduced costs, while [[Lightning Bolt]] and [[Galvanic Blast]] provide classic reach.
+Madness Burn is a BR aggro deck that uses discard outlets to cast madness spells for reduced cost and keep pressure constant. Core enablers like [[Faithless Looting]], [[Grab the Prize]], and [[Highway Robbery]] turn on efficient payoffs such as [[Fiery Temper]] and [[Alms of the Vein]], while [[Kitchen Imp]] and [[Sneaky Snacker]] give you good evasive board presence.
 
 ### Early game
-Lead with cheap threats and a discard outlet. [[Voldaren Epicure]] sets up madness triggers and chips in, while [[Goblin Tomb Raider]] grows quickly with artifact lands. Try to sequence so your first discard spell creates immediate value by enabling a madness burn spell.
+Build your manabase and deploy [[Voldaren Epicure]] and [[Vampire's Kiss]] if available. Despite being a "burn" deck, you need a fair bit of mana to pay for a discard outlet and madness spell at the same time, so don't rush into a raw discard spell. You may also use [[Grab the Prize]] or [[Highway Robbery]] to cheat out a quick [[Sneaky Snacker]] on turn 2.
 
 ### Midgame
-Keep pressure on while refueling. [[Kitchen Imp]] and [[Sneaky Snacker]] apply evasive damage, and draw‑discard effects like [[Grab the Prize]] or [[Highway Robbery]] keep your hand stocked with burn. Use your removal to clear blockers and keep the life total moving down.
+Start chaining discard enablers and madness burn spells and [[Kitchen Imp]]. There is not much to say here, the deck should flow like butter with all the card selection. Discard any lands beyond 4-5. When deciding between removal or going to the face, generally favor direct damage unless it's to mow down a blocker.
 
 ### Endgame
-Finish with direct damage. A chain of madness spells plus [[Lightning Bolt]] often ends the game even through stabilization, and your remaining creatures can close the last points if the opponent runs out of answers.
+Keep going to the face. Once you reach critical artifact mass, your reserved [[Galvanic Blast]] can deliver the killing blow.

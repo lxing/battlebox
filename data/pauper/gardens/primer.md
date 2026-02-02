@@ -1,10 +1,10 @@
-Gardens is a BG midrange control deck built to grind. It uses [[Khalni Garden]] tokens and cheap artifacts like [[Ichor Wellspring]] and [[Lembas]] to fuel sacrifice draw engines such as [[Deadly Dispute]] and [[Reckoner's Bargain]]. A dense removal suite ([[Defile]], [[Cast Down]], [[Snuff Out]], [[Spinning Darkness]]) keeps the board clear while you accumulate value.
+Gardens is a BGr grindy midrange-control deck that wins by trading resources and generating steady value. The shell uses small artifacts and tokens as fuel for [[Deadly Dispute]] and [[Reckoner's Bargain]], while a dense removal suite like [[Defile]], [[Cast Down]], [[Snuff Out]], and [[Spinning Darkness]] trades down opposing threats. The deck pivots from stabilization to pressure using Monarch and Initiative.
 
 ### Early game
-Prioritize land drops and setup. [[Khalni Garden]] gives you early blockers and sacrifice fodder, and a timely [[Duress]] can clear the way for your engines. [[Tithing Blade / Consuming Sepulcher]] is a key stabilizer against single threats and helps cushion life totals.
+Prioritize land drops and fodder setup. [[Khalni Garden]], [[Ichor Wellspring]], [[Tithing Blade / Consuming Sepulcher]], and [[Lembas]] are ideal here. Use spot removal to survive the first few turns and buy time to develop your value loop.
 
 ### Midgame
-Take over with repeatable advantage. [[Thorn of the Black Rose]] delivers the monarch, and [[Avenging Hunter]] brings the initiative, forcing opponents to answer your steady stream of cards. [[Crypt Rats]] functions as a flexible sweeper to reset wide boards when you are ahead on resources.
+Take over with repeated card advantage. Spam  [[Deadly Dispute]], [[Eviscerator's Insight]], [[Fanatical Offering]] to churn your fodder into cards. Sweep with [[Crypt Rats]], then setup an [[Avenging Hunter]], [[Thorn of the Black Rose]], or [[Writhing Chrysalis]] to take over the board.
 
 ### Endgame
-Once you have the game under control, win by attrition. Recursive value from [[Witch's Cottage]] or a large [[Crypt Rats]] activation can finish games, and [[Troll of Khazad-dûm]] provides a sturdy threat once the opponent is out of answers.
+Play for pure attrition. Protect the Monarch or Initiative and grind the board to dust.
