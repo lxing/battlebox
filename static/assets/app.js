@@ -5,8 +5,6 @@
   let previewEl = null;
   let previewImg = null;
   let previewStatus = null;
-  let previewHoverMode = false;
-  let previewHoverHandlersBound = false;
 
   function formatColors(colors) {
     return colors.split('').map(c =>
@@ -20,6 +18,11 @@
 
   function normalizeName(name) {
     return name.toLowerCase().trim();
+  }
+
+  function getCardTarget(event) {
+    if (!event.target || !event.target.closest) return null;
+    return event.target.closest('.card');
   }
 
   function resolvePrinting(target, printingsList) {
@@ -179,11 +182,6 @@
     previewEl.style.top = `${y}px`;
   }
 
-  function positionPreviewAtEvent(cardEl, e) {
-    if (!cardEl) return;
-    positionPreviewAtPoint(e.clientX, e.clientY);
-  }
-
   let previewAnchor = null;
   let previewRaf = null;
 
@@ -224,17 +222,14 @@
       previewStatus.style.display = 'block';
       previewImg.style.display = 'none';
     });
-    if (previewHoverMode && !previewHoverHandlersBound) {
-      previewHoverHandlersBound = true;
-      previewEl.addEventListener('mouseleave', (e) => {
-        if (!previewAnchor) return;
-        const cardEl = previewAnchor.el;
-        if (cardEl && e.relatedTarget && (cardEl === e.relatedTarget || cardEl.contains(e.relatedTarget))) {
-          return;
-        }
-        hidePreview();
-      });
-    }
+    previewEl.addEventListener('mouseleave', (e) => {
+      if (!previewAnchor) return;
+      const cardEl = previewAnchor.el;
+      if (cardEl && e.relatedTarget && (cardEl === e.relatedTarget || cardEl.contains(e.relatedTarget))) {
+        return;
+      }
+      hidePreview();
+    });
   }
 
   function openPreview(cardEl, e) {
@@ -251,7 +246,7 @@
     previewImg.style.display = 'none';
     previewImg.src = url;
     previewEl.style.display = 'block';
-    positionPreviewAtEvent(cardEl, e);
+    positionPreviewAtPoint(e.clientX, e.clientY);
     const rect = cardEl.getBoundingClientRect();
     previewAnchor = {
       el: cardEl,
@@ -262,7 +257,6 @@
 
   function setupCardHover() {
     const prefersHover = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
-    previewHoverMode = prefersHover;
 
     document.addEventListener('click', (e) => {
       if (!previewEl || previewEl.style.display === 'none') return;
@@ -273,25 +267,27 @@
 
     if (prefersHover) {
       app.addEventListener('mouseover', (e) => {
-        if (!e.target.classList.contains('card')) return;
-        if (e.relatedTarget && e.target.contains(e.relatedTarget)) return;
-        openPreview(e.target, e);
+        const cardEl = getCardTarget(e);
+        if (!cardEl) return;
+        if (e.relatedTarget && cardEl.contains(e.relatedTarget)) return;
+        openPreview(cardEl, e);
       });
 
       app.addEventListener('mouseout', (e) => {
-        if (!e.target.classList.contains('card') || !previewEl) return;
-        if (e.relatedTarget && e.target.contains(e.relatedTarget)) return;
+        const cardEl = getCardTarget(e);
+        if (!cardEl || !previewEl) return;
+        if (e.relatedTarget && cardEl.contains(e.relatedTarget)) return;
         if (e.relatedTarget && previewEl.contains(e.relatedTarget)) return;
         if (previewEl.matches && previewEl.matches(':hover')) return;
-        previewEl.style.display = 'none';
-        previewAnchor = null;
+        hidePreview();
       });
     } else {
       app.addEventListener('click', (e) => {
-        if (!e.target.classList.contains('card')) return;
+        const cardEl = getCardTarget(e);
+        if (!cardEl) return;
         e.preventDefault();
         e.stopPropagation();
-        openPreview(e.target, e);
+        openPreview(cardEl, e);
       });
     }
 
