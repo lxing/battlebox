@@ -5,6 +5,8 @@
   let previewEl = null;
   let previewImg = null;
   let previewStatus = null;
+  let previewHoverMode = false;
+  let previewHoverHandlersBound = false;
 
   function formatColors(colors) {
     return colors.split('').map(c =>
@@ -203,64 +205,95 @@
     });
   }
 
-  function setupCardHover() {
-    app.addEventListener('mouseover', (e) => {
-      if (!e.target.classList.contains('card')) return;
-      const printing = e.target.dataset.printing;
-      if (!printing) return;
-
-      const url = getImageUrl(printing);
-      if (!url) return;
-
-      if (!previewEl) {
-        previewEl = document.createElement('div');
-        previewEl.className = 'card-preview';
-        previewStatus = document.createElement('div');
-        previewStatus.className = 'card-preview-loading';
-        previewStatus.textContent = 'Loading...';
-        previewImg = document.createElement('img');
-        previewEl.appendChild(previewStatus);
-        previewEl.appendChild(previewImg);
-        previewEl.addEventListener('click', (e) => {
-          e.preventDefault();
-          e.stopPropagation();
-          hidePreview();
-        });
-        previewImg.addEventListener('load', () => {
-          previewStatus.style.display = 'none';
-          previewImg.style.display = 'block';
-        });
-        previewImg.addEventListener('error', () => {
-          previewStatus.textContent = 'Image unavailable';
-          previewStatus.style.display = 'block';
-          previewImg.style.display = 'none';
-        });
-      }
-
-      if (previewEl.parentNode !== document.body) {
-        document.body.appendChild(previewEl);
-      }
-      previewStatus.textContent = 'Loading...';
+  function ensurePreviewEl() {
+    if (previewEl) return;
+    previewEl = document.createElement('div');
+    previewEl.className = 'card-preview';
+    previewStatus = document.createElement('div');
+    previewStatus.className = 'card-preview-loading';
+    previewStatus.textContent = 'Loading...';
+    previewImg = document.createElement('img');
+    previewEl.appendChild(previewStatus);
+    previewEl.appendChild(previewImg);
+    previewImg.addEventListener('load', () => {
+      previewStatus.style.display = 'none';
+      previewImg.style.display = 'block';
+    });
+    previewImg.addEventListener('error', () => {
+      previewStatus.textContent = 'Image unavailable';
       previewStatus.style.display = 'block';
       previewImg.style.display = 'none';
-      previewImg.src = url;
-      previewEl.style.display = 'block';
-      positionPreviewAtEvent(e.target, e);
-      const rect = e.target.getBoundingClientRect();
-      previewAnchor = {
-        el: e.target,
-        relX: rect.width ? (e.clientX - rect.left) / rect.width : 0.5,
-        relY: rect.height ? (e.clientY - rect.top) / rect.height : 0.5,
-      };
     });
+    if (previewHoverMode && !previewHoverHandlersBound) {
+      previewHoverHandlersBound = true;
+      previewEl.addEventListener('mouseleave', (e) => {
+        if (!previewAnchor) return;
+        const cardEl = previewAnchor.el;
+        if (cardEl && e.relatedTarget && (cardEl === e.relatedTarget || cardEl.contains(e.relatedTarget))) {
+          return;
+        }
+        hidePreview();
+      });
+    }
+  }
 
-    app.addEventListener('mouseout', (e) => {
-      if (!e.target.classList.contains('card') || !previewEl) return;
-      if (e.relatedTarget && previewEl.contains(e.relatedTarget)) return;
-      if (previewEl.matches && previewEl.matches(':hover')) return;
-      previewEl.style.display = 'none';
-      previewAnchor = null;
-    });
+  function openPreview(cardEl, e) {
+    const printing = cardEl.dataset.printing;
+    if (!printing) return;
+    const url = getImageUrl(printing);
+    if (!url) return;
+    ensurePreviewEl();
+    if (previewEl.parentNode !== document.body) {
+      document.body.appendChild(previewEl);
+    }
+    previewStatus.textContent = 'Loading...';
+    previewStatus.style.display = 'block';
+    previewImg.style.display = 'none';
+    previewImg.src = url;
+    previewEl.style.display = 'block';
+    positionPreviewAtEvent(cardEl, e);
+    const rect = cardEl.getBoundingClientRect();
+    previewAnchor = {
+      el: cardEl,
+      relX: rect.width ? (e.clientX - rect.left) / rect.width : 0.5,
+      relY: rect.height ? (e.clientY - rect.top) / rect.height : 0.5,
+    };
+  }
+
+  function setupCardHover() {
+    const prefersHover = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+    previewHoverMode = prefersHover;
+
+    document.addEventListener('click', (e) => {
+      if (!previewEl || previewEl.style.display === 'none') return;
+      e.preventDefault();
+      e.stopPropagation();
+      hidePreview();
+    }, true);
+
+    if (prefersHover) {
+      app.addEventListener('mouseover', (e) => {
+        if (!e.target.classList.contains('card')) return;
+        if (e.relatedTarget && e.target.contains(e.relatedTarget)) return;
+        openPreview(e.target, e);
+      });
+
+      app.addEventListener('mouseout', (e) => {
+        if (!e.target.classList.contains('card') || !previewEl) return;
+        if (e.relatedTarget && e.target.contains(e.relatedTarget)) return;
+        if (e.relatedTarget && previewEl.contains(e.relatedTarget)) return;
+        if (previewEl.matches && previewEl.matches(':hover')) return;
+        previewEl.style.display = 'none';
+        previewAnchor = null;
+      });
+    } else {
+      app.addEventListener('click', (e) => {
+        if (!e.target.classList.contains('card')) return;
+        e.preventDefault();
+        e.stopPropagation();
+        openPreview(e.target, e);
+      });
+    }
 
     window.addEventListener('scroll', schedulePreviewAnchorUpdate, { passive: true });
     window.addEventListener('resize', schedulePreviewAnchorUpdate);
