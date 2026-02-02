@@ -406,8 +406,7 @@
           <summary>Matchup Guides</summary>
           <div class="collapsible-body guide-panel">
             <div class="guide-select">
-              <label for="guide-select">Opponent</label>
-              <select id="guide-select">
+              <select id="guide-select" aria-label="Matchup guide">
                 ${guideOptions}
               </select>
             </div>
