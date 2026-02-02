@@ -19,6 +19,29 @@ def load_json(path: Path) -> dict:
         return {}
 
 
+def print_section(title: str, lines: list[str]) -> None:
+    print(title)
+    if not lines:
+        print("  None.")
+        return
+    for line in lines:
+        print(line)
+
+
+def strict_by_name(entries: dict[str, list[tuple[str, str]]]) -> list[str]:
+    lines: list[str] = []
+    for name in sorted(entries):
+        by_printing: dict[str, list[str]] = {}
+        for deck, printing in entries[name]:
+            by_printing.setdefault(printing, []).append(deck)
+        for printing, decks in sorted(by_printing.items()):
+            if len(decks) < 2:
+                continue
+            deck_list = ", ".join(sorted(decks))
+            lines.append(f"  {name} ({printing}): {deck_list}")
+    return lines
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(
         description="Find deck-level printings.json entries that duplicate battlebox-level printings."
@@ -30,10 +53,9 @@ def main() -> int:
         help="Battlebox slug under data/ (default: premodern)",
     )
     parser.add_argument(
-        "--mode",
-        choices=("name-only", "strict"),
-        default="name-only",
-        help="Duplicate detection mode: name-only (default) or strict (name+printing).",
+        "--no-strict",
+        action="store_true",
+        help="Skip strict (name+printing) sections in the report.",
     )
     parser.add_argument(
         "--data-dir",
@@ -44,40 +66,50 @@ def main() -> int:
 
     data_dir = Path(args.data_dir)
     battlebox_dir = data_dir / args.battlebox
-    box_printings_path = battlebox_dir / "printings.json"
-
-    box_printings = load_json(box_printings_path)
+    box_printings = load_json(battlebox_dir / "printings.json")
     box_norm = {normalize(k): v for k, v in box_printings.items()}
 
-    results: list[tuple[str, list[tuple[str, str]]]] = []
+    box_dupes: dict[str, list[tuple[str, str, str]]] = {}
+    deck_dupes: dict[str, list[tuple[str, str]]] = {}
 
     for deck_dir in sorted(battlebox_dir.iterdir()):
         if not deck_dir.is_dir():
             continue
-        deck_printings_path = deck_dir / "printings.json"
-        if not deck_printings_path.exists():
+        deck_printings = load_json(deck_dir / "printings.json")
+        if not deck_printings:
             continue
-        deck_printings = load_json(deck_printings_path)
-        dupes: list[tuple[str, str, str]] = []
         for name, printing in deck_printings.items():
             key = normalize(name)
-            if key not in box_norm:
-                continue
-            box_printing = box_norm[key]
-            if args.mode == "strict" and box_printing != printing:
-                continue
-            dupes.append((name, printing, box_printing))
-        if dupes:
-            results.append((deck_dir.name, sorted(dupes)))
+            deck_dupes.setdefault(key, []).append((deck_dir.name, printing))
+            if key in box_norm:
+                box_dupes.setdefault(deck_dir.name, []).append((name, printing, box_norm[key]))
 
-    if not results:
+    box_name_lines: list[str] = []
+    box_strict_lines: list[str] = []
+    for deck in sorted(box_dupes):
+        entries = sorted(box_dupes[deck])
+        for name, deck_printing, box_printing in entries:
+            box_name_lines.append(f"{deck}\n  {name}: deck={deck_printing} box={box_printing}")
+            if deck_printing == box_printing:
+                box_strict_lines.append(f"{deck}\n  {name}: deck={deck_printing} box={box_printing}")
+
+    deck_name_entries = {name: entries for name, entries in deck_dupes.items() if len(entries) > 1}
+    deck_name_lines: list[str] = []
+    for name in sorted(deck_name_entries):
+        entries = ", ".join(f"{deck}={printing}" for deck, printing in sorted(deck_name_entries[name]))
+        deck_name_lines.append(f"  {name}: {entries}")
+
+    if not box_name_lines and not deck_name_lines:
         print("No duplicates found.")
         return 0
 
-    for deck, dupes in results:
-        print(deck)
-        for name, deck_printing, box_printing in dupes:
-            print(f"  {name}: deck={deck_printing} box={box_printing}")
+    print_section("Box-level duplicates (name-only):", box_name_lines)
+    if not args.no_strict:
+        print_section("\nBox-level duplicates (strict):", box_strict_lines)
+
+    print_section("\nDeck-level duplicates (name-only):", deck_name_lines)
+    if not args.no_strict:
+        print_section("\nDeck-level duplicates (strict):", strict_by_name(deck_name_entries))
 
     return 0
 
