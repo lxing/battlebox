@@ -149,32 +149,58 @@
   }
 
   // Card hover preview
-  function positionPreviewAtEvent(cardEl, e) {
-    if (!previewEl || !cardEl) return;
+  function positionPreviewAtPoint(absX, absY) {
+    if (!previewEl) return;
     const width = previewEl.offsetWidth || 250;
     const height = previewEl.offsetHeight || 350;
     const margin = 10;
     const viewportW = (window.visualViewport && window.visualViewport.width) || document.documentElement.clientWidth;
     const viewportH = (window.visualViewport && window.visualViewport.height) || document.documentElement.clientHeight;
 
-    let absX = e.clientX;
-    let absY = e.clientY;
+    let x = absX;
+    let y = absY;
 
-    if (absX + width + margin > viewportW) {
-      absX = Math.max(margin, viewportW - width - margin);
+    if (x + width + margin > viewportW) {
+      x = Math.max(margin, viewportW - width - margin);
     }
-    if (absX < margin) {
-      absX = margin;
+    if (x < margin) {
+      x = margin;
     }
-    if (absY + height + margin > viewportH) {
-      absY = Math.max(margin, viewportH - height - margin);
+    if (y + height + margin > viewportH) {
+      y = Math.max(margin, viewportH - height - margin);
     }
-    if (absY < margin) {
-      absY = margin;
+    if (y < margin) {
+      y = margin;
     }
 
-    previewEl.style.left = `${absX}px`;
-    previewEl.style.top = `${absY}px`;
+    previewEl.style.left = `${x}px`;
+    previewEl.style.top = `${y}px`;
+  }
+
+  function positionPreviewAtEvent(cardEl, e) {
+    if (!cardEl) return;
+    positionPreviewAtPoint(e.clientX, e.clientY);
+  }
+
+  let previewAnchor = null;
+  let previewRaf = null;
+
+  function updatePreviewAnchor() {
+    if (!previewEl || !previewAnchor) return;
+    const rect = previewAnchor.el.getBoundingClientRect();
+    if (rect.width === 0 || rect.height === 0) return;
+    const absX = rect.left + (previewAnchor.relX * rect.width);
+    const absY = rect.top + (previewAnchor.relY * rect.height);
+    positionPreviewAtPoint(absX, absY);
+  }
+
+  function schedulePreviewAnchorUpdate() {
+    if (!previewAnchor) return;
+    if (previewRaf) return;
+    previewRaf = requestAnimationFrame(() => {
+      previewRaf = null;
+      updatePreviewAnchor();
+    });
   }
 
   function setupCardHover() {
@@ -220,6 +246,12 @@
       previewImg.src = url;
       previewEl.style.display = 'block';
       positionPreviewAtEvent(e.target, e);
+      const rect = e.target.getBoundingClientRect();
+      previewAnchor = {
+        el: e.target,
+        relX: rect.width ? (e.clientX - rect.left) / rect.width : 0.5,
+        relY: rect.height ? (e.clientY - rect.top) / rect.height : 0.5,
+      };
     });
 
     app.addEventListener('mouseout', (e) => {
@@ -227,13 +259,18 @@
       if (e.relatedTarget && previewEl.contains(e.relatedTarget)) return;
       if (previewEl.matches && previewEl.matches(':hover')) return;
       previewEl.style.display = 'none';
+      previewAnchor = null;
     });
+
+    window.addEventListener('scroll', schedulePreviewAnchorUpdate, { passive: true });
+    window.addEventListener('resize', schedulePreviewAnchorUpdate);
   }
 
   function hidePreview() {
     if (previewEl) {
       previewEl.style.display = 'none';
     }
+    previewAnchor = null;
   }
 
   // Router
