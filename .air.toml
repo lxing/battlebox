@@ -7,7 +7,7 @@ tmp_dir = "tmp"
   env = ["DEV=1"]
   args_bin = ["-ts"]
   delay = 1000
-  exclude_dir = ["tmp", "vendor", "node_modules"]
+  exclude_dir = ["tmp", "vendor", "node_modules", "static/data"]
   exclude_file = [".card-types.json", "static/data.json"]
   exclude_regex = ["_test.go"]
   exclude_unchanged = false
