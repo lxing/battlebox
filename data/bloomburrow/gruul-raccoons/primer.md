@@ -2,4 +2,4 @@ One raccoon's trash is a planeswalker's treasure! Spend unholy amounts of mana t
 
 The deck features loads of acceleration and mana sinks for you to churn through triggers. Flashback [[Call of the Herd]] and [[Firebolt]] to easily hit the 4-mana threshold. [[Punishing Fire]] and [[Grove of the Burnwillows]] also achieve this, while serving double duty mopping up every small animal in Valley. Once you hit endgame, [[Rolling Hamsphere]] and [[Hugs|Hugs, Grisly Guardian]] will seal the lid.
 
-Tip: If you don't need them, hang on to your extra copies of [[Utopia Sprawl]] and [[Wild Growth]]. They're perfect for bumping 3-mana spells up to the 4-mana sweet spot to trigger Expend.
+Tip: If you don't need them, hang on to your extra copies of [[Wild Growth]]. They're perfect for bumping 3-mana spells up to the 4-mana sweet spot to trigger Expend.

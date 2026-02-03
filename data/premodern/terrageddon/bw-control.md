@@ -4,4 +4,4 @@
 -1 [[Call of the Herd]]
 -1 [[Weathered Wayfarer]]
 
-[[Cataclysm]] punishes their slow board development, and [[Disenchant]] handles [[Humility]] or other problem permanents.
+[[Cataclysm]] punishes their slow board development, and [[Disenchant]] handles their problem permanents.

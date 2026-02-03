@@ -7,4 +7,4 @@
 -1 [[Siege-Gang Commander]]
 -1 [[Mogg Fanatic]]
 
-Blasts keep [[Circular Logic]] and their blue draw spells in check, while [[Tormod's Crypt]] shuts off [[Wonder]] and weakens [[Arrogant Wurm]] lines.
+Blasts keep their blue draw spells in check, while [[Tormod's Crypt]] shuts off [[Wonder]] and weakens [[Arrogant Wurm]] lines.

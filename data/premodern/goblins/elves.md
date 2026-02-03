@@ -2,4 +2,4 @@
 -1 [[Goblin King]]
 -1 [[Skirk Prospector]]
 
-[[Pyrokinesis]] breaks up their mana engine by killing [[Priest of Titania]] and [[Timberwatch Elf]] in one swing.
+[[Pyrokinesis]] breaks up their mana engine by killing [[Priest of Titania]] and other mana Elves in one swing.

@@ -4,4 +4,4 @@
 -2 [[Opt]]
 -1 [[Portent]]
 
-[[Annul]] hits [[Mox Diamond]] and sideboard artifacts, while [[Misdirection]] helps you win counter wars around [[Dreadnought]].
+[[Annul]] hits [[Mox Diamond]] and sideboard artifacts, while [[Misdirection]] helps you win counter wars around [[Phyrexian Dreadnought]].
