@@ -28,9 +28,6 @@ staticfiles/
 .DS_Store
 Thumbs.db
 
-# fly.io
-fly.toml
-
 # Build
 tmp/
 .card-types.json
