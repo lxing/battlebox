@@ -18,7 +18,7 @@ if ! flyctl auth whoami &> /dev/null; then
 fi
 
 APP_NAME=${1:-"battlebox"}
-REGION=${2:-"sea"}
+REGION=${2:-"sjc"}
 
 ROOT_DIR=$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)
 cd "$ROOT_DIR"
@@ -36,19 +36,27 @@ echo ""
 echo "🧱 Building static data..."
 ./build.sh
 
+app_exists() {
+  flyctl apps list 2>/dev/null | awk 'NR>1 {print $1}' | grep -Fxq "$APP_NAME"
+}
+
 # Check if app already exists or is available
-if flyctl apps list | grep -q "$APP_NAME"; then
+if app_exists; then
   echo "✅ App '$APP_NAME' already exists"
 else
   echo "🔍 Checking if app name '$APP_NAME' is available..."
   if flyctl apps create "$APP_NAME" --generate-name=false 2>/dev/null; then
     echo "✅ Created new app '$APP_NAME'"
   else
-    echo "❌ App name '$APP_NAME' is already taken by another user"
-    echo "💡 Try a different name:"
-    echo "   ./scripts/deploy-fly.sh your-name-battlebox"
-    echo "   ./scripts/deploy-fly.sh battlebox-$(date +%m%d)"
-    exit 1
+    if app_exists; then
+      echo "✅ App '$APP_NAME' already exists"
+    else
+      echo "❌ App name '$APP_NAME' is already taken by another user"
+      echo "💡 Try a different name:"
+      echo "   ./scripts/deploy-fly.sh your-name-battlebox"
+      echo "   ./scripts/deploy-fly.sh battlebox-$(date +%m%d)"
+      exit 1
+    fi
   fi
 fi
 

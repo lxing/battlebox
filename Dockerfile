@@ -7,7 +7,7 @@ COPY go.mod go.sum ./
 RUN go mod download
 
 COPY . .
-RUN ./build.sh
+RUN sh ./build.sh
 RUN CGO_ENABLED=0 GOOS=linux go build -o /app/battlebox .
 
 FROM gcr.io/distroless/base-debian12
