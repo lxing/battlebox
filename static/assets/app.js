@@ -335,6 +335,8 @@
     const hash = location.hash.slice(1) || '/';
     const parts = hash.split('/').filter(Boolean);
 
+    window.scrollTo(0, 0);
+
     if (parts.length === 0) {
       renderHome();
     } else if (parts.length === 1) {
