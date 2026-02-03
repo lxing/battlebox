@@ -1,0 +1,5 @@
++3 [[Dwarven Forge-Chanter]]
+-2 [[Implement of Combustion]]
+-1 [[Fireblast]]
+
+Lean on [[Dwarven Forge-Chanter]] to pressure their blue interaction and stop them from stabilizing behind Gates.
