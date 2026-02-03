@@ -117,7 +117,7 @@
     return `<div class="card-row"><span class="card-qty">${card.qty}</span><span class="card" data-name="${card.name}" data-printing="${card.printing}">${card.name}</span>${bannedIcon}</div>`;
   }
 
-  function renderCardsByType(cards, bannedSet) {
+  function renderCardsByType(cards, bannedSet, types) {
     const groups = { creature: [], spell: [], land: [] };
     cards.forEach(c => {
       const type = c.type || 'spell';
@@ -127,7 +127,8 @@
     const labels = { creature: 'Creatures', spell: 'Spells', land: 'Lands' };
     let html = '';
 
-    for (const type of ['creature', 'spell', 'land']) {
+    const order = types && types.length ? types : ['creature', 'spell', 'land'];
+    for (const type of order) {
       const group = groups[type];
       if (group.length === 0) continue;
       const count = group.reduce((sum, c) => sum + c.qty, 0);
@@ -460,6 +461,13 @@
     }).join('');
 
     const hasSideboard = deck.sideboard && deck.sideboard.length;
+    const landColumnHtml = !hasSideboard ? `
+      <div class="decklist-col">
+        <div class="card-list">
+          ${renderCardsByType(deck.cards, bannedSet, ['land'])}
+        </div>
+      </div>
+    ` : '';
     const sideboardHtml = hasSideboard ? `
       <div class="decklist-col">
         <div class="card-list">
@@ -467,6 +475,9 @@
         </div>
       </div>
     ` : '';
+    const hasLandColumn = !hasSideboard && deck.cards.some(c => (c.type || 'spell') === 'land');
+    const hasSecondColumn = hasSideboard || hasLandColumn;
+    const mainTypes = hasSideboard ? undefined : ['creature', 'spell'];
 
     app.innerHTML = `
       <h1 class="breadcrumbs">
@@ -483,13 +494,13 @@
       <details class="collapsible" open>
         <summary>Decklist</summary>
         <div class="collapsible-body">
-          <div class="decklist-grid${hasSideboard ? '' : ' single'}">
+          <div class="decklist-grid${hasSecondColumn ? '' : ' single'}">
             <div class="decklist-col">
               <div class="card-list">
-                ${renderCardsByType(deck.cards, bannedSet)}
+                ${renderCardsByType(deck.cards, bannedSet, mainTypes)}
               </div>
             </div>
-            ${sideboardHtml}
+            ${sideboardHtml || landColumnHtml}
           </div>
         </div>
       </details>
