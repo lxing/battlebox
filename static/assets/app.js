@@ -354,7 +354,7 @@
 
   function renderHome() {
     app.innerHTML = `
-      <h1>Battlebox</h1>
+      <h1 class="breadcrumbs">Battleboxes</h1>
       <ul class="deck-list">
         ${data.index.battleboxes.map(bb => `
           <li><a href="#/${bb.slug}">${capitalize(bb.slug)} <span class="colors">(${bb.decks.length} decks)</span></a></li>
@@ -368,8 +368,11 @@
     if (!bb) return renderNotFound();
 
     app.innerHTML = `
-      <a href="#/" class="back">← Battleboxes</a>
-      <h1>${capitalize(bb.slug)}</h1>
+      <h1 class="breadcrumbs">
+        <a href="#/">Battleboxes</a>
+        <span class="crumb-sep">/</span>
+        <span>${capitalize(bb.slug)}</span>
+      </h1>
       <ul class="deck-list">
         ${bb.decks.map(d => `
           <li><a href="#/${bb.slug}/${d.slug}">
@@ -417,8 +420,14 @@
     ` : '';
 
     app.innerHTML = `
-      <a href="#/${bb.slug}" class="back">← ${capitalize(bb.slug)}</a>
-      <h1>${deck.name} <span class="colors">${formatColors(deck.colors)}</span></h1>
+      <h1 class="breadcrumbs">
+        <a href="#/">Battleboxes</a>
+        <span class="crumb-sep">/</span>
+        <a href="#/${bb.slug}">${capitalize(bb.slug)}</a>
+        <span class="crumb-sep">/</span>
+        <span>${deck.name}</span>
+      </h1>
+      <div class="deck-colors">${formatColors(deck.colors)}</div>
 
       ${careWarningHtml}
       ${bannedWarningHtml}
