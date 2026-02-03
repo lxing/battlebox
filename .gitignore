@@ -29,7 +29,8 @@ staticfiles/
 Thumbs.db
 
 # Build
-tmp/
 .card-types.json
-static/data.json
+.gocache/
 static/data/
+static/data.json
+tmp/
