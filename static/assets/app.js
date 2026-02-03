@@ -111,7 +111,13 @@
     return html || '<em>No guide yet</em>';
   }
 
-  function renderCardsByType(cards) {
+  function renderCardRow(card, bannedSet) {
+    const banned = bannedSet && bannedSet.has(normalizeName(card.name));
+    const bannedIcon = banned ? '<span class="banned-icon" title="Banned">🔨</span>' : '';
+    return `<div class="card-row"><span class="card-qty">${card.qty}</span><span class="card" data-name="${card.name}" data-printing="${card.printing}">${card.name}</span>${bannedIcon}</div>`;
+  }
+
+  function renderCardsByType(cards, bannedSet) {
     const groups = { creature: [], spell: [], land: [] };
     cards.forEach(c => {
       const type = c.type || 'spell';
@@ -127,23 +133,19 @@
       const count = group.reduce((sum, c) => sum + c.qty, 0);
       html += `<div class="card-group">`;
       html += `<div class="card-group-label">${labels[type]} (${count})</div>`;
-      html += group.map(c =>
-        `<div class="card-row"><span class="card-qty">${c.qty}</span><span class="card" data-name="${c.name}" data-printing="${c.printing}">${c.name}</span></div>`
-      ).join('');
+      html += group.map(c => renderCardRow(c, bannedSet)).join('');
       html += `</div>`;
     }
     return html;
   }
 
-  function renderCardGroup(cards, label) {
+  function renderCardGroup(cards, label, bannedSet) {
     if (!cards || cards.length === 0) return '';
     const count = cards.reduce((sum, c) => sum + c.qty, 0);
     return `
       <div class="card-group">
         <div class="card-group-label">${label} (${count})</div>
-        ${cards.map(c =>
-          `<div class="card-row"><span class="card-qty">${c.qty}</span><span class="card" data-name="${c.name}" data-printing="${c.printing}">${c.name}</span></div>`
-        ).join('')}
+        ${cards.map(c => renderCardRow(c, bannedSet)).join('')}
       </div>
     `;
   }
@@ -388,7 +390,15 @@
     const mdSelf = createMarkdownRenderer([deckPrintings]);
     const primerHtml = deck.primer ? mdSelf.render(deck.primer) : '<em>No primer yet</em>';
     const careWarningHtml = deck.premodern_care_warning ? `
-      <div class="care-warning">⚠️ This deck contains Reserved List cards and/or cards that spiked in price with Premodern popularity. Handle and shuffle with care! ⚠️</div>
+      <div class="care-warning">⚠️ This deck contains cards that are on the Reserved List and/or spiked in price with Premodern popularity. Handle and shuffle with care! ⚠️</div>
+    ` : '';
+    const bannedNames = Array.isArray(bb.banned) ? bb.banned : [];
+    const bannedSet = new Set(bannedNames.map(normalizeName));
+    const deckHasBanned = bannedSet.size && [...deck.cards, ...(deck.sideboard || [])].some(c =>
+      bannedSet.has(normalizeName(c.name))
+    );
+    const bannedWarningHtml = deckHasBanned ? `
+      <div class="banned-warning">🔨 This deck contains banned cards, but that's ok because they're awesome! 🔨</div>
     ` : '';
     const guideKeys = Object.keys(deck.guides || {});
     const guideOptions = guideKeys.map(k => {
@@ -401,7 +411,7 @@
     const sideboardHtml = hasSideboard ? `
       <div class="decklist-col">
         <div class="card-list">
-          ${renderCardGroup(deck.sideboard, 'Sideboard')}
+          ${renderCardGroup(deck.sideboard, 'Sideboard', bannedSet)}
         </div>
       </div>
     ` : '';
@@ -411,13 +421,14 @@
       <h1>${deck.name} <span class="colors">${formatColors(deck.colors)}</span></h1>
 
       ${careWarningHtml}
+      ${bannedWarningHtml}
       <details class="collapsible" open>
         <summary>Decklist</summary>
         <div class="collapsible-body">
           <div class="decklist-grid${hasSideboard ? '' : ' single'}">
             <div class="decklist-col">
               <div class="card-list">
-                ${renderCardsByType(deck.cards)}
+                ${renderCardsByType(deck.cards, bannedSet)}
               </div>
             </div>
             ${sideboardHtml}

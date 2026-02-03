@@ -44,8 +44,9 @@ type Deck struct {
 }
 
 type Battlebox struct {
-	Slug  string `json:"slug"`
-	Decks []Deck `json:"decks"`
+	Slug   string   `json:"slug"`
+	Decks  []Deck   `json:"decks"`
+	Banned []string `json:"banned,omitempty"`
 }
 
 type Output struct {
@@ -194,12 +195,13 @@ func main() {
 			continue
 		}
 
+		bbPath := filepath.Join(dataDir, bbDir.Name())
 		battlebox := Battlebox{
-			Slug:  bbDir.Name(),
-			Decks: []Deck{},
+			Slug:   bbDir.Name(),
+			Decks:  []Deck{},
+			Banned: loadBanned(filepath.Join(bbPath, "banned.json")),
 		}
 
-		bbPath := filepath.Join(dataDir, bbDir.Name())
 		bbPrintings := mergePrintings(projectPrintings, loadPrintings(filepath.Join(bbPath, printingsFileName)))
 		deckDirs, _ := os.ReadDir(bbPath)
 
@@ -305,6 +307,25 @@ func loadPrintings(path string) map[string]string {
 		normalized[normalizeName(k)] = v
 	}
 	return normalized
+}
+
+func loadBanned(path string) []string {
+	data, err := os.ReadFile(path)
+	if err != nil {
+		return nil
+	}
+	var raw []string
+	if err := json.Unmarshal(data, &raw); err != nil {
+		return nil
+	}
+	out := make([]string, 0, len(raw))
+	for _, name := range raw {
+		trimmed := strings.TrimSpace(name)
+		if trimmed != "" {
+			out = append(out, trimmed)
+		}
+	}
+	return out
 }
 
 func mergePrintings(base, extra map[string]string) map[string]string {
