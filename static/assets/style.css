@@ -78,6 +78,7 @@ h2 {
   align-items: center;
   padding: 0.75rem 1rem;
   background: #252540;
+  border: 1px solid transparent;
   border-radius: 6px;
   color: #fff;
   text-decoration: none;
@@ -86,6 +87,50 @@ h2 {
 
 .deck-list a:hover {
   background: #353560;
+}
+
+.deck-list a.deck-highlight {
+  border-color: #fff;
+}
+
+.randomizer {
+  background: #1f1f33;
+  border: 1px solid #2d2d4a;
+  border-radius: 6px;
+  padding: 0.75rem 1rem;
+  margin-bottom: 0.75rem;
+}
+
+.randomizer-row {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 0.5rem;
+  width: 100%;
+}
+
+.randomizer-title {
+  font-size: 0.85rem;
+  color: #bbb;
+}
+
+.randomizer-controls {
+  display: inline-flex;
+  gap: 0.4rem;
+  margin-left: auto;
+}
+
+.randomizer-roll {
+  background: #353560;
+  color: #fff;
+  border: 1px solid #3a3a5c;
+  border-radius: 6px;
+  padding: 0.3rem 0.7rem;
+  cursor: pointer;
+}
+
+.randomizer-roll:hover {
+  background: #3f3f6a;
 }
 
 .battlebox-link {

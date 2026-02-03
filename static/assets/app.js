@@ -383,14 +383,53 @@
         <span class="crumb-sep">/</span>
         <span>${capitalize(bb.slug)}</span>
       </h1>
+      <div class="randomizer">
+        <div class="randomizer-row">
+          <div class="randomizer-title">Random deck</div>
+          <div class="randomizer-controls">
+            <button type="button" class="randomizer-roll" data-count="1">Roll 1</button>
+            <button type="button" class="randomizer-roll" data-count="2">Roll 2</button>
+          </div>
+        </div>
+      </div>
       <ul class="deck-list">
         ${bb.decks.map(d => `
-          <li><a href="#/${bb.slug}/${d.slug}">
+          <li class="deck-item" data-slug="${d.slug}"><a class="deck-link" href="#/${bb.slug}/${d.slug}">
             ${d.name} <span class="colors">${formatColors(d.colors)}</span>
           </a></li>
         `).join('')}
       </ul>
     `;
+
+    const deckItems = [...app.querySelectorAll('.deck-item')];
+    const deckBySlug = new Map(
+      deckItems.map(item => [item.dataset.slug, item.querySelector('.deck-link')])
+    );
+
+    const rollButtons = [...app.querySelectorAll('.randomizer-roll')];
+
+    const clearHighlights = () => {
+      deckBySlug.forEach(link => link.classList.remove('deck-highlight'));
+    };
+
+    const roll = (count) => {
+      if (deckItems.length === 0) return;
+      clearHighlights();
+      const target = Math.min(count, deckItems.length);
+      const picked = new Set();
+      while (picked.size < target) {
+        const idx = Math.floor(Math.random() * deckItems.length);
+        picked.add(deckItems[idx].dataset.slug);
+      }
+      picked.forEach(slug => {
+        const link = deckBySlug.get(slug);
+        if (link) link.classList.add('deck-highlight');
+      });
+    };
+
+    rollButtons.forEach(btn => {
+      btn.addEventListener('click', () => roll(Number(btn.dataset.count)));
+    });
   }
 
   async function renderDeck(bbSlug, deckSlug, selectedGuide) {
