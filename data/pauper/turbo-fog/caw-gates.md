@@ -1,0 +1,6 @@
++3 [[Dispel]]
++2 [[Lose Focus]]
+-3 [[Respite]]
+-2 [[Weather the Storm]]
+
+Win the stack fights with extra counters and keep them from stabilizing behind their gates.
