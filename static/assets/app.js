@@ -354,10 +354,18 @@
 
   function renderHome() {
     app.innerHTML = `
-      <h1 class="breadcrumbs">Battleboxes</h1>
+      <h1 class="breadcrumbs">Battlebox</h1>
       <ul class="deck-list">
         ${data.index.battleboxes.map(bb => `
-          <li><a href="#/${bb.slug}">${capitalize(bb.slug)} <span class="colors">(${bb.decks.length} decks)</span></a></li>
+          <li>
+            <a href="#/${bb.slug}" class="battlebox-link">
+              <div class="battlebox-title">
+                <span>${bb.name || capitalize(bb.slug)}</span>
+                <span class="colors">(${bb.decks.length} decks)</span>
+              </div>
+              ${bb.description ? `<div class="battlebox-desc">${bb.description}</div>` : ''}
+            </a>
+          </li>
         `).join('')}
       </ul>
     `;
@@ -369,7 +377,7 @@
 
     app.innerHTML = `
       <h1 class="breadcrumbs">
-        <a href="#/">Battleboxes</a>
+        <a href="#/">Battlebox</a>
         <span class="crumb-sep">/</span>
         <span>${capitalize(bb.slug)}</span>
       </h1>
@@ -421,7 +429,7 @@
 
     app.innerHTML = `
       <h1 class="breadcrumbs">
-        <a href="#/">Battleboxes</a>
+        <a href="#/">Battlebox</a>
         <span class="crumb-sep">/</span>
         <a href="#/${bb.slug}">${capitalize(bb.slug)}</a>
         <span class="crumb-sep">/</span>

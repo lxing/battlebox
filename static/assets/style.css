@@ -88,6 +88,26 @@ h2 {
   background: #353560;
 }
 
+.battlebox-link {
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.25rem;
+}
+
+.battlebox-title {
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.battlebox-desc {
+  color: #bbb;
+  font-size: 0.8rem;
+  width: 100%;
+  text-align: left;
+}
+
 .colors {
   display: flex;
   gap: 0.2rem;

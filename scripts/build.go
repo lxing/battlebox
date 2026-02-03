@@ -44,10 +44,17 @@ type Deck struct {
 	Guides               map[string]MatchupGuide `json:"guides,omitempty"`
 }
 
+type BattleboxManifest struct {
+	Name        string `json:"name"`
+	Description string `json:"description"`
+}
+
 type Battlebox struct {
-	Slug   string   `json:"slug"`
-	Decks  []Deck   `json:"decks"`
-	Banned []string `json:"banned,omitempty"`
+	Slug        string   `json:"slug"`
+	Name        string   `json:"name,omitempty"`
+	Description string   `json:"description,omitempty"`
+	Decks       []Deck   `json:"decks"`
+	Banned      []string `json:"banned,omitempty"`
 }
 
 type Output struct {
@@ -62,8 +69,10 @@ type DeckIndex struct {
 }
 
 type BattleboxIndex struct {
-	Slug  string      `json:"slug"`
-	Decks []DeckIndex `json:"decks"`
+	Slug        string      `json:"slug"`
+	Name        string      `json:"name,omitempty"`
+	Description string      `json:"description,omitempty"`
+	Decks       []DeckIndex `json:"decks"`
 }
 
 type IndexOutput struct {
@@ -201,10 +210,13 @@ func main() {
 		}
 
 		bbPath := filepath.Join(dataDir, bbDir.Name())
+		bbManifest := loadBattleboxManifest(filepath.Join(bbPath, "manifest.json"))
 		battlebox := Battlebox{
-			Slug:   bbDir.Name(),
-			Decks:  []Deck{},
-			Banned: loadBanned(filepath.Join(bbPath, "banned.json")),
+			Slug:        bbDir.Name(),
+			Name:        bbManifest.Name,
+			Description: bbManifest.Description,
+			Decks:       []Deck{},
+			Banned:      loadBanned(filepath.Join(bbPath, "banned.json")),
 		}
 
 		bbPrintings := mergePrintings(projectPrintings, loadPrintings(filepath.Join(bbPath, printingsFileName)))
@@ -228,8 +240,10 @@ func main() {
 
 		output.Battleboxes = append(output.Battleboxes, battlebox)
 		indexEntry := BattleboxIndex{
-			Slug:  battlebox.Slug,
-			Decks: make([]DeckIndex, 0, len(battlebox.Decks)),
+			Slug:        battlebox.Slug,
+			Name:        battlebox.Name,
+			Description: battlebox.Description,
+			Decks:       make([]DeckIndex, 0, len(battlebox.Decks)),
 		}
 		for _, deck := range battlebox.Decks {
 			indexEntry.Decks = append(indexEntry.Decks, DeckIndex{
@@ -338,6 +352,20 @@ func loadBanned(path string) []string {
 		}
 	}
 	return out
+}
+
+func loadBattleboxManifest(path string) BattleboxManifest {
+	data, err := os.ReadFile(path)
+	if err != nil {
+		return BattleboxManifest{}
+	}
+	var manifest BattleboxManifest
+	if err := json.Unmarshal(data, &manifest); err != nil {
+		return BattleboxManifest{}
+	}
+	manifest.Name = strings.TrimSpace(manifest.Name)
+	manifest.Description = strings.TrimSpace(manifest.Description)
+	return manifest
 }
 
 func mergePrintings(base, extra map[string]string) map[string]string {
