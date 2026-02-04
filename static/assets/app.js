@@ -418,14 +418,23 @@
       clearHighlights();
       const target = Math.min(count, deckItems.length);
       const picked = new Set();
+      let lastSlug = null;
       while (picked.size < target) {
         const idx = Math.floor(Math.random() * deckItems.length);
-        picked.add(deckItems[idx].dataset.slug);
+        const slug = deckItems[idx].dataset.slug;
+        picked.add(slug);
+        lastSlug = slug;
       }
       picked.forEach(slug => {
         const link = deckBySlug.get(slug);
         if (link) link.classList.add('deck-highlight');
       });
+      if (lastSlug) {
+        const link = deckBySlug.get(lastSlug);
+        if (link) {
+          link.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+        }
+      }
     };
 
     rollButtons.forEach(btn => {
