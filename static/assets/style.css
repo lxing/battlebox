@@ -434,6 +434,11 @@ details.collapsible[open] summary::after {
   margin: 0.25rem 0;
 }
 
+.guide-plan-none {
+  color: #888;
+  font-style: italic;
+}
+
 .guide-prose p:first-child {
   margin-top: 0.25rem;
 }

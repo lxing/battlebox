@@ -88,21 +88,20 @@
     }
     let html = '';
 
-    if (ins.length || outs.length) {
-      const renderItems = (items) => items.map(item => `<li>${mdPlan.renderInline(item)}</li>`).join('');
-      html += `
-        <div class="guide-plan">
-          <div class="guide-plan-col">
-            <div class="guide-plan-title">In</div>
-            <ul class="guide-plan-list">${renderItems(ins)}</ul>
-          </div>
-          <div class="guide-plan-col">
-            <div class="guide-plan-title">Out</div>
-            <ul class="guide-plan-list">${renderItems(outs)}</ul>
-          </div>
+    const renderItems = (items) => items.map(item => `<li>${mdPlan.renderInline(item)}</li>`).join('');
+    const renderNone = () => `<li class="guide-plan-none">None</li>`;
+    html += `
+      <div class="guide-plan">
+        <div class="guide-plan-col">
+          <div class="guide-plan-title">In</div>
+          <ul class="guide-plan-list">${ins.length ? renderItems(ins) : renderNone()}</ul>
         </div>
-      `;
-    }
+        <div class="guide-plan-col">
+          <div class="guide-plan-title">Out</div>
+          <ul class="guide-plan-list">${outs.length ? renderItems(outs) : renderNone()}</ul>
+        </div>
+      </div>
+    `;
 
     if (prose) {
       html += `<div class="guide-prose">${mdProse.render(prose)}</div>`;
