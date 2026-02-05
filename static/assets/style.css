@@ -122,22 +122,30 @@ h2 {
   margin-left: auto;
 }
 
-.randomizer-roll {
+.action-button {
   background: #353560;
   color: #fff;
   border: 1px solid #3a3a5c;
   border-radius: 6px;
+  font-size: 0.85rem;
+  cursor: pointer;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.action-button:hover {
+  background: #3f3f6a;
+  color: #fff;
+}
+
+.randomizer-roll {
   height: 1.6rem;
   line-height: 1.6rem;
   padding: 0 0.7rem;
-  font-size: 0.85rem;
   transform: scale(1.18);
   transform-origin: center;
-  cursor: pointer;
-}
-
-.randomizer-roll:hover {
-  background: #3f3f6a;
 }
 
 .battlebox-link {
@@ -370,6 +378,11 @@ details.collapsible[open] summary::after {
   margin-bottom: 0.5rem;
   font-size: 0.85rem;
   color: #aaa;
+}
+
+.guide-opponent-link {
+  margin-left: auto;
+  padding: 0 0.8rem;
 }
 
 .guide-select select {

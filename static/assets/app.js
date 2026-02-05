@@ -388,8 +388,8 @@
         <div class="randomizer-row">
           <div class="randomizer-title">Random deck</div>
           <div class="randomizer-controls">
-            <button type="button" class="randomizer-roll" data-count="1">Roll 1</button>
-            <button type="button" class="randomizer-roll" data-count="2">Roll 2</button>
+            <button type="button" class="randomizer-roll action-button" data-count="1">Roll 1</button>
+            <button type="button" class="randomizer-roll action-button" data-count="2">Roll 2</button>
           </div>
         </div>
       </div>
@@ -529,6 +529,7 @@
               <select id="guide-select" aria-label="Matchup guide">
                 ${guideOptions}
               </select>
+              <a class="guide-opponent-link action-button" id="guide-opponent-link" href="#">Go to deck</a>
             </div>
             <div class="guide-box" id="guide-box"></div>
           </div>
@@ -541,12 +542,17 @@
     if (guideKeys.length) {
       const select = document.getElementById('guide-select');
       const guideBox = document.getElementById('guide-box');
+      const opponentLink = document.getElementById('guide-opponent-link');
       const renderGuide = (key) => {
         const guideData = deck.guides[key] || '';
         const opponent = bb.decks.find(d => d.slug === key);
         const opponentPrintings = opponent ? opponent.printings || {} : {};
         const mdProse = createMarkdownRenderer([opponentPrintings, deckPrintings]);
         guideBox.innerHTML = renderGuideContent(mdSelf, mdProse, guideData);
+        if (opponentLink) {
+          opponentLink.href = `#/${bb.slug}/${key}`;
+          opponentLink.textContent = opponent ? `Go to ${opponent.name}` : 'Go to deck';
+        }
       };
       const initialGuide = selectedGuide && guideKeys.includes(selectedGuide)
         ? selectedGuide
