@@ -1,7 +1,5 @@
 +2 [[Dispel]]
-+1 [[Murmuring Mystic]]
 -1 [[Consider]]
--1 [[Ponder]]
--1 [[Spell Pierce]]
+-1 [[Murmuring Mystic]]
 
-Keep the pressure on with Mystic while protecting threats from removal.
+A little more protection against their removal. [[Writhing Chrysalis]] is truly obnoxious and must be countered.

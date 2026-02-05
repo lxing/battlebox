@@ -1,4 +1,5 @@
 +2 [[Breath Weapon]]
--2 [[Journey to Nowhere]]
+-1 [[Sacred Cat]]
+-1 [[Prismatic Strands]]
 
-[[Breath Weapon]] is your cleanest way to reset their wide board.
+[[Breath Weapon]] all over these dorks. Your enchantment removal serves double duty against [[Nyxborn Hydra]].

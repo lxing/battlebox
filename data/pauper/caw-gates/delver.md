@@ -1,5 +1,5 @@
 +3 [[Pyroblast]]
--2 [[Journey to Nowhere]]
+-2 [[Dawnbringer Cleric]]
 -1 [[Thraben Charm]]
 
-[[Pyroblast]] helps win counter wars and protects your gate setup.
+You have many trumps. [[Sacred Cat]] with enough gates outraces serpents. [[Guardian of the Guildpact]] is a good ground wall. [[The Modern Age / Vector Glider]] trades cleanly against [[Delver of Secrets / Insectile Aberration]]. Trim their graveyard proactively.

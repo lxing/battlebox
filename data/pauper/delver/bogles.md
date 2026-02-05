@@ -1,7 +1,5 @@
-+2 [[Dispel]]
-+1 [[Murmuring Mystic]]
++3 [[Annul]]
 -1 [[Consider]]
--1 [[Ponder]]
--1 [[Spell Pierce]]
+-2 [[Deep Analysis]]
 
-[[Dispel]] helps fight their protection spells, and an extra [[Murmuring Mystic]] gives you blockers to race.
+[[Annul]] and [[Deem Inferior]] for tempo. You have a small window where your serpents can outmuscle their bogles.

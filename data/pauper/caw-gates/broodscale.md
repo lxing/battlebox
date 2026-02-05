@@ -1,6 +1,4 @@
 +2 [[Breath Weapon]]
-+2 [[Dust to Dust]]
--2 [[Journey to Nowhere]]
--2 [[Thraben Charm]]
+-2 [[Guardian of the Guildpact]]
 
-Sweepers help manage their tokens, and [[Dust to Dust]] hits their artifact draw engine.
+Difficult. Counter their disruption and try to nail them with [[Thraben Charm]]. You can block and remove [[Basking Broodscale]] or [[Sadistic Glee]] the next turn, but this is not useful against [[Nadier's Nightblade]].

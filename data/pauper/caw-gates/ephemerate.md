@@ -1,7 +1,6 @@
 +3 [[Pyroblast]]
-+2 [[Dust to Dust]]
--2 [[Journey to Nowhere]]
--2 [[Thraben Charm]]
--1 [[Sacred Cat]]
++1 [[Blue Elemental Blast]]
+-2 [[Counterspell]]
+-2 [[Prismatic Strands]]
 
-[[Pyroblast]] fights their blue value chain, and [[Dust to Dust]] answers their Bridges.
+[[Pyroblast]] their creatures, especially [[Murmuring Mystic]]. They have a heavy artifact land base, but [[Dust to Dust]] is probably not worth it, even considering [[Kenku Artificer]].

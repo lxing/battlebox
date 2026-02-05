@@ -1,4 +1,4 @@
 +2 [[Breath Weapon]]
 -2 [[Journey to Nowhere]]
 
-[[Breath Weapon]] clears their token and small creature swarms so your gate threats can take over.
+Standard [[Breath Weapon]] sweeping. You will be trading [[Prismatic Strands]] strikes against each other, but you have a small edge due to countermagic and graveyard hate. Beware [[Guardians']] Pledge which can kill you out of nowhere.

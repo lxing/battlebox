@@ -1,7 +1,6 @@
++1 [[Annul]]
 +2 [[Dispel]]
 +1 [[Murmuring Mystic]]
--1 [[Consider]]
--1 [[Ponder]]
--1 [[Spell Pierce]]
+-4 [[Deem Inferior]]
 
-[[Dispel]] pressures their fogs and counters, and Mystic gives you a way to win through long games.
+Get in some damage, then build up a lethal strike backed by lots of countermagic. A plan B is to counter both [[Stream of Thought]] so they deck themselves. Hold on to some cantrips to rebuild from [[Relic of Progenitus]].

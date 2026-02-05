@@ -1,7 +1,7 @@
 +4 [[Dust to Dust]]
 +2 [[Gorilla Shaman]]
--2 [[Journey to Nowhere]]
--2 [[Thraben Charm]]
--2 [[Sacred Cat]]
+-2 [[Dawnbringer Cleric]]
+-1 [[Counterspell]]
+-3 [[Thraben Charm]]
 
-[[Dust to Dust]] and [[Gorilla Shaman]] are your best tools against their artifact lands and big threats.
+[[Dust to Dust]] and [[Gorilla Shaman]] completely wreck their manabase. Keep this under control, as their recursion and card advantage engine is otherwise quite strong. [[Prismatic Strands]] is good against [[Krark-Clan Shaman]], though they can keep reactivating it.
