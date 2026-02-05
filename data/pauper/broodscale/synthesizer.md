@@ -1,9 +1,8 @@
 +4 [[Weather the Storm]]
-+4 [[Drown in Sorrow]]
--4 [[Duress]]
--1 [[Energy Refractor]]
--1 [[Wizard's Rockets]]
--1 [[Snakeskin Veil]]
--1 [[Eviscerator's Insight]]
++3 [[Drown in Sorrow]]
+-1 [[Chromatic Star]]
+-2 [[Energy Refractor]]
+-2 [[Eviscerator's Insight]]
+-2 [[Wizard's Rockets]]
 
-Sweepers plus lifegain are essential to stabilize against their token swarms and burn.
+Just stay alive. Trim the more durdly deck pieces.

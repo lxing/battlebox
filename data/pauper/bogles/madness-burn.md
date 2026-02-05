@@ -1,8 +1,4 @@
-+3 [[Crimson Acolyte]]
-+2 [[Tamiyo's Safekeeping]]
 +1 [[Lifelink]]
--4 [[Malevolent Rumble]]
--1 [[Sentinel's Eyes]]
--1 [[Cartouche of Solidarity]]
+-1 [[Ram Through]]
 
-[[Crimson Acolyte]] blanks their burn spells, and lifegain buys time to end the race.
+Lifegain your head above water. They will bring in [[Tithing Blade / Consuming Sepulcher]] and [[End the Festivities]] to catch you with your pants down, plan accordingly.

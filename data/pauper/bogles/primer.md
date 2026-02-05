@@ -1,4 +1,4 @@
-Bogles is a GW hexproof aura deck: stick a protected creature, then stack efficient enchantments to end the game quickly. The core threats are [[Slippery Bogle]], [[Gladecover Scout]], and [[Silhana Ledgewalker]], while payoffs like [[Ethereal Armor]] and [[Ancestral Mask]] scale with every aura you deploy.
+Stick a protected creature, then stack dumb enchantments to end the game quickly.
 
 ### Early game
 Mulligan toward a hexproof creature plus a couple of auras or fixing. Use [[Utopia Sprawl]] and [[Abundant Growth]] to smooth mana and keep the spells flowing, then land a threat before you start piling on enchantments.

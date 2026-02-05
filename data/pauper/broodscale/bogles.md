@@ -1,7 +1,5 @@
++2 [[Circle of Protection: Blue]]
 +2 [[Mesmeric Fiend]]
-+2 [[Weather the Storm]]
--2 [[Duress]]
--1 [[Energy Refractor]]
--1 [[Wizard's Rockets]]
+-4 [[Snakeskin Veil]]
 
-[[Mesmeric Fiend]] can take key auras, and [[Weather the Storm]] buys time to set up the combo race.
+Circle will shutdown one third of their creatures, bypassing Hexproof. If they pivot to the Infect plan, consider bringing in [[Snuff Out]] instead of [[Mesmeric Fiend]].

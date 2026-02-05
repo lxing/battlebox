@@ -1,8 +1,6 @@
-+3 [[Crimson Acolyte]]
-+2 [[Tamiyo's Safekeeping]]
 +1 [[Lifelink]]
--4 [[Malevolent Rumble]]
--1 [[Sentinel's Eyes]]
--1 [[Cartouche of Solidarity]]
++2 [[Tamiyo's Safekeeping]]
+-2 [[Ancestral Mask]]
+-1 [[Rancor]]
 
-Red hate plus lifegain keeps you alive through their burst damage while your auras take over.
+Pure race. Mulligan for lifegain, play around [[End the Festivities]].

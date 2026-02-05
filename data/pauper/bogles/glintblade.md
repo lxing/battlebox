@@ -1,7 +1,5 @@
 +2 [[Tamiyo's Safekeeping]]
-+1 [[Lifelink]]
--1 [[Malevolent Rumble]]
--1 [[Sentinel's Eyes]]
--1 [[Cartouche of Solidarity]]
+-1 [[Ancestral Mask]]
+-1 [[Ram Through]]
 
-Extra protection helps you stick a single large threat through their removal and bounce loops.
+Fight through sacrifice effects and removal. When they hit three mana, don't deploy an unbuffed creature into [[Suffocating Fumes]].

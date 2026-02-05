@@ -1,10 +1,7 @@
 +4 [[Blighted Agent]]
-+4 [[Glistener Elf]]
 +1 [[Island]]
--4 [[Malevolent Rumble]]
--2 [[Cartouche of Solidarity]]
--1 [[Sentinel's Eyes]]
--1 [[Ram Through]]
--1 [[Utopia Sprawl]]
+-4 [[Gladecover Scout]]
+-1 [[Plains]]
 
-The infect plan gives you more must-answer threats against [[Prismatic Strands]] and their long game.
+
+They'll likely side out removal, and they have a zillion blockers and big lifelink creatures, so try to juke with [[Blighted Agent]]. [[Gladecover Scout]] gets walled by [[Guardian of the Guildpact]].

@@ -1,8 +1,5 @@
-+2 [[Mesmeric Fiend]]
-+2 [[Circle of Protection: Blue]]
 +2 [[Snuff Out]]
--4 [[Duress]]
 -1 [[Energy Refractor]]
 -1 [[Wizard's Rockets]]
 
-[[Mesmeric Fiend]] disrupts their value chain, and extra removal keeps [[Mulldrifter]] from stabilizing.
+Disrupt their value chain with [[Snuff Out]]. This is still resource negative against ETB effects, so focus on the combo.

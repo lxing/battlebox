@@ -1,7 +1,8 @@
-+2 [[Tamiyo's Safekeeping]]
-+1 [[Lifelink]]
--1 [[Malevolent Rumble]]
--1 [[Sentinel's Eyes]]
++4 [[Blighted Agent]]
++4 [[Glistener Elf]]
++1 [[Island]]
 -1 [[Cartouche of Solidarity]]
+-4 [[Gladecover Scout]]
+-4 [[Slippery Bogle]]
 
-Extra protection lets you keep a single large attacker alive through their combat tricks and swarm.
+Tricky matchup, they can easily outscale you on board and with lifegain. Pivot to Infect + evasion.

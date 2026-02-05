@@ -1,8 +1,6 @@
-+3 [[Snuff Out]]
 +2 [[Mesmeric Fiend]]
--2 [[Duress]]
--1 [[Energy Refractor]]
++3 [[Snuff Out]]
+-4 [[Snakeskin Veil]]
 -1 [[Wizard's Rockets]]
--1 [[Snakeskin Veil]]
 
-Use removal on their cascade creatures, and [[Mesmeric Fiend]] can strip key top-end threats.
+[[Deglamer]] is their only defense against the combo. You're in good shape as long as you don't get overrun.

@@ -1,7 +1,6 @@
-+2 [[Tamiyo's Safekeeping]]
 +1 [[Lifelink]]
--1 [[Malevolent Rumble]]
--1 [[Sentinel's Eyes]]
--1 [[Cartouche of Solidarity]]
++2 [[Tamiyo's Safekeeping]]
+-2 [[Cartouche of Solidarity]]
+-1 [[Gladecover Scout]]
 
-Protect your threat from removal and win the race with lifegain once your auras stick.
+Race. Don't get blown out by [[Prismatic Strands]] or [[Thraben Charm]]. [[Standard Bearer]] is super painful, and your only out is pretty much [[Ram Through]].

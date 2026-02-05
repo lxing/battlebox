@@ -1,8 +1,5 @@
-+4 [[Drown in Sorrow]]
-+3 [[Snuff Out]]
--4 [[Duress]]
--1 [[Energy Refractor]]
--1 [[Wizard's Rockets]]
++3 [[Drown in Sorrow]]
 -1 [[Eviscerator's Insight]]
+-2 [[Wizard's Rockets]]
 
-You need sweepers and free removal to keep their flier swarm from snowballing.
+Sweep aggressively. They will bring in enchantment removal and try to [[Okiba-Gang Shinobi]] your ass. Don't extend into [[Tithing Blade / Consuming Sepulcher]].
