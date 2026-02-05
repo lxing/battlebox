@@ -1,10 +1,7 @@
 +4 [[Essence Warden]]
 +3 [[Hallow]]
--2 [[Nyxborn Hydra]]
--1 [[Avenging Hunter]]
 -1 [[Lead the Stampede]]
--1 [[Winding Way]]
--1 [[Generous Ent]]
--1 [[Masked Vandal]]
+-2 [[Winding Way]]
+-4 [[Nyxborn Hydra]]
 
-Staying alive is priority one; lifegain keeps you out of range while you build a board.
+Spam lifegain. Games are so quick that [[Nyxborn Hydra]] is mostly overkill.

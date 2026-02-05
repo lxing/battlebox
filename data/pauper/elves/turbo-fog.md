@@ -1,9 +1,4 @@
 +4 [[Mesmeric Fiend]]
-+2 [[Divest]]
--2 [[Nyxborn Hydra]]
--1 [[Avenging Hunter]]
--1 [[Lead the Stampede]]
--1 [[Winding Way]]
--1 [[Generous Ent]]
+-4 [[Wellwisher]]
 
-Use discard to take fogs and counters so your pressure can actually end the game.
+This is very tough. Pursue early aggression. Failing that, build up a huge board and use multiple [[Mesmeric Fiend]] to try and strip them of protection for an instant kill.

@@ -1,9 +1,1 @@
-+4 [[Mesmeric Fiend]]
-+2 [[Divest]]
--2 [[Nyxborn Hydra]]
--1 [[Avenging Hunter]]
--1 [[Lead the Stampede]]
--1 [[Winding Way]]
--1 [[Generous Ent]]
-
-Use discard to take key auras and slow their single-threat plan.
+You are one of the few decks capable of outscaling Bogles in the late game with [[Nyxborn Hydra]], [[Timberwatch Elf]], and [[Wellwisher]]. No need to overthink things, just play your gameplan. However, if they do switch to Infect, you'll need to bring in [[Cast Down]] and race more aggressively.

@@ -1,7 +1,6 @@
 +2 [[Cast Down]]
-+2 [[Mesmeric Fiend]]
--2 [[Nyxborn Hydra]]
--1 [[Avenging Hunter]]
--1 [[Lead the Stampede]]
++2 [[Hallow]]
+-2 [[Masked Vandal]]
+-2 [[Wellwisher]]
 
-Extra removal and discard help you punch through their monarch and initiative threats.
+Lots of removal will prevent you from hitting critical mass. Use [[Cast Down]] to try and catch a turn 3 [[Crypt Rats]] before they can pop it, or to get rid of a [[Writhing Chrysalis]]. You can claw back some card advantage with [[Winding Way]], but they will definitely outdraw you.

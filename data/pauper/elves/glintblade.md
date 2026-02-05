@@ -1,10 +1,5 @@
-+2 [[Cast Down]]
-+2 [[Mesmeric Fiend]]
-+2 [[Divest]]
--2 [[Nyxborn Hydra]]
--1 [[Avenging Hunter]]
--1 [[Lead the Stampede]]
--1 [[Winding Way]]
--1 [[Generous Ent]]
++4 [[Mesmeric Fiend]]
+-2 [[Birchlore Rangers]]
+-2 [[Wellwisher]]
 
-Discard plus removal helps you beat their flyers and artifact value loop.
+Play your normal gameplan, but [[Suffocating Fumes]] and [[Arms of Hadar]] will make life difficult for you. Best to catch it in the bud. Use [[Nyxborn Hydra]] to scale out of reach and also block their fliers.

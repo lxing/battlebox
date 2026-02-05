@@ -1,12 +1,4 @@
-+4 [[Mesmeric Fiend]]
-+2 [[Divest]]
 +2 [[Cast Down]]
--2 [[Nyxborn Hydra]]
--1 [[Avenging Hunter]]
--1 [[Lead the Stampede]]
--1 [[Winding Way]]
--1 [[Generous Ent]]
--1 [[Wellwisher]]
--1 [[Masked Vandal]]
+-2 [[Masked Vandal]]
 
-Extra discard and removal help you play through their counters and large threats.
+[[Wellwisher]] will help you race and [[Cast Down]] is good solid removal to clear a few serpents. You are favored; absorb their pressure and apply your own with [[Avenging Hunter]] if the coast is clear of fliers.

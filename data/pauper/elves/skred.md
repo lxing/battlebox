@@ -1,10 +1,6 @@
-+4 [[Essence Warden]]
++2 [[Cast Down]]
 +3 [[Hallow]]
 -2 [[Nyxborn Hydra]]
--1 [[Avenging Hunter]]
--1 [[Lead the Stampede]]
--1 [[Winding Way]]
--1 [[Generous Ent]]
--1 [[Masked Vandal]]
+-3 [[Wellwisher]]
 
-Lifegain is crucial against their burn and big threats; [[Hallow]] can swing key turns.
+[[Hallow]] as boardwipe defense. They have a lot of burn, pace yourself and don't get demorazlied.

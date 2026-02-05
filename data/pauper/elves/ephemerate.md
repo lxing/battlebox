@@ -1,12 +1,5 @@
-+4 [[Mesmeric Fiend]]
-+2 [[Divest]]
 +2 [[Cast Down]]
--2 [[Nyxborn Hydra]]
--1 [[Avenging Hunter]]
--1 [[Lead the Stampede]]
--1 [[Winding Way]]
--1 [[Generous Ent]]
--1 [[Wellwisher]]
--1 [[Masked Vandal]]
++2 [[Hallow]]
+-4 [[Masked Vandal]]
 
-Hand disruption and removal are key to keeping their ETB value from taking over.
+[[Hallow]] vs [[Breath Weapon]] and their mountain of burn. [[Cast Down]] can slightly disrupt some [[Ephemerate]] chains. Watch out for [[Standard Bearer]].
