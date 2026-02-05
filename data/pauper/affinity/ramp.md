@@ -1,6 +1,8 @@
 +2 [[Cast Down]]
++2 [[Cast into the Fire]]
 +1 [[Toxin Analysis]]
--2 [[Candy Trail]]
--1 [[Nihil Spellbomb]]
+-1 [[Candy Trail]]
+-2 [[Nihil Spellbomb]]
+-2 [[Reckoner's Bargain]]
 
-[[Cast Down]] is your cleanest answer to their large cascade threats like [[Boarding Party]].
+[[Cast Down]] and [[Krark-Clan Shaman]] combo is your cleanest answer to their fatties. Kill [[Arbor Elf]] and [[Gorilla Shaman]] on sight.

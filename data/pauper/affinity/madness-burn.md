@@ -1,8 +1,7 @@
-+2 [[Cast Down]]
-+1 [[Krark-Clan Shaman]]
++2 [[Cast into the Fire]]
++2 [[Gorilla Shaman]]
 +1 [[Toxin Analysis]]
--2 [[Candy Trail]]
--1 [[Nihil Spellbomb]]
 -1 [[Makeshift Munitions]]
+-4 [[Refurbished Familiar]]
 
-Extra removal keeps [[Kitchen Imp]] and [[Sneaky Snacker]] off the board while you race.
+Race with [[Toxin Analysis]] and [[Reckoner's Bargain]] + [[Myr Enforcer]]. [[Gorilla Shaman]] is pretty good against their Blood tokens and artifact land base, but don't get carried away while they burn your face off. Need more removal to fight their own Gorillas.

@@ -1,6 +1,4 @@
 +2 [[Cast Down]]
-+1 [[Toxin Analysis]]
--2 [[Candy Trail]]
--1 [[Makeshift Munitions]]
+-2 [[Krark-Clan Shaman]]
 
-More removal helps answer [[Avenging Hunter]] and [[Thorn of the Black Rose]] before the monarch or initiative takes over.
+Brutal attrition fight between two of the grindiest decks in the metagame. [[Kenku Artificer]] is golden, try to keep their board state in check to avoid getting blown out by Initiative or Monarch.

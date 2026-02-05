@@ -1,11 +1,10 @@
-+4 [[Red Elemental Blast]]
-+1 [[Pyroblast]]
 +2 [[Cast Down]]
--2 [[Candy Trail]]
--1 [[Toxin Analysis]]
--1 [[Nihil Spellbomb]]
++1 [[Pyroblast]]
++4 [[Red Elemental Blast]]
+-1 [[Candy Trail]]
+-2 [[Galvanic Blast]]
+-2 [[Krark-Clan Shaman]]
 -1 [[Makeshift Munitions]]
--1 [[Krark-Clan Shaman]]
--1 [[Kenku Artificer]]
+-1 [[Toxin Analysis]]
 
-Blasts fight their counters, and extra [[Cast Down]] answers [[Tolarian Terror]] and [[Cryptic Serpent]].
+Blast away. Careful of counters on [[Deadly Dispute]] and [[Reckoner's Bargain]].
