@@ -3,7 +3,9 @@
   const app = document.getElementById('app');
   let data = { index: null, battleboxes: {} };
   let previewEl = null;
-  let previewImg = null;
+  let previewImgFront = null;
+  let previewImgBack = null;
+  let previewImages = null;
   let previewStatus = null;
   let previewToken = 0;
   let previewUrl = '';
@@ -36,7 +38,16 @@
     return '';
   }
 
-  function createMarkdownRenderer(printingsList) {
+  function resolveDoubleFaced(target, doubleFacedList) {
+    const key = normalizeName(target);
+    if (!key) return false;
+    for (const faces of doubleFacedList || []) {
+      if (faces && faces[key]) return true;
+    }
+    return false;
+  }
+
+  function createMarkdownRenderer(printingsList, doubleFacedList) {
     const md = window.markdownit({
       html: false,
       linkify: true,
@@ -69,7 +80,9 @@
     md.renderer.rules.card_ref = (tokens, idx) => {
       const { display, target } = tokens[idx].meta;
       const printing = resolvePrinting(target, printingsList);
-      return `<span class="card" data-name="${target}" data-printing="${printing}">${md.utils.escapeHtml(display)}</span>`;
+      const doubleFaced = resolveDoubleFaced(target, doubleFacedList);
+      const doubleFacedAttr = doubleFaced ? ' data-double-faced="1"' : '';
+      return `<span class="card" data-name="${target}" data-printing="${printing}"${doubleFacedAttr}>${md.utils.escapeHtml(display)}</span>`;
     };
 
     return md;
@@ -110,10 +123,26 @@
     return html || '<em>No guide yet</em>';
   }
 
+  function buildDoubleFacedMap(deck) {
+    const out = {};
+    const addCards = (cards) => {
+      if (!cards) return;
+      cards.forEach(c => {
+        if (c.double_faced) {
+          out[normalizeName(c.name)] = true;
+        }
+      });
+    };
+    addCards(deck.cards);
+    addCards(deck.sideboard);
+    return out;
+  }
+
   function renderCardRow(card, bannedSet) {
     const banned = bannedSet && bannedSet.has(normalizeName(card.name));
     const bannedIcon = banned ? '<span class="banned-icon" title="Banned">🔨</span>' : '';
-    return `<div class="card-row"><span class="card-qty">${card.qty}</span><span class="card" data-name="${card.name}" data-printing="${card.printing}">${card.name}</span>${bannedIcon}</div>`;
+    const doubleFacedAttr = card.double_faced ? ' data-double-faced="1"' : '';
+    return `<div class="card-row"><span class="card-qty">${card.qty}</span><span class="card" data-name="${card.name}" data-printing="${card.printing}"${doubleFacedAttr}>${card.name}</span>${bannedIcon}</div>`;
   }
 
   function renderCardsByType(cards, bannedSet, types) {
@@ -151,10 +180,11 @@
   }
 
   // Scryfall image URL
-  function getImageUrl(printing) {
+  function getImageUrl(printing, face) {
     if (!printing) return null;
     const [set, num] = printing.split('/');
-    return `https://api.scryfall.com/cards/${set}/${num}?format=image&version=normal`;
+    const faceParam = face === 'back' ? '&face=back' : '';
+    return `https://api.scryfall.com/cards/${set}/${num}?format=image&version=normal${faceParam}`;
   }
 
   // Card hover preview
@@ -214,9 +244,14 @@
     previewStatus = document.createElement('div');
     previewStatus.className = 'card-preview-loading';
     previewStatus.textContent = 'Loading...';
-    previewImg = document.createElement('img');
+    previewImages = document.createElement('div');
+    previewImages.className = 'card-preview-images';
+    previewImgFront = document.createElement('img');
+    previewImgBack = document.createElement('img');
+    previewImages.appendChild(previewImgFront);
+    previewImages.appendChild(previewImgBack);
     previewEl.appendChild(previewStatus);
-    previewEl.appendChild(previewImg);
+    previewEl.appendChild(previewImages);
     previewEl.addEventListener('mouseleave', (e) => {
       if (!previewAnchor) return;
       const cardEl = previewAnchor.el;
@@ -230,39 +265,73 @@
   function openPreview(cardEl, e) {
     const printing = cardEl.dataset.printing;
     if (!printing) return;
-    const url = getImageUrl(printing);
-    if (!url) return;
-    if (previewAnchor && previewAnchor.el === cardEl && previewEl && previewEl.style.display !== 'none' && previewUrl === url) {
+    const isDoubleFaced = cardEl.dataset.doubleFaced === '1';
+    const frontUrl = getImageUrl(printing, 'front');
+    if (!frontUrl) return;
+    const backUrl = isDoubleFaced ? getImageUrl(printing, 'back') : null;
+    const urlKey = isDoubleFaced ? `${frontUrl}|${backUrl}` : frontUrl;
+    if (previewAnchor && previewAnchor.el === cardEl && previewEl && previewEl.style.display !== 'none' && previewUrl === urlKey) {
       positionPreviewAtPoint(e.clientX, e.clientY);
       return;
     }
-    previewUrl = url;
+    previewUrl = urlKey;
     ensurePreviewEl();
+    previewEl.classList.toggle('card-preview-double', isDoubleFaced);
     if (previewEl.parentNode !== document.body) {
       document.body.appendChild(previewEl);
     }
     previewStatus.textContent = 'Loading...';
     previewStatus.style.display = 'block';
-    previewImg.style.display = 'none';
+    previewImgFront.style.display = 'none';
+    previewImgBack.style.display = 'none';
+    previewImages.style.display = 'none';
     // Preload to avoid noisy aborted image requests when hover changes quickly.
     const token = ++previewToken;
-    const img = new Image();
-    img.className = previewImg.className;
-    img.alt = previewImg.alt || '';
-    img.onload = () => {
-      if (token !== previewToken || previewUrl !== url) return;
-      previewStatus.style.display = 'none';
-      img.style.display = 'block';
-      previewEl.replaceChild(img, previewImg);
-      previewImg = img;
+    let pending = isDoubleFaced ? 2 : 1;
+    let loaded = 0;
+
+    const finish = (ok) => {
+      pending -= 1;
+      if (ok) loaded += 1;
+      if (pending > 0) return;
+      if (token !== previewToken || previewUrl !== urlKey) return;
+      if (loaded === 0) {
+        previewStatus.textContent = 'Image unavailable';
+        previewStatus.style.display = 'block';
+      } else {
+        previewStatus.style.display = 'none';
+        previewImages.style.display = 'flex';
+      }
     };
-    img.onerror = () => {
-      if (token !== previewToken || previewUrl !== url) return;
-      previewStatus.textContent = 'Image unavailable';
-      previewStatus.style.display = 'block';
-      previewImg.style.display = 'none';
+
+    const loadImage = (slot, url, isBack) => {
+      const img = new Image();
+      img.className = slot.className;
+      img.alt = slot.alt || '';
+      img.onload = () => {
+        if (token !== previewToken || previewUrl !== urlKey) return;
+        img.style.display = 'block';
+        previewImages.replaceChild(img, slot);
+        if (isBack) {
+          previewImgBack = img;
+        } else {
+          previewImgFront = img;
+        }
+        finish(true);
+      };
+      img.onerror = () => {
+        if (token !== previewToken || previewUrl !== urlKey) return;
+        finish(false);
+      };
+      img.src = url;
     };
-    img.src = url;
+
+    loadImage(previewImgFront, frontUrl, false);
+    if (isDoubleFaced && backUrl) {
+      loadImage(previewImgBack, backUrl, true);
+    } else {
+      previewImgBack.style.display = 'none';
+    }
     previewEl.style.display = 'block';
     positionPreviewAtPoint(e.clientX, e.clientY);
     const rect = cardEl.getBoundingClientRect();
@@ -448,7 +517,8 @@
     if (!deck) return renderNotFound();
 
     const deckPrintings = deck.printings || {};
-    const mdSelf = createMarkdownRenderer([deckPrintings]);
+    const deckDoubleFaced = buildDoubleFacedMap(deck);
+    const mdSelf = createMarkdownRenderer([deckPrintings], [deckDoubleFaced]);
     const primerHtml = deck.primer ? mdSelf.render(deck.primer) : '<em>No primer yet</em>';
     const careWarningHtml = deck.premodern_care_warning ? `
       <div class="care-warning">⚠️ This deck contains cards that are on the Reserved List and/or spiked in price with Premodern popularity. Handle and shuffle with care! ⚠️</div>
@@ -546,7 +616,11 @@
         const guideData = deck.guides[key] || '';
         const opponent = bb.decks.find(d => d.slug === key);
         const opponentPrintings = opponent ? opponent.printings || {} : {};
-        const mdProse = createMarkdownRenderer([opponentPrintings, deckPrintings]);
+        const opponentDoubleFaced = opponent ? buildDoubleFacedMap(opponent) : {};
+        const mdProse = createMarkdownRenderer(
+          [opponentPrintings, deckPrintings],
+          [opponentDoubleFaced, deckDoubleFaced]
+        );
         guideBox.innerHTML = renderGuideContent(mdSelf, mdProse, guideData);
         if (opponentLink) {
           const opponentHasGuide = opponent
