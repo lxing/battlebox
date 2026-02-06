@@ -81,7 +81,7 @@ h2 {
 }
 
 .deck-list a.deck-highlight {
-  border-color: transparent;
+  border-color: #fff;
 }
 
 .deck-list a:focus,

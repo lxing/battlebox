@@ -1,4 +1,4 @@
-A classic old-school control deck with lots of removal and discard, potent card advantage, and a few versatile.
+A classic old-school control deck with lots of removal and discard, potent card advantage, and a few versatile finishers.
 
 ### Early game
 Use [[Duress]] and [[Gerrard's Verdict]] to strip key spells and slow the opponent’s development. Back that up with flexible removal like [[Swords to Plowshares]] and [[Vindicate]]. Aggressively trade resources. Use [[Wrath of God]] to reset the board if you fall behind.

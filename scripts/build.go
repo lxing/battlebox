@@ -742,9 +742,17 @@ func processDeck(deckPath, slug, battlebox string, printings map[string]string) 
 		if name == "primer.md" || name == "manifest.json" || !strings.HasSuffix(name, ".md") {
 			continue
 		}
+		// Matchup guides are stored as underscored files (e.g. _elves.md)
+		// so guide files sort after manifest/primer in directory listings.
+		if !strings.HasPrefix(name, "_") {
+			continue
+		}
 		guidePath := filepath.Join(deckPath, name)
 		if guideData, err := os.ReadFile(guidePath); err == nil && len(guideData) > 0 {
-			opponentSlug := strings.TrimSuffix(name, ".md")
+			opponentSlug := strings.TrimPrefix(strings.TrimSuffix(name, ".md"), "_")
+			if opponentSlug == "" {
+				continue
+			}
 			guide := parseGuide(string(guideData))
 			if err := validateGuide(guide, mainboardIndex, sideboardIndex); err != nil {
 				return nil, fmt.Errorf("guide %s: %w", opponentSlug, err)
