@@ -1,7 +1,6 @@
 +4 [[Relic of Progenitus]]
--1 [[Spinning Darkness]]
--1 [[Snuff Out]]
--1 [[Blood Fountain]]
--1 [[Fanatical Offering]]
++2 [[Troublemaker Ouphe]]
+-4 [[Cast Down]]
+-2 [[Snuff Out]]
 
-Graveyard hate helps disrupt their recursion so you can grind them out.
+This is a weird one. Either use repeated huge [[Crypt Rats]] activations to burn them out, or hate out their [[Stream of Thought]] for a decking win, or kill with repeated Initiative Trap! triggers.

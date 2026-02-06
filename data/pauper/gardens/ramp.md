@@ -1,10 +1,5 @@
-+2 [[Breath Weapon]]
-+4 [[Relic of Progenitus]]
--1 [[Spinning Darkness]]
--1 [[Snuff Out]]
--1 [[Lembas]]
--1 [[Blood Fountain]]
--1 [[Fanatical Offering]]
--1 [[Tithing Blade / Consuming Sepulcher]]
++2 [[Troublemaker Ouphe]]
+-1 [[Campfire]]
+-1 [[Crypt Rats]]
 
-[[Relic of Progenitus]] slows their graveyard value, and [[Breath Weapon]] buys time against their early creatures.
+They will get bigger creatures online faster than you, but you have the far superior removal suite. Stay alive and pick off their [[Writhing Chrysalis]] to let yours dominate. Slow down their enchantment ramp with [[Troublemaker Ouphe]].

@@ -1,7 +1,5 @@
-+4 [[Relic of Progenitus]]
--1 [[Spinning Darkness]]
--1 [[Snuff Out]]
--1 [[Blood Fountain]]
++2 [[Relic of Progenitus]]
+-1 [[Campfire]]
 -1 [[Fanatical Offering]]
 
-Graveyard hate limits their recursion and slows the value engine.
+A little bit of graveyard hate slows their endgame value engine, though you should be able to easily take over before then with [[Writhing Chrysalis]]. Killing an [[Ephemerate]] target is also quite lucrative.

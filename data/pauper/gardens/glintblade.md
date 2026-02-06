@@ -1,9 +1,7 @@
-+3 [[Ancient Grudge]]
-+2 [[Troublemaker Ouphe]]
++2 [[Ancient Grudge]]
++2 [[Breath Weapon]]
+-1 [[Campfire]]
+-2 [[Snuff Out]]
 -1 [[Spinning Darkness]]
--1 [[Snuff Out]]
--1 [[Lembas]]
--1 [[Blood Fountain]]
--1 [[Fanatical Offering]]
 
-Artifact hate is key against their bounce-and-draw engine.
+Artifact hate wrecks their manabase, but it's not reliable as a game plan. Their fliers will take back the Monarch and Initiative from you easily, so use removal aggressively to clear the way for [[Thorn of the Black Rose]] and [[Avenging Hunter]].

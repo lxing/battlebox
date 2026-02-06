@@ -1,10 +1,5 @@
-+4 [[Relic of Progenitus]]
-+2 [[Breath Weapon]]
--1 [[Spinning Darkness]]
--1 [[Snuff Out]]
--1 [[Lembas]]
++2 [[Troublemaker Ouphe]]
 -1 [[Blood Fountain]]
--1 [[Fanatical Offering]]
--1 [[Tithing Blade / Consuming Sepulcher]]
+-1 [[Campfire]]
 
-[[Relic of Progenitus]] slows their combo, and [[Breath Weapon]] helps reset token boards.
+Your mainboard is well-positioned. Overload their combo protection with ample spot removal.

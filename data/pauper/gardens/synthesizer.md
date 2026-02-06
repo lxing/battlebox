@@ -1,13 +1,10 @@
-+4 [[Weather the Storm]]
 +2 [[Breath Weapon]]
 +2 [[Troublemaker Ouphe]]
--1 [[Spinning Darkness]]
--1 [[Snuff Out]]
--1 [[Lembas]]
++4 [[Weather the Storm]]
 -1 [[Blood Fountain]]
--1 [[Fanatical Offering]]
--1 [[Tithing Blade / Consuming Sepulcher]]
--1 [[Avenging Hunter]]
--1 [[Thorn of the Black Rose]]
+-2 [[Cast Down]]
+-2 [[Eviscerator's Insight]]
+-1 [[Nihil Spellbomb]]
+-2 [[Snuff Out]]
 
-Lifegain plus sweepers and artifact hate are key to stabilizing against their burst damage.
+Use every trick to stay alive. Monarch and Initiative are dangerous to use against a wide board, rely on sweepers and [[Writhing Chrysalis]] to stabilize first.

@@ -1,7 +1,5 @@
 +4 [[Relic of Progenitus]]
--1 [[Spinning Darkness]]
--1 [[Snuff Out]]
--1 [[Blood Fountain]]
--1 [[Fanatical Offering]]
+-1 [[Campfire]]
+-3 [[Cast Down]]
 
-Graveyard hate keeps their value plan in check while you grind.
+Throw in some graveyard hate to supplement your vast arsenal of removal. [[Crypt Rats]] is sufficient with your beaters, there's no point trying to mow down every last [[Squadron Hawk]]

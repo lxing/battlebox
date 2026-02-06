@@ -1,7 +1,8 @@
++2 [[Breath Weapon]]
++2 [[Troublemaker Ouphe]]
 +4 [[Weather the Storm]]
--1 [[Spinning Darkness]]
--1 [[Snuff Out]]
--1 [[Blood Fountain]]
--1 [[Fanatical Offering]]
+-3 [[Cast Down]]
+-3 [[Defile]]
+-2 [[Snuff Out]]
 
-Lifegain is your best tool to survive their single huge threat.
+Not great, you have minimal enchantment removal. You'll need to race them with your glacially slow creature base.

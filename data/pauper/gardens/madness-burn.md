@@ -1,7 +1,7 @@
++2 [[Relic of Progenitus]]
 +4 [[Weather the Storm]]
--1 [[Spinning Darkness]]
--1 [[Snuff Out]]
 -1 [[Blood Fountain]]
--1 [[Fanatical Offering]]
+-3 [[Crypt Rats]]
+-2 [[Snuff Out]]
 
-Lifegain is crucial to outlast their burn-heavy plan.
+Lifegain all day. Sit around your [[Campfire]] and summon your finishers.

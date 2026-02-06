@@ -1,7 +1,1 @@
-+4 [[Weather the Storm]]
--1 [[Spinning Darkness]]
--1 [[Snuff Out]]
--1 [[Blood Fountain]]
--1 [[Fanatical Offering]]
-
-Stack lifegain to survive their burn and big threats.
+They have a similar game plan to yours, removal backed by Monarch enablers. Both of you will kill every creature on the board, so unfortunately their card selection and counters will pull ahead in securing the Monarch. Squeeze the most out of your [[Deadly Dispute]] + token engine.

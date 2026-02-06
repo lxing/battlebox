@@ -1,10 +1,5 @@
 +2 [[Breath Weapon]]
-+4 [[Weather the Storm]]
--1 [[Spinning Darkness]]
--1 [[Snuff Out]]
--1 [[Lembas]]
 -1 [[Blood Fountain]]
--1 [[Fanatical Offering]]
--1 [[Tithing Blade / Consuming Sepulcher]]
+-1 [[Campfire]]
 
-Sweepers and lifegain are the best tools to survive their wide board.
+[[Crypt Rats]] and sweepers, as if there wasn't enough creature hate. This is a terrible matchup for the forest friends.
