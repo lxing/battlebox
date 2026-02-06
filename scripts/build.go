@@ -144,6 +144,18 @@ type BuildStamp struct {
 	GlobalHash string `json:"global_hash"`
 	// Per-battlebox input hash.
 	Battleboxes map[string]string `json:"battleboxes"`
+	// Per-file fingerprints used for size->mtime->hash short-circuiting.
+	FileCache map[string]FileFingerprint `json:"file_cache,omitempty"`
+}
+
+// FileFingerprint caches one file's metadata and content hash.
+type FileFingerprint struct {
+	// File size in bytes.
+	Size int64 `json:"size"`
+	// File modtime in unix nanos.
+	ModTimeUnixNano int64 `json:"mtime_unix_nano"`
+	// Content hash (sha256 hex).
+	Hash string `json:"hash"`
 }
 
 // MatchupGuide stores parsed sideboard plans and matchup prose.
@@ -248,13 +260,13 @@ func main() {
 		fmt.Fprintf(os.Stderr, "Error reading data dir: %v\n", err)
 		os.Exit(1)
 	}
+	stamp := loadBuildStamp(stampFile)
 
-	globalHash, err := computeGlobalInputHash(dataDir)
+	globalHash, err := computeGlobalInputHash(dataDir, stamp.FileCache)
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Error hashing global inputs: %v\n", err)
 		os.Exit(1)
 	}
-	stamp := loadBuildStamp(stampFile)
 
 	battleboxHashes := make(map[string]string)
 	var battleboxSlugs []string
@@ -263,7 +275,7 @@ func main() {
 			continue
 		}
 		slug := bbDir.Name()
-		bbHash, err := hashBattleboxInputs(filepath.Join(dataDir, slug))
+		bbHash, err := hashBattleboxInputs(filepath.Join(dataDir, slug), stamp.FileCache)
 		if err != nil {
 			fmt.Fprintf(os.Stderr, "Error hashing battlebox %s: %v\n", slug, err)
 			os.Exit(1)
@@ -284,6 +296,15 @@ func main() {
 	indexExists := fileExists(indexPath)
 	if len(dirtySlugs) == 0 && indexExists {
 		fmt.Println("No battlebox data changes detected; skipping JSON rebuild.")
+		nextStamp := BuildStamp{
+			GlobalHash:  globalHash,
+			Battleboxes: battleboxHashes,
+			FileCache:   stamp.FileCache,
+		}
+		if err := saveBuildStamp(stampFile, nextStamp); err != nil {
+			fmt.Fprintf(os.Stderr, "Error writing build stamp: %v\n", err)
+			os.Exit(1)
+		}
 		return
 	}
 
@@ -434,6 +455,7 @@ func main() {
 	nextStamp := BuildStamp{
 		GlobalHash:  globalHash,
 		Battleboxes: battleboxHashes,
+		FileCache:   stamp.FileCache,
 	}
 	if err := saveBuildStamp(stampFile, nextStamp); err != nil {
 		fmt.Fprintf(os.Stderr, "Error writing build stamp: %v\n", err)
@@ -449,14 +471,23 @@ func fileExists(path string) bool {
 func loadBuildStamp(path string) BuildStamp {
 	data, err := os.ReadFile(path)
 	if err != nil {
-		return BuildStamp{Battleboxes: map[string]string{}}
+		return BuildStamp{
+			Battleboxes: map[string]string{},
+			FileCache:   map[string]FileFingerprint{},
+		}
 	}
 	var stamp BuildStamp
 	if err := json.Unmarshal(data, &stamp); err != nil {
-		return BuildStamp{Battleboxes: map[string]string{}}
+		return BuildStamp{
+			Battleboxes: map[string]string{},
+			FileCache:   map[string]FileFingerprint{},
+		}
 	}
 	if stamp.Battleboxes == nil {
 		stamp.Battleboxes = map[string]string{}
+	}
+	if stamp.FileCache == nil {
+		stamp.FileCache = map[string]FileFingerprint{}
 	}
 	return stamp
 }
@@ -464,6 +495,9 @@ func loadBuildStamp(path string) BuildStamp {
 func saveBuildStamp(path string, stamp BuildStamp) error {
 	if stamp.Battleboxes == nil {
 		stamp.Battleboxes = map[string]string{}
+	}
+	if stamp.FileCache == nil {
+		stamp.FileCache = map[string]FileFingerprint{}
 	}
 	data, err := json.MarshalIndent(stamp, "", "  ")
 	if err != nil {
@@ -478,14 +512,14 @@ func saveBuildStamp(path string, stamp BuildStamp) error {
 	return os.WriteFile(path, data, 0644)
 }
 
-func computeGlobalInputHash(dataDir string) (string, error) {
+func computeGlobalInputHash(dataDir string, fileCache map[string]FileFingerprint) (string, error) {
 	return hashFiles([]string{
 		filepath.Join(dataDir, printingsFileName),
 		filepath.Join("scripts", "build.go"),
-	})
+	}, fileCache)
 }
 
-func hashBattleboxInputs(bbPath string) (string, error) {
+func hashBattleboxInputs(bbPath string, fileCache map[string]FileFingerprint) (string, error) {
 	var files []string
 	if err := filepath.WalkDir(bbPath, func(path string, d fs.DirEntry, err error) error {
 		if err != nil {
@@ -503,10 +537,10 @@ func hashBattleboxInputs(bbPath string) (string, error) {
 	}); err != nil {
 		return "", err
 	}
-	return hashFiles(files)
+	return hashFiles(files, fileCache)
 }
 
-func hashFiles(paths []string) (string, error) {
+func hashFiles(paths []string, fileCache map[string]FileFingerprint) (string, error) {
 	h := sha256.New()
 	_, _ = h.Write([]byte(buildFingerprintVersion))
 	_, _ = h.Write([]byte{0})
@@ -516,20 +550,61 @@ func hashFiles(paths []string) (string, error) {
 	for _, path := range sorted {
 		_, _ = h.Write([]byte(path))
 		_, _ = h.Write([]byte{0})
-		data, err := os.ReadFile(path)
+		contentHash, err := hashFileWithCache(path, fileCache)
 		if err != nil {
-			if os.IsNotExist(err) {
-				_, _ = h.Write([]byte("<missing>"))
-				_, _ = h.Write([]byte{0})
-				continue
-			}
 			return "", err
 		}
-		_, _ = h.Write(data)
+		_, _ = h.Write([]byte(contentHash))
 		_, _ = h.Write([]byte{0})
 	}
 
 	return fmt.Sprintf("%x", h.Sum(nil)), nil
+}
+
+// hashFileWithCache uses a size->mtime->hash strategy:
+// - same size + same mtime: reuse cached hash
+// - same size + different mtime: compute hash to verify content
+// - different size: compute hash
+func hashFileWithCache(path string, fileCache map[string]FileFingerprint) (string, error) {
+	stat, err := os.Stat(path)
+	if err != nil {
+		if os.IsNotExist(err) {
+			if fileCache != nil {
+				fileCache[path] = FileFingerprint{
+					Size:            -1,
+					ModTimeUnixNano: 0,
+					Hash:            "<missing>",
+				}
+			}
+			return "<missing>", nil
+		}
+		return "", err
+	}
+
+	size := stat.Size()
+	mtime := stat.ModTime().UnixNano()
+
+	prev, hasPrev := fileCache[path]
+	if hasPrev && prev.Hash != "" && prev.Size == size && prev.ModTimeUnixNano == mtime {
+		return prev.Hash, nil
+	}
+
+	data, err := os.ReadFile(path)
+	if err != nil {
+		return "", err
+	}
+	sum := sha256.Sum256(data)
+	contentHash := fmt.Sprintf("%x", sum[:])
+
+	if fileCache != nil {
+		fileCache[path] = FileFingerprint{
+			Size:            size,
+			ModTimeUnixNano: mtime,
+			Hash:            contentHash,
+		}
+	}
+
+	return contentHash, nil
 }
 
 func buildIndexOutput(dataDir string) (IndexOutput, error) {
