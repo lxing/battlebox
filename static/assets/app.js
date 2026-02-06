@@ -19,12 +19,12 @@
   function sortArchetypeTags(tags) {
     if (!Array.isArray(tags) || tags.length === 0) return [];
     const rank = {
-      tribal: 0,
-      aggro: 1,
-      combo: 2,
-      tempo: 3,
-      midrange: 4,
-      control: 5,
+      aggro: 0,
+      tempo: 1,
+      midrange: 2,
+      control: 3,
+      combo: 4,
+      tribal: 5,
     };
     return [...tags].sort((a, b) => {
       const ak = normalizeName(a);
@@ -63,13 +63,20 @@
     });
   }
 
+  function difficultyTagLabel(key) {
+    if (key === 'beginner') return '🧠';
+    if (key === 'intermediate') return '🧠🧠';
+    if (key === 'expert') return '🧠🧠🧠';
+    return key;
+  }
+
   function renderDifficultyTags(tags) {
     const sorted = sortDifficultyTags(tags);
     if (sorted.length === 0) return '';
     return sorted.map(tag => {
       const key = normalizeName(tag).replace(/[^a-z0-9-]/g, '');
       if (!key) return '';
-      return `<span class="deck-tag deck-tag-difficulty deck-tag-${key}">${key}</span>`;
+      return `<span class="deck-tag deck-tag-difficulty deck-tag-${key}">${difficultyTagLabel(key)}</span>`;
     }).join('');
   }
 
@@ -82,9 +89,9 @@
     const difficulty = sortDifficultyTags(difficultyTags).map(tag => {
       const key = normalizeName(tag).replace(/[^a-z0-9-]/g, '');
       if (!key) return '';
-      return `<span class="deck-tag deck-tag-difficulty deck-tag-${key}">${key}</span>`;
+      return `<span class="deck-tag deck-tag-difficulty deck-tag-${key}">${difficultyTagLabel(key)}</span>`;
     });
-    return [...difficulty, ...archetype].filter(Boolean).join('');
+    return [...archetype, ...difficulty].filter(Boolean).join('');
   }
 
   function capitalize(str) {

@@ -254,6 +254,13 @@ h2 {
   border: 1px solid transparent;
 }
 
+.deck-tag.deck-tag-difficulty {
+  width: 5.1em;
+  justify-content: center;
+  padding-left: 0;
+  padding-right: 0;
+}
+
 .deck-tag-aggro {
   background: #4d1e20;
   color: #ffd8d8;
@@ -288,10 +295,6 @@ h2 {
   background: #3a2c1f;
   color: #f0dfcf;
   border-color: #7f5f43;
-}
-
-.deck-tag-difficulty {
-  font-style: italic;
 }
 
 .deck-tag-beginner {

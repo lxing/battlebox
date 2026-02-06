@@ -601,12 +601,12 @@ func normalizeDeckTags(tags []string) []string {
 		return nil
 	}
 	rank := map[string]int{
-		"tribal":   0,
-		"aggro":    1,
-		"combo":    2,
-		"tempo":    3,
-		"midrange": 4,
-		"control":  5,
+		"aggro":    0,
+		"tempo":    1,
+		"midrange": 2,
+		"control":  3,
+		"combo":    4,
+		"tribal":   5,
 	}
 	seen := map[string]bool{}
 	out := make([]string, 0, len(tags))
