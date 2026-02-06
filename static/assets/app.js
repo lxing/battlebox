@@ -467,11 +467,30 @@
     previewToken += 1;
   }
 
+  async function fetchJsonData(path) {
+    if (window.DecompressionStream) {
+      try {
+        const gzRes = await fetch(`${path}.gz`);
+        if (gzRes.ok && gzRes.body) {
+          const ds = new DecompressionStream('gzip');
+          const decoded = gzRes.body.pipeThrough(ds);
+          const text = await new Response(decoded).text();
+          return JSON.parse(text);
+        }
+      } catch (e) {
+        // Fallback to uncompressed JSON when gzip decode is unavailable.
+      }
+    }
+
+    const res = await fetch(path);
+    if (!res.ok) return null;
+    return res.json();
+  }
+
   async function loadBattlebox(bbSlug) {
     if (data.battleboxes[bbSlug]) return data.battleboxes[bbSlug];
-    const res = await fetch(`/data/${bbSlug}.json`);
-    if (!res.ok) return null;
-    const bb = await res.json();
+    const bb = await fetchJsonData(`/data/${bbSlug}.json`);
+    if (!bb) return null;
     data.battleboxes[bbSlug] = bb;
     return bb;
   }
@@ -739,8 +758,11 @@
   async function init() {
     app.innerHTML = '<div class="loading">Loading...</div>';
 
-    const res = await fetch('/data/index.json');
-    data.index = await res.json();
+    data.index = await fetchJsonData('/data/index.json');
+    if (!data.index) {
+      app.innerHTML = '<div class="loading">Failed to load data.</div>';
+      return;
+    }
 
     setupCardHover();
     window.addEventListener('hashchange', route);

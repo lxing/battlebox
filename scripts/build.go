@@ -4,6 +4,7 @@ package main
 
 import (
 	"bytes"
+	"compress/gzip"
 	"encoding/json"
 	"flag"
 	"fmt"
@@ -160,6 +161,8 @@ type guideCardInfo struct {
 }
 
 var guideCountRE = regexp.MustCompile(`^(\d+)\s*x?\s+(.*)$`)
+
+const jsonGzipLevel = 5
 
 // Scryfall types
 // ScryfallIdentifier identifies one card printing in a collection request.
@@ -357,31 +360,57 @@ func main() {
 
 	for _, battlebox := range output.Battleboxes {
 		bbPath := filepath.Join(outputDir, battlebox.Slug+".json")
-		jsonData, err := json.MarshalIndent(battlebox, "", "  ")
+		jsonData, err := json.Marshal(battlebox)
 		if err != nil {
 			fmt.Fprintf(os.Stderr, "Error marshaling JSON for %s: %v\n", battlebox.Slug, err)
 			os.Exit(1)
 		}
-		if err := os.WriteFile(bbPath, jsonData, 0644); err != nil {
+		gzipSize, err := writeJSONAndGzip(bbPath, jsonData)
+		if err != nil {
 			fmt.Fprintf(os.Stderr, "Error writing output: %v\n", err)
 			os.Exit(1)
 		}
-		fmt.Printf("Written: %s (%d bytes)\n", bbPath, len(jsonData))
+		fmt.Printf("Written: %s (%d bytes), %s.gz (%d bytes)\n", bbPath, len(jsonData), bbPath, gzipSize)
 	}
 
 	// Write index
-	jsonData, err := json.MarshalIndent(indexOutput, "", "  ")
+	jsonData, err := json.Marshal(indexOutput)
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Error marshaling JSON: %v\n", err)
 		os.Exit(1)
 	}
 
-	if err := os.WriteFile(indexPath, jsonData, 0644); err != nil {
+	gzipSize, err := writeJSONAndGzip(indexPath, jsonData)
+	if err != nil {
 		fmt.Fprintf(os.Stderr, "Error writing output: %v\n", err)
 		os.Exit(1)
 	}
 
-	fmt.Printf("Written: %s (%d bytes)\n", indexPath, len(jsonData))
+	fmt.Printf("Written: %s (%d bytes), %s.gz (%d bytes)\n", indexPath, len(jsonData), indexPath, gzipSize)
+}
+
+func writeJSONAndGzip(outPath string, data []byte) (int, error) {
+	if err := os.WriteFile(outPath, data, 0644); err != nil {
+		return 0, err
+	}
+
+	var gz bytes.Buffer
+	zw, err := gzip.NewWriterLevel(&gz, jsonGzipLevel)
+	if err != nil {
+		return 0, err
+	}
+	if _, err := zw.Write(data); err != nil {
+		_ = zw.Close()
+		return 0, err
+	}
+	if err := zw.Close(); err != nil {
+		return 0, err
+	}
+
+	if err := os.WriteFile(outPath+".gz", gz.Bytes(), 0644); err != nil {
+		return 0, err
+	}
+	return gz.Len(), nil
 }
 
 func loadCardCache() {
