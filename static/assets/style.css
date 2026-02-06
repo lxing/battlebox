@@ -528,8 +528,9 @@ details.collapsible[open] summary::after {
 }
 
 .guide-select {
-  display: flex;
-  align-items: center;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  align-items: stretch;
   gap: 0.5rem;
   margin-bottom: 0.5rem;
   font-size: 0.85rem;
@@ -537,11 +538,12 @@ details.collapsible[open] summary::after {
 }
 
 .guide-opponent-link {
-  margin-left: auto;
+  width: 100%;
   padding: 0 0.8rem;
 }
 
 .guide-select select {
+  width: 100%;
   background: #1b1b2e;
   color: #eee;
   border: 1px solid #353560;
