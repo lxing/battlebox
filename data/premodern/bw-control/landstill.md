@@ -1,8 +1,6 @@
-+2 [[Disenchant]]
 +2 [[Aura of Silence]]
 +1 [[Haunting Echoes]]
+-1 [[Swords to Plowshares]]
 -2 [[Wrath of God]]
--2 [[Swords to Plowshares]]
--1 [[Phyrexian Furnace]]
 
-Avoid overextending into [[Standstill]] and use [[Vindicate]] on key lands or lock pieces.
+[[Standstill]] and [[Fact or Fiction]] are brutal, try to drain their hand with discard before they come online. Try to keep parity and finish with an [[Exalted Angel]] on their empty board.

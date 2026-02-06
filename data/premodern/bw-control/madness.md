@@ -1,8 +1,6 @@
++1 [[Akroma's Vengeance]]
++2 [[Disenchant]]
 +1 [[Tormod's Crypt]]
-+2 [[Infest]]
-+1 [[Disenchant]]
--2 [[Gerrard's Verdict]]
--1 [[Phyrexian Furnace]]
--1 [[Skeletal Scrying]]
+-4 [[Gerrard's Verdict]]
 
-Pressure their graveyard and keep [[Survival of the Fittest]] off the table.
+Cleanse their graveyard of [[Squee]] and keep [[Survival of the Fittest]] off the table. Your removal is enough to handle the board. Play around [[Daze]].

@@ -3,4 +3,4 @@
 +1 [[Genesis]]
 -4 [[Multani's Acolyte]]
 
-Punish tap-out turns; [[Winter Orb]] taxes their mana and [[Caller of the Claw]] blunts [[Wrath of God]].
+Punish tap-out turns with[[Winter Orb]]. [[Caller of the Claw]] fights [[Wrath of God]].

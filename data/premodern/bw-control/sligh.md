@@ -1,9 +1,10 @@
 +1 [[Circle of Protection: Red]]
-+1 [[Warmth]]
++2 [[Engineered Plague]]
 +2 [[Silver Knight]]
-+1 [[Akroma's Vengeance]]
--2 [[Skeletal Scrying]]
--2 [[Gerrard's Verdict]]
++1 [[Warmth]]
+-1 [[Decree of Justice]]
+-1 [[Disenchant]]
 -1 [[Phyrexian Furnace]]
+-3 [[Skeletal Scrying]]
 
-Stabilize your life total early and make their burn inefficient.
+Pack in the red hate and ride [[Exalted Angel]] to victory. [[Engineered Plague]] is surprisingly versatile, and preemptive against [[Ball Lightning]].

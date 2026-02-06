@@ -1,7 +1,4 @@
-+2 [[Disenchant]]
-+1 [[Akroma's Vengeance]]
--1 [[Phyrexian Furnace]]
--1 [[Skeletal Scrying]]
--1 [[Gerrard's Verdict]]
++1 [[Disenchant]]
+-1 [[Decree of Justice]]
 
-Respect land destruction, especially [[Armageddon]], and avoid overcommitting to the board.
+Respect land destruction, especially [[Armageddon]], and avoid overcommitting to the board. Use [[Phyrexian Furnace]] to slowly chip away at [[Terravore]].

@@ -1,8 +1,6 @@
 +1 [[Haunting Echoes]]
-+2 [[Infest]]
-+1 [[Disenchant]]
--2 [[Gerrard's Verdict]]
--1 [[Phyrexian Furnace]]
--1 [[Skeletal Scrying]]
++1 [[Tormod's Crypt]]
+-1 [[Disenchant]]
+-1 [[Duress]]
 
-Answer their midrange creatures and keep [[Pernicious Deed]] in check.
+Focus on stopping [[Recurring Nightmare]] and the random [[Blastoderm]] kills.

@@ -1,10 +1,8 @@
-+1 [[Tormod's Crypt]]
++2 [[Disenchant]]
 +1 [[Haunting Echoes]]
 +2 [[Infest]]
-+1 [[Disenchant]]
--2 [[Gerrard's Verdict]]
--1 [[Phyrexian Furnace]]
--1 [[Skeletal Scrying]]
--1 [[Decree of Justice]]
++1 [[Tormod's Crypt]]
+-2 [[Decree of Justice]]
+-4 [[Duress]]
 
-Break up the graveyard loop and remove [[Survival of the Fittest]].
+Break up the graveyard and remove [[Survival of the Fittest]]. [[Recurring Nightmare]] is a pain to deal with, and it's easier to use graveyard hate rather than taxing with [[Aura of Silence]] or trying to catch it with [[Duress]].
