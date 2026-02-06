@@ -3,4 +3,4 @@
 -3 [[Sneaky Snacker]]
 -3 [[Vampire's Kiss]]
 
-Very difficult matchup due to their lifegain. Kill [[Lunarch Veteran]], clear their board repeatedly, and play around [[Prismatic Strands]].
+Very difficult matchup due to their lifegain. Kill [[Lunarch Veteran|Lunarch Veteran / Luminous Phantom]], clear their board repeatedly, and play around [[Prismatic Strands]].

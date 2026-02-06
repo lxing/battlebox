@@ -3,4 +3,4 @@
 -2 [[Vampire's Kiss]]
 -2 [[Voldaren Epicure]]
 
-Use blasts and edicts to disrupt their gameplan. They have lots of incidental lifegain so the clock is ticking. Prioritize [[Pyrobalst]] on [[Murmuring Mystic]] as it shuts down your flyers.
+Use blasts and edicts to disrupt their gameplan. They have lots of incidental lifegain so the clock is ticking. Prioritize [[Pyroblast]] on [[Murmuring Mystic]] as it shuts down your flyers.

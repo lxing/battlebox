@@ -521,6 +521,15 @@ details.collapsible[open] summary::after {
 .primer {
   white-space: pre-wrap;
   font-size: 0.85rem;
+  line-height: 1.4;
+}
+
+.key-combos {
+  line-height: 0.95;
+}
+
+.key-combos p {
+  margin: 0.08rem 0;
 }
 
 /* Matchup guides */
@@ -555,11 +564,11 @@ details.collapsible[open] summary::after {
 
 .guide-box {
   font-size: 0.85rem;
-  line-height: 1.5;
+  line-height: 1.4;
 }
 
 .guide-box p {
-  margin: 0.5rem 0;
+  margin: 0.35rem 0;
 }
 
 .guide-plan {

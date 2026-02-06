@@ -698,7 +698,7 @@
       <details class="collapsible" open>
         <summary>Key Combos</summary>
         <div class="collapsible-body">
-          <div class="primer">${combosHtml}</div>
+          <div class="primer key-combos">${combosHtml}</div>
         </div>
       </details>
 
