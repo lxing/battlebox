@@ -113,5 +113,8 @@
       "name": "Tranquil Domain",
       "qty": 2
     }
+  ],
+  "difficulty_tags": [
+    "beginner"
   ]
 }

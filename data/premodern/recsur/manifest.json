@@ -173,5 +173,8 @@
       "name": "Withered Wretch",
       "qty": 1
     }
+  ],
+  "difficulty_tags": [
+    "expert"
   ]
 }

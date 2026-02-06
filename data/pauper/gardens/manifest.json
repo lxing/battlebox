@@ -131,5 +131,8 @@
       "name": "Weather the Storm",
       "qty": 4
     }
+  ],
+  "difficulty_tags": [
+    "intermediate"
   ]
 }

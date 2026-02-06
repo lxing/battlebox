@@ -116,5 +116,8 @@
       "name": "Xantid Swarm",
       "qty": 3
     }
+  ],
+  "difficulty_tags": [
+    "intermediate"
   ]
 }

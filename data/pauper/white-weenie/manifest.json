@@ -87,5 +87,8 @@
       "name": "Standard Bearer",
       "qty": 3
     }
+  ],
+  "difficulty_tags": [
+    "beginner"
   ]
 }

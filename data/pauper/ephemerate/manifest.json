@@ -135,5 +135,8 @@
       "name": "Union of the Third Path",
       "qty": 1
     }
+  ],
+  "difficulty_tags": [
+    "expert"
   ]
 }

@@ -262,57 +262,57 @@ h2 {
 }
 
 .deck-tag-aggro {
-  background: #4d1e20;
-  color: #ffd8d8;
-  border-color: #8f3c40;
+  background: #5b1f52;
+  color: #ffdff8;
+  border-color: #b3479f;
 }
 
 .deck-tag-tempo {
-  background: #1c3352;
-  color: #dbe9ff;
-  border-color: #335f96;
+  background: #1f3f75;
+  color: #dcebff;
+  border-color: #4c7fd1;
 }
 
 .deck-tag-midrange {
-  background: #3d3520;
-  color: #f1e9d1;
-  border-color: #7b6b44;
+  background: #202124;
+  color: #e8e8e8;
+  border-color: #5b5d63;
 }
 
 .deck-tag-control {
-  background: #2a2248;
-  color: #e2dbff;
-  border-color: #5a4f8f;
+  background: #40245f;
+  color: #eddfff;
+  border-color: #7f59b4;
 }
 
 .deck-tag-combo {
-  background: #20403d;
-  color: #d8f4ee;
-  border-color: #3f7f79;
+  background: #6fdcff;
+  color: #082638;
+  border-color: #bcefff;
 }
 
 .deck-tag-tribal {
-  background: #3a2c1f;
-  color: #f0dfcf;
-  border-color: #7f5f43;
+  background: #5a3517;
+  color: #ffe6cf;
+  border-color: #c27a3b;
 }
 
 .deck-tag-beginner {
-  background: #203f2a;
-  color: #dcf7e4;
-  border-color: #3f7f53;
+  background: #2e7d32;
+  color: #ecffec;
+  border-color: #63a96a;
 }
 
 .deck-tag-intermediate {
-  background: #3b3a1f;
-  color: #f4f0cf;
-  border-color: #807742;
+  background: #c2b547;
+  color: #2a2500;
+  border-color: #d8cf83;
 }
 
 .deck-tag-expert {
-  background: #4a1f2d;
-  color: #ffdce7;
-  border-color: #8f3f56;
+  background: #b33a3a;
+  color: #fff1f1;
+  border-color: #cf7a7a;
 }
 
 .breadcrumbs a {

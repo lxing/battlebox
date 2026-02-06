@@ -99,5 +99,8 @@
       "name": "Trespasser's Curse",
       "qty": 3
     }
+  ],
+  "difficulty_tags": [
+    "intermediate"
   ]
 }

@@ -107,5 +107,8 @@
       "name": "Pyroblast",
       "qty": 4
     }
+  ],
+  "difficulty_tags": [
+    "expert"
   ]
 }

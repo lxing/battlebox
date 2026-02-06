@@ -87,5 +87,8 @@
       "name": "Mesmeric Fiend",
       "qty": 4
     }
+  ],
+  "difficulty_tags": [
+    "beginner"
   ]
 }

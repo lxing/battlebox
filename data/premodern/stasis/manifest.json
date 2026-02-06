@@ -88,5 +88,8 @@
       "name": "Powder Keg",
       "qty": 3
     }
+  ],
+  "difficulty_tags": [
+    "expert"
   ]
 }

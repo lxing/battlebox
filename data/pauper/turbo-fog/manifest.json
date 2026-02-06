@@ -127,5 +127,8 @@
       "name": "Unable to Scream",
       "qty": 2
     }
+  ],
+  "difficulty_tags": [
+    "expert"
   ]
 }

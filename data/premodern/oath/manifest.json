@@ -108,5 +108,8 @@
       "name": "Zuran Orb",
       "qty": 2
     }
+  ],
+  "difficulty_tags": [
+    "intermediate"
   ]
 }

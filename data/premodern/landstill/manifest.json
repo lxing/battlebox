@@ -132,5 +132,8 @@
       "name": "Wrath of God",
       "qty": 1
     }
+  ],
+  "difficulty_tags": [
+    "expert"
   ]
 }

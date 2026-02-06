@@ -83,5 +83,8 @@
       "name": "Relic of Progenitus",
       "qty": 2
     }
+  ],
+  "difficulty_tags": [
+    "beginner"
   ]
 }

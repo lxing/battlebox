@@ -133,5 +133,8 @@
       "name": "Winter Orb",
       "qty": 2
     }
+  ],
+  "difficulty_tags": [
+    "expert"
   ]
 }

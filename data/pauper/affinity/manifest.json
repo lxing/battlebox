@@ -123,5 +123,8 @@
       "name": "Toxin Analysis",
       "qty": 1
     }
+  ],
+  "difficulty_tags": [
+    "intermediate"
   ]
 }

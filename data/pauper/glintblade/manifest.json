@@ -99,5 +99,8 @@
       "name": "Revoke Existence",
       "qty": 3
     }
+  ],
+  "difficulty_tags": [
+    "beginner"
   ]
 }

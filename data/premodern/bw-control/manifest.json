@@ -112,5 +112,8 @@
       "name": "Warmth",
       "qty": 1
     }
+  ],
+  "difficulty_tags": [
+    "intermediate"
   ]
 }

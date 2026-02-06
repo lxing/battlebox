@@ -97,5 +97,8 @@
       "name": "Powder Keg",
       "qty": 1
     }
+  ],
+  "difficulty_tags": [
+    "expert"
   ]
 }

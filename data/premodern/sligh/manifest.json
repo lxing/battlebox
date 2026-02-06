@@ -100,5 +100,8 @@
       "name": "Red Elemental Blast",
       "qty": 2
     }
+  ],
+  "difficulty_tags": [
+    "beginner"
   ]
 }

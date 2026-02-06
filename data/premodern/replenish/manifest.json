@@ -113,5 +113,8 @@
       "name": "Swords to Plowshares",
       "qty": 1
     }
+  ],
+  "difficulty_tags": [
+    "expert"
   ]
 }
