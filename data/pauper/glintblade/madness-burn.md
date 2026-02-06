@@ -1,7 +1,4 @@
 +2 [[Lone Missionary]]
-+2 [[Duress]]
--2 [[Suffocating Fumes]]
--1 [[Thraben Charm]]
--1 [[Tithing Blade / Consuming Sepulcher]]
+-2 [[Cast Down]]
 
-Lifegain buys time while your flyers and removal stabilize the race.
+Side in lifegain effects to complement your robust mainboard chip gain. Their creatures are small and you have numerous fliers, so removal is not as big a priority, but [[Gorilla Shaman]] out of the board is quite dangerous. Also beware [[Trespasser's Curse]].

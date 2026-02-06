@@ -1,9 +1,6 @@
 +2 [[Duress]]
-+2 [[Okiba-Gang Shinobi]]
-+1 [[Revoke Existence]]
++1 [[Okiba-Gang Shinobi]]
+-1 [[Inspiring Overseer]]
 -2 [[Suffocating Fumes]]
--1 [[Thraben Charm]]
--1 [[Tithing Blade / Consuming Sepulcher]]
--1 [[Refurbished Familiar]]
 
-Discard and extra pressure help you keep pace with their grind plan.
+Squeeze the most out of your card advantage engines; they have unlimited removal and you need to keep up. Unfortunately, your engine is tied to the very creatures they're optimized to remove, so play carefuly and don't overcommit when they have open mana. [[Crypt Rats]] is also a menace. Keep fliers around at all times to discourage them grabbing Monarch or Initiative with impunity.

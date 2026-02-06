@@ -1,7 +1,5 @@
-+2 [[Duress]]
++2 [[Arms of Hadar]]
 +2 [[Okiba-Gang Shinobi]]
--2 [[Suffocating Fumes]]
--1 [[Thraben Charm]]
--1 [[Tithing Blade / Consuming Sepulcher]]
+-4 [[Tithing Blade / Consuming Sepulcher]]
 
-Hand disruption helps you fight their counters while you keep pressure in the air.
+Stock up on sweepers. Youll need it to fight [[Gorilla Shaman]] and their board of weenies. They will attack your manabase with [[Dust to Dust]].

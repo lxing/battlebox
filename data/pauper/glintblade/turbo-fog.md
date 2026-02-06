@@ -1,7 +1,5 @@
 +2 [[Duress]]
 +2 [[Okiba-Gang Shinobi]]
--2 [[Suffocating Fumes]]
--1 [[Thraben Charm]]
--1 [[Tithing Blade / Consuming Sepulcher]]
+-4 [[Cast Down]]
 
-Discard is the best way to force through damage before the fog lock is complete.
+Attack their hand aggressively with your sideboard and [[Refurbished Familiar]] loops. Flip multiple [[Tithing Blade / Consuming Sepulcher]]. They're basically a sitting duck spraying useless [[Fog]] against your discard and drain gameplan.

@@ -549,7 +549,12 @@
         const mdProse = createMarkdownRenderer([opponentPrintings, deckPrintings]);
         guideBox.innerHTML = renderGuideContent(mdSelf, mdProse, guideData);
         if (opponentLink) {
-          opponentLink.href = `#/${bb.slug}/${key}`;
+          const opponentHasGuide = opponent
+            && opponent.guides
+            && Object.prototype.hasOwnProperty.call(opponent.guides, deck.slug);
+          opponentLink.href = opponentHasGuide
+            ? `#/${bb.slug}/${key}/matchup/${deck.slug}`
+            : `#/${bb.slug}/${key}`;
           opponentLink.textContent = opponent ? `Go to ${opponent.name}` : 'Go to deck';
         }
       };
