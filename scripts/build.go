@@ -5,9 +5,11 @@ package main
 import (
 	"bytes"
 	"compress/gzip"
+	"crypto/sha256"
 	"encoding/json"
 	"flag"
 	"fmt"
+	"io/fs"
 	"net/http"
 	"os"
 	"path/filepath"
@@ -136,6 +138,14 @@ type IndexOutput struct {
 	Battleboxes []BattleboxIndex `json:"battleboxes"`
 }
 
+// BuildStamp stores incremental build fingerprints for fast local rebuilds.
+type BuildStamp struct {
+	// Global inputs that affect every battlebox (e.g. root printings/build logic).
+	GlobalHash string `json:"global_hash"`
+	// Per-battlebox input hash.
+	Battleboxes map[string]string `json:"battleboxes"`
+}
+
 // MatchupGuide stores parsed sideboard plans and matchup prose.
 type MatchupGuide struct {
 	// Sideboard cards to bring in.
@@ -212,8 +222,11 @@ type cardMeta struct {
 var cardCache = map[string]cardMeta{} // printing -> meta
 const cacheFile = ".card-types.json"
 const printingsFileName = "printings.json"
+const stampFile = "tmp/build-stamps.json"
+const buildFingerprintVersion = "v1"
 
 var validateRefs = flag.Bool("validate-refs", false, "validate [[Card]] references in primers and guides")
+var fullBuild = flag.Bool("full", false, "force full rebuild (ignore incremental cache)")
 var cardRefRE = regexp.MustCompile(`\[\[([^\]]+)\]\]`)
 
 func main() {
@@ -221,143 +234,160 @@ func main() {
 	dataDir := "data"
 	outputDir := filepath.Join("static", "data")
 	indexPath := filepath.Join(outputDir, "index.json")
+	if *validateRefs {
+		// Reference validation should run against a complete rebuilt view.
+		*fullBuild = true
+	}
 
 	// Load card cache
 	loadCardCache()
 
 	projectPrintings := loadPrintings(filepath.Join(dataDir, printingsFileName))
-
-	var output Output
-	var indexOutput IndexOutput
-	var allCards []Card
-	var missing []MissingPrinting
-	indexOutput.BuildID = strconv.FormatInt(time.Now().UnixNano(), 36)
-
-	// First pass: collect all cards
 	battleboxDirs, err := os.ReadDir(dataDir)
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Error reading data dir: %v\n", err)
 		os.Exit(1)
 	}
 
-	for _, bbDir := range battleboxDirs {
-		if !bbDir.IsDir() {
-			continue
-		}
-
-		bbPath := filepath.Join(dataDir, bbDir.Name())
-		bbPrintings := mergePrintings(projectPrintings, loadPrintings(filepath.Join(bbPath, printingsFileName)))
-		deckDirs, _ := os.ReadDir(bbPath)
-
-		for _, deckDir := range deckDirs {
-			if !deckDir.IsDir() {
-				continue
-			}
-
-			deckPath := filepath.Join(bbPath, deckDir.Name())
-			deckPrintings := mergePrintings(bbPrintings, loadPrintings(filepath.Join(deckPath, printingsFileName)))
-			manifestPath := filepath.Join(deckPath, "manifest.json")
-			manifestData, err := os.ReadFile(manifestPath)
-			if err != nil {
-				continue
-			}
-
-			var manifest Manifest
-			if err := json.Unmarshal(manifestData, &manifest); err != nil {
-				continue
-			}
-
-			applyPrintings(manifest.Cards, deckPrintings, bbDir.Name(), deckDir.Name(), &missing)
-			applyPrintings(manifest.Sideboard, deckPrintings, bbDir.Name(), deckDir.Name(), &missing)
-			allCards = append(allCards, manifest.Cards...)
-			allCards = append(allCards, manifest.Sideboard...)
-		}
-	}
-
-	if len(missing) > 0 {
-		sort.Slice(missing, func(i, j int) bool {
-			if missing[i].Battlebox != missing[j].Battlebox {
-				return missing[i].Battlebox < missing[j].Battlebox
-			}
-			if missing[i].Deck != missing[j].Deck {
-				return missing[i].Deck < missing[j].Deck
-			}
-			return missing[i].Card < missing[j].Card
-		})
-		fmt.Fprintln(os.Stderr, "Missing printings in printings files:")
-		for _, m := range missing {
-			fmt.Fprintf(os.Stderr, "- %s/%s: %s\n", m.Battlebox, m.Deck, m.Card)
-		}
+	globalHash, err := computeGlobalInputHash(dataDir)
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "Error hashing global inputs: %v\n", err)
 		os.Exit(1)
 	}
+	stamp := loadBuildStamp(stampFile)
 
-	// Fetch missing card data from Scryfall
-	fetchMissingCardMeta(allCards)
-	saveCardCache()
-
-	// Second pass: build output with types
+	battleboxHashes := make(map[string]string)
+	var battleboxSlugs []string
 	for _, bbDir := range battleboxDirs {
 		if !bbDir.IsDir() {
 			continue
 		}
-
-		bbPath := filepath.Join(dataDir, bbDir.Name())
-		bbManifest := loadBattleboxManifest(filepath.Join(bbPath, "manifest.json"))
-		battlebox := Battlebox{
-			Slug:        bbDir.Name(),
-			Name:        bbManifest.Name,
-			Description: bbManifest.Description,
-			Decks:       []Deck{},
-			Banned:      loadBanned(filepath.Join(bbPath, "banned.json")),
-		}
-
-		bbPrintings := mergePrintings(projectPrintings, loadPrintings(filepath.Join(bbPath, printingsFileName)))
-		deckDirs, _ := os.ReadDir(bbPath)
-
-		for _, deckDir := range deckDirs {
-			if !deckDir.IsDir() {
-				continue
-			}
-
-			deckPath := filepath.Join(bbPath, deckDir.Name())
-			deckPrintings := mergePrintings(bbPrintings, loadPrintings(filepath.Join(deckPath, printingsFileName)))
-			deck, err := processDeck(deckPath, deckDir.Name(), bbDir.Name(), deckPrintings)
-			if err != nil {
-				fmt.Fprintf(os.Stderr, "Error processing deck %s/%s: %v\n", bbDir.Name(), deckDir.Name(), err)
-				os.Exit(1)
-			}
-
-			battlebox.Decks = append(battlebox.Decks, *deck)
-		}
-
-		output.Battleboxes = append(output.Battleboxes, battlebox)
-		indexEntry := BattleboxIndex{
-			Slug:        battlebox.Slug,
-			Name:        battlebox.Name,
-			Description: battlebox.Description,
-			Decks:       make([]DeckIndex, 0, len(battlebox.Decks)),
-		}
-		for _, deck := range battlebox.Decks {
-			indexEntry.Decks = append(indexEntry.Decks, DeckIndex{
-				Slug:           deck.Slug,
-				Name:           deck.Name,
-				Colors:         deck.Colors,
-				Tags:           append([]string(nil), deck.Tags...),
-				DifficultyTags: append([]string(nil), deck.DifficultyTags...),
-			})
-		}
-		indexOutput.Battleboxes = append(indexOutput.Battleboxes, indexEntry)
-		fmt.Printf("Processed battlebox: %s (%d decks)\n", bbDir.Name(), len(battlebox.Decks))
-	}
-
-	if *validateRefs {
-		if err := validateCardRefs(output.Battleboxes); err != nil {
-			fmt.Fprintln(os.Stderr, err)
+		slug := bbDir.Name()
+		bbHash, err := hashBattleboxInputs(filepath.Join(dataDir, slug))
+		if err != nil {
+			fmt.Fprintf(os.Stderr, "Error hashing battlebox %s: %v\n", slug, err)
 			os.Exit(1)
 		}
+		battleboxSlugs = append(battleboxSlugs, slug)
+		battleboxHashes[slug] = bbHash
 	}
 
-	// Write per-battlebox data
+	var dirtySlugs []string
+	for _, slug := range battleboxSlugs {
+		prevHash := stamp.Battleboxes[slug]
+		outPath := filepath.Join(outputDir, slug+".json")
+		if *fullBuild || stamp.GlobalHash != globalHash || prevHash != battleboxHashes[slug] || !fileExists(outPath) {
+			dirtySlugs = append(dirtySlugs, slug)
+		}
+	}
+
+	indexExists := fileExists(indexPath)
+	if len(dirtySlugs) == 0 && indexExists {
+		fmt.Println("No battlebox data changes detected; skipping JSON rebuild.")
+		return
+	}
+
+	var output Output
+	if len(dirtySlugs) > 0 {
+		var allCards []Card
+		var missing []MissingPrinting
+
+		// First pass: collect cards for changed battleboxes only.
+		for _, slug := range dirtySlugs {
+			bbPath := filepath.Join(dataDir, slug)
+			bbPrintings := mergePrintings(projectPrintings, loadPrintings(filepath.Join(bbPath, printingsFileName)))
+			deckDirs, _ := os.ReadDir(bbPath)
+
+			for _, deckDir := range deckDirs {
+				if !deckDir.IsDir() {
+					continue
+				}
+
+				deckPath := filepath.Join(bbPath, deckDir.Name())
+				deckPrintings := mergePrintings(bbPrintings, loadPrintings(filepath.Join(deckPath, printingsFileName)))
+				manifestPath := filepath.Join(deckPath, "manifest.json")
+				manifestData, err := os.ReadFile(manifestPath)
+				if err != nil {
+					continue
+				}
+
+				var manifest Manifest
+				if err := json.Unmarshal(manifestData, &manifest); err != nil {
+					continue
+				}
+
+				applyPrintings(manifest.Cards, deckPrintings, slug, deckDir.Name(), &missing)
+				applyPrintings(manifest.Sideboard, deckPrintings, slug, deckDir.Name(), &missing)
+				allCards = append(allCards, manifest.Cards...)
+				allCards = append(allCards, manifest.Sideboard...)
+			}
+		}
+
+		if len(missing) > 0 {
+			sort.Slice(missing, func(i, j int) bool {
+				if missing[i].Battlebox != missing[j].Battlebox {
+					return missing[i].Battlebox < missing[j].Battlebox
+				}
+				if missing[i].Deck != missing[j].Deck {
+					return missing[i].Deck < missing[j].Deck
+				}
+				return missing[i].Card < missing[j].Card
+			})
+			fmt.Fprintln(os.Stderr, "Missing printings in printings files:")
+			for _, m := range missing {
+				fmt.Fprintf(os.Stderr, "- %s/%s: %s\n", m.Battlebox, m.Deck, m.Card)
+			}
+			os.Exit(1)
+		}
+
+		// Fetch missing card data from Scryfall.
+		fetchMissingCardMeta(allCards)
+		saveCardCache()
+
+		// Second pass: rebuild changed battleboxes.
+		for _, slug := range dirtySlugs {
+			bbPath := filepath.Join(dataDir, slug)
+			bbManifest := loadBattleboxManifest(filepath.Join(bbPath, "manifest.json"))
+			battlebox := Battlebox{
+				Slug:        slug,
+				Name:        bbManifest.Name,
+				Description: bbManifest.Description,
+				Decks:       []Deck{},
+				Banned:      loadBanned(filepath.Join(bbPath, "banned.json")),
+			}
+
+			bbPrintings := mergePrintings(projectPrintings, loadPrintings(filepath.Join(bbPath, printingsFileName)))
+			deckDirs, _ := os.ReadDir(bbPath)
+
+			for _, deckDir := range deckDirs {
+				if !deckDir.IsDir() {
+					continue
+				}
+
+				deckPath := filepath.Join(bbPath, deckDir.Name())
+				deckPrintings := mergePrintings(bbPrintings, loadPrintings(filepath.Join(deckPath, printingsFileName)))
+				deck, err := processDeck(deckPath, deckDir.Name(), slug, deckPrintings)
+				if err != nil {
+					fmt.Fprintf(os.Stderr, "Error processing deck %s/%s: %v\n", slug, deckDir.Name(), err)
+					os.Exit(1)
+				}
+
+				battlebox.Decks = append(battlebox.Decks, *deck)
+			}
+
+			output.Battleboxes = append(output.Battleboxes, battlebox)
+			fmt.Printf("Processed battlebox: %s (%d decks)\n", slug, len(battlebox.Decks))
+		}
+
+		if *validateRefs {
+			if err := validateCardRefs(output.Battleboxes); err != nil {
+				fmt.Fprintln(os.Stderr, err)
+				os.Exit(1)
+			}
+		}
+	}
+
+	// Write per-battlebox data.
 	if err := os.MkdirAll(outputDir, 0755); err != nil {
 		fmt.Fprintf(os.Stderr, "Error creating output dir: %v\n", err)
 		os.Exit(1)
@@ -378,7 +408,15 @@ func main() {
 		fmt.Printf("Written: %s (%d bytes), %s.gz (%d bytes)\n", bbPath, len(jsonData), bbPath, gzipSize)
 	}
 
-	// Write index
+	// Index always reflects current source manifests; rewrite when data changed
+	// or when index is missing.
+	indexOutput, err := buildIndexOutput(dataDir)
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "Error building index: %v\n", err)
+		os.Exit(1)
+	}
+	indexOutput.BuildID = strconv.FormatInt(time.Now().UnixNano(), 36)
+
 	jsonData, err := json.Marshal(indexOutput)
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Error marshaling JSON: %v\n", err)
@@ -392,6 +430,160 @@ func main() {
 	}
 
 	fmt.Printf("Written: %s (%d bytes), %s.gz (%d bytes)\n", indexPath, len(jsonData), indexPath, gzipSize)
+
+	nextStamp := BuildStamp{
+		GlobalHash:  globalHash,
+		Battleboxes: battleboxHashes,
+	}
+	if err := saveBuildStamp(stampFile, nextStamp); err != nil {
+		fmt.Fprintf(os.Stderr, "Error writing build stamp: %v\n", err)
+		os.Exit(1)
+	}
+}
+
+func fileExists(path string) bool {
+	info, err := os.Stat(path)
+	return err == nil && !info.IsDir()
+}
+
+func loadBuildStamp(path string) BuildStamp {
+	data, err := os.ReadFile(path)
+	if err != nil {
+		return BuildStamp{Battleboxes: map[string]string{}}
+	}
+	var stamp BuildStamp
+	if err := json.Unmarshal(data, &stamp); err != nil {
+		return BuildStamp{Battleboxes: map[string]string{}}
+	}
+	if stamp.Battleboxes == nil {
+		stamp.Battleboxes = map[string]string{}
+	}
+	return stamp
+}
+
+func saveBuildStamp(path string, stamp BuildStamp) error {
+	if stamp.Battleboxes == nil {
+		stamp.Battleboxes = map[string]string{}
+	}
+	data, err := json.MarshalIndent(stamp, "", "  ")
+	if err != nil {
+		return err
+	}
+	if existing, err := os.ReadFile(path); err == nil && bytes.Equal(existing, data) {
+		return nil
+	}
+	if err := os.MkdirAll(filepath.Dir(path), 0755); err != nil {
+		return err
+	}
+	return os.WriteFile(path, data, 0644)
+}
+
+func computeGlobalInputHash(dataDir string) (string, error) {
+	return hashFiles([]string{
+		filepath.Join(dataDir, printingsFileName),
+		filepath.Join("scripts", "build.go"),
+	})
+}
+
+func hashBattleboxInputs(bbPath string) (string, error) {
+	var files []string
+	if err := filepath.WalkDir(bbPath, func(path string, d fs.DirEntry, err error) error {
+		if err != nil {
+			return err
+		}
+		if d.IsDir() {
+			return nil
+		}
+		ext := strings.ToLower(filepath.Ext(path))
+		if ext != ".json" && ext != ".md" {
+			return nil
+		}
+		files = append(files, path)
+		return nil
+	}); err != nil {
+		return "", err
+	}
+	return hashFiles(files)
+}
+
+func hashFiles(paths []string) (string, error) {
+	h := sha256.New()
+	_, _ = h.Write([]byte(buildFingerprintVersion))
+	_, _ = h.Write([]byte{0})
+
+	sorted := append([]string(nil), paths...)
+	sort.Strings(sorted)
+	for _, path := range sorted {
+		_, _ = h.Write([]byte(path))
+		_, _ = h.Write([]byte{0})
+		data, err := os.ReadFile(path)
+		if err != nil {
+			if os.IsNotExist(err) {
+				_, _ = h.Write([]byte("<missing>"))
+				_, _ = h.Write([]byte{0})
+				continue
+			}
+			return "", err
+		}
+		_, _ = h.Write(data)
+		_, _ = h.Write([]byte{0})
+	}
+
+	return fmt.Sprintf("%x", h.Sum(nil)), nil
+}
+
+func buildIndexOutput(dataDir string) (IndexOutput, error) {
+	var indexOutput IndexOutput
+
+	battleboxDirs, err := os.ReadDir(dataDir)
+	if err != nil {
+		return indexOutput, err
+	}
+
+	for _, bbDir := range battleboxDirs {
+		if !bbDir.IsDir() {
+			continue
+		}
+		bbPath := filepath.Join(dataDir, bbDir.Name())
+		bbManifest := loadBattleboxManifest(filepath.Join(bbPath, "manifest.json"))
+		indexEntry := BattleboxIndex{
+			Slug:        bbDir.Name(),
+			Name:        bbManifest.Name,
+			Description: bbManifest.Description,
+			Decks:       []DeckIndex{},
+		}
+
+		deckDirs, err := os.ReadDir(bbPath)
+		if err != nil {
+			return indexOutput, fmt.Errorf("reading decks for %s: %w", bbDir.Name(), err)
+		}
+		for _, deckDir := range deckDirs {
+			if !deckDir.IsDir() {
+				continue
+			}
+			manifestPath := filepath.Join(bbPath, deckDir.Name(), "manifest.json")
+			manifestData, err := os.ReadFile(manifestPath)
+			if err != nil {
+				return indexOutput, fmt.Errorf("reading manifest %s: %w", manifestPath, err)
+			}
+			var manifest Manifest
+			if err := json.Unmarshal(manifestData, &manifest); err != nil {
+				return indexOutput, fmt.Errorf("parsing manifest %s: %w", manifestPath, err)
+			}
+
+			indexEntry.Decks = append(indexEntry.Decks, DeckIndex{
+				Slug:           deckDir.Name(),
+				Name:           manifest.Name,
+				Colors:         manifest.Colors,
+				Tags:           normalizeDeckTags(manifest.Tags),
+				DifficultyTags: normalizeDifficultyTags(manifest.DifficultyTags),
+			})
+		}
+
+		indexOutput.Battleboxes = append(indexOutput.Battleboxes, indexEntry)
+	}
+
+	return indexOutput, nil
 }
 
 func writeJSONAndGzip(outPath string, data []byte) (int, error) {
@@ -766,7 +958,7 @@ func processDeck(deckPath, slug, battlebox string, printings map[string]string) 
 		deck.Primer = strings.TrimSpace(string(primerData))
 	}
 	// Read key combos
-	combosPath := filepath.Join(deckPath, "_combos.md")
+	combosPath := filepath.Join(deckPath, "combos.md")
 	if combosData, err := os.ReadFile(combosPath); err == nil {
 		deck.KeyCombos = strings.TrimSpace(string(combosData))
 	}
@@ -778,7 +970,7 @@ func processDeck(deckPath, slug, battlebox string, printings map[string]string) 
 	entries, _ := os.ReadDir(deckPath)
 	for _, entry := range entries {
 		name := entry.Name()
-		if name == "primer.md" || name == "_combos.md" || name == "manifest.json" || !strings.HasSuffix(name, ".md") {
+		if name == "primer.md" || name == "manifest.json" || !strings.HasSuffix(name, ".md") {
 			continue
 		}
 		// Matchup guides are stored as underscored files (e.g. _elves.md)

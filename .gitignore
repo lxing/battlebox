@@ -34,3 +34,4 @@ Thumbs.db
 static/data/
 static/data.json
 tmp/
+tmp/build-stamps.json
