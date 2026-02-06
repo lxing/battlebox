@@ -82,15 +82,23 @@ h2 {
   border-radius: 6px;
   color: #fff;
   text-decoration: none;
-  transition: background 0.15s;
+  transition: none;
 }
 
 .deck-list a:hover {
-  background: #353560;
+  background: #252540;
 }
 
 .deck-list a.deck-highlight {
-  border-color: #fff;
+  border-color: transparent;
+}
+
+.deck-list a:focus,
+.deck-list a:focus-visible,
+.deck-list a:active {
+  background: #252540;
+  border-color: transparent;
+  outline: none;
 }
 
 .deck-link {
@@ -499,6 +507,10 @@ details.collapsible summary::after {
   content: '+';
   color: #888;
   font-weight: 700;
+}
+
+details.collapsible[open] summary::after {
+  content: '-';
 }
 
 .collapsible-body {
