@@ -218,7 +218,9 @@
 
   function renderCardRow(card, bannedSet) {
     const banned = bannedSet && bannedSet.has(normalizeName(card.name));
-    const bannedIcon = banned ? '<span class="banned-icon" title="Banned">🔨</span>' : '';
+    const bannedIcon = banned
+      ? '<span class="banned-icon" title="Banned"><span class="banned-icon-emoji">🔨</span><span class="banned-icon-label">BAN</span></span>'
+      : '';
     const doubleFacedAttr = card.double_faced ? ' data-double-faced="1"' : '';
     return `<div class="card-row"><span class="card-qty">${card.qty}</span><span class="card" data-name="${card.name}" data-printing="${card.printing}"${doubleFacedAttr}>${card.name}</span>${bannedIcon}</div>`;
   }
@@ -613,12 +615,12 @@
     ` : '';
     const bannedNames = Array.isArray(bb.banned) ? bb.banned : [];
     const bannedSet = new Set(bannedNames.map(normalizeName));
-    const deckHasBanned = bannedSet.size && [...deck.cards, ...(deck.sideboard || [])].some(c =>
-      bannedSet.has(normalizeName(c.name))
-    );
-    const bannedWarningHtml = deckHasBanned ? `
-      <div class="banned-warning">🔨 This deck contains banned cards, but that's ok because they're awesome! 🔨</div>
-    ` : '';
+    // const deckHasBanned = bannedSet.size && [...deck.cards, ...(deck.sideboard || [])].some(c =>
+    //   bannedSet.has(normalizeName(c.name))
+    // );
+    // const bannedWarningHtml = deckHasBanned ? `
+    //   <div class="banned-warning">🔨 This deck contains banned cards, but that's ok because they're awesome! 🔨</div>
+    // ` : '';
     const guideKeys = Object.keys(deck.guides || {});
     const guideOptions = guideKeys.map(k => {
       const opponent = bb.decks.find(d => d.slug === k);
@@ -645,6 +647,7 @@
     const hasSecondColumn = hasSideboard || hasLandColumn;
     const mainTypes = hasSideboard ? undefined : ['creature', 'spell'];
 
+    // Deck-level banned banner intentionally disabled; banned cards are marked inline.
     app.innerHTML = `
       <h1 class="breadcrumbs">
         <a href="#/">Battlebox</a>
@@ -659,7 +662,6 @@
       </div>
 
       ${careWarningHtml}
-      ${bannedWarningHtml}
       <details class="collapsible" open>
         <summary>Decklist</summary>
         <div class="collapsible-body">
