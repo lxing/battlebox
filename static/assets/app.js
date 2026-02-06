@@ -554,6 +554,9 @@
     const deckBySlug = new Map(
       deckItems.map(item => [item.dataset.slug, item.querySelector('.deck-link')])
     );
+    const deckIndexBySlug = new Map(
+      deckItems.map((item, idx) => [item.dataset.slug, idx])
+    );
 
     const rollButtons = [...app.querySelectorAll('.randomizer-roll')];
 
@@ -566,19 +569,24 @@
       clearHighlights();
       const target = Math.min(count, deckItems.length);
       const picked = new Set();
-      let lastSlug = null;
       while (picked.size < target) {
         const idx = Math.floor(Math.random() * deckItems.length);
         const slug = deckItems[idx].dataset.slug;
         picked.add(slug);
-        lastSlug = slug;
       }
+      let scrollSlug = null;
+      let maxPickedIndex = -1;
       picked.forEach(slug => {
         const link = deckBySlug.get(slug);
         if (link) link.classList.add('deck-highlight');
+        const itemIndex = deckIndexBySlug.get(slug);
+        if (typeof itemIndex === 'number' && itemIndex > maxPickedIndex) {
+          maxPickedIndex = itemIndex;
+          scrollSlug = slug;
+        }
       });
-      if (lastSlug) {
-        const link = deckBySlug.get(lastSlug);
+      if (scrollSlug) {
+        const link = deckBySlug.get(scrollSlug);
         if (link) {
           link.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
         }
