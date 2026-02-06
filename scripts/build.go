@@ -41,8 +41,6 @@ type Manifest struct {
 	Tags []string `json:"tags,omitempty"`
 	// Optional difficulty tags, e.g. beginner/intermediate/expert.
 	DifficultyTags []string `json:"difficulty_tags,omitempty"`
-	// Optional warning flag for expensive premodern cards.
-	PremodernCareWarning bool `json:"premodern_care_warning,omitempty"`
 	// Mainboard entries from manifest.json.
 	Cards []Card `json:"cards"`
 	// Optional sideboard entries from manifest.json.
@@ -61,8 +59,6 @@ type Deck struct {
 	Tags []string `json:"tags,omitempty"`
 	// Optional difficulty tags for UI display.
 	DifficultyTags []string `json:"difficulty_tags,omitempty"`
-	// Optional warning flag surfaced in UI.
-	PremodernCareWarning bool `json:"premodern_care_warning,omitempty"`
 	// Lookup map from normalized card name to printing key.
 	Printings map[string]string `json:"printings,omitempty"`
 	// Mainboard cards with build-time enrichments.
@@ -115,8 +111,6 @@ type DeckIndex struct {
 	Tags []string `json:"tags,omitempty"`
 	// Optional difficulty tags for summary view.
 	DifficultyTags []string `json:"difficulty_tags,omitempty"`
-	// Optional warning flag surfaced in index view.
-	PremodernCareWarning bool `json:"premodern_care_warning,omitempty"`
 }
 
 // BattleboxIndex is the lightweight battlebox summary written to index.json.
@@ -337,12 +331,11 @@ func main() {
 		}
 		for _, deck := range battlebox.Decks {
 			indexEntry.Decks = append(indexEntry.Decks, DeckIndex{
-				Slug:                 deck.Slug,
-				Name:                 deck.Name,
-				Colors:               deck.Colors,
-				Tags:                 append([]string(nil), deck.Tags...),
-				DifficultyTags:       append([]string(nil), deck.DifficultyTags...),
-				PremodernCareWarning: deck.PremodernCareWarning,
+				Slug:           deck.Slug,
+				Name:           deck.Name,
+				Colors:         deck.Colors,
+				Tags:           append([]string(nil), deck.Tags...),
+				DifficultyTags: append([]string(nil), deck.DifficultyTags...),
 			})
 		}
 		indexOutput.Battleboxes = append(indexOutput.Battleboxes, indexEntry)
@@ -709,16 +702,15 @@ func processDeck(deckPath, slug, battlebox string, printings map[string]string) 
 	}
 
 	deck := &Deck{
-		Slug:                 slug,
-		Name:                 manifest.Name,
-		Colors:               manifest.Colors,
-		Tags:                 normalizeDeckTags(manifest.Tags),
-		DifficultyTags:       normalizeDifficultyTags(manifest.DifficultyTags),
-		PremodernCareWarning: manifest.PremodernCareWarning,
-		Printings:            map[string]string{},
-		Cards:                manifest.Cards,
-		Sideboard:            manifest.Sideboard,
-		Guides:               make(map[string]MatchupGuide),
+		Slug:           slug,
+		Name:           manifest.Name,
+		Colors:         manifest.Colors,
+		Tags:           normalizeDeckTags(manifest.Tags),
+		DifficultyTags: normalizeDifficultyTags(manifest.DifficultyTags),
+		Printings:      map[string]string{},
+		Cards:          manifest.Cards,
+		Sideboard:      manifest.Sideboard,
+		Guides:         make(map[string]MatchupGuide),
 	}
 
 	for _, card := range manifest.Cards {

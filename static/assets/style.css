@@ -45,15 +45,6 @@ h2 {
   color: #aaa;
 }
 
-.care-warning {
-  background: #5a1c1c;
-  color: #ffe4e4;
-  padding: 0.6rem 0.8rem;
-  border-radius: 6px;
-  font-size: 0.85rem;
-  margin-bottom: 0.75rem;
-}
-
 .banned-warning {
   background: #4a2f1c;
   color: #ffe9d6;
@@ -323,26 +314,6 @@ h2 {
   border-color: #cf7a7a;
 }
 
-.deck-tag-ban {
-  background: #f4f4f4;
-  color: #111;
-  border-color: #d5d5d5;
-  text-transform: uppercase;
-  gap: 0.22rem;
-}
-
-.deck-tag-ban-emoji {
-  font-size: 0.68rem;
-  line-height: 1;
-}
-
-.deck-tag-ban-label {
-  font-size: 0.62rem;
-  font-weight: 700;
-  line-height: 1;
-  color: #c40000;
-}
-
 .breadcrumbs a {
   color: #bbb;
   text-decoration: none;
@@ -389,29 +360,20 @@ h2 {
   line-height: 1.5;
 }
 
-.banned-icon {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
+.banned-inline-tag {
+  display: inline-block;
   margin-left: 0.3rem;
-  vertical-align: middle;
-}
-
-.banned-icon-tag {
-  flex-direction: column;
-  gap: 0.07rem;
-  font-size: 0.38rem;
+  vertical-align: 0.18em;
+  white-space: nowrap;
+  background: #c40000;
+  color: #fff;
+  border: 1px solid #9c0000;
+  border-radius: 4px;
+  text-transform: uppercase;
+  font-size: 0.46rem;
+  font-weight: 700;
   line-height: 1;
-  padding: 0.08rem 0.2rem 0.04rem;
-}
-
-.banned-icon-tag .deck-tag-ban-emoji {
-  font-size: 0.54rem;
-  line-height: 1.1;
-}
-
-.banned-icon-tag .deck-tag-ban-label {
-  font-size: 0.35rem;
+  padding: 0.24rem 0.24rem;
 }
 
 .decklist-grid {
