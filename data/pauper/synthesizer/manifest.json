@@ -1,6 +1,9 @@
 {
   "name": "Synthesizer",
   "colors": "r",
+  "tags": [
+    "aggro"
+  ],
   "cards": [
     {
       "name": "Chain Lightning",

@@ -1,6 +1,9 @@
 {
   "name": "White Weenie",
   "colors": "w",
+  "tags": [
+    "aggro"
+  ],
   "cards": [
     {
       "name": "Battle Screech",

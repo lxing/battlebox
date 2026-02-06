@@ -1,6 +1,11 @@
 {
   "name": "Elves",
   "colors": "rg",
+  "tags": [
+    "tribal",
+    "combo"
+  ],
+  "premodern_care_warning": true,
   "cards": [
     {
       "name": "Anger",
@@ -128,6 +133,5 @@
       "name": "Winter Orb",
       "qty": 2
     }
-  ],
-  "premodern_care_warning": true
+  ]
 }

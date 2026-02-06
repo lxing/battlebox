@@ -1,6 +1,9 @@
 {
   "name": "Affinity",
   "colors": "ubr",
+  "tags": [
+    "midrange"
+  ],
   "cards": [
     {
       "name": "Blood Fountain",

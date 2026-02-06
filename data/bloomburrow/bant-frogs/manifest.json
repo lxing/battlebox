@@ -1,6 +1,10 @@
 {
   "name": "Bant Frogs",
   "colors": "wug",
+  "tags": [
+    "tribal",
+    "midrange"
+  ],
   "cards": [
     {
       "name": "Birds of Paradise",

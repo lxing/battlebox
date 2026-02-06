@@ -1,6 +1,10 @@
 {
   "name": "Naya Rabbits",
   "colors": "wrg",
+  "tags": [
+    "tribal",
+    "midrange"
+  ],
   "cards": [
     {
       "name": "Baylen, the Haymaker",

@@ -1,6 +1,11 @@
 {
   "name": "RecSur",
   "colors": "brg",
+  "tags": [
+    "combo",
+    "midrange"
+  ],
+  "premodern_care_warning": true,
   "cards": [
     {
       "name": "Birds of Paradise",
@@ -168,6 +173,5 @@
       "name": "Withered Wretch",
       "qty": 1
     }
-  ],
-  "premodern_care_warning": true
+  ]
 }

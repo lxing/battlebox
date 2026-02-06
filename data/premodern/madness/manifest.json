@@ -1,6 +1,10 @@
 {
   "name": "Madness",
   "colors": "ug",
+  "tags": [
+    "tempo"
+  ],
+  "premodern_care_warning": true,
   "cards": [
     {
       "name": "Arrogant Wurm",
@@ -96,6 +100,5 @@
       "name": "Tsabo's Web",
       "qty": 2
     }
-  ],
-  "premodern_care_warning": true
+  ]
 }

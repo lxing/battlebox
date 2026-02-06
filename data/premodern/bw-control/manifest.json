@@ -1,6 +1,10 @@
 {
   "name": "BW Control",
   "colors": "wb",
+  "tags": [
+    "control"
+  ],
+  "premodern_care_warning": true,
   "cards": [
     {
       "name": "Caves of Koilos",
@@ -108,6 +112,5 @@
       "name": "Warmth",
       "qty": 1
     }
-  ],
-  "premodern_care_warning": true
+  ]
 }

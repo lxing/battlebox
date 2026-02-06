@@ -1,6 +1,10 @@
 {
   "name": "TerraGeddon",
   "colors": "wg",
+  "tags": [
+    "aggro"
+  ],
+  "premodern_care_warning": true,
   "cards": [
     {
       "name": "Armageddon",
@@ -120,6 +124,5 @@
       "name": "Zuran Orb",
       "qty": 2
     }
-  ],
-  "premodern_care_warning": true
+  ]
 }

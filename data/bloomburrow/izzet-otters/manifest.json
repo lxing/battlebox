@@ -1,6 +1,10 @@
 {
   "name": "Izzet Otters",
   "colors": "ur",
+  "tags": [
+    "tribal",
+    "tempo"
+  ],
   "cards": [
     {
       "name": "Bria, Riptide Rogue",

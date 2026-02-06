@@ -1,6 +1,9 @@
 {
   "name": "Madness Burn",
   "colors": "br",
+  "tags": [
+    "aggro"
+  ],
   "cards": [
     {
       "name": "Alms of the Vein",

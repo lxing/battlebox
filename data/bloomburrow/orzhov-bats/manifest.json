@@ -1,6 +1,10 @@
 {
   "name": "Orzhov Bats",
   "colors": "wb",
+  "tags": [
+    "tribal",
+    "midrange"
+  ],
   "cards": [
     {
       "name": "Bloodforged Battle-Axe",

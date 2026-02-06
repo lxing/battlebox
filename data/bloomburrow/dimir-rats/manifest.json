@@ -1,6 +1,10 @@
 {
   "name": "Dimir Rats",
   "colors": "ub",
+  "tags": [
+    "tribal",
+    "tempo"
+  ],
   "cards": [
     {
       "name": "Circular Logic",

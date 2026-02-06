@@ -1,6 +1,10 @@
 {
   "name": "The Rock",
   "colors": "bg",
+  "tags": [
+    "midrange"
+  ],
+  "premodern_care_warning": true,
   "cards": [
     {
       "name": "Birds of Paradise",
@@ -148,6 +152,5 @@
       "name": "Withered Wretch",
       "qty": 1
     }
-  ],
-  "premodern_care_warning": true
+  ]
 }

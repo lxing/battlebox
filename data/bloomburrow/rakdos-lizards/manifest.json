@@ -1,6 +1,10 @@
 {
   "name": "Rakdos Lizards",
   "colors": "br",
+  "tags": [
+    "tribal",
+    "aggro"
+  ],
   "cards": [
     {
       "name": "Blackcleave Cliffs",

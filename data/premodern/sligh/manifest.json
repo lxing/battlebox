@@ -1,6 +1,10 @@
 {
   "name": "Sligh",
   "colors": "r",
+  "tags": [
+    "aggro"
+  ],
+  "premodern_care_warning": true,
   "cards": [
     {
       "name": "Ball Lightning",
@@ -96,6 +100,5 @@
       "name": "Red Elemental Blast",
       "qty": 2
     }
-  ],
-  "premodern_care_warning": true
+  ]
 }

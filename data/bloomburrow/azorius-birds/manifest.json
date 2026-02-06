@@ -1,6 +1,10 @@
 {
   "name": "Azorius Birds",
   "colors": "wu",
+  "tags": [
+    "tribal",
+    "control"
+  ],
   "cards": [
     {
       "name": "Adarkar Wastes",

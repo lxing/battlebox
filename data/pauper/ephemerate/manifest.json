@@ -1,6 +1,9 @@
 {
   "name": "Ephemerate",
   "colors": "wur",
+  "tags": [
+    "control"
+  ],
   "cards": [
     {
       "name": "Abrade",
@@ -63,7 +66,7 @@
       "qty": 1
     },
     {
-      "name": "L\u00f3rien Revealed",
+      "name": "Lórien Revealed",
       "qty": 4
     },
     {

@@ -1,6 +1,9 @@
 {
   "name": "Delver",
   "colors": "u",
+  "tags": [
+    "tempo"
+  ],
   "cards": [
     {
       "name": "Brainstorm",
@@ -35,7 +38,7 @@
       "qty": 16
     },
     {
-      "name": "L\u00f3rien Revealed",
+      "name": "Lórien Revealed",
       "qty": 4
     },
     {

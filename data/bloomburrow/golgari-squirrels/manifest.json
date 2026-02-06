@@ -1,6 +1,10 @@
 {
   "name": "Golgari Squirrels",
   "colors": "bg",
+  "tags": [
+    "tribal",
+    "combo"
+  ],
   "cards": [
     {
       "name": "Abrupt Decay",

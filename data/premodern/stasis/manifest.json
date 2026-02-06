@@ -1,6 +1,10 @@
 {
   "name": "Stasis",
   "colors": "u",
+  "tags": [
+    "control"
+  ],
+  "premodern_care_warning": true,
   "cards": [
     {
       "name": "Arcane Denial",
@@ -84,6 +88,5 @@
       "name": "Powder Keg",
       "qty": 3
     }
-  ],
-  "premodern_care_warning": true
+  ]
 }

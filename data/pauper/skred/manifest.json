@@ -1,6 +1,9 @@
 {
   "name": "Skred",
   "colors": "ur",
+  "tags": [
+    "control"
+  ],
   "cards": [
     {
       "name": "Augur of Bolas",
@@ -31,7 +34,7 @@
       "qty": 4
     },
     {
-      "name": "L\u00f3rien Revealed",
+      "name": "Lórien Revealed",
       "qty": 4
     },
     {

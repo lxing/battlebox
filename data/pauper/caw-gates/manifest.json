@@ -1,6 +1,9 @@
 {
   "name": "Caw-Gates",
   "colors": "wu",
+  "tags": [
+    "midrange"
+  ],
   "cards": [
     {
       "name": "Azorius Guildgate",
@@ -47,7 +50,7 @@
       "qty": 2
     },
     {
-      "name": "L\u00f3rien Revealed",
+      "name": "Lórien Revealed",
       "qty": 3
     },
     {

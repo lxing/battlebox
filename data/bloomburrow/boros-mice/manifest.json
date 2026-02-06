@@ -1,6 +1,10 @@
 {
   "name": "Boros Mice",
   "colors": "wr",
+  "tags": [
+    "tribal",
+    "aggro"
+  ],
   "cards": [
     {
       "name": "Arid Mesa",

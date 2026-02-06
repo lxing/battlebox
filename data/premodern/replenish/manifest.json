@@ -1,6 +1,11 @@
 {
   "name": "Replenish",
   "colors": "wu",
+  "tags": [
+    "combo",
+    "control"
+  ],
+  "premodern_care_warning": true,
   "cards": [
     {
       "name": "Adarkar Wastes",
@@ -108,6 +113,5 @@
       "name": "Swords to Plowshares",
       "qty": 1
     }
-  ],
-  "premodern_care_warning": true
+  ]
 }

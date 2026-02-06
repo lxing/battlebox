@@ -37,6 +37,8 @@ type Manifest struct {
 	Name string `json:"name"`
 	// Mana color identity (for example "UW" or "BRG").
 	Colors string `json:"colors"`
+	// Optional archetype tags, e.g. aggro/tempo/midrange/control/combo/tribal.
+	Tags []string `json:"tags,omitempty"`
 	// Optional warning flag for expensive premodern cards.
 	PremodernCareWarning bool `json:"premodern_care_warning,omitempty"`
 	// Mainboard entries from manifest.json.
@@ -53,6 +55,8 @@ type Deck struct {
 	Name string `json:"name"`
 	// Mana color identity for UI display.
 	Colors string `json:"colors"`
+	// Optional archetype tags for UI display.
+	Tags []string `json:"tags,omitempty"`
 	// Optional warning flag surfaced in UI.
 	PremodernCareWarning bool `json:"premodern_care_warning,omitempty"`
 	// Lookup map from normalized card name to printing key.
@@ -582,6 +586,48 @@ func isDoubleFacedLayout(layout string) bool {
 	}
 }
 
+func normalizeDeckTags(tags []string) []string {
+	if len(tags) == 0 {
+		return nil
+	}
+	rank := map[string]int{
+		"tribal":   0,
+		"aggro":    1,
+		"combo":    2,
+		"tempo":    3,
+		"midrange": 4,
+		"control":  5,
+	}
+	seen := map[string]bool{}
+	out := make([]string, 0, len(tags))
+	for _, tag := range tags {
+		key := normalizeName(tag)
+		if key == "" || seen[key] {
+			continue
+		}
+		seen[key] = true
+		out = append(out, key)
+	}
+	sort.Slice(out, func(i, j int) bool {
+		ri, okI := rank[out[i]]
+		rj, okJ := rank[out[j]]
+		if okI && okJ {
+			if ri != rj {
+				return ri < rj
+			}
+			return out[i] < out[j]
+		}
+		if okI {
+			return true
+		}
+		if okJ {
+			return false
+		}
+		return out[i] < out[j]
+	})
+	return out
+}
+
 func processDeck(deckPath, slug, battlebox string, printings map[string]string) (*Deck, error) {
 	manifestPath := filepath.Join(deckPath, "manifest.json")
 	manifestData, err := os.ReadFile(manifestPath)
@@ -617,6 +663,7 @@ func processDeck(deckPath, slug, battlebox string, printings map[string]string) 
 		Slug:                 slug,
 		Name:                 manifest.Name,
 		Colors:               manifest.Colors,
+		Tags:                 normalizeDeckTags(manifest.Tags),
 		PremodernCareWarning: manifest.PremodernCareWarning,
 		Printings:            map[string]string{},
 		Cards:                manifest.Cards,

@@ -1,6 +1,9 @@
 {
   "name": "Bogles",
   "colors": "wg",
+  "tags": [
+    "aggro"
+  ],
   "cards": [
     {
       "name": "Abundant Growth",

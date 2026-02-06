@@ -1,6 +1,10 @@
 {
   "name": "4c Calamity",
   "colors": "wubg",
+  "tags": [
+    "tribal",
+    "control"
+  ],
   "cards": [
     {
       "name": "Beza, the Bounding Spring",

@@ -1,6 +1,9 @@
 {
   "name": "Broodscale",
   "colors": "bg",
+  "tags": [
+    "combo"
+  ],
   "cards": [
     {
       "name": "Basking Broodscale",

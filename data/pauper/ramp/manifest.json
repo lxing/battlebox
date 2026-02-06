@@ -1,6 +1,9 @@
 {
   "name": "Ramp",
   "colors": "rg",
+  "tags": [
+    "midrange"
+  ],
   "cards": [
     {
       "name": "Annoyed Altisaur",

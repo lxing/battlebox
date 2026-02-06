@@ -1,6 +1,9 @@
 {
   "name": "Elves",
   "colors": "g",
+  "tags": [
+    "tribal"
+  ],
   "cards": [
     {
       "name": "Avenging Hunter",

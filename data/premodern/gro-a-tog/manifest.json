@@ -1,6 +1,10 @@
 {
   "name": "Gro-a-Tog",
   "colors": "wurg",
+  "tags": [
+    "tempo"
+  ],
+  "premodern_care_warning": true,
   "cards": [
     {
       "name": "Armageddon",
@@ -108,6 +112,5 @@
       "name": "Winter Orb",
       "qty": 1
     }
-  ],
-  "premodern_care_warning": true
+  ]
 }

@@ -1,6 +1,10 @@
 {
   "name": "Enchantress",
   "colors": "wg",
+  "tags": [
+    "control"
+  ],
+  "premodern_care_warning": true,
   "cards": [
     {
       "name": "Argothian Enchantress",
@@ -112,6 +116,5 @@
       "name": "Xantid Swarm",
       "qty": 3
     }
-  ],
-  "premodern_care_warning": true
+  ]
 }

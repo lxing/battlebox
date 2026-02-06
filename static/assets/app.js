@@ -16,6 +16,31 @@
     ).join('');
   }
 
+  function renderDeckTags(tags) {
+    if (!Array.isArray(tags) || tags.length === 0) return '';
+    const rank = {
+      tribal: 0,
+      aggro: 1,
+      combo: 2,
+      tempo: 3,
+      midrange: 4,
+      control: 5,
+    };
+    const sorted = [...tags].sort((a, b) => {
+      const ak = normalizeName(a);
+      const bk = normalizeName(b);
+      const ar = Object.prototype.hasOwnProperty.call(rank, ak) ? rank[ak] : 100;
+      const br = Object.prototype.hasOwnProperty.call(rank, bk) ? rank[bk] : 100;
+      if (ar !== br) return ar - br;
+      return ak.localeCompare(bk);
+    });
+    return sorted.map(tag => {
+      const key = normalizeName(tag).replace(/[^a-z0-9-]/g, '');
+      if (!key) return '';
+      return `<span class="deck-tag deck-tag-${key}">${key}</span>`;
+    }).join('');
+  }
+
   function capitalize(str) {
     return str.charAt(0).toUpperCase() + str.slice(1);
   }
@@ -565,7 +590,10 @@
         <span class="crumb-sep">/</span>
         <span>${deck.name}</span>
       </h1>
-      <div class="deck-colors">${formatColors(deck.colors)}</div>
+      <div class="deck-info-pane">
+        <div class="deck-colors">${formatColors(deck.colors)}</div>
+        <div class="deck-tags">${renderDeckTags(deck.tags)}</div>
+      </div>
 
       ${careWarningHtml}
       ${bannedWarningHtml}

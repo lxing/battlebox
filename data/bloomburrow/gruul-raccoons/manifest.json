@@ -1,6 +1,10 @@
 {
   "name": "Gruul Raccoons",
   "colors": "rg",
+  "tags": [
+    "tribal",
+    "midrange"
+  ],
   "cards": [
     {
       "name": "Boseiju, Who Endures",

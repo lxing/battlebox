@@ -1,6 +1,9 @@
 {
   "name": "Turbo Fog",
   "colors": "ug",
+  "tags": [
+    "control"
+  ],
   "cards": [
     {
       "name": "Accumulated Knowledge",
@@ -51,7 +54,7 @@
       "qty": 6
     },
     {
-      "name": "L\u00f3rien Revealed",
+      "name": "Lórien Revealed",
       "qty": 4
     },
     {

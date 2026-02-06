@@ -1,6 +1,9 @@
 {
   "name": "Gardens",
   "colors": "brg",
+  "tags": [
+    "control"
+  ],
   "cards": [
     {
       "name": "Avenging Hunter",
@@ -91,7 +94,7 @@
       "qty": 2
     },
     {
-      "name": "Troll of Khazad-d\u00fbm",
+      "name": "Troll of Khazad-dûm",
       "qty": 3
     },
     {

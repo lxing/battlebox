@@ -1,6 +1,9 @@
 {
   "name": "Glintblade",
   "colors": "wb",
+  "tags": [
+    "midrange"
+  ],
   "cards": [
     {
       "name": "Ancient Den",
