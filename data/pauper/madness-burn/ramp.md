@@ -1,8 +1,4 @@
-+3 [[Tithing Blade / Consuming Sepulcher]]
-+1 [[Relic of Progenitus]]
--1 [[Highway Robbery]]
--1 [[Grab the Prize]]
--1 [[Vampire's Kiss]]
--1 [[Sneaky Snacker]]
++3 [[End the Festivities]]
+-3 [[Sneaky Snacker]]
 
-Edicts help answer their large cascade threats before they stabilize.
+Your fliers get walled very easily by their Reach creatures. Focus on disrupting [[Arbor Elf]], [[Gorilla Shaman]] and Eldrazi Spawn with [[End the Festivities]].

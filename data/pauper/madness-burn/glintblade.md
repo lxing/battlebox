@@ -1,9 +1,6 @@
-+3 [[Tithing Blade / Consuming Sepulcher]]
 +3 [[Gorilla Shaman]]
--2 [[Highway Robbery]]
--1 [[Grab the Prize]]
--1 [[Vampire's Kiss]]
--1 [[Sneaky Snacker]]
--1 [[Alms of the Vein]]
++3 [[Trespasser's Curse]]
+-2 [[Sneaky Snacker]]
+-4 [[Voldaren Epicure]]
 
-Artifact hate plus edicts are key to breaking up their value engine.
+Attack their manabase and tax their value loop. [[Voldaren Epicure]] is abysmal against their Inspectors. Be on the lookout for opportunities to hitchhike on [[Refurbished Familiar]]

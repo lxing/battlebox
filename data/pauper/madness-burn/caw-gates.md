@@ -1,8 +1,6 @@
++3 [[End the Festivities]]
 +2 [[Pyroblast]]
-+3 [[Trespasser's Curse]]
--2 [[Highway Robbery]]
 -1 [[Grab the Prize]]
--1 [[Vampire's Kiss]]
--1 [[Sneaky Snacker]]
+-4 [[Voldaren Epicure]]
 
-[[Pyroblast]] helps force burn through counters, and [[Trespasser's Curse]] punishes their token plan.
+[[End the Festivities]] clears their flying swarm for your own attackers. Beware [[Sacred Cat]], in midgame it will end you with [[Basilisk Gate]].

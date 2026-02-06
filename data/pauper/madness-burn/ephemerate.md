@@ -1,8 +1,6 @@
 +2 [[Pyroblast]]
-+3 [[Tithing Blade / Consuming Sepulcher]]
--2 [[Highway Robbery]]
--1 [[Grab the Prize]]
--1 [[Vampire's Kiss]]
--1 [[Sneaky Snacker]]
++2 [[Tithing Blade / Consuming Sepulcher]]
+-2 [[Vampire's Kiss]]
+-2 [[Voldaren Epicure]]
 
-Use blasts to fight their counters and edicts to answer big creatures.
+Use blasts and edicts to disrupt their gameplan. They have lots of incidental lifegain so the clock is ticking. Prioritize [[Pyrobalst]] on [[Murmuring Mystic]] as it shuts down your flyers.

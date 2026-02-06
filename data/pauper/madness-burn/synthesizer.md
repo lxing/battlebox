@@ -1,9 +1,4 @@
 +3 [[End the Festivities]]
-+3 [[Tithing Blade / Consuming Sepulcher]]
--2 [[Highway Robbery]]
--1 [[Grab the Prize]]
--1 [[Vampire's Kiss]]
--1 [[Sneaky Snacker]]
--1 [[Alms of the Vein]]
+-3 [[Sneaky Snacker]]
 
-Sweepers plus edicts keep their token swarms from snowballing.
+Sweepers plus edicts keep their token swarms from snowballing with [[Goblin Bushwhacker]]. This is a quick-and-dirty knife fight. [[Sneaky Snacker]] is just too slow.

@@ -1,8 +1,5 @@
-+3 [[Tithing Blade / Consuming Sepulcher]]
-+1 [[Relic of Progenitus]]
--1 [[Highway Robbery]]
--1 [[Grab the Prize]]
--1 [[Vampire's Kiss]]
--1 [[Sneaky Snacker]]
++3 [[Trespasser's Curse]]
+-2 [[Sneaky Snacker]]
+-1 [[Voldaren Epicure]]
 
-Edicts and graveyard hate keep the combo in check while you push damage.
+[[Trespasser's Curse]] forces them to win with [[Nadier's Nightblade]]. Play your normal gameplan otherwise.

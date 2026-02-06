@@ -1,9 +1,4 @@
 +3 [[Gorilla Shaman]]
-+3 [[Tithing Blade / Consuming Sepulcher]]
--2 [[Highway Robbery]]
--1 [[Grab the Prize]]
--1 [[Vampire's Kiss]]
--1 [[Sneaky Snacker]]
--1 [[Alms of the Vein]]
+-3 [[Voldaren Epicure]]
 
-[[Gorilla Shaman]] attacks their artifact lands, and [[Tithing Blade / Consuming Sepulcher]] forces sacrifices through big blockers.
+[[Gorilla Shaman]] attacks their artifact lands, replacing [[Voldaren Epicure]] which gets walled very easily. Their main counterplay is [[Toxin Analysis]] on [[Myr Enforcer]], but you can outrace it.
