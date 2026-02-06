@@ -1,10 +1,6 @@
 +1 [[Abrade]]
-+2 [[Cast into the Fire]]
-+2 [[Dawnbringer Cleric]]
--1 [[Jolted Awake]]
--1 [[Breath Weapon]]
--1 [[Kenku Artificer]]
--1 [[Fallaji Archaeologist]]
--1 [[Brainstorm]]
++1 [[Breath Weapon]]
+-1 [[Cast into the Fire]]
+-1 [[Dawnbringer Cleric]]
 
-Lean on artifact removal to break up their bounce-and-draw engine.
+ This is an attrition match and both decks are roughly equally equipped. [[Breath Weapon]] and [[Murmuring Mystic]] are qutie effective. Avoid being blown out by [[Cast Down]] when you go for [[Ephemerate]].

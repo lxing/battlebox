@@ -1,12 +1,9 @@
 +3 [[Blue Elemental Blast]]
 +3 [[Pyroblast]]
-+1 [[Union of the Third Path]]
 -1 [[Abrade]]
+-2 [[Counterspell]]
 -1 [[Cast into the Fire]]
--1 [[Breath Weapon]]
--1 [[Jolted Awake]]
--1 [[Kenku Artificer]]
--1 [[Fallaji Archaeologist]]
--1 [[Brainstorm]]
+-1 [[Dawnbringer Cleric]]
+-1 [[Galvanic Discharge]]
 
-The full blast package plus lifegain helps you survive their burn and big threats.
+Go toe-to-toe with them on blast spam. Things will quickly degenerate into blast wars. [[Kenku Artificer]] is invaluable.

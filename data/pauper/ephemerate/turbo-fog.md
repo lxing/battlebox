@@ -1,9 +1,7 @@
++2 [[Dawnbringer Cleric]]
 +3 [[Pyroblast]]
-+2 [[Blue Elemental Blast]]
--1 [[Abrade]]
--1 [[Cast into the Fire]]
 -1 [[Breath Weapon]]
--1 [[Jolted Awake]]
--1 [[Kenku Artificer]]
+-1 [[Cast into the Fire]]
+-3 [[Galvanic Discharge]]
 
-Blasts pressure their card draw and counterspells so your threats can stick.
+You're painfully slow, so you'll need to accumulate countermagic and counter your way through fogs. [[Ephemerate]] and [[Archaeomancer]] can give you multiple attempts at a killing blow. Disrupt their graveyard with [[Dawnbringer Cleric]] - not great, but better than keeping useless removal.

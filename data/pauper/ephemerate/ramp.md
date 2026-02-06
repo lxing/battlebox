@@ -1,9 +1,4 @@
-+1 [[Abrade]]
-+2 [[Cast into the Fire]]
-+1 [[Breath Weapon]]
--1 [[Jolted Awake]]
--1 [[Kenku Artificer]]
--1 [[Fallaji Archaeologist]]
--1 [[Brainstorm]]
++2 [[Dawnbringer Cleric]]
+-2 [[Fallaji Archaeologist]]
 
-Extra removal helps answer their cascade threats before they stabilize.
+This matchup is atrocious, they outscale you quickly. [[Writhing Chrysalis]] annihilates you. Try to pick off their enchantment-based ramp and [[Arbor Elf]]. Pick a god and pray.

@@ -3,4 +3,4 @@
 -2 [[Counterspell]]
 -2 [[Prismatic Strands]]
 
-[[Pyroblast]] their creatures, especially [[Murmuring Mystic]]. They have a heavy artifact land base, but [[Dust to Dust]] is probably not worth it, even considering [[Kenku Artificer]].
+[[Pyroblast]] their creatures, especially [[Murmuring Mystic]]. They have a heavy artifact land base, but [[Dust to Dust]] is probably not worth it, even considering [[Kenku Artificer]]. [[Standard Bearer]] is annoying and you will need to save removal for it.
