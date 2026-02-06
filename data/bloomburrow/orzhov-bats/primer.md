@@ -1,0 +1,5 @@
+Bats feast one life point at a time until your opponent suddenly falls out of the sky. Curve evasive threats like [[Ruin-Lurker Bat]] and [[Deep-Cavern Bat]] into payoff engines [[Lunar Convocation]], [[Darkstar Augur]], and [[Zoraline|Zoraline, Cosmos Caller]]. You get to pressure life totals while stripping key cards from hand, which makes racing this deck much harder than it looks.
+
+Play a patient midrange game and let your incremental lifegain/lifeloss synergies do the heavy lifting. [[Essence Channeler]] grows quickly, [[Sorin of House Markov / Sorin, Ravenous Neonate]] and [[The Wandering Emperor]] punish stalled boards, and your removal suite [[Swords to Plowshares]], [[Prismatic Ending]], and [[Damn]] keeps opposing bomb creatures grounded. [[Bloodforged Battle-Axe]] and [[Vorpal Sword]] turn any surviving flier into a real clock once the board is under control.
+
+Tip: Fire off [[Deep-Cavern Bat]] early when possible. Knowing their hand lets you plan whether to hold removal, extend into the board, or keep mana open for interaction.

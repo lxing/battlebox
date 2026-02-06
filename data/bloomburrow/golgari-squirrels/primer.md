@@ -1,0 +1,5 @@
+Go absolutely nuts with a board full of token fodder and sacrifice loops! [[Camellia|Camellia, the Seedmiser]], [[Vinereap Mentor]], and [[Thornvault Forager]] keep material flowing while [[Chatterfang|Chatterfang, Squirrel General]] turns every token maker into an even bigger army. This deck snowballs hard once a payoff sticks, so prioritize hands that curve one- and two-mana setup into a powerful turn-three engine.
+
+Your strongest turns come from chaining value pieces with [[Chord of Calling]] at instant speed. Find [[Bonecache Overseer]] or [[Chatterfang|Chatterfang, Squirrel General]] to stabilize combat, then pivot into inevitability with haymakers like [[Ygra|Ygra, Eater of All]] and utility bullets such as [[Haywire Mite]] or [[Osteomancer Adept]]. Even singletons like [[Blood Artist]], [[Warren Soultrader]], and [[Chthonian Nightmare]] can completely swing grindy games when they line up with your token engine.
+
+Tip: Treat [[Chord of Calling]] as both a tutor and a combat trick. Passing with convoke mana up forces awkward attacks and blocks from your opponent.
