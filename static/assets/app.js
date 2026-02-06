@@ -1,7 +1,7 @@
 // Battlebox SPA
 (function() {
   const app = document.getElementById('app');
-  let data = { index: null, battleboxes: {} };
+  let data = { index: null, battleboxes: {}, buildId: '' };
   let previewEl = null;
   let previewImgFront = null;
   let previewImgBack = null;
@@ -467,10 +467,22 @@
     previewToken += 1;
   }
 
-  async function fetchJsonData(path) {
+  function withCacheBust(path) {
+    if (!data.buildId) return path;
+    const sep = path.includes('?') ? '&' : '?';
+    return `${path}${sep}v=${encodeURIComponent(data.buildId)}`;
+  }
+
+  function toGzipPath(path) {
+    const q = path.indexOf('?');
+    if (q === -1) return `${path}.gz`;
+    return `${path.slice(0, q)}.gz${path.slice(q)}`;
+  }
+
+  async function fetchJsonData(path, fetchOptions) {
     if (window.DecompressionStream) {
       try {
-        const gzRes = await fetch(`${path}.gz`);
+        const gzRes = await fetch(toGzipPath(path), fetchOptions);
         if (gzRes.ok && gzRes.body) {
           const ds = new DecompressionStream('gzip');
           const decoded = gzRes.body.pipeThrough(ds);
@@ -482,14 +494,14 @@
       }
     }
 
-    const res = await fetch(path);
+    const res = await fetch(path, fetchOptions);
     if (!res.ok) return null;
     return res.json();
   }
 
   async function loadBattlebox(bbSlug) {
     if (data.battleboxes[bbSlug]) return data.battleboxes[bbSlug];
-    const bb = await fetchJsonData(`/data/${bbSlug}.json`);
+    const bb = await fetchJsonData(withCacheBust(`/data/${bbSlug}.json`));
     if (!bb) return null;
     data.battleboxes[bbSlug] = bb;
     return bb;
@@ -758,11 +770,12 @@
   async function init() {
     app.innerHTML = '<div class="loading">Loading...</div>';
 
-    data.index = await fetchJsonData('/data/index.json');
+    data.index = await fetchJsonData('/data/index.json', { cache: 'no-store' });
     if (!data.index) {
       app.innerHTML = '<div class="loading">Failed to load data.</div>';
       return;
     }
+    data.buildId = data.index.build_id || '';
 
     setupCardHover();
     window.addEventListener('hashchange', route);

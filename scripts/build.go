@@ -128,6 +128,8 @@ type BattleboxIndex struct {
 
 // IndexOutput is the top-level payload for static/data/index.json.
 type IndexOutput struct {
+	// Build id used for cache-busting data fetches.
+	BuildID string `json:"build_id,omitempty"`
 	// All battlebox summaries emitted to index.json.
 	Battleboxes []BattleboxIndex `json:"battleboxes"`
 }
@@ -227,6 +229,7 @@ func main() {
 	var indexOutput IndexOutput
 	var allCards []Card
 	var missing []MissingPrinting
+	indexOutput.BuildID = strconv.FormatInt(time.Now().UnixNano(), 36)
 
 	// First pass: collect all cards
 	battleboxDirs, err := os.ReadDir(dataDir)
