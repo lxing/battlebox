@@ -98,5 +98,8 @@
       "name": "Wooded Foothills",
       "qty": 4
     }
+  ],
+  "difficulty_tags": [
+    "beginner"
   ]
 }

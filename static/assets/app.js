@@ -16,8 +16,8 @@
     ).join('');
   }
 
-  function renderDeckTags(tags) {
-    if (!Array.isArray(tags) || tags.length === 0) return '';
+  function sortArchetypeTags(tags) {
+    if (!Array.isArray(tags) || tags.length === 0) return [];
     const rank = {
       tribal: 0,
       aggro: 1,
@@ -26,7 +26,7 @@
       midrange: 4,
       control: 5,
     };
-    const sorted = [...tags].sort((a, b) => {
+    return [...tags].sort((a, b) => {
       const ak = normalizeName(a);
       const bk = normalizeName(b);
       const ar = Object.prototype.hasOwnProperty.call(rank, ak) ? rank[ak] : 100;
@@ -34,11 +34,57 @@
       if (ar !== br) return ar - br;
       return ak.localeCompare(bk);
     });
+  }
+
+  function renderDeckTags(tags) {
+    const sorted = sortArchetypeTags(tags);
+    if (sorted.length === 0) return '';
     return sorted.map(tag => {
       const key = normalizeName(tag).replace(/[^a-z0-9-]/g, '');
       if (!key) return '';
       return `<span class="deck-tag deck-tag-${key}">${key}</span>`;
     }).join('');
+  }
+
+  function sortDifficultyTags(tags) {
+    if (!Array.isArray(tags) || tags.length === 0) return [];
+    const rank = {
+      beginner: 0,
+      intermediate: 1,
+      expert: 2,
+    };
+    return [...tags].sort((a, b) => {
+      const ak = normalizeName(a);
+      const bk = normalizeName(b);
+      const ar = Object.prototype.hasOwnProperty.call(rank, ak) ? rank[ak] : 100;
+      const br = Object.prototype.hasOwnProperty.call(rank, bk) ? rank[bk] : 100;
+      if (ar !== br) return ar - br;
+      return ak.localeCompare(bk);
+    });
+  }
+
+  function renderDifficultyTags(tags) {
+    const sorted = sortDifficultyTags(tags);
+    if (sorted.length === 0) return '';
+    return sorted.map(tag => {
+      const key = normalizeName(tag).replace(/[^a-z0-9-]/g, '');
+      if (!key) return '';
+      return `<span class="deck-tag deck-tag-difficulty deck-tag-${key}">${key}</span>`;
+    }).join('');
+  }
+
+  function renderDeckSelectionTags(tags, difficultyTags) {
+    const archetype = sortArchetypeTags(tags).map(tag => {
+      const key = normalizeName(tag).replace(/[^a-z0-9-]/g, '');
+      if (!key) return '';
+      return `<span class="deck-tag deck-tag-${key}">${key}</span>`;
+    });
+    const difficulty = sortDifficultyTags(difficultyTags).map(tag => {
+      const key = normalizeName(tag).replace(/[^a-z0-9-]/g, '');
+      if (!key) return '';
+      return `<span class="deck-tag deck-tag-difficulty deck-tag-${key}">${key}</span>`;
+    });
+    return [...difficulty, ...archetype].filter(Boolean).join('');
   }
 
   function capitalize(str) {
@@ -489,7 +535,9 @@
       <ul class="deck-list">
         ${bb.decks.map(d => `
           <li class="deck-item" data-slug="${d.slug}"><a class="deck-link" href="#/${bb.slug}/${d.slug}">
-            ${d.name} <span class="colors">${formatColors(d.colors)}</span>
+            <span class="deck-link-name">${d.name}</span>
+            <div class="deck-link-tags">${renderDeckSelectionTags(d.tags, d.difficulty_tags)}</div>
+            <span class="colors">${formatColors(d.colors)}</span>
           </a></li>
         `).join('')}
       </ul>
@@ -592,7 +640,7 @@
       </h1>
       <div class="deck-info-pane">
         <div class="deck-colors">${formatColors(deck.colors)}</div>
-        <div class="deck-tags">${renderDeckTags(deck.tags)}</div>
+        <div class="deck-tags">${renderDeckTags(deck.tags)}${renderDifficultyTags(deck.difficulty_tags)}</div>
       </div>
 
       ${careWarningHtml}

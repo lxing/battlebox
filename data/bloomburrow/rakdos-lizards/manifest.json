@@ -94,5 +94,8 @@
       "name": "Valley Flamecaller",
       "qty": 4
     }
+  ],
+  "difficulty_tags": [
+    "intermediate"
   ]
 }

@@ -106,5 +106,8 @@
       "name": "Witch Enchanter / Witch-Blessed Meadow",
       "qty": 2
     }
+  ],
+  "difficulty_tags": [
+    "beginner"
   ]
 }

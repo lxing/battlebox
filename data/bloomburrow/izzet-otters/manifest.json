@@ -90,5 +90,8 @@
       "name": "Valley Floodcaller",
       "qty": 4
     }
+  ],
+  "difficulty_tags": [
+    "intermediate"
   ]
 }

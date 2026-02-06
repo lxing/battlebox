@@ -110,5 +110,8 @@
       "name": "Witch Enchanter / Witch-Blessed Meadow",
       "qty": 1
     }
+  ],
+  "difficulty_tags": [
+    "expert"
   ]
 }

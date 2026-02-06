@@ -39,6 +39,8 @@ type Manifest struct {
 	Colors string `json:"colors"`
 	// Optional archetype tags, e.g. aggro/tempo/midrange/control/combo/tribal.
 	Tags []string `json:"tags,omitempty"`
+	// Optional difficulty tags, e.g. beginner/intermediate/expert.
+	DifficultyTags []string `json:"difficulty_tags,omitempty"`
 	// Optional warning flag for expensive premodern cards.
 	PremodernCareWarning bool `json:"premodern_care_warning,omitempty"`
 	// Mainboard entries from manifest.json.
@@ -57,6 +59,8 @@ type Deck struct {
 	Colors string `json:"colors"`
 	// Optional archetype tags for UI display.
 	Tags []string `json:"tags,omitempty"`
+	// Optional difficulty tags for UI display.
+	DifficultyTags []string `json:"difficulty_tags,omitempty"`
 	// Optional warning flag surfaced in UI.
 	PremodernCareWarning bool `json:"premodern_care_warning,omitempty"`
 	// Lookup map from normalized card name to printing key.
@@ -107,6 +111,10 @@ type DeckIndex struct {
 	Name string `json:"name"`
 	// Mana color identity for summary view.
 	Colors string `json:"colors"`
+	// Optional archetype tags for summary view.
+	Tags []string `json:"tags,omitempty"`
+	// Optional difficulty tags for summary view.
+	DifficultyTags []string `json:"difficulty_tags,omitempty"`
 	// Optional warning flag surfaced in index view.
 	PremodernCareWarning bool `json:"premodern_care_warning,omitempty"`
 }
@@ -332,6 +340,8 @@ func main() {
 				Slug:                 deck.Slug,
 				Name:                 deck.Name,
 				Colors:               deck.Colors,
+				Tags:                 append([]string(nil), deck.Tags...),
+				DifficultyTags:       append([]string(nil), deck.DifficultyTags...),
 				PremodernCareWarning: deck.PremodernCareWarning,
 			})
 		}
@@ -628,6 +638,45 @@ func normalizeDeckTags(tags []string) []string {
 	return out
 }
 
+func normalizeDifficultyTags(tags []string) []string {
+	if len(tags) == 0 {
+		return nil
+	}
+	rank := map[string]int{
+		"beginner":     0,
+		"intermediate": 1,
+		"expert":       2,
+	}
+	seen := map[string]bool{}
+	out := make([]string, 0, len(tags))
+	for _, tag := range tags {
+		key := normalizeName(tag)
+		if key == "" || seen[key] {
+			continue
+		}
+		seen[key] = true
+		out = append(out, key)
+	}
+	sort.Slice(out, func(i, j int) bool {
+		ri, okI := rank[out[i]]
+		rj, okJ := rank[out[j]]
+		if okI && okJ {
+			if ri != rj {
+				return ri < rj
+			}
+			return out[i] < out[j]
+		}
+		if okI {
+			return true
+		}
+		if okJ {
+			return false
+		}
+		return out[i] < out[j]
+	})
+	return out
+}
+
 func processDeck(deckPath, slug, battlebox string, printings map[string]string) (*Deck, error) {
 	manifestPath := filepath.Join(deckPath, "manifest.json")
 	manifestData, err := os.ReadFile(manifestPath)
@@ -664,6 +713,7 @@ func processDeck(deckPath, slug, battlebox string, printings map[string]string) 
 		Name:                 manifest.Name,
 		Colors:               manifest.Colors,
 		Tags:                 normalizeDeckTags(manifest.Tags),
+		DifficultyTags:       normalizeDifficultyTags(manifest.DifficultyTags),
 		PremodernCareWarning: manifest.PremodernCareWarning,
 		Printings:            map[string]string{},
 		Cards:                manifest.Cards,

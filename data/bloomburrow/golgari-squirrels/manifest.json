@@ -114,5 +114,8 @@
       "name": "Ygra, Eater of All",
       "qty": 1
     }
+  ],
+  "difficulty_tags": [
+    "expert"
   ]
 }
