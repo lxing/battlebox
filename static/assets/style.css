@@ -476,13 +476,10 @@ h2 {
 /* Primer */
 details.collapsible {
   background: #252540;
+  border: 1px solid #353560;
   border-radius: 6px;
   padding: 0.5rem 0.75rem;
   margin: 0.5rem 0;
-}
-
-details.collapsible[open] {
-  border: 1px solid #353560;
 }
 
 details.collapsible summary {
@@ -502,10 +499,6 @@ details.collapsible summary::after {
   content: '+';
   color: #888;
   font-weight: 700;
-}
-
-details.collapsible[open] summary::after {
-  content: '-';
 }
 
 .collapsible-body {
