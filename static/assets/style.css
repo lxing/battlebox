@@ -160,6 +160,13 @@ h2 {
   margin-left: auto;
 }
 
+button,
+input[type="button"],
+input[type="submit"],
+input[type="reset"] {
+  touch-action: manipulation;
+}
+
 .action-button {
   background: #2e2e50;
   color: #fff;
