@@ -107,6 +107,12 @@
     return 'name';
   }
 
+  function normalizeCollapsedMask(mask) {
+    const parsed = Number.parseInt(mask, 10);
+    if (Number.isNaN(parsed) || parsed < 0) return 0;
+    return parsed & 7;
+  }
+
   function parseHashRoute(rawHash) {
     const hash = typeof rawHash === 'string' ? rawHash : (location.hash.slice(1) || '/');
     const [pathPart, queryPart = ''] = hash.split('?');
@@ -118,6 +124,7 @@
       parts,
       sortMode: normalizeSortMode(params.get('sort')),
       matchupSlug,
+      collapsedMask: normalizeCollapsedMask(params.get('c')),
     };
   }
 
@@ -127,10 +134,11 @@
     return `#/${bbSlug}?${params.toString()}`;
   }
 
-  function buildDeckHash(bbSlug, deckSlug, sortMode, matchupSlug) {
+  function buildDeckHash(bbSlug, deckSlug, sortMode, matchupSlug, collapsedMask) {
     const params = new URLSearchParams();
     params.set('sort', normalizeSortMode(sortMode));
     if (matchupSlug) params.set('matchup', matchupSlug);
+    params.set('c', String(normalizeCollapsedMask(collapsedMask)));
     return `#/${bbSlug}/${deckSlug}?${params.toString()}`;
   }
 
@@ -542,7 +550,7 @@
   // Router
   async function route() {
     hidePreview();
-    const { parts, sortMode, matchupSlug } = parseHashRoute(location.hash.slice(1) || '/');
+    const { parts, sortMode, matchupSlug, collapsedMask } = parseHashRoute(location.hash.slice(1) || '/');
 
     window.scrollTo(0, 0);
 
@@ -551,7 +559,7 @@
     } else if (parts.length === 1) {
       renderBattlebox(parts[0], sortMode);
     } else if (parts.length === 2) {
-      await renderDeck(parts[0], parts[1], matchupSlug || undefined, sortMode);
+      await renderDeck(parts[0], parts[1], matchupSlug || undefined, sortMode, collapsedMask);
     } else {
       renderNotFound();
     }
@@ -733,12 +741,13 @@
     applySort(initialSort);
   }
 
-  async function renderDeck(bbSlug, deckSlug, selectedGuide, sortMode) {
+  async function renderDeck(bbSlug, deckSlug, selectedGuide, sortMode, collapsedMask) {
     const bb = await loadBattlebox(bbSlug);
     if (!bb) return renderNotFound();
     const deck = bb.decks.find(d => d.slug === deckSlug);
     if (!deck) return renderNotFound();
     const currentSortMode = normalizeSortMode(sortMode);
+    let currentCollapsedMask = normalizeCollapsedMask(collapsedMask);
 
     const deckPrintings = deck.printings || {};
     const deckDoubleFaced = buildDoubleFacedMap(deck);
@@ -771,6 +780,9 @@
     const hasLandColumn = !hasSideboard && deck.cards.some(c => (c.type || 'spell') === 'land');
     const hasSecondColumn = hasSideboard || hasLandColumn;
     const mainTypes = hasSideboard ? undefined : ['creature', 'spell'];
+    const decklistOpenAttr = (currentCollapsedMask & 1) === 0 ? ' open' : '';
+    const primerOpenAttr = (currentCollapsedMask & 2) === 0 ? ' open' : '';
+    const matchupOpenAttr = (currentCollapsedMask & 4) === 0 ? ' open' : '';
 
     app.innerHTML = `
       <h1 class="breadcrumbs">
@@ -785,7 +797,7 @@
         <div class="deck-tags">${renderDeckTags(deck.tags)}${renderDifficultyTags(deck.difficulty_tags)}</div>
       </div>
 
-      <details class="collapsible" open>
+      <details id="decklist-details" class="collapsible"${decklistOpenAttr}>
         <summary>Decklist</summary>
         <div class="collapsible-body">
           <div class="decklist-grid${hasSecondColumn ? '' : ' single'}">
@@ -799,7 +811,7 @@
         </div>
       </details>
 
-      <details class="collapsible" open>
+      <details id="primer-details" class="collapsible"${primerOpenAttr}>
         <summary>Primer</summary>
         <div class="collapsible-body">
           <div class="primer">${primerHtml}</div>
@@ -807,7 +819,7 @@
       </details>
 
       ${guideKeys.length ? `
-        <details class="collapsible matchup-guides" open>
+        <details id="matchup-details" class="collapsible matchup-guides"${matchupOpenAttr}>
           <summary>Matchup Guides</summary>
           <div class="collapsible-body guide-panel">
             <div class="guide-select">
@@ -824,10 +836,47 @@
       
     `;
 
+    const decklistDetails = document.getElementById('decklist-details');
+    const primerDetails = document.getElementById('primer-details');
+    const matchupDetails = document.getElementById('matchup-details');
+    let currentMatchupSlug = selectedGuide && guideKeys.includes(selectedGuide) ? selectedGuide : '';
+
+    const computeCollapsedMask = () => {
+      let mask = 0;
+      if (decklistDetails && !decklistDetails.open) mask |= 1;
+      if (primerDetails && !primerDetails.open) mask |= 2;
+      if (matchupDetails && !matchupDetails.open) mask |= 4;
+      return mask;
+    };
+
+    const updateDeckHashFromState = () => {
+      const nextHash = buildDeckHash(
+        bb.slug,
+        deck.slug,
+        currentSortMode,
+        currentMatchupSlug || undefined,
+        currentCollapsedMask
+      );
+      if (location.hash !== nextHash) {
+        history.replaceState(null, '', nextHash);
+      }
+    };
+
     if (guideKeys.length) {
       const select = document.getElementById('guide-select');
       const guideBox = document.getElementById('guide-box');
       const opponentLink = document.getElementById('guide-opponent-link');
+      const updateOpponentLink = (key) => {
+        if (!opponentLink) return;
+        const opponent = bb.decks.find(d => d.slug === key);
+        const opponentHasGuide = opponent
+          && opponent.guides
+          && Object.prototype.hasOwnProperty.call(opponent.guides, deck.slug);
+        opponentLink.href = opponentHasGuide
+          ? buildDeckHash(bb.slug, key, currentSortMode, deck.slug, currentCollapsedMask)
+          : buildDeckHash(bb.slug, key, currentSortMode, undefined, currentCollapsedMask);
+        opponentLink.textContent = opponent ? `Go to ${opponent.name}` : 'Go to deck';
+      };
       const renderGuide = (key) => {
         const guideData = deck.guides[key] || '';
         const opponent = bb.decks.find(d => d.slug === key);
@@ -838,15 +887,7 @@
           [opponentDoubleFaced, deckDoubleFaced]
         );
         guideBox.innerHTML = renderGuideContent(mdSelf, mdProse, guideData);
-        if (opponentLink) {
-          const opponentHasGuide = opponent
-            && opponent.guides
-            && Object.prototype.hasOwnProperty.call(opponent.guides, deck.slug);
-          opponentLink.href = opponentHasGuide
-            ? buildDeckHash(bb.slug, key, currentSortMode, deck.slug)
-            : buildDeckHash(bb.slug, key, currentSortMode);
-          opponentLink.textContent = opponent ? `Go to ${opponent.name}` : 'Go to deck';
-        }
+        updateOpponentLink(key);
       };
       const initialGuide = selectedGuide && guideKeys.includes(selectedGuide)
         ? selectedGuide
@@ -855,13 +896,33 @@
       renderGuide(initialGuide);
       select.addEventListener('change', () => {
         const key = select.value;
+        currentMatchupSlug = key;
         renderGuide(key);
-        const nextHash = buildDeckHash(bb.slug, deck.slug, currentSortMode, key);
-        if (location.hash !== nextHash) {
-          history.replaceState(null, '', nextHash);
-        }
+        updateDeckHashFromState();
+      });
+
+      const syncCollapsedAndUrl = () => {
+        currentCollapsedMask = computeCollapsedMask();
+        updateOpponentLink(select.value);
+        updateDeckHashFromState();
+      };
+      [decklistDetails, primerDetails, matchupDetails].forEach((details) => {
+        if (!details) return;
+        details.addEventListener('toggle', syncCollapsedAndUrl);
+      });
+    } else {
+      const syncCollapsedAndUrl = () => {
+        currentCollapsedMask = computeCollapsedMask();
+        updateDeckHashFromState();
+      };
+      [decklistDetails, primerDetails].forEach((details) => {
+        if (!details) return;
+        details.addEventListener('toggle', syncCollapsedAndUrl);
       });
     }
+
+    currentCollapsedMask = computeCollapsedMask();
+    updateDeckHashFromState();
   }
 
   function renderNotFound() {
