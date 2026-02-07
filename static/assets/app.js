@@ -638,7 +638,6 @@
     const deckPrintings = deck.printings || {};
     const deckDoubleFaced = buildDoubleFacedMap(deck);
     const mdSelf = createMarkdownRenderer([deckPrintings], [deckDoubleFaced]);
-    const combosHtml = deck.key_combos ? mdSelf.render(deck.key_combos) : '<em>No key combos yet</em>';
     const primerHtml = deck.primer ? mdSelf.render(deck.primer) : '<em>No primer yet</em>';
     const bannedNames = Array.isArray(bb.banned) ? bb.banned : [];
     const bannedSet = new Set(bannedNames.map(normalizeName));
@@ -692,13 +691,6 @@
             </div>
             ${sideboardHtml || landColumnHtml}
           </div>
-        </div>
-      </details>
-
-      <details class="collapsible" open>
-        <summary>Key Combos</summary>
-        <div class="collapsible-body">
-          <div class="primer key-combos">${combosHtml}</div>
         </div>
       </details>
 

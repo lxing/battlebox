@@ -1,5 +1,8 @@
 Fuel a titanic removal suite with the [[Deadly Dispute]] + fodder engine. Once stabilized, pressure using the Monarch and Initiative R&D disasters.
 
+### Nonobvious Combos
+[[Deadly Dispute]] + [[Ichor Wellspring]] / [[Lembas]]
+
 ### Early game
 Prioritize land drops and fodder setup. [[Khalni Garden]], [[Ichor Wellspring]], [[Tithing Blade / Consuming Sepulcher]], and [[Lembas]] are ideal here. Use spot removal to survive the first few turns and buy time to develop your value loop.
 

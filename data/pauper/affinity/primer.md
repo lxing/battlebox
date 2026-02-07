@@ -1,5 +1,9 @@
 Use artifact lands and cheap artifacts to power fast affinity spells. Various sacrifice effects also give an amazing recursion engine; this deck is an unmatched combo of terrifying speed and grinding capability. Most decks dedicate a huge slice of sideboard to Affinity for good reason.
 
+### Nonobvious Combos
+[[Deadly Dispute]] + [[Ichor Wellspring]]
+[[Krark-Clan Shaman]] + [[Toxin Analysis]]
+
 ### Early game
 Develop as many cheap artifacts as you can, then chain them into [[Thoughtcast]] and [[Myr Enforcer]] before cashing them in for [[Deadly Dispute]] and [[Reckoner's Bargain]]. As ridiculous as it sounds, this is the early game for Affinity.
 

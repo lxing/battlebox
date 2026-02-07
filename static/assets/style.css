@@ -524,14 +524,6 @@ details.collapsible[open] summary::after {
   line-height: 1.4;
 }
 
-.key-combos {
-  line-height: 0.95;
-}
-
-.key-combos p {
-  margin: 0.08rem 0;
-}
-
 /* Matchup guides */
 .guide-panel {
   padding: 0;

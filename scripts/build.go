@@ -70,8 +70,6 @@ type Deck struct {
 	Sideboard []Card `json:"sideboard,omitempty"`
 	// Primer markdown text.
 	Primer string `json:"primer"`
-	// Key combos markdown text.
-	KeyCombos string `json:"key_combos,omitempty"`
 	// Matchup guides keyed by opponent deck slug.
 	Guides map[string]MatchupGuide `json:"guides,omitempty"`
 }
@@ -1032,11 +1030,6 @@ func processDeck(deckPath, slug, battlebox string, printings map[string]string) 
 	if primerData, err := os.ReadFile(primerPath); err == nil {
 		deck.Primer = strings.TrimSpace(string(primerData))
 	}
-	// Read key combos
-	combosPath := filepath.Join(deckPath, "combos.md")
-	if combosData, err := os.ReadFile(combosPath); err == nil {
-		deck.KeyCombos = strings.TrimSpace(string(combosData))
-	}
 
 	// Read sideboard guides
 	mainboardIndex := indexCards(manifest.Cards)
@@ -1241,9 +1234,6 @@ func validateCardRefs(battleboxes []Battlebox) error {
 		for _, deck := range bb.Decks {
 			if deck.Primer != "" {
 				issues = append(issues, validateRefsForText(bb.Slug, deck.Slug, "primer", deck.Primer, deckCards[deck.Slug], nil)...)
-			}
-			if deck.KeyCombos != "" {
-				issues = append(issues, validateRefsForText(bb.Slug, deck.Slug, "key_combos", deck.KeyCombos, deckCards[deck.Slug], nil)...)
 			}
 			for opponent, guide := range deck.Guides {
 				opponentSet := deckCards[opponent]
