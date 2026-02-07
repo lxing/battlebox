@@ -112,10 +112,26 @@
     const [pathPart, queryPart = ''] = hash.split('?');
     const parts = pathPart.split('/').filter(Boolean);
     const params = new URLSearchParams(queryPart);
+    const matchup = (params.get('matchup') || '').trim();
+    const matchupSlug = matchup ? normalizeName(matchup) : '';
     return {
       parts,
       sortMode: normalizeSortMode(params.get('sort')),
+      matchupSlug,
     };
+  }
+
+  function buildBattleboxHash(bbSlug, sortMode) {
+    const params = new URLSearchParams();
+    params.set('sort', normalizeSortMode(sortMode));
+    return `#/${bbSlug}?${params.toString()}`;
+  }
+
+  function buildDeckHash(bbSlug, deckSlug, sortMode, matchupSlug) {
+    const params = new URLSearchParams();
+    params.set('sort', normalizeSortMode(sortMode));
+    if (matchupSlug) params.set('matchup', matchupSlug);
+    return `#/${bbSlug}/${deckSlug}?${params.toString()}`;
   }
 
   function getCardTarget(event) {
@@ -526,7 +542,7 @@
   // Router
   async function route() {
     hidePreview();
-    const { parts, sortMode } = parseHashRoute(location.hash.slice(1) || '/');
+    const { parts, sortMode, matchupSlug } = parseHashRoute(location.hash.slice(1) || '/');
 
     window.scrollTo(0, 0);
 
@@ -535,15 +551,9 @@
     } else if (parts.length === 1) {
       renderBattlebox(parts[0], sortMode);
     } else if (parts.length === 2) {
-      await renderDeck(parts[0], parts[1], undefined, sortMode);
-    } else if (parts.length === 3) {
-      if (parts[2] === 'matchup') {
-        await renderDeck(parts[0], parts[1], undefined, sortMode);
-      } else {
-        await renderDeck(parts[0], parts[1], parts[2], sortMode);
-      }
-    } else if (parts.length === 4 && parts[2] === 'matchup') {
-      await renderDeck(parts[0], parts[1], parts[3], sortMode);
+      await renderDeck(parts[0], parts[1], matchupSlug || undefined, sortMode);
+    } else {
+      renderNotFound();
     }
   }
 
@@ -592,7 +602,7 @@
       </div>
       <ul class="deck-list">
         ${bb.decks.map(d => `
-          <li class="deck-item" data-slug="${d.slug}"><a class="deck-link" href="#/${bb.slug}/${d.slug}?sort=${encodeURIComponent(initialSort)}">
+          <li class="deck-item" data-slug="${d.slug}"><a class="deck-link" href="${buildDeckHash(bb.slug, d.slug, initialSort)}">
             <span class="deck-link-name">${d.name}</span>
             <div class="deck-link-tags">${renderDeckSelectionTags(d.tags, d.difficulty_tags)}</div>
             <span class="colors">${formatColors(d.colors)}</span>
@@ -631,7 +641,7 @@
     let sortMode = initialSort;
 
     const updateBattleboxHash = () => {
-      const nextHash = `#/${bb.slug}?sort=${encodeURIComponent(sortMode)}`;
+      const nextHash = buildBattleboxHash(bb.slug, sortMode);
       if (location.hash !== nextHash) {
         history.replaceState(null, '', nextHash);
       }
@@ -640,7 +650,7 @@
     const updateDeckLinks = () => {
       deckBySlug.forEach((link, slug) => {
         if (!link) return;
-        link.href = `#/${bb.slug}/${slug}?sort=${encodeURIComponent(sortMode)}`;
+        link.href = buildDeckHash(bb.slug, slug, sortMode);
       });
     };
 
@@ -766,7 +776,7 @@
       <h1 class="breadcrumbs">
         <a href="#/">Battlebox</a>
         <span class="crumb-sep">/</span>
-        <a href="#/${bb.slug}?sort=${encodeURIComponent(currentSortMode)}">${capitalize(bb.slug)}</a>
+        <a href="${buildBattleboxHash(bb.slug, currentSortMode)}">${capitalize(bb.slug)}</a>
         <span class="crumb-sep">/</span>
         <span>${deck.name}</span>
       </h1>
@@ -833,8 +843,8 @@
             && opponent.guides
             && Object.prototype.hasOwnProperty.call(opponent.guides, deck.slug);
           opponentLink.href = opponentHasGuide
-            ? `#/${bb.slug}/${key}/matchup/${deck.slug}?sort=${encodeURIComponent(currentSortMode)}`
-            : `#/${bb.slug}/${key}?sort=${encodeURIComponent(currentSortMode)}`;
+            ? buildDeckHash(bb.slug, key, currentSortMode, deck.slug)
+            : buildDeckHash(bb.slug, key, currentSortMode);
           opponentLink.textContent = opponent ? `Go to ${opponent.name}` : 'Go to deck';
         }
       };
@@ -846,7 +856,7 @@
       select.addEventListener('change', () => {
         const key = select.value;
         renderGuide(key);
-        const nextHash = `#/${bb.slug}/${deck.slug}/matchup/${key}?sort=${encodeURIComponent(currentSortMode)}`;
+        const nextHash = buildDeckHash(bb.slug, deck.slug, currentSortMode, key);
         if (location.hash !== nextHash) {
           history.replaceState(null, '', nextHash);
         }
