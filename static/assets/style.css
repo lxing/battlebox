@@ -140,24 +140,23 @@ h2 {
   margin-bottom: 0.5rem;
 }
 
-.randomizer-row {
-  display: flex;
-  justify-content: flex-start;
-  align-items: center;
-  gap: 0.5rem;
-  width: 100%;
-}
-
-.randomizer-title {
-  font-size: inherit;
-  color: #fff;
-  font-weight: 400;
-  line-height: inherit;
-}
-
 .randomizer-controls {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  gap: 0.65rem;
+}
+
+.randomizer-roll-controls {
   display: inline-flex;
+  align-items: center;
   gap: 0.8rem;
+}
+
+.randomizer-sort-controls {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
   margin-left: auto;
 }
 
@@ -185,6 +184,19 @@ h2 {
   padding: 0 0.7rem;
   transform: scale(1.18);
   transform-origin: center;
+}
+
+.randomizer-sort {
+  height: 1.6rem;
+  line-height: 1.6rem;
+  min-width: 1.9rem;
+  padding: 0 0.45rem;
+  font-size: 1rem;
+}
+
+.randomizer-sort.active {
+  background: #4a4a78;
+  border-color: #6969a1;
 }
 
 .battlebox-link {

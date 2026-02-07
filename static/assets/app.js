@@ -562,11 +562,15 @@
         <span>${capitalize(bb.slug)}</span>
       </h1>
       <div class="randomizer">
-        <div class="randomizer-row">
-          <div class="randomizer-title">Random deck</div>
-          <div class="randomizer-controls">
-            <button type="button" class="randomizer-roll action-button" data-count="1">Roll 1</button>
-            <button type="button" class="randomizer-roll action-button" data-count="2">Roll 2</button>
+        <div class="randomizer-controls">
+          <div class="randomizer-roll-controls">
+            <button type="button" class="randomizer-roll action-button" data-count="1" title="Roll 1 deck" aria-label="Roll 1 deck">🎲</button>
+            <button type="button" class="randomizer-roll action-button" data-count="2" title="Roll 2 decks" aria-label="Roll 2 decks">🎲🎲</button>
+          </div>
+          <div class="randomizer-sort-controls" role="group" aria-label="Sort decks">
+            <button type="button" class="randomizer-sort action-button" data-sort="name" title="Sort by name" aria-label="Sort by name">🔤</button>
+            <button type="button" class="randomizer-sort action-button" data-sort="types" title="Sort by types" aria-label="Sort by types">🧬</button>
+            <button type="button" class="randomizer-sort action-button" data-sort="difficulty" title="Sort by difficulty" aria-label="Sort by difficulty">🧠</button>
           </div>
         </div>
       </div>
@@ -581,21 +585,76 @@
       </ul>
     `;
 
-    const deckItems = [...app.querySelectorAll('.deck-item')];
+    const deckList = app.querySelector('.deck-list');
+    const difficultyOrder = {
+      beginner: 0,
+      intermediate: 1,
+      expert: 2,
+    };
+    const resolveDifficultyRank = (tags) => {
+      const sorted = sortDifficultyTags(tags).map(normalizeName);
+      for (const tag of sorted) {
+        if (Object.prototype.hasOwnProperty.call(difficultyOrder, tag)) {
+          return difficultyOrder[tag];
+        }
+      }
+      return Number.MAX_SAFE_INTEGER;
+    };
     const deckBySlug = new Map(
-      deckItems.map(item => [item.dataset.slug, item.querySelector('.deck-link')])
+      [...deckList.querySelectorAll('.deck-item')].map(item => [item.dataset.slug, item.querySelector('.deck-link')])
     );
-    const deckIndexBySlug = new Map(
-      deckItems.map((item, idx) => [item.dataset.slug, idx])
+    const deckMetaBySlug = new Map(
+      bb.decks.map(deck => [deck.slug, {
+        nameKey: normalizeName(deck.name || deck.slug),
+        typeKey: sortArchetypeTags(deck.tags).map(normalizeName).join('|'),
+        difficultyRank: resolveDifficultyRank(deck.difficulty_tags),
+      }])
     );
-
     const rollButtons = [...app.querySelectorAll('.randomizer-roll')];
+    const sortButtons = [...app.querySelectorAll('.randomizer-sort')];
+    let sortMode = 'name';
+
+    const compareDeckItems = (a, b, mode) => {
+      const metaA = deckMetaBySlug.get(a.dataset.slug) || {
+        nameKey: normalizeName(a.dataset.slug || ''),
+        typeKey: '',
+        difficultyRank: Number.MAX_SAFE_INTEGER,
+      };
+      const metaB = deckMetaBySlug.get(b.dataset.slug) || {
+        nameKey: normalizeName(b.dataset.slug || ''),
+        typeKey: '',
+        difficultyRank: Number.MAX_SAFE_INTEGER,
+      };
+      const nameCmp = metaA.nameKey.localeCompare(metaB.nameKey);
+      if (mode === 'types') {
+        const typeCmp = metaA.typeKey.localeCompare(metaB.typeKey);
+        if (typeCmp !== 0) return typeCmp;
+        return nameCmp;
+      }
+      if (mode === 'difficulty') {
+        const diffCmp = metaA.difficultyRank - metaB.difficultyRank;
+        if (diffCmp !== 0) return diffCmp;
+        return nameCmp;
+      }
+      return nameCmp;
+    };
+
+    const applySort = (mode) => {
+      sortMode = mode;
+      const items = [...deckList.querySelectorAll('.deck-item')];
+      items.sort((a, b) => compareDeckItems(a, b, sortMode));
+      items.forEach(item => deckList.appendChild(item));
+      sortButtons.forEach(btn => {
+        btn.classList.toggle('active', btn.dataset.sort === sortMode);
+      });
+    };
 
     const clearHighlights = () => {
-      deckBySlug.forEach(link => link.classList.remove('deck-highlight'));
+      app.querySelectorAll('.deck-link.deck-highlight').forEach(link => link.classList.remove('deck-highlight'));
     };
 
     const roll = (count) => {
+      const deckItems = [...deckList.querySelectorAll('.deck-item')];
       if (deckItems.length === 0) return;
       clearHighlights();
       const target = Math.min(count, deckItems.length);
@@ -605,28 +664,31 @@
         const slug = deckItems[idx].dataset.slug;
         picked.add(slug);
       }
-      let scrollSlug = null;
-      let maxPickedIndex = -1;
       picked.forEach(slug => {
         const link = deckBySlug.get(slug);
         if (link) link.classList.add('deck-highlight');
-        const itemIndex = deckIndexBySlug.get(slug);
-        if (typeof itemIndex === 'number' && itemIndex > maxPickedIndex) {
-          maxPickedIndex = itemIndex;
-          scrollSlug = slug;
-        }
       });
-      if (scrollSlug) {
-        const link = deckBySlug.get(scrollSlug);
-        if (link) {
-          link.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+
+      let scrollLink = null;
+      for (let idx = deckItems.length - 1; idx >= 0; idx--) {
+        const item = deckItems[idx];
+        if (picked.has(item.dataset.slug)) {
+          scrollLink = item.querySelector('.deck-link');
+          break;
         }
+      }
+      if (scrollLink) {
+        scrollLink.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
       }
     };
 
     rollButtons.forEach(btn => {
       btn.addEventListener('click', () => roll(Number(btn.dataset.count)));
     });
+    sortButtons.forEach(btn => {
+      btn.addEventListener('click', () => applySort(btn.dataset.sort));
+    });
+    applySort('name');
   }
 
   async function renderDeck(bbSlug, deckSlug, selectedGuide) {
