@@ -610,7 +610,7 @@
       </div>
       <ul class="deck-list">
         ${bb.decks.map(d => `
-          <li class="deck-item" data-slug="${d.slug}"><a class="deck-link" href="${buildDeckHash(bb.slug, d.slug, initialSort)}">
+          <li class="deck-item" data-slug="${d.slug}"><a class="deck-link" href="${buildDeckHash(bb.slug, d.slug, initialSort, undefined, 4)}">
             <span class="deck-link-name">${d.name}</span>
             <div class="deck-link-tags">${renderDeckSelectionTags(d.tags, d.difficulty_tags)}</div>
             <span class="colors">${formatColors(d.colors)}</span>
@@ -658,7 +658,7 @@
     const updateDeckLinks = () => {
       deckBySlug.forEach((link, slug) => {
         if (!link) return;
-        link.href = buildDeckHash(bb.slug, slug, sortMode);
+        link.href = buildDeckHash(bb.slug, slug, sortMode, undefined, 4);
       });
     };
 
@@ -783,6 +783,20 @@
     const decklistOpenAttr = (currentCollapsedMask & 1) === 0 ? ' open' : '';
     const primerOpenAttr = (currentCollapsedMask & 2) === 0 ? ' open' : '';
     const matchupOpenAttr = (currentCollapsedMask & 4) === 0 ? ' open' : '';
+    const matchupGuidesHtml = guideKeys.length ? `
+      <details id="matchup-details" class="collapsible matchup-guides"${matchupOpenAttr}>
+        <summary>Matchup Guides</summary>
+        <div class="collapsible-body guide-panel">
+          <div class="guide-select">
+            <select id="guide-select" aria-label="Matchup guide">
+              ${guideOptions}
+            </select>
+            <a class="guide-opponent-link action-button" id="guide-opponent-link" href="#">Go to deck</a>
+          </div>
+          <div class="guide-box" id="guide-box"></div>
+        </div>
+      </details>
+    ` : '';
 
     app.innerHTML = `
       <h1 class="breadcrumbs">
@@ -796,6 +810,8 @@
         <div class="deck-colors">${formatColors(deck.colors)}</div>
         <div class="deck-tags">${renderDeckTags(deck.tags)}${renderDifficultyTags(deck.difficulty_tags)}</div>
       </div>
+
+      ${matchupGuidesHtml}
 
       <details id="decklist-details" class="collapsible"${decklistOpenAttr}>
         <summary>Decklist</summary>
@@ -817,23 +833,6 @@
           <div class="primer">${primerHtml}</div>
         </div>
       </details>
-
-      ${guideKeys.length ? `
-        <details id="matchup-details" class="collapsible matchup-guides"${matchupOpenAttr}>
-          <summary>Matchup Guides</summary>
-          <div class="collapsible-body guide-panel">
-            <div class="guide-select">
-              <select id="guide-select" aria-label="Matchup guide">
-                ${guideOptions}
-              </select>
-              <a class="guide-opponent-link action-button" id="guide-opponent-link" href="#">Go to deck</a>
-            </div>
-            <div class="guide-box" id="guide-box"></div>
-          </div>
-        </details>
-      ` : ''}
-
-      
     `;
 
     const decklistDetails = document.getElementById('decklist-details');
@@ -873,8 +872,8 @@
           && opponent.guides
           && Object.prototype.hasOwnProperty.call(opponent.guides, deck.slug);
         opponentLink.href = opponentHasGuide
-          ? buildDeckHash(bb.slug, key, currentSortMode, deck.slug, currentCollapsedMask)
-          : buildDeckHash(bb.slug, key, currentSortMode, undefined, currentCollapsedMask);
+          ? buildDeckHash(bb.slug, key, currentSortMode, deck.slug, 0)
+          : buildDeckHash(bb.slug, key, currentSortMode, undefined, 0);
         opponentLink.textContent = opponent ? `Go to ${opponent.name}` : 'Go to deck';
       };
       const renderGuide = (key) => {
