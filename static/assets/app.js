@@ -107,6 +107,10 @@
     return 'name';
   }
 
+  function normalizeSortDirection(direction) {
+    return direction === 'desc' ? 'desc' : 'asc';
+  }
+
   function normalizeCollapsedMask(mask) {
     const parsed = Number.parseInt(mask, 10);
     if (Number.isNaN(parsed) || parsed < 0) return 0;
@@ -123,20 +127,23 @@
     return {
       parts,
       sortMode: normalizeSortMode(params.get('sort')),
+      sortDirection: normalizeSortDirection(params.get('dir')),
       matchupSlug,
       collapsedMask: normalizeCollapsedMask(params.get('c')),
     };
   }
 
-  function buildBattleboxHash(bbSlug, sortMode) {
+  function buildBattleboxHash(bbSlug, sortMode, sortDirection) {
     const params = new URLSearchParams();
     params.set('sort', normalizeSortMode(sortMode));
+    params.set('dir', normalizeSortDirection(sortDirection));
     return `#/${bbSlug}?${params.toString()}`;
   }
 
-  function buildDeckHash(bbSlug, deckSlug, sortMode, matchupSlug, collapsedMask) {
+  function buildDeckHash(bbSlug, deckSlug, sortMode, sortDirection, matchupSlug, collapsedMask) {
     const params = new URLSearchParams();
     params.set('sort', normalizeSortMode(sortMode));
+    params.set('dir', normalizeSortDirection(sortDirection));
     if (matchupSlug) params.set('matchup', matchupSlug);
     params.set('c', String(normalizeCollapsedMask(collapsedMask)));
     return `#/${bbSlug}/${deckSlug}?${params.toString()}`;
@@ -550,16 +557,22 @@
   // Router
   async function route() {
     hidePreview();
-    const { parts, sortMode, matchupSlug, collapsedMask } = parseHashRoute(location.hash.slice(1) || '/');
+    const {
+      parts,
+      sortMode,
+      sortDirection,
+      matchupSlug,
+      collapsedMask,
+    } = parseHashRoute(location.hash.slice(1) || '/');
 
     window.scrollTo(0, 0);
 
     if (parts.length === 0) {
       renderHome();
     } else if (parts.length === 1) {
-      renderBattlebox(parts[0], sortMode);
+      renderBattlebox(parts[0], sortMode, sortDirection);
     } else if (parts.length === 2) {
-      await renderDeck(parts[0], parts[1], matchupSlug || undefined, sortMode, collapsedMask);
+      await renderDeck(parts[0], parts[1], matchupSlug || undefined, sortMode, sortDirection, collapsedMask);
     } else {
       renderNotFound();
     }
@@ -584,10 +597,11 @@
     `;
   }
 
-  function renderBattlebox(bbSlug, initialSortMode) {
+  function renderBattlebox(bbSlug, initialSortMode, initialSortDirection) {
     const bb = data.index.battleboxes.find(b => b.slug === bbSlug);
     if (!bb) return renderNotFound();
     const initialSort = normalizeSortMode(initialSortMode);
+    const initialDirection = normalizeSortDirection(initialSortDirection);
 
     app.innerHTML = `
       <h1 class="breadcrumbs">
@@ -610,7 +624,7 @@
       </div>
       <ul class="deck-list">
         ${bb.decks.map(d => `
-          <li class="deck-item" data-slug="${d.slug}"><a class="deck-link" href="${buildDeckHash(bb.slug, d.slug, initialSort, undefined, 4)}">
+          <li class="deck-item" data-slug="${d.slug}"><a class="deck-link" href="${buildDeckHash(bb.slug, d.slug, initialSort, initialDirection, undefined, 4)}">
             <span class="deck-link-name">${d.name}</span>
             <div class="deck-link-tags">${renderDeckSelectionTags(d.tags, d.difficulty_tags)}</div>
             <span class="colors">${formatColors(d.colors)}</span>
@@ -646,10 +660,11 @@
     );
     const rollButtons = [...app.querySelectorAll('.randomizer-roll')];
     const sortButtons = [...app.querySelectorAll('.randomizer-sort')];
-    let sortMode = initialSort;
+    let sortMode = null;
+    let sortDirection = initialDirection;
 
     const updateBattleboxHash = () => {
-      const nextHash = buildBattleboxHash(bb.slug, sortMode);
+      const nextHash = buildBattleboxHash(bb.slug, sortMode, sortDirection);
       if (location.hash !== nextHash) {
         history.replaceState(null, '', nextHash);
       }
@@ -658,7 +673,7 @@
     const updateDeckLinks = () => {
       deckBySlug.forEach((link, slug) => {
         if (!link) return;
-        link.href = buildDeckHash(bb.slug, slug, sortMode, undefined, 4);
+        link.href = buildDeckHash(bb.slug, slug, sortMode, sortDirection, undefined, 4);
       });
     };
 
@@ -687,10 +702,19 @@
       return nameCmp;
     };
 
-    const applySort = (mode) => {
-      sortMode = normalizeSortMode(mode);
+    const applySort = (mode, isInitial = false) => {
+      const nextMode = normalizeSortMode(mode);
+      if (!isInitial && nextMode === sortMode) {
+        sortDirection = sortDirection === 'asc' ? 'desc' : 'asc';
+      } else {
+        sortMode = nextMode;
+        if (!isInitial) {
+          sortDirection = 'asc';
+        }
+      }
       const items = [...deckList.querySelectorAll('.deck-item')];
-      items.sort((a, b) => compareDeckItems(a, b, sortMode));
+      const direction = sortDirection === 'desc' ? -1 : 1;
+      items.sort((a, b) => compareDeckItems(a, b, sortMode) * direction);
       items.forEach(item => deckList.appendChild(item));
       sortButtons.forEach(btn => {
         btn.classList.toggle('active', btn.dataset.sort === sortMode);
@@ -738,15 +762,16 @@
     sortButtons.forEach(btn => {
       btn.addEventListener('click', () => applySort(btn.dataset.sort));
     });
-    applySort(initialSort);
+    applySort(initialSort, true);
   }
 
-  async function renderDeck(bbSlug, deckSlug, selectedGuide, sortMode, collapsedMask) {
+  async function renderDeck(bbSlug, deckSlug, selectedGuide, sortMode, sortDirection, collapsedMask) {
     const bb = await loadBattlebox(bbSlug);
     if (!bb) return renderNotFound();
     const deck = bb.decks.find(d => d.slug === deckSlug);
     if (!deck) return renderNotFound();
     const currentSortMode = normalizeSortMode(sortMode);
+    const currentSortDirection = normalizeSortDirection(sortDirection);
     let currentCollapsedMask = normalizeCollapsedMask(collapsedMask);
 
     const deckPrintings = deck.printings || {};
@@ -802,7 +827,7 @@
       <h1 class="breadcrumbs">
         <a href="#/">Battlebox</a>
         <span class="crumb-sep">/</span>
-        <a href="${buildBattleboxHash(bb.slug, currentSortMode)}">${capitalize(bb.slug)}</a>
+        <a href="${buildBattleboxHash(bb.slug, currentSortMode, currentSortDirection)}">${capitalize(bb.slug)}</a>
         <span class="crumb-sep">/</span>
         <span>${deck.name}</span>
       </h1>
@@ -853,6 +878,7 @@
         bb.slug,
         deck.slug,
         currentSortMode,
+        currentSortDirection,
         currentMatchupSlug || undefined,
         currentCollapsedMask
       );
@@ -872,8 +898,8 @@
           && opponent.guides
           && Object.prototype.hasOwnProperty.call(opponent.guides, deck.slug);
         opponentLink.href = opponentHasGuide
-          ? buildDeckHash(bb.slug, key, currentSortMode, deck.slug, 0)
-          : buildDeckHash(bb.slug, key, currentSortMode, undefined, 0);
+          ? buildDeckHash(bb.slug, key, currentSortMode, currentSortDirection, deck.slug, 0)
+          : buildDeckHash(bb.slug, key, currentSortMode, currentSortDirection, undefined, 0);
         opponentLink.textContent = opponent ? `Go to ${opponent.name}` : 'Go to deck';
       };
       const renderGuide = (key) => {
