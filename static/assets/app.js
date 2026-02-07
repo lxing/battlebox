@@ -102,6 +102,22 @@
     return name.toLowerCase().trim();
   }
 
+  function normalizeSortMode(mode) {
+    if (mode === 'types' || mode === 'difficulty') return mode;
+    return 'name';
+  }
+
+  function parseHashRoute(rawHash) {
+    const hash = typeof rawHash === 'string' ? rawHash : (location.hash.slice(1) || '/');
+    const [pathPart, queryPart = ''] = hash.split('?');
+    const parts = pathPart.split('/').filter(Boolean);
+    const params = new URLSearchParams(queryPart);
+    return {
+      parts,
+      sortMode: normalizeSortMode(params.get('sort')),
+    };
+  }
+
   function getCardTarget(event) {
     if (!event.target || !event.target.closest) return null;
     return event.target.closest('.card');
@@ -510,25 +526,24 @@
   // Router
   async function route() {
     hidePreview();
-    const hash = location.hash.slice(1) || '/';
-    const parts = hash.split('/').filter(Boolean);
+    const { parts, sortMode } = parseHashRoute(location.hash.slice(1) || '/');
 
     window.scrollTo(0, 0);
 
     if (parts.length === 0) {
       renderHome();
     } else if (parts.length === 1) {
-      renderBattlebox(parts[0]);
+      renderBattlebox(parts[0], sortMode);
     } else if (parts.length === 2) {
-      await renderDeck(parts[0], parts[1]);
+      await renderDeck(parts[0], parts[1], undefined, sortMode);
     } else if (parts.length === 3) {
       if (parts[2] === 'matchup') {
-        await renderDeck(parts[0], parts[1]);
+        await renderDeck(parts[0], parts[1], undefined, sortMode);
       } else {
-        await renderDeck(parts[0], parts[1], parts[2]);
+        await renderDeck(parts[0], parts[1], parts[2], sortMode);
       }
     } else if (parts.length === 4 && parts[2] === 'matchup') {
-      await renderDeck(parts[0], parts[1], parts[3]);
+      await renderDeck(parts[0], parts[1], parts[3], sortMode);
     }
   }
 
@@ -551,9 +566,10 @@
     `;
   }
 
-  function renderBattlebox(bbSlug) {
+  function renderBattlebox(bbSlug, initialSortMode) {
     const bb = data.index.battleboxes.find(b => b.slug === bbSlug);
     if (!bb) return renderNotFound();
+    const initialSort = normalizeSortMode(initialSortMode);
 
     app.innerHTML = `
       <h1 class="breadcrumbs">
@@ -576,7 +592,7 @@
       </div>
       <ul class="deck-list">
         ${bb.decks.map(d => `
-          <li class="deck-item" data-slug="${d.slug}"><a class="deck-link" href="#/${bb.slug}/${d.slug}">
+          <li class="deck-item" data-slug="${d.slug}"><a class="deck-link" href="#/${bb.slug}/${d.slug}?sort=${encodeURIComponent(initialSort)}">
             <span class="deck-link-name">${d.name}</span>
             <div class="deck-link-tags">${renderDeckSelectionTags(d.tags, d.difficulty_tags)}</div>
             <span class="colors">${formatColors(d.colors)}</span>
@@ -612,7 +628,21 @@
     );
     const rollButtons = [...app.querySelectorAll('.randomizer-roll')];
     const sortButtons = [...app.querySelectorAll('.randomizer-sort')];
-    let sortMode = 'name';
+    let sortMode = initialSort;
+
+    const updateBattleboxHash = () => {
+      const nextHash = `#/${bb.slug}?sort=${encodeURIComponent(sortMode)}`;
+      if (location.hash !== nextHash) {
+        history.replaceState(null, '', nextHash);
+      }
+    };
+
+    const updateDeckLinks = () => {
+      deckBySlug.forEach((link, slug) => {
+        if (!link) return;
+        link.href = `#/${bb.slug}/${slug}?sort=${encodeURIComponent(sortMode)}`;
+      });
+    };
 
     const compareDeckItems = (a, b, mode) => {
       const metaA = deckMetaBySlug.get(a.dataset.slug) || {
@@ -640,13 +670,15 @@
     };
 
     const applySort = (mode) => {
-      sortMode = mode;
+      sortMode = normalizeSortMode(mode);
       const items = [...deckList.querySelectorAll('.deck-item')];
       items.sort((a, b) => compareDeckItems(a, b, sortMode));
       items.forEach(item => deckList.appendChild(item));
       sortButtons.forEach(btn => {
         btn.classList.toggle('active', btn.dataset.sort === sortMode);
       });
+      updateDeckLinks();
+      updateBattleboxHash();
     };
 
     const clearHighlights = () => {
@@ -688,14 +720,15 @@
     sortButtons.forEach(btn => {
       btn.addEventListener('click', () => applySort(btn.dataset.sort));
     });
-    applySort('name');
+    applySort(initialSort);
   }
 
-  async function renderDeck(bbSlug, deckSlug, selectedGuide) {
+  async function renderDeck(bbSlug, deckSlug, selectedGuide, sortMode) {
     const bb = await loadBattlebox(bbSlug);
     if (!bb) return renderNotFound();
     const deck = bb.decks.find(d => d.slug === deckSlug);
     if (!deck) return renderNotFound();
+    const currentSortMode = normalizeSortMode(sortMode);
 
     const deckPrintings = deck.printings || {};
     const deckDoubleFaced = buildDoubleFacedMap(deck);
@@ -733,7 +766,7 @@
       <h1 class="breadcrumbs">
         <a href="#/">Battlebox</a>
         <span class="crumb-sep">/</span>
-        <a href="#/${bb.slug}">${capitalize(bb.slug)}</a>
+        <a href="#/${bb.slug}?sort=${encodeURIComponent(currentSortMode)}">${capitalize(bb.slug)}</a>
         <span class="crumb-sep">/</span>
         <span>${deck.name}</span>
       </h1>
@@ -800,8 +833,8 @@
             && opponent.guides
             && Object.prototype.hasOwnProperty.call(opponent.guides, deck.slug);
           opponentLink.href = opponentHasGuide
-            ? `#/${bb.slug}/${key}/matchup/${deck.slug}`
-            : `#/${bb.slug}/${key}`;
+            ? `#/${bb.slug}/${key}/matchup/${deck.slug}?sort=${encodeURIComponent(currentSortMode)}`
+            : `#/${bb.slug}/${key}?sort=${encodeURIComponent(currentSortMode)}`;
           opponentLink.textContent = opponent ? `Go to ${opponent.name}` : 'Go to deck';
         }
       };
@@ -813,7 +846,7 @@
       select.addEventListener('change', () => {
         const key = select.value;
         renderGuide(key);
-        const nextHash = `#/${bb.slug}/${deck.slug}/matchup/${key}`;
+        const nextHash = `#/${bb.slug}/${deck.slug}/matchup/${key}?sort=${encodeURIComponent(currentSortMode)}`;
         if (location.hash !== nextHash) {
           history.replaceState(null, '', nextHash);
         }
