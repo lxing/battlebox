@@ -1,0 +1,127 @@
+{
+  "name": "Affinity",
+  "source_url": "https://www.mtggoldfish.com/deck/7601225#paper",
+  "colors": "ubr",
+  "tags": [
+    "midrange"
+  ],
+  "cards": [
+    {
+      "name": "Black Mage's Rod",
+      "qty": 2
+    },
+    {
+      "name": "Blood Fountain",
+      "qty": 2
+    },
+    {
+      "name": "Cryogen Relic",
+      "qty": 1
+    },
+    {
+      "name": "Drossforge Bridge",
+      "qty": 4
+    },
+    {
+      "name": "Fanatical Offering",
+      "qty": 2
+    },
+    {
+      "name": "Galvanic Blast",
+      "qty": 4
+    },
+    {
+      "name": "Great Furnace",
+      "qty": 3
+    },
+    {
+      "name": "Hunter's Blowgun",
+      "qty": 1
+    },
+    {
+      "name": "Ichor Wellspring",
+      "qty": 4
+    },
+    {
+      "name": "Island",
+      "qty": 1
+    },
+    {
+      "name": "Krark-Clan Shaman",
+      "qty": 3
+    },
+    {
+      "name": "Makeshift Munitions",
+      "qty": 1
+    },
+    {
+      "name": "Mistvault Bridge",
+      "qty": 4
+    },
+    {
+      "name": "Myr Enforcer",
+      "qty": 4
+    },
+    {
+      "name": "Nihil Spellbomb",
+      "qty": 3
+    },
+    {
+      "name": "Reckoner's Bargain",
+      "qty": 4
+    },
+    {
+      "name": "Refurbished Familiar",
+      "qty": 4
+    },
+    {
+      "name": "Seat of the Synod",
+      "qty": 2
+    },
+    {
+      "name": "Silverbluff Bridge",
+      "qty": 2
+    },
+    {
+      "name": "Thoughtcast",
+      "qty": 4
+    },
+    {
+      "name": "Toxin Analysis",
+      "qty": 2
+    },
+    {
+      "name": "Vault of Whispers",
+      "qty": 3
+    }
+  ],
+  "sideboard": [
+    {
+      "name": "Blue Elemental Blast",
+      "qty": 2
+    },
+    {
+      "name": "Breath Weapon",
+      "qty": 1
+    },
+    {
+      "name": "Duress",
+      "qty": 3
+    },
+    {
+      "name": "Hydroblast",
+      "qty": 4
+    },
+    {
+      "name": "Pyroblast",
+      "qty": 4
+    },
+    {
+      "name": "Unexpected Fangs",
+      "qty": 1
+    }
+  ],
+  "difficulty_tags": [
+    "intermediate"
+  ]
+}
