@@ -1,1171 +1,569 @@
-// Battlebox SPA
-(function() {
-  const app = document.getElementById('app');
-  let data = { index: null, battleboxes: {}, buildId: '' };
-  let previewEl = null;
-  let previewImgFront = null;
-  let previewImgBack = null;
-  let previewImages = null;
-  let previewStatus = null;
-  let previewToken = 0;
-  let previewUrl = '';
+import {
+  formatColors,
+  sortArchetypeTags,
+  sortDifficultyTags,
+  renderDeckTags,
+  renderDifficultyTags,
+  renderDeckSelectionTags,
+  capitalize,
+  normalizeName,
+} from './app/utils.js';
+import {
+  normalizeSortMode,
+  normalizeSortDirection,
+  normalizeCollapsedMask,
+  normalizeApplySideboard,
+  parseHashRoute,
+  buildBattleboxHash,
+  buildDeckHash,
+} from './app/state.js';
+import { computeDeckView } from './app/deckView.js';
+import {
+  createMarkdownRenderer,
+  renderGuideContent,
+  buildDoubleFacedMap,
+  renderCardsByType,
+  renderCardGroup,
+} from './app/render.js';
+import { createCardPreview } from './app/preview.js';
 
-  function formatColors(colors) {
-    return colors.split('').map(c =>
-      `<span class="mana-symbol mana-${c}"></span>`
-    ).join('');
-  }
+const app = document.getElementById('app');
+let data = { index: null, battleboxes: {}, buildId: '' };
 
-  function sortArchetypeTags(tags) {
-    if (!Array.isArray(tags) || tags.length === 0) return [];
-    const rank = {
-      aggro: 0,
-      tempo: 1,
-      midrange: 2,
-      control: 3,
-      combo: 4,
-      tribal: 5,
-    };
-    return [...tags].sort((a, b) => {
-      const ak = normalizeName(a);
-      const bk = normalizeName(b);
-      const ar = Object.prototype.hasOwnProperty.call(rank, ak) ? rank[ak] : 100;
-      const br = Object.prototype.hasOwnProperty.call(rank, bk) ? rank[bk] : 100;
-      if (ar !== br) return ar - br;
-      return ak.localeCompare(bk);
-    });
-  }
+function getCardTarget(event) {
+  if (!event.target || !event.target.closest) return null;
+  return event.target.closest('.card');
+}
 
-  function renderDeckTags(tags) {
-    const sorted = sortArchetypeTags(tags);
-    if (sorted.length === 0) return '';
-    return sorted.map(tag => {
-      const key = normalizeName(tag).replace(/[^a-z0-9-]/g, '');
-      if (!key) return '';
-      return `<span class="deck-tag deck-tag-${key}">${key}</span>`;
-    }).join('');
-  }
+const preview = createCardPreview(app, getCardTarget);
 
-  function sortDifficultyTags(tags) {
-    if (!Array.isArray(tags) || tags.length === 0) return [];
-    const rank = {
-      beginner: 0,
-      intermediate: 1,
-      expert: 2,
-    };
-    return [...tags].sort((a, b) => {
-      const ak = normalizeName(a);
-      const bk = normalizeName(b);
-      const ar = Object.prototype.hasOwnProperty.call(rank, ak) ? rank[ak] : 100;
-      const br = Object.prototype.hasOwnProperty.call(rank, bk) ? rank[bk] : 100;
-      if (ar !== br) return ar - br;
-      return ak.localeCompare(bk);
-    });
-  }
+function withCacheBust(path) {
+  if (!data.buildId) return path;
+  const sep = path.includes('?') ? '&' : '?';
+  return `${path}${sep}v=${encodeURIComponent(data.buildId)}`;
+}
 
-  function difficultyTagLabel(key) {
-    if (key === 'beginner') return '🧠';
-    if (key === 'intermediate') return '🧠🧠';
-    if (key === 'expert') return '🧠🧠🧠';
-    return key;
-  }
+function toGzipPath(path) {
+  const q = path.indexOf('?');
+  if (q === -1) return `${path}.gz`;
+  return `${path.slice(0, q)}.gz${path.slice(q)}`;
+}
 
-  function renderDifficultyTags(tags) {
-    const sorted = sortDifficultyTags(tags);
-    if (sorted.length === 0) return '';
-    return sorted.map(tag => {
-      const key = normalizeName(tag).replace(/[^a-z0-9-]/g, '');
-      if (!key) return '';
-      return `<span class="deck-tag deck-tag-difficulty deck-tag-${key}">${difficultyTagLabel(key)}</span>`;
-    }).join('');
-  }
-
-  function renderDeckSelectionTags(tags, difficultyTags) {
-    const archetype = sortArchetypeTags(tags).map(tag => {
-      const key = normalizeName(tag).replace(/[^a-z0-9-]/g, '');
-      if (!key) return '';
-      return `<span class="deck-tag deck-tag-${key}">${key}</span>`;
-    });
-    const difficulty = sortDifficultyTags(difficultyTags).map(tag => {
-      const key = normalizeName(tag).replace(/[^a-z0-9-]/g, '');
-      if (!key) return '';
-      return `<span class="deck-tag deck-tag-difficulty deck-tag-${key}">${difficultyTagLabel(key)}</span>`;
-    });
-    return [...archetype, ...difficulty].filter(Boolean).join('');
-  }
-
-  function capitalize(str) {
-    return str.charAt(0).toUpperCase() + str.slice(1);
-  }
-
-  function normalizeName(name) {
-    return name.toLowerCase().trim();
-  }
-
-  function normalizeSortMode(mode) {
-    if (mode === 'types' || mode === 'difficulty') return mode;
-    return 'name';
-  }
-
-  function normalizeSortDirection(direction) {
-    return direction === 'desc' ? 'desc' : 'asc';
-  }
-
-  function normalizeCollapsedMask(mask) {
-    const parsed = Number.parseInt(mask, 10);
-    if (Number.isNaN(parsed) || parsed < 0) return 0;
-    return parsed & 7;
-  }
-
-  function normalizeApplySideboard(value) {
-    return value === '1' || value === true;
-  }
-
-  function parseHashRoute(rawHash) {
-    const hash = typeof rawHash === 'string' ? rawHash : (location.hash.slice(1) || '/');
-    const [pathPart, queryPart = ''] = hash.split('?');
-    const parts = pathPart.split('/').filter(Boolean);
-    const params = new URLSearchParams(queryPart);
-    const matchup = (params.get('matchup') || '').trim();
-    const matchupSlug = matchup ? normalizeName(matchup) : '';
-    return {
-      parts,
-      sortMode: normalizeSortMode(params.get('sort')),
-      sortDirection: normalizeSortDirection(params.get('dir')),
-      matchupSlug,
-      collapsedMask: normalizeCollapsedMask(params.get('c')),
-      applySideboard: normalizeApplySideboard(params.get('sb')),
-    };
-  }
-
-  function buildBattleboxHash(bbSlug, sortMode, sortDirection) {
-    const params = new URLSearchParams();
-    params.set('sort', normalizeSortMode(sortMode));
-    params.set('dir', normalizeSortDirection(sortDirection));
-    return `#/${bbSlug}?${params.toString()}`;
-  }
-
-  function buildDeckHash(bbSlug, deckSlug, sortMode, sortDirection, matchupSlug, collapsedMask, applySideboard) {
-    const params = new URLSearchParams();
-    params.set('sort', normalizeSortMode(sortMode));
-    params.set('dir', normalizeSortDirection(sortDirection));
-    if (matchupSlug) params.set('matchup', matchupSlug);
-    params.set('c', String(normalizeCollapsedMask(collapsedMask)));
-    if (normalizeApplySideboard(applySideboard)) params.set('sb', '1');
-    return `#/${bbSlug}/${deckSlug}?${params.toString()}`;
-  }
-
-  function getCardTarget(event) {
-    if (!event.target || !event.target.closest) return null;
-    return event.target.closest('.card');
-  }
-
-  function resolvePrinting(target, printingsList) {
-    const key = normalizeName(target);
-    if (!key) return '';
-    for (const printings of printingsList) {
-      if (printings && printings[key]) return printings[key];
-    }
-    return '';
-  }
-
-  function resolveDoubleFaced(target, doubleFacedList) {
-    const key = normalizeName(target);
-    if (!key) return false;
-    for (const faces of doubleFacedList || []) {
-      if (faces && faces[key]) return true;
-    }
-    return false;
-  }
-
-  function createMarkdownRenderer(printingsList, doubleFacedList) {
-    const md = window.markdownit({
-      html: false,
-      linkify: true,
-      breaks: true
-    });
-
-    md.inline.ruler.before('emphasis', 'card_refs', (state, silent) => {
-      const src = state.src;
-      const start = state.pos;
-      if (src.charCodeAt(start) !== 0x5B || src.charCodeAt(start + 1) !== 0x5B) return false;
-
-      const close = src.indexOf(']]', start + 2);
-      if (close === -1) return false;
-
-      const raw = src.slice(start + 2, close);
-      const parts = raw.split('|');
-      const display = (parts[0] || '').trim();
-      const target = (parts[1] || parts[0] || '').trim();
-      if (!display) return false;
-
-      if (!silent) {
-        const token = state.push('card_ref', '', 0);
-        token.meta = { display, target };
+async function fetchJsonData(path, fetchOptions) {
+  if (window.DecompressionStream) {
+    try {
+      const gzRes = await fetch(toGzipPath(path), fetchOptions);
+      if (gzRes.ok && gzRes.body) {
+        const ds = new DecompressionStream('gzip');
+        const decoded = gzRes.body.pipeThrough(ds);
+        const text = await new Response(decoded).text();
+        return JSON.parse(text);
       }
-
-      state.pos = close + 2;
-      return true;
-    });
-
-    md.renderer.rules.card_ref = (tokens, idx) => {
-      const { display, target } = tokens[idx].meta;
-      const printing = resolvePrinting(target, printingsList);
-      const doubleFaced = resolveDoubleFaced(target, doubleFacedList);
-      const doubleFacedAttr = doubleFaced ? ' data-double-faced="1"' : '';
-      return `<span class="card" data-name="${target}" data-printing="${printing}"${doubleFacedAttr}>${md.utils.escapeHtml(display)}</span>`;
-    };
-
-    return md;
-  }
-
-  function renderGuideContent(mdPlan, mdProse, guide) {
-    let ins = [];
-    let outs = [];
-    let prose = '';
-    if (typeof guide === 'string') {
-      prose = guide.trim();
-    } else if (guide) {
-      ins = Array.isArray(guide.in) ? guide.in : [];
-      outs = Array.isArray(guide.out) ? guide.out : [];
-      prose = (guide.text || '').trim();
+    } catch (e) {
+      // Fallback to uncompressed JSON when gzip decode is unavailable.
     }
-    let html = '';
-
-    const renderItems = (items) => items.map(item => `<li>${mdPlan.renderInline(item)}</li>`).join('');
-    const renderNone = () => `<li class="guide-plan-none">None</li>`;
-    html += `
-      <div class="guide-plan">
-        <div class="guide-plan-col">
-          <div class="guide-plan-title">In</div>
-          <ul class="guide-plan-list">${ins.length ? renderItems(ins) : renderNone()}</ul>
-        </div>
-        <div class="guide-plan-col">
-          <div class="guide-plan-title">Out</div>
-          <ul class="guide-plan-list">${outs.length ? renderItems(outs) : renderNone()}</ul>
-        </div>
-      </div>
-    `;
-
-    if (prose) {
-      html += `<div class="guide-prose">${mdProse.render(prose)}</div>`;
-    }
-
-    return html || '<em>No guide yet</em>';
   }
 
-  const guideCountRE = /^(\d+)\s*x?\s+(.+)$/i;
+  const res = await fetch(path, fetchOptions);
+  if (!res.ok) return null;
+  return res.json();
+}
 
-  function extractGuideCardName(input) {
-    const raw = String(input || '').trim();
-    if (!raw) return '';
-    if (raw.startsWith('[[') && raw.endsWith(']]')) {
-      const inner = raw.slice(2, -2).trim();
-      if (!inner) return '';
-      const parts = inner.split('|');
-      return (parts[parts.length - 1] || '').trim();
-    }
-    return raw;
-  }
+async function loadBattlebox(bbSlug) {
+  if (data.battleboxes[bbSlug]) return data.battleboxes[bbSlug];
+  const bb = await fetchJsonData(withCacheBust(`/data/${bbSlug}.json`));
+  if (!bb) return null;
+  data.battleboxes[bbSlug] = bb;
+  return bb;
+}
 
-  function parseGuidePlanLines(lines) {
-    if (!Array.isArray(lines)) return [];
-    const parsed = [];
-    lines.forEach((line) => {
-      const text = String(line || '').trim();
-      if (!text) return;
-      const match = guideCountRE.exec(text);
-      if (!match) return;
-      const qty = Number.parseInt(match[1], 10);
-      if (!qty || qty < 1) return;
-      const name = extractGuideCardName(match[2]);
-      const key = normalizeName(name);
-      if (!key) return;
-      parsed.push({ qty, key });
-    });
-    return parsed;
-  }
+async function route() {
+  preview.hidePreview();
+  const {
+    parts,
+    sortMode,
+    sortDirection,
+    matchupSlug,
+    collapsedMask,
+    applySideboard,
+  } = parseHashRoute(location.hash.slice(1) || '/');
 
-  function findCardIndex(cards, key) {
-    for (let i = 0; i < cards.length; i++) {
-      if (normalizeName(cards[i].name) === key) return i;
-    }
-    return -1;
-  }
+  window.scrollTo(0, 0);
 
-  function cloneCardWithQty(card, qty) {
-    return { ...card, qty };
-  }
-
-  function computeDeckView(deck, guide, applySideboard) {
-    const mainCards = Array.isArray(deck.cards) ? deck.cards.map(c => ({ ...c })) : [];
-    const sideCards = Array.isArray(deck.sideboard) ? deck.sideboard.map(c => ({ ...c })) : [];
-    const mainboardAdded = {};
-    const sideboardFromMain = {};
-
-    if (!applySideboard || !guide) {
-      return {
-        mainCards,
-        sideCards,
-        mainboardAdded,
-        sideboardFromMain,
-      };
-    }
-
-    const ins = parseGuidePlanLines(guide.in);
-    const outs = parseGuidePlanLines(guide.out);
-
-    ins.forEach((entry) => {
-      const sideIdx = findCardIndex(sideCards, entry.key);
-      if (sideIdx < 0) return;
-      const sideCard = sideCards[sideIdx];
-      const moved = Math.min(entry.qty, sideCard.qty);
-      if (moved <= 0) return;
-
-      sideCard.qty -= moved;
-      if (sideCard.qty <= 0) sideCards.splice(sideIdx, 1);
-
-      const mainIdx = findCardIndex(mainCards, entry.key);
-      if (mainIdx >= 0) {
-        mainCards[mainIdx].qty += moved;
-      } else {
-        mainCards.push(cloneCardWithQty(sideCard, moved));
-      }
-      mainboardAdded[entry.key] = (mainboardAdded[entry.key] || 0) + moved;
-    });
-
-    outs.forEach((entry) => {
-      const mainIdx = findCardIndex(mainCards, entry.key);
-      if (mainIdx < 0) return;
-      const mainCard = mainCards[mainIdx];
-      const moved = Math.min(entry.qty, mainCard.qty);
-      if (moved <= 0) return;
-
-      mainCard.qty -= moved;
-      if (mainCard.qty <= 0) mainCards.splice(mainIdx, 1);
-
-      const sideIdx = findCardIndex(sideCards, entry.key);
-      if (sideIdx >= 0) {
-        sideCards[sideIdx].qty += moved;
-      } else {
-        sideCards.push(cloneCardWithQty(mainCard, moved));
-      }
-      sideboardFromMain[entry.key] = (sideboardFromMain[entry.key] || 0) + moved;
-    });
-
-    return {
-      mainCards: mainCards.filter(c => c.qty > 0),
-      sideCards: sideCards.filter(c => c.qty > 0),
-      mainboardAdded,
-      sideboardFromMain,
-    };
-  }
-
-  function buildDoubleFacedMap(deck) {
-    const out = {};
-    const addCards = (cards) => {
-      if (!cards) return;
-      cards.forEach(c => {
-        if (c.double_faced) {
-          out[normalizeName(c.name)] = true;
-        }
-      });
-    };
-    addCards(deck.cards);
-    addCards(deck.sideboard);
-    return out;
-  }
-
-  function renderCardRow(card, bannedSet, highlightClass) {
-    const banned = bannedSet && bannedSet.has(normalizeName(card.name));
-    const bannedTag = banned ? '<span class="banned-inline-tag" title="Banned">🔨 BAN</span>' : '';
-    const doubleFacedAttr = card.double_faced ? ' data-double-faced="1"' : '';
-    const rowClass = highlightClass ? `card-row ${highlightClass}` : 'card-row';
-    return `<div class="${rowClass}"><span class="card-qty">${card.qty}</span><span class="card" data-name="${card.name}" data-printing="${card.printing}"${doubleFacedAttr}>${card.name}${bannedTag}</span></div>`;
-  }
-
-  function renderCardsByType(cards, bannedSet, types, highlightMap, highlightClass) {
-    const groups = { creature: [], spell: [], land: [] };
-    cards.forEach(c => {
-      const type = c.type || 'spell';
-      if (groups[type]) groups[type].push(c);
-    });
-
-    const labels = { creature: 'Creatures', spell: 'Spells', land: 'Lands' };
-    let html = '';
-
-    const order = types && types.length ? types : ['creature', 'spell', 'land'];
-    for (const type of order) {
-      const group = groups[type];
-      if (group.length === 0) continue;
-      const count = group.reduce((sum, c) => sum + c.qty, 0);
-      html += `<div class="card-group">`;
-      html += `<div class="card-group-label">${labels[type]} (${count})</div>`;
-      html += group.map(c => {
-        const key = normalizeName(c.name);
-        const rowHighlight = highlightMap && highlightMap[key] ? highlightClass : '';
-        return renderCardRow(c, bannedSet, rowHighlight);
-      }).join('');
-      html += `</div>`;
-    }
-    return html;
-  }
-
-  function renderCardGroup(cards, label, bannedSet, highlightMap, highlightClass) {
-    if (!cards || cards.length === 0) return '';
-    const count = cards.reduce((sum, c) => sum + c.qty, 0);
-    return `
-      <div class="card-group">
-        <div class="card-group-label">${label} (${count})</div>
-        ${cards.map(c => {
-          const key = normalizeName(c.name);
-          const rowHighlight = highlightMap && highlightMap[key] ? highlightClass : '';
-          return renderCardRow(c, bannedSet, rowHighlight);
-        }).join('')}
-      </div>
-    `;
-  }
-
-  // Scryfall image URL
-  function getImageUrl(printing, face) {
-    if (!printing) return null;
-    const [set, num] = printing.split('/');
-    const faceParam = face === 'back' ? '&face=back' : '';
-    return `https://api.scryfall.com/cards/${set}/${num}?format=image&version=normal${faceParam}`;
-  }
-
-  // Card hover preview
-  function positionPreviewAtPoint(absX, absY) {
-    if (!previewEl) return;
-    const width = previewEl.offsetWidth || 250;
-    const height = previewEl.offsetHeight || 350;
-    const margin = 10;
-    const viewportW = (window.visualViewport && window.visualViewport.width) || document.documentElement.clientWidth;
-    const viewportH = (window.visualViewport && window.visualViewport.height) || document.documentElement.clientHeight;
-
-    let x = absX;
-    let y = absY;
-
-    if (x + width + margin > viewportW) {
-      x = Math.max(margin, viewportW - width - margin);
-    }
-    if (x < margin) {
-      x = margin;
-    }
-    if (y + height + margin > viewportH) {
-      y = Math.max(margin, viewportH - height - margin);
-    }
-    if (y < margin) {
-      y = margin;
-    }
-
-    previewEl.style.left = `${x}px`;
-    previewEl.style.top = `${y}px`;
-  }
-
-  let previewAnchor = null;
-  let previewRaf = null;
-
-  function updatePreviewAnchor() {
-    if (!previewEl || !previewAnchor) return;
-    const rect = previewAnchor.el.getBoundingClientRect();
-    if (rect.width === 0 || rect.height === 0) return;
-    const absX = rect.left + (previewAnchor.relX * rect.width);
-    const absY = rect.top + (previewAnchor.relY * rect.height);
-    positionPreviewAtPoint(absX, absY);
-  }
-
-  function schedulePreviewAnchorUpdate() {
-    if (!previewAnchor) return;
-    if (previewRaf) return;
-    previewRaf = requestAnimationFrame(() => {
-      previewRaf = null;
-      updatePreviewAnchor();
-    });
-  }
-
-  function ensurePreviewEl() {
-    if (previewEl) return;
-    previewEl = document.createElement('div');
-    previewEl.className = 'card-preview';
-    previewStatus = document.createElement('div');
-    previewStatus.className = 'card-preview-loading';
-    previewStatus.textContent = 'Loading...';
-    previewImages = document.createElement('div');
-    previewImages.className = 'card-preview-images';
-    previewImgFront = document.createElement('img');
-    previewImgBack = document.createElement('img');
-    previewImages.appendChild(previewImgFront);
-    previewImages.appendChild(previewImgBack);
-    previewEl.appendChild(previewStatus);
-    previewEl.appendChild(previewImages);
-    previewEl.addEventListener('mouseleave', (e) => {
-      if (!previewAnchor) return;
-      const cardEl = previewAnchor.el;
-      if (cardEl && e.relatedTarget && (cardEl === e.relatedTarget || cardEl.contains(e.relatedTarget))) {
-        return;
-      }
-      hidePreview();
-    });
-  }
-
-  function openPreview(cardEl, e) {
-    const printing = cardEl.dataset.printing;
-    if (!printing) return;
-    const isDoubleFaced = cardEl.dataset.doubleFaced === '1';
-    const frontUrl = getImageUrl(printing, 'front');
-    if (!frontUrl) return;
-    const backUrl = isDoubleFaced ? getImageUrl(printing, 'back') : null;
-    const urlKey = isDoubleFaced ? `${frontUrl}|${backUrl}` : frontUrl;
-    if (previewAnchor && previewAnchor.el === cardEl && previewEl && previewEl.style.display !== 'none' && previewUrl === urlKey) {
-      positionPreviewAtPoint(e.clientX, e.clientY);
-      return;
-    }
-    previewUrl = urlKey;
-    ensurePreviewEl();
-    previewEl.classList.toggle('card-preview-double', isDoubleFaced);
-    if (previewEl.parentNode !== document.body) {
-      document.body.appendChild(previewEl);
-    }
-    previewStatus.textContent = 'Loading...';
-    previewStatus.style.display = 'block';
-    previewImgFront.style.display = 'none';
-    previewImgBack.style.display = 'none';
-    previewImages.style.display = 'none';
-    // Preload to avoid noisy aborted image requests when hover changes quickly.
-    const token = ++previewToken;
-    let pending = isDoubleFaced ? 2 : 1;
-    let loaded = 0;
-
-    const finish = (ok) => {
-      pending -= 1;
-      if (ok) loaded += 1;
-      if (pending > 0) return;
-      if (token !== previewToken || previewUrl !== urlKey) return;
-      if (loaded === 0) {
-        previewStatus.textContent = 'Image unavailable';
-        previewStatus.style.display = 'block';
-      } else {
-        previewStatus.style.display = 'none';
-        previewImages.style.display = 'flex';
-      }
-    };
-
-    const loadImage = (slot, url, isBack) => {
-      const img = new Image();
-      img.className = slot.className;
-      img.alt = slot.alt || '';
-      img.onload = () => {
-        if (token !== previewToken || previewUrl !== urlKey) return;
-        img.style.display = 'block';
-        previewImages.replaceChild(img, slot);
-        if (isBack) {
-          previewImgBack = img;
-        } else {
-          previewImgFront = img;
-        }
-        finish(true);
-      };
-      img.onerror = () => {
-        if (token !== previewToken || previewUrl !== urlKey) return;
-        finish(false);
-      };
-      img.src = url;
-    };
-
-    loadImage(previewImgFront, frontUrl, false);
-    if (isDoubleFaced && backUrl) {
-      loadImage(previewImgBack, backUrl, true);
-    } else {
-      previewImgBack.style.display = 'none';
-    }
-    previewEl.style.display = 'block';
-    positionPreviewAtPoint(e.clientX, e.clientY);
-    const rect = cardEl.getBoundingClientRect();
-    previewAnchor = {
-      el: cardEl,
-      relX: rect.width ? (e.clientX - rect.left) / rect.width : 0.5,
-      relY: rect.height ? (e.clientY - rect.top) / rect.height : 0.5,
-    };
-  }
-
-  function setupCardHover() {
-    const prefersHover = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
-
-    document.addEventListener('click', (e) => {
-      if (!previewEl || previewEl.style.display === 'none') return;
-      e.preventDefault();
-      e.stopPropagation();
-      hidePreview();
-    }, true);
-
-    if (prefersHover) {
-      app.addEventListener('pointerenter', (e) => {
-        const cardEl = getCardTarget(e);
-        if (!cardEl) return;
-        if (e.relatedTarget && cardEl.contains(e.relatedTarget)) return;
-        openPreview(cardEl, e);
-      }, true);
-
-      app.addEventListener('pointerleave', (e) => {
-        const cardEl = getCardTarget(e);
-        if (!cardEl || !previewEl) return;
-        if (e.relatedTarget && cardEl.contains(e.relatedTarget)) return;
-        if (e.relatedTarget && previewEl.contains(e.relatedTarget)) return;
-        hidePreview();
-      }, true);
-    } else {
-      app.addEventListener('click', (e) => {
-        const cardEl = getCardTarget(e);
-        if (!cardEl) return;
-        e.preventDefault();
-        e.stopPropagation();
-        openPreview(cardEl, e);
-      });
-    }
-
-    window.addEventListener('scroll', schedulePreviewAnchorUpdate, { passive: true });
-    window.addEventListener('resize', schedulePreviewAnchorUpdate);
-  }
-
-  function hidePreview() {
-    if (previewEl) {
-      previewEl.style.display = 'none';
-    }
-    previewAnchor = null;
-    previewToken += 1;
-  }
-
-  function withCacheBust(path) {
-    if (!data.buildId) return path;
-    const sep = path.includes('?') ? '&' : '?';
-    return `${path}${sep}v=${encodeURIComponent(data.buildId)}`;
-  }
-
-  function toGzipPath(path) {
-    const q = path.indexOf('?');
-    if (q === -1) return `${path}.gz`;
-    return `${path.slice(0, q)}.gz${path.slice(q)}`;
-  }
-
-  async function fetchJsonData(path, fetchOptions) {
-    if (window.DecompressionStream) {
-      try {
-        const gzRes = await fetch(toGzipPath(path), fetchOptions);
-        if (gzRes.ok && gzRes.body) {
-          const ds = new DecompressionStream('gzip');
-          const decoded = gzRes.body.pipeThrough(ds);
-          const text = await new Response(decoded).text();
-          return JSON.parse(text);
-        }
-      } catch (e) {
-        // Fallback to uncompressed JSON when gzip decode is unavailable.
-      }
-    }
-
-    const res = await fetch(path, fetchOptions);
-    if (!res.ok) return null;
-    return res.json();
-  }
-
-  async function loadBattlebox(bbSlug) {
-    if (data.battleboxes[bbSlug]) return data.battleboxes[bbSlug];
-    const bb = await fetchJsonData(withCacheBust(`/data/${bbSlug}.json`));
-    if (!bb) return null;
-    data.battleboxes[bbSlug] = bb;
-    return bb;
-  }
-
-  // Router
-  async function route() {
-    hidePreview();
-    const {
-      parts,
+  if (parts.length === 0) {
+    renderHome();
+  } else if (parts.length === 1) {
+    renderBattlebox(parts[0], sortMode, sortDirection);
+  } else if (parts.length === 2) {
+    await renderDeck(
+      parts[0],
+      parts[1],
+      matchupSlug || undefined,
       sortMode,
       sortDirection,
-      matchupSlug,
       collapsedMask,
-      applySideboard,
-    } = parseHashRoute(location.hash.slice(1) || '/');
-
-    window.scrollTo(0, 0);
-
-    if (parts.length === 0) {
-      renderHome();
-    } else if (parts.length === 1) {
-      renderBattlebox(parts[0], sortMode, sortDirection);
-    } else if (parts.length === 2) {
-      await renderDeck(
-        parts[0],
-        parts[1],
-        matchupSlug || undefined,
-        sortMode,
-        sortDirection,
-        collapsedMask,
-        applySideboard
-      );
-    } else {
-      renderNotFound();
-    }
+      applySideboard
+    );
+  } else {
+    renderNotFound();
   }
+}
 
-  function renderHome() {
-    app.innerHTML = `
-      <h1 class="breadcrumbs">Battlebox</h1>
-      <ul class="deck-list">
-        ${data.index.battleboxes.map(bb => `
-          <li>
-            <a href="#/${bb.slug}" class="battlebox-link">
-              <div class="battlebox-title">
-                <span>${bb.name || capitalize(bb.slug)}</span>
-                <span class="colors">(${bb.decks.length} decks)</span>
-              </div>
-              ${bb.description ? `<div class="battlebox-desc">${bb.description}</div>` : ''}
-            </a>
-          </li>
-        `).join('')}
-      </ul>
-    `;
-  }
+function renderHome() {
+  app.innerHTML = `
+    <h1 class="breadcrumbs">Battlebox</h1>
+    <ul class="deck-list">
+      ${data.index.battleboxes.map(bb => `
+        <li>
+          <a href="#/${bb.slug}" class="battlebox-link">
+            <div class="battlebox-title">
+              <span>${bb.name || capitalize(bb.slug)}</span>
+              <span class="colors">(${bb.decks.length} decks)</span>
+            </div>
+            ${bb.description ? `<div class="battlebox-desc">${bb.description}</div>` : ''}
+          </a>
+        </li>
+      `).join('')}
+    </ul>
+  `;
+}
 
-  function renderBattlebox(bbSlug, initialSortMode, initialSortDirection) {
-    const bb = data.index.battleboxes.find(b => b.slug === bbSlug);
-    if (!bb) return renderNotFound();
-    const initialSort = normalizeSortMode(initialSortMode);
-    const initialDirection = normalizeSortDirection(initialSortDirection);
+function renderBattlebox(bbSlug, initialSortMode, initialSortDirection) {
+  const bb = data.index.battleboxes.find(b => b.slug === bbSlug);
+  if (!bb) return renderNotFound();
+  const initialSort = normalizeSortMode(initialSortMode);
+  const initialDirection = normalizeSortDirection(initialSortDirection);
 
-    app.innerHTML = `
-      <h1 class="breadcrumbs">
-        <a href="#/">Battlebox</a>
-        <span class="crumb-sep">/</span>
-        <span>${capitalize(bb.slug)}</span>
-      </h1>
-      <div class="randomizer">
-        <div class="randomizer-controls">
-          <div class="randomizer-roll-controls">
-            <button type="button" class="randomizer-roll action-button" data-count="1" title="Roll 1 deck" aria-label="Roll 1 deck">🎲</button>
-            <button type="button" class="randomizer-roll action-button" data-count="2" title="Roll 2 decks" aria-label="Roll 2 decks">🎲🎲</button>
-          </div>
-          <div class="randomizer-sort-controls" role="group" aria-label="Sort decks">
-            <button type="button" class="randomizer-sort action-button" data-sort="name" title="Sort by name" aria-label="Sort by name">🔤</button>
-            <button type="button" class="randomizer-sort action-button" data-sort="types" title="Sort by types" aria-label="Sort by types">🧬</button>
-            <button type="button" class="randomizer-sort action-button" data-sort="difficulty" title="Sort by difficulty" aria-label="Sort by difficulty">🧠</button>
-          </div>
+  app.innerHTML = `
+    <h1 class="breadcrumbs">
+      <a href="#/">Battlebox</a>
+      <span class="crumb-sep">/</span>
+      <span>${capitalize(bb.slug)}</span>
+    </h1>
+    <div class="randomizer">
+      <div class="randomizer-controls">
+        <div class="randomizer-roll-controls">
+          <button type="button" class="randomizer-roll action-button" data-count="1" title="Roll 1 deck" aria-label="Roll 1 deck">🎲</button>
+          <button type="button" class="randomizer-roll action-button" data-count="2" title="Roll 2 decks" aria-label="Roll 2 decks">🎲🎲</button>
+        </div>
+        <div class="randomizer-sort-controls" role="group" aria-label="Sort decks">
+          <button type="button" class="randomizer-sort action-button" data-sort="name" title="Sort by name" aria-label="Sort by name">🔤</button>
+          <button type="button" class="randomizer-sort action-button" data-sort="types" title="Sort by types" aria-label="Sort by types">🧬</button>
+          <button type="button" class="randomizer-sort action-button" data-sort="difficulty" title="Sort by difficulty" aria-label="Sort by difficulty">🧠</button>
         </div>
       </div>
-      <ul class="deck-list">
-        ${bb.decks.map(d => `
-          <li class="deck-item" data-slug="${d.slug}"><a class="deck-link" href="${buildDeckHash(bb.slug, d.slug, initialSort, initialDirection, undefined, 4)}">
-            <span class="deck-link-name">${d.name}</span>
-            <div class="deck-link-tags">${renderDeckSelectionTags(d.tags, d.difficulty_tags)}</div>
-            <span class="colors">${formatColors(d.colors)}</span>
-          </a></li>
-        `).join('')}
-      </ul>
-    `;
+    </div>
+    <ul class="deck-list">
+      ${bb.decks.map(d => `
+        <li class="deck-item" data-slug="${d.slug}"><a class="deck-link" href="${buildDeckHash(bb.slug, d.slug, initialSort, initialDirection, undefined, 4)}">
+          <span class="deck-link-name">${d.name}</span>
+          <div class="deck-link-tags">${renderDeckSelectionTags(d.tags, d.difficulty_tags)}</div>
+          <span class="colors">${formatColors(d.colors)}</span>
+        </a></li>
+      `).join('')}
+    </ul>
+  `;
 
-    const deckList = app.querySelector('.deck-list');
-    const difficultyOrder = {
-      beginner: 0,
-      intermediate: 1,
-      expert: 2,
-    };
-    const resolveDifficultyRank = (tags) => {
-      const sorted = sortDifficultyTags(tags).map(normalizeName);
-      for (const tag of sorted) {
-        if (Object.prototype.hasOwnProperty.call(difficultyOrder, tag)) {
-          return difficultyOrder[tag];
-        }
+  const deckList = app.querySelector('.deck-list');
+  const difficultyOrder = {
+    beginner: 0,
+    intermediate: 1,
+    expert: 2,
+  };
+  const resolveDifficultyRank = (tags) => {
+    const sorted = sortDifficultyTags(tags).map(normalizeName);
+    for (const tag of sorted) {
+      if (Object.prototype.hasOwnProperty.call(difficultyOrder, tag)) {
+        return difficultyOrder[tag];
       }
-      return Number.MAX_SAFE_INTEGER;
-    };
-    const deckBySlug = new Map(
-      [...deckList.querySelectorAll('.deck-item')].map(item => [item.dataset.slug, item.querySelector('.deck-link')])
-    );
-    const deckMetaBySlug = new Map(
-      bb.decks.map(deck => [deck.slug, {
-        nameKey: normalizeName(deck.name || deck.slug),
-        typeKey: sortArchetypeTags(deck.tags).map(normalizeName).join('|'),
-        difficultyRank: resolveDifficultyRank(deck.difficulty_tags),
-      }])
-    );
-    const rollButtons = [...app.querySelectorAll('.randomizer-roll')];
-    const sortButtons = [...app.querySelectorAll('.randomizer-sort')];
-    let sortMode = null;
-    let sortDirection = initialDirection;
+    }
+    return Number.MAX_SAFE_INTEGER;
+  };
+  const deckBySlug = new Map(
+    [...deckList.querySelectorAll('.deck-item')].map(item => [item.dataset.slug, item.querySelector('.deck-link')])
+  );
+  const deckMetaBySlug = new Map(
+    bb.decks.map(deck => [deck.slug, {
+      nameKey: normalizeName(deck.name || deck.slug),
+      typeKey: sortArchetypeTags(deck.tags).map(normalizeName).join('|'),
+      difficultyRank: resolveDifficultyRank(deck.difficulty_tags),
+    }])
+  );
+  const rollButtons = [...app.querySelectorAll('.randomizer-roll')];
+  const sortButtons = [...app.querySelectorAll('.randomizer-sort')];
+  let sortMode = null;
+  let sortDirection = initialDirection;
 
-    const updateBattleboxHash = () => {
-      const nextHash = buildBattleboxHash(bb.slug, sortMode, sortDirection);
-      if (location.hash !== nextHash) {
-        history.replaceState(null, '', nextHash);
-      }
-    };
+  const updateBattleboxHash = () => {
+    const nextHash = buildBattleboxHash(bb.slug, sortMode, sortDirection);
+    if (location.hash !== nextHash) {
+      history.replaceState(null, '', nextHash);
+    }
+  };
 
-    const updateDeckLinks = () => {
-      deckBySlug.forEach((link, slug) => {
-        if (!link) return;
-        link.href = buildDeckHash(bb.slug, slug, sortMode, sortDirection, undefined, 4);
-      });
-    };
+  const updateDeckLinks = () => {
+    deckBySlug.forEach((link, slug) => {
+      if (!link) return;
+      link.href = buildDeckHash(bb.slug, slug, sortMode, sortDirection, undefined, 4);
+    });
+  };
 
-    const compareDeckItems = (a, b, mode) => {
-      const metaA = deckMetaBySlug.get(a.dataset.slug) || {
-        nameKey: normalizeName(a.dataset.slug || ''),
-        typeKey: '',
-        difficultyRank: Number.MAX_SAFE_INTEGER,
-      };
-      const metaB = deckMetaBySlug.get(b.dataset.slug) || {
-        nameKey: normalizeName(b.dataset.slug || ''),
-        typeKey: '',
-        difficultyRank: Number.MAX_SAFE_INTEGER,
-      };
-      const nameCmp = metaA.nameKey.localeCompare(metaB.nameKey);
-      if (mode === 'types') {
-        const typeCmp = metaA.typeKey.localeCompare(metaB.typeKey);
-        if (typeCmp !== 0) return typeCmp;
-        return nameCmp;
-      }
-      if (mode === 'difficulty') {
-        const diffCmp = metaA.difficultyRank - metaB.difficultyRank;
-        if (diffCmp !== 0) return diffCmp;
-        return nameCmp;
-      }
+  const compareDeckItems = (a, b, mode) => {
+    const metaA = deckMetaBySlug.get(a.dataset.slug) || {
+      nameKey: normalizeName(a.dataset.slug || ''),
+      typeKey: '',
+      difficultyRank: Number.MAX_SAFE_INTEGER,
+    };
+    const metaB = deckMetaBySlug.get(b.dataset.slug) || {
+      nameKey: normalizeName(b.dataset.slug || ''),
+      typeKey: '',
+      difficultyRank: Number.MAX_SAFE_INTEGER,
+    };
+    const nameCmp = metaA.nameKey.localeCompare(metaB.nameKey);
+    if (mode === 'types') {
+      const typeCmp = metaA.typeKey.localeCompare(metaB.typeKey);
+      if (typeCmp !== 0) return typeCmp;
       return nameCmp;
-    };
+    }
+    if (mode === 'difficulty') {
+      const diffCmp = metaA.difficultyRank - metaB.difficultyRank;
+      if (diffCmp !== 0) return diffCmp;
+      return nameCmp;
+    }
+    return nameCmp;
+  };
 
-    const applySort = (mode, isInitial = false) => {
-      const nextMode = normalizeSortMode(mode);
-      if (!isInitial && nextMode === sortMode) {
-        sortDirection = sortDirection === 'asc' ? 'desc' : 'asc';
-      } else {
-        sortMode = nextMode;
-        if (!isInitial) {
-          sortDirection = 'asc';
-        }
+  const applySort = (mode, isInitial = false) => {
+    const nextMode = normalizeSortMode(mode);
+    if (!isInitial && nextMode === sortMode) {
+      sortDirection = sortDirection === 'asc' ? 'desc' : 'asc';
+    } else {
+      sortMode = nextMode;
+      if (!isInitial) {
+        sortDirection = 'asc';
       }
-      const items = [...deckList.querySelectorAll('.deck-item')];
-      const direction = sortDirection === 'desc' ? -1 : 1;
-      items.sort((a, b) => compareDeckItems(a, b, sortMode) * direction);
-      items.forEach(item => deckList.appendChild(item));
-      sortButtons.forEach(btn => {
-        btn.classList.toggle('active', btn.dataset.sort === sortMode);
-      });
-      updateDeckLinks();
-      updateBattleboxHash();
-    };
-
-    const clearHighlights = () => {
-      app.querySelectorAll('.deck-link.deck-highlight').forEach(link => link.classList.remove('deck-highlight'));
-    };
-
-    const roll = (count) => {
-      const deckItems = [...deckList.querySelectorAll('.deck-item')];
-      if (deckItems.length === 0) return;
-      clearHighlights();
-      const target = Math.min(count, deckItems.length);
-      const picked = new Set();
-      while (picked.size < target) {
-        const idx = Math.floor(Math.random() * deckItems.length);
-        const slug = deckItems[idx].dataset.slug;
-        picked.add(slug);
-      }
-      picked.forEach(slug => {
-        const link = deckBySlug.get(slug);
-        if (link) link.classList.add('deck-highlight');
-      });
-
-      let scrollLink = null;
-      for (let idx = deckItems.length - 1; idx >= 0; idx--) {
-        const item = deckItems[idx];
-        if (picked.has(item.dataset.slug)) {
-          scrollLink = item.querySelector('.deck-link');
-          break;
-        }
-      }
-      if (scrollLink) {
-        scrollLink.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
-      }
-    };
-
-    rollButtons.forEach(btn => {
-      btn.addEventListener('click', () => roll(Number(btn.dataset.count)));
-    });
+    }
+    const items = [...deckList.querySelectorAll('.deck-item')];
+    const direction = sortDirection === 'desc' ? -1 : 1;
+    items.sort((a, b) => compareDeckItems(a, b, sortMode) * direction);
+    items.forEach(item => deckList.appendChild(item));
     sortButtons.forEach(btn => {
-      btn.addEventListener('click', () => applySort(btn.dataset.sort));
+      btn.classList.toggle('active', btn.dataset.sort === sortMode);
     });
-    applySort(initialSort, true);
-  }
+    updateDeckLinks();
+    updateBattleboxHash();
+  };
 
-  async function renderDeck(bbSlug, deckSlug, selectedGuide, sortMode, sortDirection, collapsedMask, applySideboard) {
-    const bb = await loadBattlebox(bbSlug);
-    if (!bb) return renderNotFound();
-    const deck = bb.decks.find(d => d.slug === deckSlug);
-    if (!deck) return renderNotFound();
-    const currentSortMode = normalizeSortMode(sortMode);
-    const currentSortDirection = normalizeSortDirection(sortDirection);
-    let currentCollapsedMask = normalizeCollapsedMask(collapsedMask);
+  const clearHighlights = () => {
+    app.querySelectorAll('.deck-link.deck-highlight').forEach(link => link.classList.remove('deck-highlight'));
+  };
 
-    const deckPrintings = deck.printings || {};
-    const deckDoubleFaced = buildDoubleFacedMap(deck);
-    const mdSelf = createMarkdownRenderer([deckPrintings], [deckDoubleFaced]);
-    const primerHtml = deck.primer ? mdSelf.render(deck.primer) : '<em>No primer yet</em>';
-    const bannedNames = Array.isArray(bb.banned) ? bb.banned : [];
-    const bannedSet = new Set(bannedNames.map(normalizeName));
-    const guideKeys = Object.keys(deck.guides || {});
-    const initialGuide = guideKeys.length
-      ? (selectedGuide && guideKeys.includes(selectedGuide) ? selectedGuide : guideKeys[0])
-      : '';
-    let currentMatchupSlug = initialGuide;
-    let currentApplySideboard = guideKeys.length ? normalizeApplySideboard(applySideboard) : false;
-    let deckView = computeDeckView(
-      deck,
-      currentMatchupSlug ? deck.guides[currentMatchupSlug] : null,
+  const roll = (count) => {
+    const deckItems = [...deckList.querySelectorAll('.deck-item')];
+    if (deckItems.length === 0) return;
+    clearHighlights();
+    const target = Math.min(count, deckItems.length);
+    const picked = new Set();
+    while (picked.size < target) {
+      const idx = Math.floor(Math.random() * deckItems.length);
+      const slug = deckItems[idx].dataset.slug;
+      picked.add(slug);
+    }
+    picked.forEach(slug => {
+      const link = deckBySlug.get(slug);
+      if (link) link.classList.add('deck-highlight');
+    });
+
+    let scrollLink = null;
+    for (let idx = deckItems.length - 1; idx >= 0; idx--) {
+      const item = deckItems[idx];
+      if (picked.has(item.dataset.slug)) {
+        scrollLink = item.querySelector('.deck-link');
+        break;
+      }
+    }
+    if (scrollLink) {
+      scrollLink.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+    }
+  };
+
+  rollButtons.forEach(btn => {
+    btn.addEventListener('click', () => roll(Number(btn.dataset.count)));
+  });
+  sortButtons.forEach(btn => {
+    btn.addEventListener('click', () => applySort(btn.dataset.sort));
+  });
+  applySort(initialSort, true);
+}
+
+async function renderDeck(bbSlug, deckSlug, selectedGuide, sortMode, sortDirection, collapsedMask, applySideboard) {
+  const bb = await loadBattlebox(bbSlug);
+  if (!bb) return renderNotFound();
+  const deck = bb.decks.find(d => d.slug === deckSlug);
+  if (!deck) return renderNotFound();
+  const currentSortMode = normalizeSortMode(sortMode);
+  const currentSortDirection = normalizeSortDirection(sortDirection);
+  let currentCollapsedMask = normalizeCollapsedMask(collapsedMask);
+
+  const deckPrintings = deck.printings || {};
+  const deckDoubleFaced = buildDoubleFacedMap(deck);
+  const mdSelf = createMarkdownRenderer([deckPrintings], [deckDoubleFaced]);
+  const primerHtml = deck.primer ? mdSelf.render(deck.primer) : '<em>No primer yet</em>';
+  const bannedNames = Array.isArray(bb.banned) ? bb.banned : [];
+  const bannedSet = new Set(bannedNames.map(normalizeName));
+  const guideKeys = Object.keys(deck.guides || {});
+  const initialGuide = guideKeys.length
+    ? (selectedGuide && guideKeys.includes(selectedGuide) ? selectedGuide : guideKeys[0])
+    : '';
+  let currentMatchupSlug = initialGuide;
+  let currentApplySideboard = guideKeys.length ? normalizeApplySideboard(applySideboard) : false;
+  let deckView = computeDeckView(
+    deck,
+    currentMatchupSlug ? deck.guides[currentMatchupSlug] : null,
+    currentApplySideboard
+  );
+  const guideOptions = guideKeys.map(k => {
+    const opponent = bb.decks.find(d => d.slug === k);
+    const name = opponent ? opponent.name : k;
+    return `<option value="${k}">${name}</option>`;
+  }).join('');
+
+  const hasSideboard = deckView.sideCards && deckView.sideCards.length;
+  const landColumnHtml = !hasSideboard ? `
+    <div class="decklist-col">
+      <div class="card-list">
+        ${renderCardsByType(deckView.mainCards, bannedSet, ['land'], deckView.mainboardAdded, 'sb-added')}
+      </div>
+    </div>
+  ` : '';
+  const sideboardHtml = hasSideboard ? `
+    <div class="decklist-col">
+      <div class="card-list">
+        ${renderCardGroup(deckView.sideCards, 'Sideboard', bannedSet, deckView.sideboardFromMain, 'sb-removed')}
+      </div>
+    </div>
+  ` : '';
+  const hasLandColumn = !hasSideboard && deckView.mainCards.some(c => (c.type || 'spell') === 'land');
+  const hasSecondColumn = hasSideboard || hasLandColumn;
+  const mainTypes = hasSideboard ? undefined : ['creature', 'spell'];
+  const decklistOpenAttr = (currentCollapsedMask & 1) === 0 ? ' open' : '';
+  const primerOpenAttr = (currentCollapsedMask & 2) === 0 ? ' open' : '';
+  const matchupOpenAttr = (currentCollapsedMask & 4) === 0 ? ' open' : '';
+  const matchupGuidesHtml = guideKeys.length ? `
+    <details id="matchup-details" class="collapsible matchup-guides"${matchupOpenAttr}>
+      <summary>Matchup Guides</summary>
+      <div class="collapsible-body guide-panel">
+        <div class="guide-select">
+          <select id="guide-select" aria-label="Matchup guide">
+            ${guideOptions}
+          </select>
+          <button type="button" class="action-button apply-sideboard-button${currentApplySideboard ? ' active' : ''}" id="apply-sideboard-button">
+            ${currentApplySideboard ? 'Sideboard applied' : 'Apply sideboard'}
+          </button>
+          <a class="guide-opponent-link action-button" id="guide-opponent-link" href="#">Go to deck</a>
+        </div>
+        <div class="guide-box" id="guide-box"></div>
+      </div>
+    </details>
+  ` : '';
+
+  app.innerHTML = `
+    <h1 class="breadcrumbs">
+      <a href="#/">Battlebox</a>
+      <span class="crumb-sep">/</span>
+      <a href="${buildBattleboxHash(bb.slug, currentSortMode, currentSortDirection)}">${capitalize(bb.slug)}</a>
+      <span class="crumb-sep">/</span>
+      <span>${deck.name}</span>
+    </h1>
+    <div class="deck-info-pane">
+      <div class="deck-colors">${formatColors(deck.colors)}</div>
+      <div class="deck-tags">${renderDeckTags(deck.tags)}${renderDifficultyTags(deck.difficulty_tags)}</div>
+    </div>
+
+    ${matchupGuidesHtml}
+
+    <details id="decklist-details" class="collapsible"${decklistOpenAttr}>
+      <summary>Decklist</summary>
+      <div class="collapsible-body" id="decklist-body">
+        <div class="decklist-grid${hasSecondColumn ? '' : ' single'}">
+          <div class="decklist-col">
+            <div class="card-list">
+              ${renderCardsByType(deckView.mainCards, bannedSet, mainTypes, deckView.mainboardAdded, 'sb-added')}
+            </div>
+          </div>
+          ${sideboardHtml || landColumnHtml}
+        </div>
+      </div>
+    </details>
+
+    <details id="primer-details" class="collapsible"${primerOpenAttr}>
+      <summary>Primer</summary>
+      <div class="collapsible-body">
+        <div class="primer">${primerHtml}</div>
+      </div>
+    </details>
+  `;
+
+  const decklistDetails = document.getElementById('decklist-details');
+  const primerDetails = document.getElementById('primer-details');
+  const matchupDetails = document.getElementById('matchup-details');
+  const decklistBody = document.getElementById('decklist-body');
+
+  const computeCollapsedMask = () => {
+    let mask = 0;
+    if (decklistDetails && !decklistDetails.open) mask |= 1;
+    if (primerDetails && !primerDetails.open) mask |= 2;
+    if (matchupDetails && !matchupDetails.open) mask |= 4;
+    return mask;
+  };
+
+  const updateDeckHashFromState = () => {
+    const nextHash = buildDeckHash(
+      bb.slug,
+      deck.slug,
+      currentSortMode,
+      currentSortDirection,
+      currentMatchupSlug || undefined,
+      currentCollapsedMask,
       currentApplySideboard
     );
-    const guideOptions = guideKeys.map(k => {
-      const opponent = bb.decks.find(d => d.slug === k);
-      const name = opponent ? opponent.name : k;
-      return `<option value="${k}">${name}</option>`;
-    }).join('');
+    if (location.hash !== nextHash) {
+      history.replaceState(null, '', nextHash);
+    }
+  };
 
-    const hasSideboard = deckView.sideCards && deckView.sideCards.length;
-    const landColumnHtml = !hasSideboard ? `
+  const renderDecklistBody = () => {
+    if (!decklistBody) return;
+    const guideData = currentMatchupSlug ? deck.guides[currentMatchupSlug] : null;
+    deckView = computeDeckView(deck, guideData, currentApplySideboard);
+    const hasCurrentSideboard = deckView.sideCards && deckView.sideCards.length;
+    const currentLandColumnHtml = !hasCurrentSideboard ? `
       <div class="decklist-col">
         <div class="card-list">
           ${renderCardsByType(deckView.mainCards, bannedSet, ['land'], deckView.mainboardAdded, 'sb-added')}
         </div>
       </div>
     ` : '';
-    const sideboardHtml = hasSideboard ? `
+    const currentSideboardHtml = hasCurrentSideboard ? `
       <div class="decklist-col">
         <div class="card-list">
           ${renderCardGroup(deckView.sideCards, 'Sideboard', bannedSet, deckView.sideboardFromMain, 'sb-removed')}
         </div>
       </div>
     ` : '';
-    const hasLandColumn = !hasSideboard && deckView.mainCards.some(c => (c.type || 'spell') === 'land');
-    const hasSecondColumn = hasSideboard || hasLandColumn;
-    const mainTypes = hasSideboard ? undefined : ['creature', 'spell'];
-    const decklistOpenAttr = (currentCollapsedMask & 1) === 0 ? ' open' : '';
-    const primerOpenAttr = (currentCollapsedMask & 2) === 0 ? ' open' : '';
-    const matchupOpenAttr = (currentCollapsedMask & 4) === 0 ? ' open' : '';
-    const matchupGuidesHtml = guideKeys.length ? `
-      <details id="matchup-details" class="collapsible matchup-guides"${matchupOpenAttr}>
-        <summary>Matchup Guides</summary>
-        <div class="collapsible-body guide-panel">
-          <div class="guide-select">
-            <select id="guide-select" aria-label="Matchup guide">
-              ${guideOptions}
-            </select>
-            <button type="button" class="action-button apply-sideboard-button${currentApplySideboard ? ' active' : ''}" id="apply-sideboard-button">
-              ${currentApplySideboard ? 'Sideboard applied' : 'Apply sideboard'}
-            </button>
-            <a class="guide-opponent-link action-button" id="guide-opponent-link" href="#">Go to deck</a>
+    const hasCurrentLandColumn = !hasCurrentSideboard && deckView.mainCards.some(c => (c.type || 'spell') === 'land');
+    const hasCurrentSecondColumn = hasCurrentSideboard || hasCurrentLandColumn;
+    const currentMainTypes = hasCurrentSideboard ? undefined : ['creature', 'spell'];
+    decklistBody.innerHTML = `
+      <div class="decklist-grid${hasCurrentSecondColumn ? '' : ' single'}">
+        <div class="decklist-col">
+          <div class="card-list">
+            ${renderCardsByType(deckView.mainCards, bannedSet, currentMainTypes, deckView.mainboardAdded, 'sb-added')}
           </div>
-          <div class="guide-box" id="guide-box"></div>
         </div>
-      </details>
-    ` : '';
-
-    app.innerHTML = `
-      <h1 class="breadcrumbs">
-        <a href="#/">Battlebox</a>
-        <span class="crumb-sep">/</span>
-        <a href="${buildBattleboxHash(bb.slug, currentSortMode, currentSortDirection)}">${capitalize(bb.slug)}</a>
-        <span class="crumb-sep">/</span>
-        <span>${deck.name}</span>
-      </h1>
-      <div class="deck-info-pane">
-        <div class="deck-colors">${formatColors(deck.colors)}</div>
-        <div class="deck-tags">${renderDeckTags(deck.tags)}${renderDifficultyTags(deck.difficulty_tags)}</div>
+        ${currentSideboardHtml || currentLandColumnHtml}
       </div>
-
-      ${matchupGuidesHtml}
-
-      <details id="decklist-details" class="collapsible"${decklistOpenAttr}>
-        <summary>Decklist</summary>
-        <div class="collapsible-body" id="decklist-body">
-          <div class="decklist-grid${hasSecondColumn ? '' : ' single'}">
-            <div class="decklist-col">
-              <div class="card-list">
-                ${renderCardsByType(deckView.mainCards, bannedSet, mainTypes, deckView.mainboardAdded, 'sb-added')}
-              </div>
-            </div>
-            ${sideboardHtml || landColumnHtml}
-          </div>
-        </div>
-      </details>
-
-      <details id="primer-details" class="collapsible"${primerOpenAttr}>
-        <summary>Primer</summary>
-        <div class="collapsible-body">
-          <div class="primer">${primerHtml}</div>
-        </div>
-      </details>
     `;
+  };
 
-    const decklistDetails = document.getElementById('decklist-details');
-    const primerDetails = document.getElementById('primer-details');
-    const matchupDetails = document.getElementById('matchup-details');
-    const decklistBody = document.getElementById('decklist-body');
-
-    const computeCollapsedMask = () => {
-      let mask = 0;
-      if (decklistDetails && !decklistDetails.open) mask |= 1;
-      if (primerDetails && !primerDetails.open) mask |= 2;
-      if (matchupDetails && !matchupDetails.open) mask |= 4;
-      return mask;
+  if (guideKeys.length) {
+    const select = document.getElementById('guide-select');
+    const guideBox = document.getElementById('guide-box');
+    const opponentLink = document.getElementById('guide-opponent-link');
+    const applyButton = document.getElementById('apply-sideboard-button');
+    const updateOpponentLink = (key) => {
+      if (!opponentLink) return;
+      const opponent = bb.decks.find(d => d.slug === key);
+      const opponentHasGuide = opponent
+        && opponent.guides
+        && Object.prototype.hasOwnProperty.call(opponent.guides, deck.slug);
+      opponentLink.href = opponentHasGuide
+        ? buildDeckHash(bb.slug, key, currentSortMode, currentSortDirection, deck.slug, 0, currentApplySideboard)
+        : buildDeckHash(bb.slug, key, currentSortMode, currentSortDirection, undefined, 0, currentApplySideboard);
+      opponentLink.textContent = opponent ? `Go to ${opponent.name}` : 'Go to deck';
     };
-
-    const updateDeckHashFromState = () => {
-      const nextHash = buildDeckHash(
-        bb.slug,
-        deck.slug,
-        currentSortMode,
-        currentSortDirection,
-        currentMatchupSlug || undefined,
-        currentCollapsedMask,
-        currentApplySideboard
+    const syncApplyButton = () => {
+      if (!applyButton) return;
+      applyButton.classList.toggle('active', currentApplySideboard);
+      applyButton.textContent = currentApplySideboard ? 'Sideboard applied' : 'Apply sideboard';
+    };
+    const renderGuide = (key) => {
+      const guideData = deck.guides[key] || '';
+      const opponent = bb.decks.find(d => d.slug === key);
+      const opponentPrintings = opponent ? opponent.printings || {} : {};
+      const opponentDoubleFaced = opponent ? buildDoubleFacedMap(opponent) : {};
+      const mdProse = createMarkdownRenderer(
+        [opponentPrintings, deckPrintings],
+        [opponentDoubleFaced, deckDoubleFaced]
       );
-      if (location.hash !== nextHash) {
-        history.replaceState(null, '', nextHash);
-      }
+      guideBox.innerHTML = renderGuideContent(mdSelf, mdProse, guideData);
+      updateOpponentLink(key);
     };
-
-    const renderDecklistBody = () => {
-      if (!decklistBody) return;
-      const guideData = currentMatchupSlug ? deck.guides[currentMatchupSlug] : null;
-      deckView = computeDeckView(deck, guideData, currentApplySideboard);
-      const hasCurrentSideboard = deckView.sideCards && deckView.sideCards.length;
-      const currentLandColumnHtml = !hasCurrentSideboard ? `
-        <div class="decklist-col">
-          <div class="card-list">
-            ${renderCardsByType(deckView.mainCards, bannedSet, ['land'], deckView.mainboardAdded, 'sb-added')}
-          </div>
-        </div>
-      ` : '';
-      const currentSideboardHtml = hasCurrentSideboard ? `
-        <div class="decklist-col">
-          <div class="card-list">
-            ${renderCardGroup(deckView.sideCards, 'Sideboard', bannedSet, deckView.sideboardFromMain, 'sb-removed')}
-          </div>
-        </div>
-      ` : '';
-      const hasCurrentLandColumn = !hasCurrentSideboard && deckView.mainCards.some(c => (c.type || 'spell') === 'land');
-      const hasCurrentSecondColumn = hasCurrentSideboard || hasCurrentLandColumn;
-      const currentMainTypes = hasCurrentSideboard ? undefined : ['creature', 'spell'];
-      decklistBody.innerHTML = `
-        <div class="decklist-grid${hasCurrentSecondColumn ? '' : ' single'}">
-          <div class="decklist-col">
-            <div class="card-list">
-              ${renderCardsByType(deckView.mainCards, bannedSet, currentMainTypes, deckView.mainboardAdded, 'sb-added')}
-            </div>
-          </div>
-          ${currentSideboardHtml || currentLandColumnHtml}
-        </div>
-      `;
-    };
-
-    if (guideKeys.length) {
-      const select = document.getElementById('guide-select');
-      const guideBox = document.getElementById('guide-box');
-      const opponentLink = document.getElementById('guide-opponent-link');
-      const applyButton = document.getElementById('apply-sideboard-button');
-      const updateOpponentLink = (key) => {
-        if (!opponentLink) return;
-        const opponent = bb.decks.find(d => d.slug === key);
-        const opponentHasGuide = opponent
-          && opponent.guides
-          && Object.prototype.hasOwnProperty.call(opponent.guides, deck.slug);
-        opponentLink.href = opponentHasGuide
-          ? buildDeckHash(bb.slug, key, currentSortMode, currentSortDirection, deck.slug, 0, currentApplySideboard)
-          : buildDeckHash(bb.slug, key, currentSortMode, currentSortDirection, undefined, 0, currentApplySideboard);
-        opponentLink.textContent = opponent ? `Go to ${opponent.name}` : 'Go to deck';
-      };
-      const syncApplyButton = () => {
-        if (!applyButton) return;
-        applyButton.classList.toggle('active', currentApplySideboard);
-        applyButton.textContent = currentApplySideboard ? 'Sideboard applied' : 'Apply sideboard';
-      };
-      const renderGuide = (key) => {
-        const guideData = deck.guides[key] || '';
-        const opponent = bb.decks.find(d => d.slug === key);
-        const opponentPrintings = opponent ? opponent.printings || {} : {};
-        const opponentDoubleFaced = opponent ? buildDoubleFacedMap(opponent) : {};
-        const mdProse = createMarkdownRenderer(
-          [opponentPrintings, deckPrintings],
-          [opponentDoubleFaced, deckDoubleFaced]
-        );
-        guideBox.innerHTML = renderGuideContent(mdSelf, mdProse, guideData);
-        updateOpponentLink(key);
-      };
-      select.value = initialGuide;
-      renderGuide(initialGuide);
-      syncApplyButton();
-      select.addEventListener('change', () => {
-        const key = select.value;
-        currentMatchupSlug = key;
-        renderGuide(key);
+    select.value = initialGuide;
+    renderGuide(initialGuide);
+    syncApplyButton();
+    select.addEventListener('change', () => {
+      const key = select.value;
+      currentMatchupSlug = key;
+      renderGuide(key);
+      renderDecklistBody();
+      updateDeckHashFromState();
+    });
+    if (applyButton) {
+      applyButton.addEventListener('click', () => {
+        currentApplySideboard = !currentApplySideboard;
+        syncApplyButton();
         renderDecklistBody();
-        updateDeckHashFromState();
-      });
-      if (applyButton) {
-        applyButton.addEventListener('click', () => {
-          currentApplySideboard = !currentApplySideboard;
-          syncApplyButton();
-          renderDecklistBody();
-          updateOpponentLink(select.value);
-          updateDeckHashFromState();
-        });
-      }
-
-      const syncCollapsedAndUrl = () => {
-        currentCollapsedMask = computeCollapsedMask();
         updateOpponentLink(select.value);
         updateDeckHashFromState();
-      };
-      [decklistDetails, primerDetails, matchupDetails].forEach((details) => {
-        if (!details) return;
-        details.addEventListener('toggle', syncCollapsedAndUrl);
-      });
-    } else {
-      const syncCollapsedAndUrl = () => {
-        currentCollapsedMask = computeCollapsedMask();
-        updateDeckHashFromState();
-      };
-      [decklistDetails, primerDetails].forEach((details) => {
-        if (!details) return;
-        details.addEventListener('toggle', syncCollapsedAndUrl);
       });
     }
 
-    renderDecklistBody();
-    currentCollapsedMask = computeCollapsedMask();
-    updateDeckHashFromState();
+    const syncCollapsedAndUrl = () => {
+      currentCollapsedMask = computeCollapsedMask();
+      updateOpponentLink(select.value);
+      updateDeckHashFromState();
+    };
+    [decklistDetails, primerDetails, matchupDetails].forEach((details) => {
+      if (!details) return;
+      details.addEventListener('toggle', syncCollapsedAndUrl);
+    });
+  } else {
+    const syncCollapsedAndUrl = () => {
+      currentCollapsedMask = computeCollapsedMask();
+      updateDeckHashFromState();
+    };
+    [decklistDetails, primerDetails].forEach((details) => {
+      if (!details) return;
+      details.addEventListener('toggle', syncCollapsedAndUrl);
+    });
   }
 
-  function renderNotFound() {
-    app.innerHTML = `
-      <a href="#/" class="back">← Home</a>
-      <h1>Not Found</h1>
-    `;
+  renderDecklistBody();
+  currentCollapsedMask = computeCollapsedMask();
+  updateDeckHashFromState();
+}
+
+function renderNotFound() {
+  app.innerHTML = `
+    <a href="#/" class="back">← Home</a>
+    <h1>Not Found</h1>
+  `;
+}
+
+async function init() {
+  app.innerHTML = '<div class="loading">Loading...</div>';
+
+  data.index = await fetchJsonData('/data/index.json', { cache: 'no-store' });
+  if (!data.index) {
+    app.innerHTML = '<div class="loading">Failed to load data.</div>';
+    return;
   }
+  data.buildId = data.index.build_id || '';
 
-  // Init
-  async function init() {
-    app.innerHTML = '<div class="loading">Loading...</div>';
+  preview.setupCardHover();
+  window.addEventListener('hashchange', route);
+  await route();
+}
 
-    data.index = await fetchJsonData('/data/index.json', { cache: 'no-store' });
-    if (!data.index) {
-      app.innerHTML = '<div class="loading">Failed to load data.</div>';
-      return;
-    }
-    data.buildId = data.index.build_id || '';
-
-    setupCardHover();
-    window.addEventListener('hashchange', route);
-    await route();
-  }
-
-  init();
-})();
+init();
