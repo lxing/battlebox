@@ -200,23 +200,21 @@ input[type="reset"] {
   color: #fff;
 }
 
-.randomizer-roll {
-  height: 1.6rem;
-  line-height: 1.6rem;
-  padding: 0 0.7rem;
-  transform: scale(1.18);
-  transform-origin: center;
+.action-button:active {
+  background: #4a4a78;
+  border-color: #6969a1;
 }
 
+.randomizer-roll,
 .randomizer-sort {
-  height: 1.6rem;
-  line-height: 1.6rem;
-  min-width: 1.9rem;
-  padding: 0 0.45rem;
+  height: 1.9rem;
+  line-height: 1.9rem;
+  min-width: 2.2rem;
+  padding: 0 0.7rem;
   font-size: 1rem;
 }
 
-.randomizer-sort.active {
+.randomizer-controls .action-button.active {
   background: #4a4a78;
   border-color: #6969a1;
 }

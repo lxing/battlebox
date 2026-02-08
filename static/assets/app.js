@@ -256,6 +256,11 @@ function renderBattlebox(bbSlug, initialSortMode, initialSortDirection) {
   const clearHighlights = () => {
     app.querySelectorAll('.deck-link.deck-highlight').forEach(link => link.classList.remove('deck-highlight'));
   };
+  const setActiveRollButton = (count) => {
+    rollButtons.forEach(btn => {
+      btn.classList.toggle('active', Number(btn.dataset.count) === count);
+    });
+  };
 
   const roll = (count) => {
     const deckItems = [...deckList.querySelectorAll('.deck-item')];
@@ -287,7 +292,11 @@ function renderBattlebox(bbSlug, initialSortMode, initialSortDirection) {
   };
 
   rollButtons.forEach(btn => {
-    btn.addEventListener('click', () => roll(Number(btn.dataset.count)));
+    btn.addEventListener('click', () => {
+      const count = Number(btn.dataset.count);
+      setActiveRollButton(count);
+      roll(count);
+    });
   });
   sortButtons.forEach(btn => {
     btn.addEventListener('click', () => applySort(btn.dataset.sort));
