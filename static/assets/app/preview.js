@@ -225,8 +225,13 @@ export function createCardPreview(app, getCardTarget) {
 
     document.addEventListener('click', (e) => {
       if (!previewEl || previewEl.style.display === 'none') return;
+      const cardEl = getCardTarget(e);
       e.preventDefault();
       e.stopPropagation();
+      if (cardEl) {
+        openPreview(cardEl, e);
+        return;
+      }
       hidePreview();
     }, true);
 
