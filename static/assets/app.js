@@ -357,10 +357,10 @@ async function renderDeck(bbSlug, deckSlug, selectedGuide, sortMode, sortDirecti
           <select id="guide-select" aria-label="Matchup guide">
             ${guideOptions}
           </select>
+          <a class="guide-opponent-link action-button" id="guide-opponent-link" href="#">Go to deck</a>
           <button type="button" class="action-button apply-sideboard-button${currentApplySideboard ? ' active' : ''}" id="apply-sideboard-button">
             ${currentApplySideboard ? 'Sideboard applied' : 'Apply sideboard'}
           </button>
-          <a class="guide-opponent-link action-button" id="guide-opponent-link" href="#">Go to deck</a>
         </div>
         <div class="guide-box" id="guide-box"></div>
       </div>
@@ -478,8 +478,8 @@ async function renderDeck(bbSlug, deckSlug, selectedGuide, sortMode, sortDirecti
         && opponent.guides
         && Object.prototype.hasOwnProperty.call(opponent.guides, deck.slug);
       opponentLink.href = opponentHasGuide
-        ? buildDeckHash(bb.slug, key, currentSortMode, currentSortDirection, deck.slug, 0, currentApplySideboard)
-        : buildDeckHash(bb.slug, key, currentSortMode, currentSortDirection, undefined, 0, currentApplySideboard);
+        ? buildDeckHash(bb.slug, key, currentSortMode, currentSortDirection, deck.slug, 0, false)
+        : buildDeckHash(bb.slug, key, currentSortMode, currentSortDirection, undefined, 0, false);
       opponentLink.textContent = opponent ? `Go to ${opponent.name}` : 'Go to deck';
     };
     const syncApplyButton = () => {
