@@ -1,0 +1,3 @@
+interface:
+  display_name: "Staging Manifest Diff"
+  short_description: "Diff staged deck manifest vs current data manifest"

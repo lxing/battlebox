@@ -1,0 +1,139 @@
+{
+  "name": "Jeskai Ephemerate",
+  "source_url": "https://www.mtggoldfish.com/deck/7232863#paper",
+  "colors": "wur",
+  "tags": [
+    "control"
+  ],
+  "cards": [
+    {
+      "name": "Archaeomancer",
+      "qty": 2
+    },
+    {
+      "name": "Augur of Bolas",
+      "qty": 3
+    },
+    {
+      "name": "Brainstorm",
+      "qty": 4
+    },
+    {
+      "name": "Cleansing Wildfire",
+      "qty": 4
+    },
+    {
+      "name": "Counterspell",
+      "qty": 4
+    },
+    {
+      "name": "Destroy Evil",
+      "qty": 1
+    },
+    {
+      "name": "Dispel",
+      "qty": 2
+    },
+    {
+      "name": "Ephemerate",
+      "qty": 3
+    },
+    {
+      "name": "Fire / Ice",
+      "qty": 1
+    },
+    {
+      "name": "Glacial Floodplain",
+      "qty": 1
+    },
+    {
+      "name": "Lightning Bolt",
+      "qty": 2
+    },
+    {
+      "name": "Lorien Revealed",
+      "qty": 4
+    },
+    {
+      "name": "Mulldrifter",
+      "qty": 3
+    },
+    {
+      "name": "Murmuring Mystic",
+      "qty": 2
+    },
+    {
+      "name": "Perilous Landscape",
+      "qty": 2
+    },
+    {
+      "name": "Rustvale Bridge",
+      "qty": 4
+    },
+    {
+      "name": "Silverbluff Bridge",
+      "qty": 4
+    },
+    {
+      "name": "Skred",
+      "qty": 3
+    },
+    {
+      "name": "Snow-Covered Island",
+      "qty": 6
+    },
+    {
+      "name": "Snow-Covered Mountain",
+      "qty": 1
+    },
+    {
+      "name": "Snow-Covered Plains",
+      "qty": 1
+    },
+    {
+      "name": "Thraben Charm",
+      "qty": 1
+    },
+    {
+      "name": "Union of the Third Path",
+      "qty": 1
+    },
+    {
+      "name": "Volatile Fjord",
+      "qty": 1
+    }
+  ],
+  "sideboard": [
+    {
+      "name": "Annul",
+      "qty": 2
+    },
+    {
+      "name": "Breath Weapon",
+      "qty": 2
+    },
+    {
+      "name": "Envelop",
+      "qty": 2
+    },
+    {
+      "name": "Hydroblast",
+      "qty": 3
+    },
+    {
+      "name": "Pyroblast",
+      "qty": 4
+    },
+    {
+      "name": "Stonehorn Dignitary",
+      "qty": 1
+    },
+    {
+      "name": "Union of the Third Path",
+      "qty": 1
+    }
+  ],
+  "difficulty_tags": [
+    "expert"
+  ]
+}
