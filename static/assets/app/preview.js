@@ -1,4 +1,11 @@
 export function createCardPreview(app, getCardTarget) {
+  // Preview behavior spec:
+  // 1) Open: hover (fine pointer) or tap/click on card links.
+  // 2) Anchor: preview is pinned to the source card and repositions on scroll/resize.
+  //    It follows both app-container and window scrolling.
+  // 3) Close: always on outside document click; additionally on leave for fine-pointer
+  //    hover mode, but leave-close is deferred while scrolling and reconciled on scrollend.
+  //    This avoids geometry-driven premature closes while the preview is repositioning.
   let previewEl = null;
   let previewImgFront = null;
   let previewImgBack = null;
@@ -8,6 +15,11 @@ export function createCardPreview(app, getCardTarget) {
   let previewUrl = '';
   let previewAnchor = null;
   let previewRaf = null;
+  let allowLeaveClose = false;
+  let isScrolling = false;
+  let pendingLeaveClose = false;
+  let lastPointerX = null;
+  let lastPointerY = null;
 
   function getImageUrl(printing, face) {
     if (!printing) return null;
@@ -62,6 +74,46 @@ export function createCardPreview(app, getCardTarget) {
     });
   }
 
+  function recordPointerPosition(e) {
+    if (!allowLeaveClose) return;
+    if (e.pointerType && e.pointerType !== 'mouse' && e.pointerType !== 'pen') return;
+    lastPointerX = e.clientX;
+    lastPointerY = e.clientY;
+  }
+
+  function pointerIsOverAnchorOrPreview() {
+    if (!previewAnchor || lastPointerX === null || lastPointerY === null) return false;
+    const target = document.elementFromPoint(lastPointerX, lastPointerY);
+    if (!target) return false;
+    if (previewEl && (target === previewEl || previewEl.contains(target))) return true;
+    const cardEl = previewAnchor.el;
+    if (!cardEl) return false;
+    return target === cardEl || cardEl.contains(target);
+  }
+
+  function requestCloseFromLeave() {
+    if (!allowLeaveClose || !previewAnchor) return;
+    if (isScrolling) {
+      pendingLeaveClose = true;
+      return;
+    }
+    pendingLeaveClose = false;
+    if (pointerIsOverAnchorOrPreview()) return;
+    hidePreview();
+  }
+
+  function handleScroll() {
+    isScrolling = true;
+    schedulePreviewAnchorUpdate();
+  }
+
+  function handleScrollEnd() {
+    if (!allowLeaveClose) return;
+    isScrolling = false;
+    if (!pendingLeaveClose) return;
+    requestCloseFromLeave();
+  }
+
   function ensurePreviewEl() {
     if (previewEl) return;
     previewEl = document.createElement('div');
@@ -83,7 +135,7 @@ export function createCardPreview(app, getCardTarget) {
       if (cardEl && e.relatedTarget && (cardEl === e.relatedTarget || cardEl.contains(e.relatedTarget))) {
         return;
       }
-      hidePreview();
+      requestCloseFromLeave();
     });
   }
 
@@ -169,6 +221,7 @@ export function createCardPreview(app, getCardTarget) {
 
   function setupCardHover() {
     const prefersHover = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+    allowLeaveClose = prefersHover;
 
     document.addEventListener('click', (e) => {
       if (!previewEl || previewEl.style.display === 'none') return;
@@ -178,7 +231,11 @@ export function createCardPreview(app, getCardTarget) {
     }, true);
 
     if (prefersHover) {
+      app.addEventListener('pointermove', recordPointerPosition, true);
+      window.addEventListener('pointermove', recordPointerPosition, true);
+
       app.addEventListener('pointerenter', (e) => {
+        recordPointerPosition(e);
         const cardEl = getCardTarget(e);
         if (!cardEl) return;
         if (e.relatedTarget && cardEl.contains(e.relatedTarget)) return;
@@ -186,11 +243,12 @@ export function createCardPreview(app, getCardTarget) {
       }, true);
 
       app.addEventListener('pointerleave', (e) => {
+        recordPointerPosition(e);
         const cardEl = getCardTarget(e);
         if (!cardEl || !previewEl) return;
         if (e.relatedTarget && cardEl.contains(e.relatedTarget)) return;
         if (e.relatedTarget && previewEl.contains(e.relatedTarget)) return;
-        // Disabled for bisect testing: card pointerleave close path.
+        requestCloseFromLeave();
       }, true);
 
     } else {
@@ -203,8 +261,10 @@ export function createCardPreview(app, getCardTarget) {
       });
     }
 
-    app.addEventListener('scroll', schedulePreviewAnchorUpdate, { passive: true });
-    window.addEventListener('scroll', schedulePreviewAnchorUpdate, { passive: true });
+    app.addEventListener('scroll', handleScroll, { passive: true });
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    app.addEventListener('scrollend', handleScrollEnd);
+    window.addEventListener('scrollend', handleScrollEnd);
     window.addEventListener('resize', schedulePreviewAnchorUpdate);
   }
 
@@ -212,6 +272,7 @@ export function createCardPreview(app, getCardTarget) {
     if (previewEl) {
       previewEl.style.display = 'none';
     }
+    pendingLeaveClose = false;
     previewAnchor = null;
     previewToken += 1;
   }
