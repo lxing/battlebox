@@ -141,17 +141,15 @@ function renderBattlebox(bbSlug, initialSortMode, initialSortDirection) {
       <span class="crumb-sep">/</span>
       <span>${capitalize(bb.slug)}</span>
     </h1>
-    <div class="randomizer">
-      <div class="randomizer-controls">
-        <div class="randomizer-roll-controls">
-          <button type="button" class="randomizer-roll action-button" data-count="1" title="Roll 1 deck" aria-label="Roll 1 deck">🎲</button>
-          <button type="button" class="randomizer-roll action-button" data-count="2" title="Roll 2 decks" aria-label="Roll 2 decks">🎲🎲</button>
-        </div>
-        <div class="randomizer-sort-controls" role="group" aria-label="Sort decks">
-          <button type="button" class="randomizer-sort action-button" data-sort="name" title="Sort by name" aria-label="Sort by name">🔤</button>
-          <button type="button" class="randomizer-sort action-button" data-sort="types" title="Sort by types" aria-label="Sort by types">🧬</button>
-          <button type="button" class="randomizer-sort action-button" data-sort="difficulty" title="Sort by difficulty" aria-label="Sort by difficulty">🧠</button>
-        </div>
+    <div class="randomizer-controls">
+      <div class="randomizer-roll-controls">
+        <button type="button" class="randomizer-roll action-button" data-count="1" title="Roll 1 deck" aria-label="Roll 1 deck">🎲</button>
+        <button type="button" class="randomizer-roll action-button" data-count="2" title="Roll 2 decks" aria-label="Roll 2 decks">🎲🎲</button>
+      </div>
+      <div class="randomizer-sort-controls" role="group" aria-label="Sort decks">
+        <button type="button" class="randomizer-sort action-button" data-sort="name" title="Sort by name" aria-label="Sort by name">🔤</button>
+        <button type="button" class="randomizer-sort action-button" data-sort="types" title="Sort by types" aria-label="Sort by types">🧬</button>
+        <button type="button" class="randomizer-sort action-button" data-sort="difficulty" title="Sort by difficulty" aria-label="Sort by difficulty">🧠</button>
       </div>
     </div>
     <ul class="deck-list">
