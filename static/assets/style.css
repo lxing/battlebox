@@ -412,6 +412,20 @@ input[type="reset"] {
   gap: 0.4rem;
 }
 
+.card-row.sb-added {
+  background: rgba(46, 125, 50, 0.22);
+  border: 1px solid rgba(99, 169, 106, 0.55);
+  border-radius: 4px;
+  padding: 0.05rem 0.25rem;
+}
+
+.card-row.sb-removed {
+  background: rgba(179, 58, 58, 0.2);
+  border: 1px solid rgba(207, 122, 122, 0.55);
+  border-radius: 4px;
+  padding: 0.05rem 0.25rem;
+}
+
 .card-group {
   margin-bottom: 0.75rem;
 }
@@ -550,12 +564,17 @@ details.collapsible[open] summary::after {
 
 .guide-select {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   align-items: stretch;
   gap: 0.5rem;
   margin-bottom: 0.5rem;
   font-size: 0.85rem;
   color: #aaa;
+}
+
+.apply-sideboard-button.active {
+  background: #4a7d50;
+  border-color: #63a96a;
 }
 
 .guide-opponent-link {

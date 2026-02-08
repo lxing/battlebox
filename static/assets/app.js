@@ -117,6 +117,10 @@
     return parsed & 7;
   }
 
+  function normalizeApplySideboard(value) {
+    return value === '1' || value === true;
+  }
+
   function parseHashRoute(rawHash) {
     const hash = typeof rawHash === 'string' ? rawHash : (location.hash.slice(1) || '/');
     const [pathPart, queryPart = ''] = hash.split('?');
@@ -130,6 +134,7 @@
       sortDirection: normalizeSortDirection(params.get('dir')),
       matchupSlug,
       collapsedMask: normalizeCollapsedMask(params.get('c')),
+      applySideboard: normalizeApplySideboard(params.get('sb')),
     };
   }
 
@@ -140,12 +145,13 @@
     return `#/${bbSlug}?${params.toString()}`;
   }
 
-  function buildDeckHash(bbSlug, deckSlug, sortMode, sortDirection, matchupSlug, collapsedMask) {
+  function buildDeckHash(bbSlug, deckSlug, sortMode, sortDirection, matchupSlug, collapsedMask, applySideboard) {
     const params = new URLSearchParams();
     params.set('sort', normalizeSortMode(sortMode));
     params.set('dir', normalizeSortDirection(sortDirection));
     if (matchupSlug) params.set('matchup', matchupSlug);
     params.set('c', String(normalizeCollapsedMask(collapsedMask)));
+    if (normalizeApplySideboard(applySideboard)) params.set('sb', '1');
     return `#/${bbSlug}/${deckSlug}?${params.toString()}`;
   }
 
@@ -248,6 +254,113 @@
     return html || '<em>No guide yet</em>';
   }
 
+  const guideCountRE = /^(\d+)\s*x?\s+(.+)$/i;
+
+  function extractGuideCardName(input) {
+    const raw = String(input || '').trim();
+    if (!raw) return '';
+    if (raw.startsWith('[[') && raw.endsWith(']]')) {
+      const inner = raw.slice(2, -2).trim();
+      if (!inner) return '';
+      const parts = inner.split('|');
+      return (parts[parts.length - 1] || '').trim();
+    }
+    return raw;
+  }
+
+  function parseGuidePlanLines(lines) {
+    if (!Array.isArray(lines)) return [];
+    const parsed = [];
+    lines.forEach((line) => {
+      const text = String(line || '').trim();
+      if (!text) return;
+      const match = guideCountRE.exec(text);
+      if (!match) return;
+      const qty = Number.parseInt(match[1], 10);
+      if (!qty || qty < 1) return;
+      const name = extractGuideCardName(match[2]);
+      const key = normalizeName(name);
+      if (!key) return;
+      parsed.push({ qty, key });
+    });
+    return parsed;
+  }
+
+  function findCardIndex(cards, key) {
+    for (let i = 0; i < cards.length; i++) {
+      if (normalizeName(cards[i].name) === key) return i;
+    }
+    return -1;
+  }
+
+  function cloneCardWithQty(card, qty) {
+    return { ...card, qty };
+  }
+
+  function computeDeckView(deck, guide, applySideboard) {
+    const mainCards = Array.isArray(deck.cards) ? deck.cards.map(c => ({ ...c })) : [];
+    const sideCards = Array.isArray(deck.sideboard) ? deck.sideboard.map(c => ({ ...c })) : [];
+    const mainboardAdded = {};
+    const sideboardFromMain = {};
+
+    if (!applySideboard || !guide) {
+      return {
+        mainCards,
+        sideCards,
+        mainboardAdded,
+        sideboardFromMain,
+      };
+    }
+
+    const ins = parseGuidePlanLines(guide.in);
+    const outs = parseGuidePlanLines(guide.out);
+
+    ins.forEach((entry) => {
+      const sideIdx = findCardIndex(sideCards, entry.key);
+      if (sideIdx < 0) return;
+      const sideCard = sideCards[sideIdx];
+      const moved = Math.min(entry.qty, sideCard.qty);
+      if (moved <= 0) return;
+
+      sideCard.qty -= moved;
+      if (sideCard.qty <= 0) sideCards.splice(sideIdx, 1);
+
+      const mainIdx = findCardIndex(mainCards, entry.key);
+      if (mainIdx >= 0) {
+        mainCards[mainIdx].qty += moved;
+      } else {
+        mainCards.push(cloneCardWithQty(sideCard, moved));
+      }
+      mainboardAdded[entry.key] = (mainboardAdded[entry.key] || 0) + moved;
+    });
+
+    outs.forEach((entry) => {
+      const mainIdx = findCardIndex(mainCards, entry.key);
+      if (mainIdx < 0) return;
+      const mainCard = mainCards[mainIdx];
+      const moved = Math.min(entry.qty, mainCard.qty);
+      if (moved <= 0) return;
+
+      mainCard.qty -= moved;
+      if (mainCard.qty <= 0) mainCards.splice(mainIdx, 1);
+
+      const sideIdx = findCardIndex(sideCards, entry.key);
+      if (sideIdx >= 0) {
+        sideCards[sideIdx].qty += moved;
+      } else {
+        sideCards.push(cloneCardWithQty(mainCard, moved));
+      }
+      sideboardFromMain[entry.key] = (sideboardFromMain[entry.key] || 0) + moved;
+    });
+
+    return {
+      mainCards: mainCards.filter(c => c.qty > 0),
+      sideCards: sideCards.filter(c => c.qty > 0),
+      mainboardAdded,
+      sideboardFromMain,
+    };
+  }
+
   function buildDoubleFacedMap(deck) {
     const out = {};
     const addCards = (cards) => {
@@ -263,14 +376,15 @@
     return out;
   }
 
-  function renderCardRow(card, bannedSet) {
+  function renderCardRow(card, bannedSet, highlightClass) {
     const banned = bannedSet && bannedSet.has(normalizeName(card.name));
     const bannedTag = banned ? '<span class="banned-inline-tag" title="Banned">🔨 BAN</span>' : '';
     const doubleFacedAttr = card.double_faced ? ' data-double-faced="1"' : '';
-    return `<div class="card-row"><span class="card-qty">${card.qty}</span><span class="card" data-name="${card.name}" data-printing="${card.printing}"${doubleFacedAttr}>${card.name}${bannedTag}</span></div>`;
+    const rowClass = highlightClass ? `card-row ${highlightClass}` : 'card-row';
+    return `<div class="${rowClass}"><span class="card-qty">${card.qty}</span><span class="card" data-name="${card.name}" data-printing="${card.printing}"${doubleFacedAttr}>${card.name}${bannedTag}</span></div>`;
   }
 
-  function renderCardsByType(cards, bannedSet, types) {
+  function renderCardsByType(cards, bannedSet, types, highlightMap, highlightClass) {
     const groups = { creature: [], spell: [], land: [] };
     cards.forEach(c => {
       const type = c.type || 'spell';
@@ -287,19 +401,27 @@
       const count = group.reduce((sum, c) => sum + c.qty, 0);
       html += `<div class="card-group">`;
       html += `<div class="card-group-label">${labels[type]} (${count})</div>`;
-      html += group.map(c => renderCardRow(c, bannedSet)).join('');
+      html += group.map(c => {
+        const key = normalizeName(c.name);
+        const rowHighlight = highlightMap && highlightMap[key] ? highlightClass : '';
+        return renderCardRow(c, bannedSet, rowHighlight);
+      }).join('');
       html += `</div>`;
     }
     return html;
   }
 
-  function renderCardGroup(cards, label, bannedSet) {
+  function renderCardGroup(cards, label, bannedSet, highlightMap, highlightClass) {
     if (!cards || cards.length === 0) return '';
     const count = cards.reduce((sum, c) => sum + c.qty, 0);
     return `
       <div class="card-group">
         <div class="card-group-label">${label} (${count})</div>
-        ${cards.map(c => renderCardRow(c, bannedSet)).join('')}
+        ${cards.map(c => {
+          const key = normalizeName(c.name);
+          const rowHighlight = highlightMap && highlightMap[key] ? highlightClass : '';
+          return renderCardRow(c, bannedSet, rowHighlight);
+        }).join('')}
       </div>
     `;
   }
@@ -563,6 +685,7 @@
       sortDirection,
       matchupSlug,
       collapsedMask,
+      applySideboard,
     } = parseHashRoute(location.hash.slice(1) || '/');
 
     window.scrollTo(0, 0);
@@ -572,7 +695,15 @@
     } else if (parts.length === 1) {
       renderBattlebox(parts[0], sortMode, sortDirection);
     } else if (parts.length === 2) {
-      await renderDeck(parts[0], parts[1], matchupSlug || undefined, sortMode, sortDirection, collapsedMask);
+      await renderDeck(
+        parts[0],
+        parts[1],
+        matchupSlug || undefined,
+        sortMode,
+        sortDirection,
+        collapsedMask,
+        applySideboard
+      );
     } else {
       renderNotFound();
     }
@@ -765,7 +896,7 @@
     applySort(initialSort, true);
   }
 
-  async function renderDeck(bbSlug, deckSlug, selectedGuide, sortMode, sortDirection, collapsedMask) {
+  async function renderDeck(bbSlug, deckSlug, selectedGuide, sortMode, sortDirection, collapsedMask, applySideboard) {
     const bb = await loadBattlebox(bbSlug);
     if (!bb) return renderNotFound();
     const deck = bb.decks.find(d => d.slug === deckSlug);
@@ -781,28 +912,38 @@
     const bannedNames = Array.isArray(bb.banned) ? bb.banned : [];
     const bannedSet = new Set(bannedNames.map(normalizeName));
     const guideKeys = Object.keys(deck.guides || {});
+    const initialGuide = guideKeys.length
+      ? (selectedGuide && guideKeys.includes(selectedGuide) ? selectedGuide : guideKeys[0])
+      : '';
+    let currentMatchupSlug = initialGuide;
+    let currentApplySideboard = guideKeys.length ? normalizeApplySideboard(applySideboard) : false;
+    let deckView = computeDeckView(
+      deck,
+      currentMatchupSlug ? deck.guides[currentMatchupSlug] : null,
+      currentApplySideboard
+    );
     const guideOptions = guideKeys.map(k => {
       const opponent = bb.decks.find(d => d.slug === k);
       const name = opponent ? opponent.name : k;
       return `<option value="${k}">${name}</option>`;
     }).join('');
 
-    const hasSideboard = deck.sideboard && deck.sideboard.length;
+    const hasSideboard = deckView.sideCards && deckView.sideCards.length;
     const landColumnHtml = !hasSideboard ? `
       <div class="decklist-col">
         <div class="card-list">
-          ${renderCardsByType(deck.cards, bannedSet, ['land'])}
+          ${renderCardsByType(deckView.mainCards, bannedSet, ['land'], deckView.mainboardAdded, 'sb-added')}
         </div>
       </div>
     ` : '';
     const sideboardHtml = hasSideboard ? `
       <div class="decklist-col">
         <div class="card-list">
-          ${renderCardGroup(deck.sideboard, 'Sideboard', bannedSet)}
+          ${renderCardGroup(deckView.sideCards, 'Sideboard', bannedSet, deckView.sideboardFromMain, 'sb-removed')}
         </div>
       </div>
     ` : '';
-    const hasLandColumn = !hasSideboard && deck.cards.some(c => (c.type || 'spell') === 'land');
+    const hasLandColumn = !hasSideboard && deckView.mainCards.some(c => (c.type || 'spell') === 'land');
     const hasSecondColumn = hasSideboard || hasLandColumn;
     const mainTypes = hasSideboard ? undefined : ['creature', 'spell'];
     const decklistOpenAttr = (currentCollapsedMask & 1) === 0 ? ' open' : '';
@@ -816,6 +957,9 @@
             <select id="guide-select" aria-label="Matchup guide">
               ${guideOptions}
             </select>
+            <button type="button" class="action-button apply-sideboard-button${currentApplySideboard ? ' active' : ''}" id="apply-sideboard-button">
+              ${currentApplySideboard ? 'Sideboard applied' : 'Apply sideboard'}
+            </button>
             <a class="guide-opponent-link action-button" id="guide-opponent-link" href="#">Go to deck</a>
           </div>
           <div class="guide-box" id="guide-box"></div>
@@ -840,11 +984,11 @@
 
       <details id="decklist-details" class="collapsible"${decklistOpenAttr}>
         <summary>Decklist</summary>
-        <div class="collapsible-body">
+        <div class="collapsible-body" id="decklist-body">
           <div class="decklist-grid${hasSecondColumn ? '' : ' single'}">
             <div class="decklist-col">
               <div class="card-list">
-                ${renderCardsByType(deck.cards, bannedSet, mainTypes)}
+                ${renderCardsByType(deckView.mainCards, bannedSet, mainTypes, deckView.mainboardAdded, 'sb-added')}
               </div>
             </div>
             ${sideboardHtml || landColumnHtml}
@@ -863,7 +1007,7 @@
     const decklistDetails = document.getElementById('decklist-details');
     const primerDetails = document.getElementById('primer-details');
     const matchupDetails = document.getElementById('matchup-details');
-    let currentMatchupSlug = selectedGuide && guideKeys.includes(selectedGuide) ? selectedGuide : '';
+    const decklistBody = document.getElementById('decklist-body');
 
     const computeCollapsedMask = () => {
       let mask = 0;
@@ -880,17 +1024,53 @@
         currentSortMode,
         currentSortDirection,
         currentMatchupSlug || undefined,
-        currentCollapsedMask
+        currentCollapsedMask,
+        currentApplySideboard
       );
       if (location.hash !== nextHash) {
         history.replaceState(null, '', nextHash);
       }
     };
 
+    const renderDecklistBody = () => {
+      if (!decklistBody) return;
+      const guideData = currentMatchupSlug ? deck.guides[currentMatchupSlug] : null;
+      deckView = computeDeckView(deck, guideData, currentApplySideboard);
+      const hasCurrentSideboard = deckView.sideCards && deckView.sideCards.length;
+      const currentLandColumnHtml = !hasCurrentSideboard ? `
+        <div class="decklist-col">
+          <div class="card-list">
+            ${renderCardsByType(deckView.mainCards, bannedSet, ['land'], deckView.mainboardAdded, 'sb-added')}
+          </div>
+        </div>
+      ` : '';
+      const currentSideboardHtml = hasCurrentSideboard ? `
+        <div class="decklist-col">
+          <div class="card-list">
+            ${renderCardGroup(deckView.sideCards, 'Sideboard', bannedSet, deckView.sideboardFromMain, 'sb-removed')}
+          </div>
+        </div>
+      ` : '';
+      const hasCurrentLandColumn = !hasCurrentSideboard && deckView.mainCards.some(c => (c.type || 'spell') === 'land');
+      const hasCurrentSecondColumn = hasCurrentSideboard || hasCurrentLandColumn;
+      const currentMainTypes = hasCurrentSideboard ? undefined : ['creature', 'spell'];
+      decklistBody.innerHTML = `
+        <div class="decklist-grid${hasCurrentSecondColumn ? '' : ' single'}">
+          <div class="decklist-col">
+            <div class="card-list">
+              ${renderCardsByType(deckView.mainCards, bannedSet, currentMainTypes, deckView.mainboardAdded, 'sb-added')}
+            </div>
+          </div>
+          ${currentSideboardHtml || currentLandColumnHtml}
+        </div>
+      `;
+    };
+
     if (guideKeys.length) {
       const select = document.getElementById('guide-select');
       const guideBox = document.getElementById('guide-box');
       const opponentLink = document.getElementById('guide-opponent-link');
+      const applyButton = document.getElementById('apply-sideboard-button');
       const updateOpponentLink = (key) => {
         if (!opponentLink) return;
         const opponent = bb.decks.find(d => d.slug === key);
@@ -898,9 +1078,14 @@
           && opponent.guides
           && Object.prototype.hasOwnProperty.call(opponent.guides, deck.slug);
         opponentLink.href = opponentHasGuide
-          ? buildDeckHash(bb.slug, key, currentSortMode, currentSortDirection, deck.slug, 0)
-          : buildDeckHash(bb.slug, key, currentSortMode, currentSortDirection, undefined, 0);
+          ? buildDeckHash(bb.slug, key, currentSortMode, currentSortDirection, deck.slug, 0, currentApplySideboard)
+          : buildDeckHash(bb.slug, key, currentSortMode, currentSortDirection, undefined, 0, currentApplySideboard);
         opponentLink.textContent = opponent ? `Go to ${opponent.name}` : 'Go to deck';
+      };
+      const syncApplyButton = () => {
+        if (!applyButton) return;
+        applyButton.classList.toggle('active', currentApplySideboard);
+        applyButton.textContent = currentApplySideboard ? 'Sideboard applied' : 'Apply sideboard';
       };
       const renderGuide = (key) => {
         const guideData = deck.guides[key] || '';
@@ -914,17 +1099,25 @@
         guideBox.innerHTML = renderGuideContent(mdSelf, mdProse, guideData);
         updateOpponentLink(key);
       };
-      const initialGuide = selectedGuide && guideKeys.includes(selectedGuide)
-        ? selectedGuide
-        : (select.value || guideKeys[0]);
       select.value = initialGuide;
       renderGuide(initialGuide);
+      syncApplyButton();
       select.addEventListener('change', () => {
         const key = select.value;
         currentMatchupSlug = key;
         renderGuide(key);
+        renderDecklistBody();
         updateDeckHashFromState();
       });
+      if (applyButton) {
+        applyButton.addEventListener('click', () => {
+          currentApplySideboard = !currentApplySideboard;
+          syncApplyButton();
+          renderDecklistBody();
+          updateOpponentLink(select.value);
+          updateDeckHashFromState();
+        });
+      }
 
       const syncCollapsedAndUrl = () => {
         currentCollapsedMask = computeCollapsedMask();
@@ -946,6 +1139,7 @@
       });
     }
 
+    renderDecklistBody();
     currentCollapsedMask = computeCollapsedMask();
     updateDeckHashFromState();
   }
