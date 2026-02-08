@@ -38,6 +38,8 @@ type Card struct {
 type Manifest struct {
 	// Display name for the deck.
 	Name string `json:"name"`
+	// Optional emoji/icon for deck list display.
+	Icon string `json:"icon,omitempty"`
 	// Mana color identity (for example "UW" or "BRG").
 	Colors string `json:"colors"`
 	// Optional archetype tags, e.g. aggro/tempo/midrange/control/combo/tribal.
@@ -56,6 +58,8 @@ type Deck struct {
 	Slug string `json:"slug"`
 	// Display name for this deck.
 	Name string `json:"name"`
+	// Optional emoji/icon for deck list display.
+	Icon string `json:"icon,omitempty"`
 	// Mana color identity for UI display.
 	Colors string `json:"colors"`
 	// Optional archetype tags for UI display.
@@ -108,6 +112,8 @@ type DeckIndex struct {
 	Slug string `json:"slug"`
 	// Display name for this deck.
 	Name string `json:"name"`
+	// Optional emoji/icon for deck list display.
+	Icon string `json:"icon,omitempty"`
 	// Mana color identity for summary view.
 	Colors string `json:"colors"`
 	// Optional archetype tags for summary view.
@@ -643,10 +649,12 @@ func buildIndexOutput(dataDir string) (IndexOutput, error) {
 			if err := json.Unmarshal(manifestData, &manifest); err != nil {
 				return indexOutput, fmt.Errorf("parsing manifest %s: %w", manifestPath, err)
 			}
+			manifest.Icon = strings.TrimSpace(manifest.Icon)
 
 			indexEntry.Decks = append(indexEntry.Decks, DeckIndex{
 				Slug:           deckDir.Name(),
 				Name:           manifest.Name,
+				Icon:           manifest.Icon,
 				Colors:         manifest.Colors,
 				Tags:           normalizeDeckTags(manifest.Tags),
 				DifficultyTags: normalizeDifficultyTags(manifest.DifficultyTags),
@@ -980,6 +988,7 @@ func processDeck(deckPath, slug, battlebox string, printings map[string]string) 
 	if err := json.Unmarshal(manifestData, &manifest); err != nil {
 		return nil, fmt.Errorf("parsing manifest: %w", err)
 	}
+	manifest.Icon = strings.TrimSpace(manifest.Icon)
 
 	applyPrintings(manifest.Cards, printings, battlebox, slug, nil)
 	applyPrintings(manifest.Sideboard, printings, battlebox, slug, nil)
@@ -1003,6 +1012,7 @@ func processDeck(deckPath, slug, battlebox string, printings map[string]string) 
 	deck := &Deck{
 		Slug:           slug,
 		Name:           manifest.Name,
+		Icon:           manifest.Icon,
 		Colors:         manifest.Colors,
 		Tags:           normalizeDeckTags(manifest.Tags),
 		DifficultyTags: normalizeDifficultyTags(manifest.DifficultyTags),

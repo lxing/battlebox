@@ -88,6 +88,7 @@ async function route() {
     applySideboard,
   } = parseHashRoute(location.hash.slice(1) || '/');
 
+  app.scrollTo({ top: 0, left: 0, behavior: 'auto' });
   window.scrollTo(0, 0);
 
   if (parts.length === 0) {
@@ -156,7 +157,7 @@ function renderBattlebox(bbSlug, initialSortMode, initialSortDirection) {
     <ul class="deck-list">
       ${bb.decks.map(d => `
         <li class="deck-item" data-slug="${d.slug}"><a class="deck-link" href="${buildDeckHash(bb.slug, d.slug, initialSort, initialDirection, undefined, 4)}">
-          <span class="deck-link-name">${d.name}</span>
+          <span class="deck-link-name">${d.icon ? `<span class="deck-link-icon">${d.icon}</span>` : ''}${d.name}</span>
           <div class="deck-link-tags">${renderDeckSelectionTags(d.tags, d.difficulty_tags)}</div>
           <span class="colors">${formatColors(d.colors)}</span>
         </a></li>

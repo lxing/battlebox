@@ -124,6 +124,10 @@ h2 {
   text-align: center;
 }
 
+.deck-link-icon {
+  margin-right: 0.28rem;
+}
+
 .deck-link-tags {
   position: absolute;
   right: 0.05rem;
@@ -349,6 +353,10 @@ input[type="reset"] {
   background: #b33a3a;
   color: #fff1f1;
   border-color: #cf7a7a;
+}
+
+.breadcrumbs {
+  font-size: 0.95rem;
 }
 
 .breadcrumbs a {
