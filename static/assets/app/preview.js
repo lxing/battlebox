@@ -190,8 +190,9 @@ export function createCardPreview(app, getCardTarget) {
         if (!cardEl || !previewEl) return;
         if (e.relatedTarget && cardEl.contains(e.relatedTarget)) return;
         if (e.relatedTarget && previewEl.contains(e.relatedTarget)) return;
-        hidePreview();
+        // Disabled for bisect testing: card pointerleave close path.
       }, true);
+
     } else {
       app.addEventListener('click', (e) => {
         const cardEl = getCardTarget(e);
@@ -202,6 +203,7 @@ export function createCardPreview(app, getCardTarget) {
       });
     }
 
+    app.addEventListener('scroll', schedulePreviewAnchorUpdate, { passive: true });
     window.addEventListener('scroll', schedulePreviewAnchorUpdate, { passive: true });
     window.addEventListener('resize', schedulePreviewAnchorUpdate);
   }
