@@ -105,6 +105,36 @@ function bindBreadcrumbQrButton() {
   });
 }
 
+function applyViewShell() {
+  const breadcrumb = app.querySelector(':scope > .breadcrumbs');
+  if (!breadcrumb) {
+    preview.setScrollContainer(app);
+    return null;
+  }
+
+  const children = [...app.children];
+  const shell = document.createElement('div');
+  shell.className = 'view-shell';
+  const header = document.createElement('div');
+  header.className = 'view-header';
+  const body = document.createElement('div');
+  body.className = 'view-body';
+  body.id = 'view-body';
+
+  header.appendChild(breadcrumb);
+  children.forEach((child) => {
+    if (child === breadcrumb) return;
+    body.appendChild(child);
+  });
+
+  shell.appendChild(header);
+  shell.appendChild(body);
+  app.replaceChildren(shell);
+  body.scrollTo({ top: 0, left: 0, behavior: 'auto' });
+  preview.setScrollContainer(body);
+  return body;
+}
+
 function withCacheBust(path) {
   if (!data.buildId) return path;
   const sep = path.includes('?') ? '&' : '?';
@@ -156,9 +186,6 @@ async function route() {
     applySideboard,
   } = parseHashRoute(location.hash.slice(1) || '/');
 
-  app.scrollTo({ top: 0, left: 0, behavior: 'auto' });
-  window.scrollTo(0, 0);
-
   if (parts.length === 0) {
     renderHome();
   } else if (parts.length === 1) {
@@ -200,6 +227,7 @@ function renderHome() {
       `).join('')}
     </ul>
   `;
+  applyViewShell();
   bindBreadcrumbQrButton();
 }
 
@@ -241,6 +269,7 @@ function renderBattlebox(bbSlug, initialSortMode, initialSortDirection) {
       `).join('')}
     </ul>
   `;
+  applyViewShell();
   bindBreadcrumbQrButton();
 
   const deckList = app.querySelector('.deck-list');
@@ -496,6 +525,7 @@ async function renderDeck(bbSlug, deckSlug, selectedGuide, sortMode, sortDirecti
       </div>
     </details>
   `;
+  applyViewShell();
   bindBreadcrumbQrButton();
 
   const decklistDetails = document.getElementById('decklist-details');
@@ -643,6 +673,7 @@ function renderNotFound() {
     <a href="#/" class="back">← Home</a>
     <h1>Not Found</h1>
   `;
+  preview.setScrollContainer(app);
 }
 
 async function init() {

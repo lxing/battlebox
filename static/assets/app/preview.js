@@ -20,6 +20,7 @@ export function createCardPreview(app, getCardTarget) {
   let pendingLeaveClose = false;
   let lastPointerX = null;
   let lastPointerY = null;
+  let scrollContainer = null;
 
   function getImageUrl(printing, face) {
     if (!printing) return null;
@@ -33,24 +34,30 @@ export function createCardPreview(app, getCardTarget) {
     const width = previewEl.offsetWidth || 250;
     const height = previewEl.offsetHeight || 350;
     const margin = 10;
+
     const viewportW = (window.visualViewport && window.visualViewport.width) || document.documentElement.clientWidth;
     const viewportH = (window.visualViewport && window.visualViewport.height) || document.documentElement.clientHeight;
+
+    let boundsLeft = margin;
+    let boundsTop = margin;
+    let boundsRight = viewportW - margin;
+    let boundsBottom = viewportH - margin;
+
+    if (scrollContainer && scrollContainer !== app) {
+      const rect = scrollContainer.getBoundingClientRect();
+      boundsLeft = Math.max(boundsLeft, rect.left + margin);
+      boundsTop = Math.max(boundsTop, rect.top + margin);
+      boundsRight = Math.min(boundsRight, rect.right - margin);
+      boundsBottom = Math.min(boundsBottom, rect.bottom - margin);
+    }
 
     let x = absX;
     let y = absY;
 
-    if (x + width + margin > viewportW) {
-      x = Math.max(margin, viewportW - width - margin);
-    }
-    if (x < margin) {
-      x = margin;
-    }
-    if (y + height + margin > viewportH) {
-      y = Math.max(margin, viewportH - height - margin);
-    }
-    if (y < margin) {
-      y = margin;
-    }
+    const maxX = Math.max(boundsLeft, boundsRight - width);
+    const maxY = Math.max(boundsTop, boundsBottom - height);
+    x = Math.min(Math.max(x, boundsLeft), maxX);
+    y = Math.min(Math.max(y, boundsTop), maxY);
 
     previewEl.style.left = `${x}px`;
     previewEl.style.top = `${y}px`;
@@ -266,11 +273,24 @@ export function createCardPreview(app, getCardTarget) {
       });
     }
 
-    app.addEventListener('scroll', handleScroll, { passive: true });
+    setScrollContainer(app);
     window.addEventListener('scroll', handleScroll, { passive: true });
-    app.addEventListener('scrollend', handleScrollEnd);
     window.addEventListener('scrollend', handleScrollEnd);
     window.addEventListener('resize', schedulePreviewAnchorUpdate);
+  }
+
+  function setScrollContainer(containerEl) {
+    const next = containerEl || app;
+    if (scrollContainer === next) return;
+
+    if (scrollContainer) {
+      scrollContainer.removeEventListener('scroll', handleScroll);
+      scrollContainer.removeEventListener('scrollend', handleScrollEnd);
+    }
+
+    scrollContainer = next;
+    scrollContainer.addEventListener('scroll', handleScroll, { passive: true });
+    scrollContainer.addEventListener('scrollend', handleScrollEnd);
   }
 
   function hidePreview() {
@@ -285,5 +305,6 @@ export function createCardPreview(app, getCardTarget) {
   return {
     setupCardHover,
     hidePreview,
+    setScrollContainer,
   };
 }
