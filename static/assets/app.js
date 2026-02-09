@@ -123,29 +123,6 @@ function normalizeTab(tab) {
   return tab === TAB_LIFE ? TAB_LIFE : TAB_BATTLEBOX;
 }
 
-function readTabFromUrl() {
-  const params = new URLSearchParams(location.search);
-  return normalizeTab(params.get('tab'));
-}
-
-function buildSearchForTab(tab) {
-  const params = new URLSearchParams(location.search);
-  if (tab === TAB_BATTLEBOX) {
-    params.delete('tab');
-  } else {
-    params.set('tab', TAB_LIFE);
-  }
-  const next = params.toString();
-  return next ? `?${next}` : '';
-}
-
-function writeTabToUrl(tab, pushState) {
-  const nextSearch = buildSearchForTab(tab);
-  const nextHash = location.hash || '#/';
-  const nextUrl = `${location.pathname}${nextSearch}${nextHash}`;
-  history[pushState ? 'pushState' : 'replaceState'](null, '', nextUrl);
-}
-
 function replaceHashPreserveSearch(nextHash) {
   const nextUrl = `${location.pathname}${location.search}${nextHash}`;
   history.replaceState(null, '', nextUrl);
@@ -165,10 +142,9 @@ function applyActiveTab(tab) {
   });
 }
 
-function setActiveTab(tab, pushState) {
+function setActiveTab(tab) {
   const nextTab = normalizeTab(tab);
   applyActiveTab(nextTab);
-  writeTabToUrl(nextTab, Boolean(pushState));
 }
 
 function ensureShell() {
@@ -199,7 +175,7 @@ function ensureShell() {
   footer.addEventListener('click', (event) => {
     const button = event.target.closest('.tabbar-button');
     if (!button) return;
-    setActiveTab(button.dataset.tab, true);
+    setActiveTab(button.dataset.tab);
   });
 
   body.appendChild(battleboxPane);
@@ -803,15 +779,14 @@ async function init() {
   preview.setupCardHover();
   window.addEventListener('hashchange', async () => {
     await route();
-    setActiveTab(TAB_BATTLEBOX, false);
+    setActiveTab(TAB_BATTLEBOX);
   });
   window.addEventListener('popstate', async () => {
     await route();
-    applyActiveTab(readTabFromUrl());
+    setActiveTab(TAB_BATTLEBOX);
   });
   await route();
-  applyActiveTab(readTabFromUrl());
-  writeTabToUrl(ui.activeTab, false);
+  setActiveTab(TAB_BATTLEBOX);
 }
 
 init();
