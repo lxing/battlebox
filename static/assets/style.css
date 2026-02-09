@@ -590,6 +590,11 @@ input[type="reset"] {
   color: #fff;
 }
 
+.guide-box .card,
+.primer .card {
+  text-decoration: none;
+}
+
 /* Card hover preview */
 .card-preview {
   position: fixed;
