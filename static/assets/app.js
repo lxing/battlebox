@@ -26,6 +26,7 @@ import {
   renderCardGroup,
 } from './app/render.js';
 import { createCardPreview } from './app/preview.js';
+import { createLifeCounter } from './app/life.js';
 
 const app = document.getElementById('app');
 let data = { index: null, battleboxes: {}, buildId: '' };
@@ -179,7 +180,7 @@ function ensureShell() {
   const lifePane = document.createElement('div');
   lifePane.className = 'tab-pane tab-pane-life';
   lifePane.id = 'tab-life';
-  lifePane.innerHTML = '<div class="life-tab-placeholder">life</div>';
+  createLifeCounter(lifePane);
   const footer = document.createElement('div');
   footer.className = 'view-footer';
   footer.innerHTML = `
@@ -208,7 +209,7 @@ function ensureShell() {
   ui.footer = footer;
   ui.battleboxPane = battleboxPane;
   ui.lifePane = lifePane;
-  preview.setScrollContainer(body);
+  preview.setScrollContainer(battleboxPane);
 }
 
 function renderBattleboxPane(headerHtml, bodyHtml) {
@@ -287,8 +288,8 @@ async function route() {
     renderNotFound();
   }
 
-  if (ui.body) {
-    ui.body.scrollTo({ top: 0, left: 0, behavior: 'auto' });
+  if (ui.battleboxPane) {
+    ui.battleboxPane.scrollTo({ top: 0, left: 0, behavior: 'auto' });
   }
 }
 

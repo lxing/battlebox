@@ -67,14 +67,27 @@ body {
 .view-body {
   flex: 1 1 auto;
   min-height: 0;
-  overflow-y: auto;
-  overflow-x: hidden;
-  padding-bottom: var(--pane-gap);
+  overflow: hidden;
 }
 
 .view-footer {
   flex: 0 0 auto;
   padding-top: var(--pane-gap);
+}
+
+.tab-pane {
+  height: 100%;
+  min-height: 0;
+}
+
+.tab-pane-battlebox {
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding-bottom: var(--pane-gap);
+}
+
+.tab-pane-life {
+  overflow: hidden;
 }
 
 .tabbar {
@@ -96,10 +109,52 @@ body {
   display: none !important;
 }
 
-.life-tab-placeholder {
-  color: #bbb;
-  font-size: var(--font-size-sm);
-  padding: 0.5rem 0;
+.life-counter {
+  height: 100%;
+  display: grid;
+  grid-template-rows: 1fr 1fr;
+  gap: var(--pane-gap);
+}
+
+.life-player {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--color-panel-border);
+  border-radius: var(--radius-md);
+  background: var(--color-control-bg);
+  color: #eee;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+}
+
+.life-player-top {
+  transform: rotate(180deg);
+}
+
+.life-total {
+  font-size: clamp(3rem, 16vw, 5.5rem);
+  font-weight: 700;
+  line-height: 1;
+}
+
+.life-hit-hint {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 1.2rem;
+  opacity: 0.45;
+  pointer-events: none;
+}
+
+.life-hit-hint-left {
+  left: 0.8rem;
+}
+
+.life-hit-hint-right {
+  right: 0.8rem;
 }
 
 .qr-breadcrumb-button {
