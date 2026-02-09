@@ -1,4 +1,7 @@
 const LIFE_STORAGE_KEY = 'battlebox.life.v1'; // Do not bump version unless explicitly requested.
+const HOLD_DELAY_MS = 1000;
+const HOLD_REPEAT_MS = 500;
+const HOLD_DELTA_MULTIPLIER = 10;
 
 function parseLifeTotal(value, fallback) {
   const parsed = Number.parseInt(String(value), 10);
@@ -31,8 +34,24 @@ function writeLifeState(state) {
   }
 }
 
+function getLifeInteraction(panel, event) {
+  if (!(panel instanceof HTMLElement)) return null;
+  if (!event.isPrimary) return null;
+  if (event.pointerType === 'mouse' && event.button !== 0) return null;
+
+  const rect = panel.getBoundingClientRect();
+  if (!rect.width) return null;
+
+  const player = panel.dataset.player === 'p2' ? 'p2' : 'p1';
+  const isAdd = (event.clientX - rect.left) >= (rect.width / 2);
+  const step = isAdd ? 1 : -1;
+
+  return { player, step };
+}
+
 export function createLifeCounter(container, startingLife = 20) {
   const state = readLifeState(startingLife);
+  let activeHold = null;
 
   container.innerHTML = `
     <div class="life-counter" aria-label="Life counter">
@@ -59,23 +78,82 @@ export function createLifeCounter(container, startingLife = 20) {
     totals.p2.textContent = String(state.p2);
   };
 
-  const applyTap = (event) => {
-    const panel = event.currentTarget;
-    if (!(panel instanceof HTMLElement)) return;
-    if (!event.isPrimary) return;
-    if (event.pointerType === 'mouse' && event.button !== 0) return;
-
-    const rect = panel.getBoundingClientRect();
-    if (!rect.width) return;
-    const isAdd = (event.clientX - rect.left) >= (rect.width / 2);
-    const player = panel.dataset.player === 'p2' ? 'p2' : 'p1';
-    state[player] += isAdd ? 1 : -1;
+  const applyDelta = (player, delta) => {
+    state[player] += delta;
     render();
     writeLifeState(state);
   };
 
+  const clearActiveHold = () => {
+    if (!activeHold) return;
+    if (activeHold.delayTimer) window.clearTimeout(activeHold.delayTimer);
+    if (activeHold.repeatTimer) window.clearInterval(activeHold.repeatTimer);
+    activeHold = null;
+  };
+
+  const onPointerDown = (event) => {
+    const panel = event.currentTarget;
+    const interaction = getLifeInteraction(panel, event);
+    if (!interaction) return;
+
+    event.preventDefault();
+    clearActiveHold();
+
+    if (panel instanceof HTMLElement && panel.setPointerCapture) {
+      try {
+        panel.setPointerCapture(event.pointerId);
+      } catch (_) {
+        // Ignore capture failures and continue with basic press handling.
+      }
+    }
+
+    const hold = {
+      pointerId: event.pointerId,
+      player: interaction.player,
+      tapDelta: interaction.step,
+      holdDelta: interaction.step * HOLD_DELTA_MULTIPLIER,
+      isHolding: false,
+      delayTimer: null,
+      repeatTimer: null,
+    };
+    activeHold = hold;
+
+    hold.delayTimer = window.setTimeout(() => {
+      if (activeHold !== hold) return;
+      hold.isHolding = true;
+      applyDelta(hold.player, hold.holdDelta);
+      hold.repeatTimer = window.setInterval(() => {
+        if (activeHold !== hold) return;
+        applyDelta(hold.player, hold.holdDelta);
+      }, HOLD_REPEAT_MS);
+    }, HOLD_DELAY_MS);
+  };
+
+  const onPointerUp = (event) => {
+    if (!activeHold || activeHold.pointerId !== event.pointerId) return;
+    event.preventDefault();
+    const { player, tapDelta, isHolding } = activeHold;
+    clearActiveHold();
+    if (!isHolding) {
+      applyDelta(player, tapDelta);
+    }
+  };
+
+  const onPointerCancel = (event) => {
+    if (!activeHold || activeHold.pointerId !== event.pointerId) return;
+    event.preventDefault();
+    clearActiveHold();
+  };
+
   container.querySelectorAll('.life-player').forEach((panel) => {
-    panel.addEventListener('pointerup', applyTap);
+    panel.addEventListener('pointerdown', onPointerDown);
+    panel.addEventListener('pointerup', onPointerUp);
+    panel.addEventListener('pointercancel', onPointerCancel);
+    panel.addEventListener('lostpointercapture', onPointerCancel);
+    panel.addEventListener('click', (event) => {
+      event.preventDefault();
+      event.stopPropagation();
+    });
   });
 
   render();
