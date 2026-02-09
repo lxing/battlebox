@@ -178,7 +178,7 @@ body {
 
 .life-player-icon {
   position: absolute;
-  top: 0.45rem;
+  top: 1.5rem;
   font-size: 1rem;
   line-height: 1;
   opacity: 0.9;
@@ -191,9 +191,25 @@ body {
 
 .life-player-icon-p2 {
   right: 0.65rem;
-  top: 0.45rem;
+  top: 1.5rem;
   left: auto;
   bottom: auto;
+}
+
+.life-monarch {
+  position: absolute;
+  top: 0.25rem;
+  font-size: 0.9rem;
+  line-height: 1;
+  pointer-events: none;
+}
+
+.life-monarch-p1 {
+  left: 0.65rem;
+}
+
+.life-monarch-p2 {
+  right: 0.65rem;
 }
 
 .life-player-top {

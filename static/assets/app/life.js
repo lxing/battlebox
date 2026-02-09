@@ -9,8 +9,12 @@ function parseLifeTotal(value, fallback) {
   return Number.isNaN(parsed) ? fallback : parsed;
 }
 
+function parseMonarchOwner(value) {
+  return value === 'p1' || value === 'p2' ? value : null;
+}
+
 function readLifeState(startingLife) {
-  const fallback = { p1: startingLife, p2: startingLife };
+  const fallback = { p1: startingLife, p2: startingLife, monarch: null };
   try {
     const raw = window.localStorage.getItem(LIFE_STORAGE_KEY);
     if (!raw) return fallback;
@@ -18,6 +22,7 @@ function readLifeState(startingLife) {
     return {
       p1: parseLifeTotal(parsed?.p1, startingLife),
       p2: parseLifeTotal(parsed?.p2, startingLife),
+      monarch: parseMonarchOwner(parsed?.monarch),
     };
   } catch (_) {
     return fallback;
@@ -28,7 +33,7 @@ function writeLifeState(state) {
   try {
     window.localStorage.setItem(
       LIFE_STORAGE_KEY,
-      JSON.stringify({ p1: state.p1, p2: state.p2 })
+      JSON.stringify({ p1: state.p1, p2: state.p2, monarch: parseMonarchOwner(state.monarch) })
     );
   } catch (_) {
     // Ignore storage failures (e.g., private mode restrictions).
@@ -59,17 +64,19 @@ export function createLifeCounter(container, startingLife = 20) {
     <div class="life-counter" aria-label="Life counter">
       <section class="life-player life-player-top" data-player="p2" aria-label="Player 2 life total">
         <span class="life-player-icon life-player-icon-p2" aria-hidden="true">🐭</span>
+        <span class="life-monarch life-monarch-p2" data-life-monarch="p2" aria-hidden="true" hidden>👑</span>
         <span class="life-hit-hint life-hit-hint-left" aria-hidden="true">-</span>
         <span class="life-total" data-life-total="p2">${state.p2}</span>
         <span class="life-hit-hint life-hit-hint-right" aria-hidden="true">+</span>
       </section>
       <section class="life-controls" aria-label="Life controls">
-        <button type="button" class="static-button life-control-button" id="life-left-button" aria-label="Reserved life control">x</button>
+        <button type="button" class="static-button life-control-button" id="life-left-button" aria-label="Toggle monarch">👑</button>
         <button type="button" class="static-button life-control-button" id="life-reset-button" aria-label="Reset life totals">🔄</button>
         <button type="button" class="static-button life-control-button" id="life-right-button" aria-label="Reserved life control">x</button>
       </section>
       <section class="life-player life-player-bottom" data-player="p1" aria-label="Player 1 life total">
         <span class="life-player-icon life-player-icon-p1" aria-hidden="true">🐿️</span>
+        <span class="life-monarch life-monarch-p1" data-life-monarch="p1" aria-hidden="true" hidden>👑</span>
         <span class="life-hit-hint life-hit-hint-left" aria-hidden="true">-</span>
         <span class="life-total" data-life-total="p1">${state.p1}</span>
         <span class="life-hit-hint life-hit-hint-right" aria-hidden="true">+</span>
@@ -88,10 +95,21 @@ export function createLifeCounter(container, startingLife = 20) {
   const resetButton = container.querySelector('#life-reset-button');
   const leftButton = container.querySelector('#life-left-button');
   const rightButton = container.querySelector('#life-right-button');
+  const monarchMarkers = {
+    p1: container.querySelector('[data-life-monarch="p1"]'),
+    p2: container.querySelector('[data-life-monarch="p2"]'),
+  };
 
   const render = () => {
     totals.p1.textContent = String(state.p1);
     totals.p2.textContent = String(state.p2);
+  };
+
+  const renderMonarch = () => {
+    Object.entries(monarchMarkers).forEach(([player, marker]) => {
+      if (!marker) return;
+      marker.hidden = state.monarch !== player;
+    });
   };
 
   const applyDelta = (player, delta) => {
@@ -100,10 +118,12 @@ export function createLifeCounter(container, startingLife = 20) {
     writeLifeState(state);
   };
 
-  const setLifeTotals = (p1, p2) => {
-    state.p1 = p1;
-    state.p2 = p2;
+  const resetGameState = () => {
+    state.p1 = startingLife;
+    state.p2 = startingLife;
+    state.monarch = null;
     render();
+    renderMonarch();
     writeLifeState(state);
   };
 
@@ -209,7 +229,7 @@ export function createLifeCounter(container, startingLife = 20) {
       const confirmed = window.confirm('Reset?');
       if (!confirmed) return;
       clearActiveHold();
-      setLifeTotals(startingLife, startingLife);
+      resetGameState();
       highlightRandomPlayer();
     });
   }
@@ -218,11 +238,17 @@ export function createLifeCounter(container, startingLife = 20) {
     event.preventDefault();
   };
   if (leftButton) {
-    leftButton.addEventListener('click', handleNoopControlClick);
+    leftButton.addEventListener('click', (event) => {
+      event.preventDefault();
+      state.monarch = state.monarch === 'p1' ? 'p2' : 'p1';
+      renderMonarch();
+      writeLifeState(state);
+    });
   }
   if (rightButton) {
     rightButton.addEventListener('click', handleNoopControlClick);
   }
 
   render();
+  renderMonarch();
 }
