@@ -27,7 +27,7 @@ function renderManaCostSymbols(rawCost) {
       return `<img class="mana-cost-symbol" src="/assets/mana/x.svg" alt="{X}" loading="lazy" decoding="async">`;
     }
     if (token === 'W' || token === 'U' || token === 'B' || token === 'R' || token === 'G') {
-      return `<span class="mana-symbol mana-${token.toLowerCase()}" role="img" aria-label="{${token}}"></span>`;
+      return `<img class="mana-cost-symbol" src="/assets/mana/${token.toLowerCase()}.svg" alt="{${token}}" loading="lazy" decoding="async">`;
     }
 
     return `<span class="mana-cost-token">{${escapeHtml(token)}}</span>`;
