@@ -6,12 +6,12 @@
   ],
   "cards": [
     {
-      "name": "Abrade",
+      "name": "Archaeomancer",
       "qty": 2
     },
     {
-      "name": "Archaeomancer",
-      "qty": 2
+      "name": "Augur of Bolas",
+      "qty": 3
     },
     {
       "name": "Brainstorm",
@@ -34,6 +34,10 @@
       "qty": 4
     },
     {
+      "name": "Destroy Evil",
+      "qty": 1
+    },
+    {
       "name": "Dawnbringer Cleric",
       "qty": 1
     },
@@ -42,35 +46,23 @@
       "qty": 3
     },
     {
-      "name": "Fallaji Archaeologist",
-      "qty": 4
-    },
-    {
-      "name": "Galvanic Discharge",
-      "qty": 4
-    },
-    {
       "name": "Glacial Floodplain",
       "qty": 1
     },
     {
-      "name": "Island",
+      "name": "Snow-Covered Island",
       "qty": 5
-    },
-    {
-      "name": "Jolted Awake",
-      "qty": 1
-    },
-    {
-      "name": "Kenku Artificer",
-      "qty": 1
     },
     {
       "name": "Lórien Revealed",
       "qty": 4
     },
     {
-      "name": "Mountain",
+      "name": "Lightning Bolt",
+      "qty": 2
+    },
+    {
+      "name": "Snow-Covered Mountain",
       "qty": 1
     },
     {
@@ -86,7 +78,7 @@
       "qty": 3
     },
     {
-      "name": "Plains",
+      "name": "Snow-Covered Plains",
       "qty": 1
     },
     {
@@ -98,15 +90,23 @@
       "qty": 4
     },
     {
+      "name": "Skred",
+      "qty": 3
+    },
+    {
+      "name": "Thraben Charm",
+      "qty": 1
+    },
+    {
       "name": "Volatile Fjord",
+      "qty": 1
+    },
+    {
+      "name": "Union of the Third Path",
       "qty": 1
     }
   ],
   "sideboard": [
-    {
-      "name": "Abrade",
-      "qty": 1
-    },
     {
       "name": "Blue Elemental Blast",
       "qty": 3
@@ -120,12 +120,20 @@
       "qty": 2
     },
     {
-      "name": "Dawnbringer Cleric",
-      "qty": 2
+      "name": "Annul",
+      "qty": 1
     },
     {
       "name": "Pyroblast",
       "qty": 3
+    },
+    {
+      "name": "Dispel",
+      "qty": 1
+    },
+    {
+      "name": "Stonehorn Dignitary",
+      "qty": 1
     },
     {
       "name": "Standard Bearer",
