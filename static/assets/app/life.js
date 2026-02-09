@@ -1,8 +1,38 @@
+const LIFE_STORAGE_KEY = 'battlebox.life.v1'; // Do not bump version unless explicitly requested.
+
+function parseLifeTotal(value, fallback) {
+  const parsed = Number.parseInt(String(value), 10);
+  return Number.isNaN(parsed) ? fallback : parsed;
+}
+
+function readLifeState(startingLife) {
+  const fallback = { p1: startingLife, p2: startingLife };
+  try {
+    const raw = window.localStorage.getItem(LIFE_STORAGE_KEY);
+    if (!raw) return fallback;
+    const parsed = JSON.parse(raw);
+    return {
+      p1: parseLifeTotal(parsed?.p1, startingLife),
+      p2: parseLifeTotal(parsed?.p2, startingLife),
+    };
+  } catch (_) {
+    return fallback;
+  }
+}
+
+function writeLifeState(state) {
+  try {
+    window.localStorage.setItem(
+      LIFE_STORAGE_KEY,
+      JSON.stringify({ p1: state.p1, p2: state.p2 })
+    );
+  } catch (_) {
+    // Ignore storage failures (e.g., private mode restrictions).
+  }
+}
+
 export function createLifeCounter(container, startingLife = 20) {
-  const state = {
-    p1: startingLife,
-    p2: startingLife,
-  };
+  const state = readLifeState(startingLife);
 
   container.innerHTML = `
     <div class="life-counter" aria-label="Life counter">
@@ -41,6 +71,7 @@ export function createLifeCounter(container, startingLife = 20) {
     const player = panel.dataset.player === 'p2' ? 'p2' : 'p1';
     state[player] += isAdd ? 1 : -1;
     render();
+    writeLifeState(state);
   };
 
   container.querySelectorAll('.life-player').forEach((panel) => {
