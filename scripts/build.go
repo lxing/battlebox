@@ -264,6 +264,10 @@ const cardCacheVersion = 6
 const printingsFileName = "printings.json"
 const stampFile = "tmp/build-stamps.json"
 const buildFingerprintVersion = "v1"
+var cardTypeOverrideByPrinting = map[string]string{
+	// The Modern Age front face is an enchantment saga; force non-creature coarse bucket.
+	"neo/66": "enchantment",
+}
 
 var validateRefs = flag.Bool("validate-refs", false, "validate [[Card]] references in primers and guides")
 var fullBuild = flag.Bool("full", false, "force full rebuild (ignore incremental cache)")
@@ -903,7 +907,7 @@ func fetchMissingCardMeta(cards []Card) {
 				manaCost = strings.TrimSpace(card.CardFaces[0].ManaCost)
 			}
 			meta := cardMeta{
-				Type:        classifyType(card.TypeLine),
+				Type:        resolveCardType(printing, card.TypeLine),
 				ManaCost:    manaCost,
 				ManaValue:   parseManaValue(manaCost),
 				DoubleFaced: &isDouble,
@@ -916,6 +920,13 @@ func fetchMissingCardMeta(cards []Card) {
 			time.Sleep(100 * time.Millisecond)
 		}
 	}
+}
+
+func resolveCardType(printing, scryfallTypeLine string) string {
+	if override, ok := cardTypeOverrideByPrinting[printing]; ok {
+		return classifyType(override)
+	}
+	return classifyType(scryfallTypeLine)
 }
 
 func classifyType(typeLine string) string {
@@ -1087,7 +1098,7 @@ func processDeck(deckPath, slug, battlebox string, printings map[string]string) 
 	// Add types to cards
 	for i := range manifest.Cards {
 		meta := cardCache[manifest.Cards[i].Printing]
-		manifest.Cards[i].Type = meta.Type
+		manifest.Cards[i].Type = resolveCardType(manifest.Cards[i].Printing, meta.Type)
 		manifest.Cards[i].ManaCost = meta.ManaCost
 		manifest.Cards[i].ManaValue = meta.ManaValue
 		if meta.DoubleFaced != nil {
@@ -1096,7 +1107,7 @@ func processDeck(deckPath, slug, battlebox string, printings map[string]string) 
 	}
 	for i := range manifest.Sideboard {
 		meta := cardCache[manifest.Sideboard[i].Printing]
-		manifest.Sideboard[i].Type = meta.Type
+		manifest.Sideboard[i].Type = resolveCardType(manifest.Sideboard[i].Printing, meta.Type)
 		manifest.Sideboard[i].ManaCost = meta.ManaCost
 		manifest.Sideboard[i].ManaValue = meta.ManaValue
 		if meta.DoubleFaced != nil {
