@@ -13,28 +13,41 @@ function renderManaCostSymbols(rawCost) {
   const manaCost = (rawCost || '').trim();
   if (!manaCost) return '';
 
-  const tokens = manaCost.match(/\{[^}]+\}/g) || [];
-  if (tokens.length === 0) return '';
+  const renderSide = (sideCost) => {
+    const tokens = (sideCost || '').match(/\{[^}]+\}/g) || [];
+    if (tokens.length === 0) return '';
 
-  const pieces = tokens.map((tokenRaw) => {
-    const token = tokenRaw.slice(1, -1).trim().toUpperCase();
-    if (!token) return '';
+    const pieces = tokens.map((tokenRaw) => {
+      const token = tokenRaw.slice(1, -1).trim().toUpperCase();
+      if (!token) return '';
 
-    if (/^[0-9]$/.test(token)) {
-      return `<img class="mana-cost-symbol" src="/assets/mana/${token}.svg" alt="{${token}}" loading="lazy" decoding="async">`;
-    }
-    if (token === 'X') {
-      return `<img class="mana-cost-symbol" src="/assets/mana/x.svg" alt="{X}" loading="lazy" decoding="async">`;
-    }
-    if (token === 'W' || token === 'U' || token === 'B' || token === 'R' || token === 'G') {
-      return `<img class="mana-cost-symbol" src="/assets/mana/${token.toLowerCase()}.svg" alt="{${token}}" loading="lazy" decoding="async">`;
-    }
+      if (/^[0-9]$/.test(token)) {
+        return `<img class="mana-cost-symbol" src="/assets/mana/${token}.svg" alt="{${token}}" loading="lazy" decoding="async">`;
+      }
+      if (token === 'X') {
+        return `<img class="mana-cost-symbol" src="/assets/mana/x.svg" alt="{X}" loading="lazy" decoding="async">`;
+      }
+      if (token === 'W' || token === 'U' || token === 'B' || token === 'R' || token === 'G') {
+        return `<img class="mana-cost-symbol" src="/assets/mana/${token.toLowerCase()}.svg" alt="{${token}}" loading="lazy" decoding="async">`;
+      }
 
-    return `<span class="mana-cost-token">{${escapeHtml(token)}}</span>`;
-  }).filter(Boolean);
+      return `<span class="mana-cost-token">{${escapeHtml(token)}}</span>`;
+    }).filter(Boolean);
 
-  if (pieces.length === 0) return '';
-  return `<span class="card-mana-cost">${pieces.join('')}</span>`;
+    if (pieces.length === 0) return '';
+    return pieces.join('');
+  };
+
+  const splitSides = manaCost.split(/\s*\/\/\s*/).map((s) => s.trim()).filter(Boolean);
+  if (splitSides.length > 1) {
+    const renderedSides = splitSides.map(renderSide).filter(Boolean);
+    if (renderedSides.length === 0) return '';
+    return `<span class="card-mana-cost">${renderedSides.join('<span class="mana-cost-sep">/</span>')}</span>`;
+  }
+
+  const singleSide = renderSide(manaCost);
+  if (!singleSide) return '';
+  return `<span class="card-mana-cost">${singleSide}</span>`;
 }
 
 function resolvePrinting(target, printingsList) {
