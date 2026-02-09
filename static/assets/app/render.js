@@ -13,6 +13,25 @@ function renderManaCostSymbols(rawCost) {
   const manaCost = (rawCost || '').trim();
   if (!manaCost) return '';
 
+  const renderTokenSymbol = (token) => {
+    if (/^[0-9]$/.test(token)) {
+      return `<img class="mana-cost-symbol" src="/assets/mana/${token}.svg" alt="{${token}}" loading="lazy" decoding="async">`;
+    }
+    if (token === 'X') {
+      return `<img class="mana-cost-symbol" src="/assets/mana/x.svg" alt="{X}" loading="lazy" decoding="async">`;
+    }
+    if (token === 'W' || token === 'U' || token === 'B' || token === 'R' || token === 'G') {
+      return `<img class="mana-cost-symbol" src="/assets/mana/${token.toLowerCase()}.svg" alt="{${token}}" loading="lazy" decoding="async">`;
+    }
+    // Render only true two-color hybrid symbols (for example {G/U}).
+    // Split cards are handled via the outer // side split, not here.
+    if (/^[WUBRG]\/[WUBRG]$/.test(token)) {
+      const symbolCode = token.replaceAll('/', '');
+      return `<img class="mana-cost-symbol" src="https://svgs.scryfall.io/card-symbols/${symbolCode}.svg" alt="{${token}}" loading="lazy" decoding="async">`;
+    }
+    return '';
+  };
+
   const renderSide = (sideCost) => {
     const tokens = (sideCost || '').match(/\{[^}]+\}/g) || [];
     if (tokens.length === 0) return '';
@@ -20,16 +39,8 @@ function renderManaCostSymbols(rawCost) {
     const pieces = tokens.map((tokenRaw) => {
       const token = tokenRaw.slice(1, -1).trim().toUpperCase();
       if (!token) return '';
-
-      if (/^[0-9]$/.test(token)) {
-        return `<img class="mana-cost-symbol" src="/assets/mana/${token}.svg" alt="{${token}}" loading="lazy" decoding="async">`;
-      }
-      if (token === 'X') {
-        return `<img class="mana-cost-symbol" src="/assets/mana/x.svg" alt="{X}" loading="lazy" decoding="async">`;
-      }
-      if (token === 'W' || token === 'U' || token === 'B' || token === 'R' || token === 'G') {
-        return `<img class="mana-cost-symbol" src="/assets/mana/${token.toLowerCase()}.svg" alt="{${token}}" loading="lazy" decoding="async">`;
-      }
+      const symbol = renderTokenSymbol(token);
+      if (symbol) return symbol;
 
       return `<span class="mana-cost-token">{${escapeHtml(token)}}</span>`;
     }).filter(Boolean);
