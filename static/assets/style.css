@@ -172,6 +172,10 @@ body {
   touch-action: manipulation;
 }
 
+.life-player-random-highlight {
+  border-color: #fff;
+}
+
 .life-player-top {
   transform: rotate(180deg);
 }

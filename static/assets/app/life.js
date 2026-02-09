@@ -2,6 +2,7 @@ const LIFE_STORAGE_KEY = 'battlebox.life.v1'; // Do not bump version unless expl
 const HOLD_DELAY_MS = 500;
 const HOLD_REPEAT_MS = 500;
 const HOLD_DELTA_MULTIPLIER = 10;
+const RESET_HIGHLIGHT_MS = 10000;
 
 function parseLifeTotal(value, fallback) {
   const parsed = Number.parseInt(String(value), 10);
@@ -52,6 +53,7 @@ function getLifeInteraction(panel, event) {
 export function createLifeCounter(container, startingLife = 20) {
   const state = readLifeState(startingLife);
   let activeHold = null;
+  let resetHighlightTimer = null;
 
   container.innerHTML = `
     <div class="life-counter" aria-label="Life counter">
@@ -76,6 +78,10 @@ export function createLifeCounter(container, startingLife = 20) {
   const totals = {
     p1: container.querySelector('[data-life-total="p1"]'),
     p2: container.querySelector('[data-life-total="p2"]'),
+  };
+  const players = {
+    p1: container.querySelector('.life-player[data-player="p1"]'),
+    p2: container.querySelector('.life-player[data-player="p2"]'),
   };
   const resetButton = container.querySelector('#life-reset-button');
   const leftButton = container.querySelector('#life-left-button');
@@ -104,6 +110,30 @@ export function createLifeCounter(container, startingLife = 20) {
     if (activeHold.delayTimer) window.clearTimeout(activeHold.delayTimer);
     if (activeHold.repeatTimer) window.clearInterval(activeHold.repeatTimer);
     activeHold = null;
+  };
+
+  const clearResetHighlight = () => {
+    if (resetHighlightTimer) {
+      window.clearTimeout(resetHighlightTimer);
+      resetHighlightTimer = null;
+    }
+    Object.values(players).forEach((panel) => {
+      if (panel) {
+        panel.classList.remove('life-player-random-highlight');
+      }
+    });
+  };
+
+  const highlightRandomPlayer = () => {
+    clearResetHighlight();
+    const chosenPlayer = Math.random() < 0.5 ? 'p1' : 'p2';
+    const chosenPanel = players[chosenPlayer];
+    if (!chosenPanel) return;
+    chosenPanel.classList.add('life-player-random-highlight');
+    resetHighlightTimer = window.setTimeout(() => {
+      chosenPanel.classList.remove('life-player-random-highlight');
+      resetHighlightTimer = null;
+    }, RESET_HIGHLIGHT_MS);
   };
 
   const onPointerDown = (event) => {
@@ -174,8 +204,11 @@ export function createLifeCounter(container, startingLife = 20) {
   if (resetButton) {
     resetButton.addEventListener('click', (event) => {
       event.preventDefault();
+      const confirmed = window.confirm('Reset?');
+      if (!confirmed) return;
       clearActiveHold();
       setLifeTotals(startingLife, startingLife);
+      highlightRandomPlayer();
     });
   }
 
