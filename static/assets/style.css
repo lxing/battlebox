@@ -6,6 +6,13 @@
 
 :root {
   --pane-gap: 0.32rem;
+  --radius-md: 6px;
+  --font-size-sm: 0.85rem;
+  --color-panel-bg: #1f1f35;
+  --color-panel-border: #2f2f53;
+  --color-button-bg: #2e2e50;
+  --color-button-border: #343456;
+  --color-control-bg: #171726;
 }
 
 body {
@@ -71,8 +78,8 @@ h2 {
   background: #4a2f1c;
   color: #ffe9d6;
   padding: 0.6rem 0.8rem;
-  border-radius: 6px;
-  font-size: 0.85rem;
+  border-radius: var(--radius-md);
+  font-size: var(--font-size-sm);
   margin-bottom: 0.75rem;
 }
 
@@ -90,16 +97,12 @@ h2 {
   justify-content: space-between;
   align-items: center;
   padding: 0.75rem 1rem;
-  background: #1f1f35;
+  background: var(--color-panel-bg);
   border: 1px solid transparent;
-  border-radius: 6px;
+  border-radius: var(--radius-md);
   color: #fff;
   text-decoration: none;
   transition: none;
-}
-
-.deck-list a:hover {
-  background: #1f1f35;
 }
 
 .deck-list a.deck-highlight {
@@ -109,7 +112,6 @@ h2 {
 .deck-list a:focus,
 .deck-list a:focus-visible,
 .deck-list a:active {
-  background: #1f1f35;
   border-color: transparent;
   outline: none;
 }
@@ -187,11 +189,11 @@ input[type="reset"] {
 }
 
 .action-button {
-  background: #2e2e50;
+  background: var(--color-button-bg);
   color: #fff;
-  border: 1px solid #343456;
-  border-radius: 6px;
-  font-size: 0.85rem;
+  border: 1px solid var(--color-button-border);
+  border-radius: var(--radius-md);
+  font-size: var(--font-size-sm);
   cursor: pointer;
   text-decoration: none;
   display: inline-flex;
@@ -255,9 +257,9 @@ input[type="reset"] {
 }
 
 .deck-info-pane {
-  background: #1f1f35;
-  border: 1px solid #2f2f53;
-  border-radius: 6px;
+  background: var(--color-panel-bg);
+  border: 1px solid var(--color-panel-border);
+  border-radius: var(--radius-md);
   padding: 0.5rem 0.75rem;
   margin: var(--pane-gap) 0;
   display: flex;
@@ -384,7 +386,7 @@ input[type="reset"] {
 
 /* Card list */
 .card-list {
-  font-size: 0.85rem;
+  font-size: var(--font-size-sm);
   line-height: 1.5;
 }
 
@@ -561,7 +563,7 @@ input[type="reset"] {
 }
 
 .card-preview-loading {
-  background: #1f1f35;
+  background: var(--color-panel-bg);
   color: #ccc;
   text-align: center;
   width: 100%;
@@ -576,9 +578,9 @@ input[type="reset"] {
 
 /* Primer */
 details.collapsible {
-  background: #1f1f35;
-  border: 1px solid #2f2f53;
-  border-radius: 6px;
+  background: var(--color-panel-bg);
+  border: 1px solid var(--color-panel-border);
+  border-radius: var(--radius-md);
   padding: 0.5rem 0.75rem;
   margin: var(--pane-gap) 0;
 }
@@ -617,7 +619,7 @@ details.collapsible[open] summary::after {
 
 .primer {
   white-space: pre-wrap;
-  font-size: 0.85rem;
+  font-size: var(--font-size-sm);
   line-height: 1.4;
 }
 
@@ -632,7 +634,7 @@ details.collapsible[open] summary::after {
   align-items: stretch;
   gap: 0.5rem;
   margin-bottom: 0.5rem;
-  font-size: 0.85rem;
+  font-size: var(--font-size-sm);
   color: #aaa;
 }
 
@@ -655,8 +657,8 @@ details.collapsible[open] summary::after {
 .guide-opponent-link:active,
 .guide-opponent-link:focus,
 .guide-opponent-link:focus-visible {
-  background: #2e2e50;
-  border-color: #343456;
+  background: var(--color-button-bg);
+  border-color: var(--color-button-border);
   color: #fff;
   outline: none;
 }
@@ -668,16 +670,16 @@ details.collapsible[open] summary::after {
 
 .guide-select select {
   width: 100%;
-  background: #171726;
+  background: var(--color-control-bg);
   color: #eee;
   border: 1px solid #353560;
-  border-radius: 6px;
+  border-radius: var(--radius-md);
   padding: 0.35rem 0.5rem;
-  font-size: 0.85rem;
+  font-size: var(--font-size-sm);
 }
 
 .guide-box {
-  font-size: 0.85rem;
+  font-size: var(--font-size-sm);
   line-height: 1.4;
 }
 
@@ -693,8 +695,8 @@ details.collapsible[open] summary::after {
 }
 
 .guide-plan-col {
-  background: #171726;
-  border-radius: 6px;
+  background: var(--color-control-bg);
+  border-radius: var(--radius-md);
   padding: 0.5rem 0.6rem;
 }
 
