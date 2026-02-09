@@ -461,6 +461,21 @@ function renderBattlebox(bbSlug, initialSortMode, initialSortDirection) {
   const clearHighlights = () => {
     ui.battleboxPane.querySelectorAll('.deck-link.deck-highlight').forEach(link => link.classList.remove('deck-highlight'));
   };
+
+  const applyRandomMatchupLinks = (pickedSlugs) => {
+    updateDeckLinks();
+    if (pickedSlugs.length !== 2) return;
+    const [deckA, deckB] = pickedSlugs;
+    const linkA = deckBySlug.get(deckA);
+    const linkB = deckBySlug.get(deckB);
+    if (linkA) {
+      linkA.href = buildDeckHash(bb.slug, deckA, sortMode, sortDirection, deckB, 4);
+    }
+    if (linkB) {
+      linkB.href = buildDeckHash(bb.slug, deckB, sortMode, sortDirection, deckA, 4);
+    }
+  };
+
   const setActiveRollButton = (count) => {
     rollButtons.forEach(btn => {
       btn.classList.toggle('active', Number(btn.dataset.count) === count);
@@ -478,6 +493,7 @@ function renderBattlebox(bbSlug, initialSortMode, initialSortDirection) {
       const slug = deckItems[idx].dataset.slug;
       picked.add(slug);
     }
+    applyRandomMatchupLinks([...picked]);
     picked.forEach(slug => {
       const link = deckBySlug.get(slug);
       if (link) link.classList.add('deck-highlight');
