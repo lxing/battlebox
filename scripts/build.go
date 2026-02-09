@@ -224,8 +224,15 @@ type ScryfallCard struct {
 	TypeLine string `json:"type_line"`
 	// Mana cost string returned by Scryfall.
 	ManaCost string `json:"mana_cost"`
+	// Per-face fields for layouts that omit top-level mana cost.
+	CardFaces []ScryfallCardFace `json:"card_faces"`
 	// Layout used to detect cards with back faces.
 	Layout string `json:"layout"`
+}
+
+type ScryfallCardFace struct {
+	// Mana cost string returned for a specific face.
+	ManaCost string `json:"mana_cost"`
 }
 
 // ScryfallResponse is the Scryfall collection response payload shape.
@@ -253,7 +260,7 @@ type cardCacheFile struct {
 
 var cardCache = map[string]cardMeta{} // printing -> meta
 const cacheFile = ".card-types.json"
-const cardCacheVersion = 5
+const cardCacheVersion = 6
 const printingsFileName = "printings.json"
 const stampFile = "tmp/build-stamps.json"
 const buildFingerprintVersion = "v1"
@@ -892,6 +899,9 @@ func fetchMissingCardMeta(cards []Card) {
 			printing := card.Set + "/" + card.Collector
 			isDouble := isDoubleFacedLayout(card.Layout)
 			manaCost := strings.TrimSpace(card.ManaCost)
+			if manaCost == "" && len(card.CardFaces) > 0 {
+				manaCost = strings.TrimSpace(card.CardFaces[0].ManaCost)
+			}
 			meta := cardMeta{
 				Type:        classifyType(card.TypeLine),
 				ManaCost:    manaCost,
