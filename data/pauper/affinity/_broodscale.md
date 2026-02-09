@@ -1,4 +1,4 @@
 +2 [[Cast Down]]
--2 [[Candy Trail]]
+-2 [[Blood Fountain]]
 
 Extra removal for [[Basking Broodscale]].

@@ -353,7 +353,7 @@ async function renderDeck(bbSlug, deckSlug, selectedGuide, sortMode, sortDirecti
   ` : '';
   const hasLandColumn = !hasSideboard && deckView.mainCards.some(c => (c.type || 'spell') === 'land');
   const hasSecondColumn = hasSideboard || hasLandColumn;
-  const mainTypes = hasSideboard ? undefined : ['creature', 'spell'];
+  const mainTypes = hasSideboard ? undefined : ['creature', 'spell', 'artifact'];
   const decklistOpenAttr = (currentCollapsedMask & 1) === 0 ? ' open' : '';
   const primerOpenAttr = (currentCollapsedMask & 2) === 0 ? ' open' : '';
   const matchupOpenAttr = (currentCollapsedMask & 4) === 0 ? ' open' : '';
@@ -461,7 +461,7 @@ async function renderDeck(bbSlug, deckSlug, selectedGuide, sortMode, sortDirecti
     ` : '';
     const hasCurrentLandColumn = !hasCurrentSideboard && deckView.mainCards.some(c => (c.type || 'spell') === 'land');
     const hasCurrentSecondColumn = hasCurrentSideboard || hasCurrentLandColumn;
-    const currentMainTypes = hasCurrentSideboard ? undefined : ['creature', 'spell'];
+    const currentMainTypes = hasCurrentSideboard ? undefined : ['creature', 'spell', 'artifact'];
     decklistBody.innerHTML = `
       <div class="decklist-grid${hasCurrentSecondColumn ? '' : ' single'}">
         <div class="decklist-col">

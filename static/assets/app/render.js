@@ -118,16 +118,16 @@ function renderCardRow(card, bannedSet, highlightClass) {
 }
 
 export function renderCardsByType(cards, bannedSet, types, highlightMap, highlightClass) {
-  const groups = { creature: [], spell: [], land: [] };
+  const groups = { creature: [], spell: [], artifact: [], land: [] };
   cards.forEach(c => {
     const type = c.type || 'spell';
     if (groups[type]) groups[type].push(c);
   });
 
-  const labels = { creature: 'Creatures', spell: 'Spells', land: 'Lands' };
+  const labels = { creature: 'Creatures', spell: 'Spells', artifact: 'Artifacts', land: 'Lands' };
   let html = '';
 
-  const order = types && types.length ? types : ['creature', 'spell', 'land'];
+  const order = types && types.length ? types : ['creature', 'spell', 'artifact', 'land'];
   for (const type of order) {
     const group = groups[type];
     if (group.length === 0) continue;

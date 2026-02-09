@@ -28,8 +28,8 @@ type Card struct {
 	Printing string `json:"printing"`
 	// Number of copies for this card line.
 	Qty int `json:"qty"`
-	// Coarse type bucket for decklist grouping: creature, spell, or land.
-	Type string `json:"type"` // creature, spell, land
+	// Coarse type bucket for decklist grouping: creature, spell, artifact, or land.
+	Type string `json:"type"` // creature, spell, artifact, land
 	// True when Scryfall layout indicates a card with a back face.
 	DoubleFaced bool `json:"double_faced,omitempty"`
 }
@@ -235,8 +235,14 @@ type cardMeta struct {
 	DoubleFaced *bool `json:"double_faced,omitempty"`
 }
 
+type cardCacheFile struct {
+	Version int                 `json:"version"`
+	Cards   map[string]cardMeta `json:"cards"`
+}
+
 var cardCache = map[string]cardMeta{} // printing -> meta
 const cacheFile = ".card-types.json"
+const cardCacheVersion = 3
 const printingsFileName = "printings.json"
 const stampFile = "tmp/build-stamps.json"
 const buildFingerprintVersion = "v1"
@@ -696,12 +702,23 @@ func loadCardCache() {
 	if err != nil {
 		return
 	}
-	var meta map[string]cardMeta
-	if err := json.Unmarshal(data, &meta); err == nil {
-		if len(meta) > 0 {
-			cardCache = meta
+
+	var versioned cardCacheFile
+	if err := json.Unmarshal(data, &versioned); err == nil {
+		if versioned.Version == cardCacheVersion && len(versioned.Cards) > 0 {
+			cardCache = versioned.Cards
 			return
 		}
+		// Older or invalid cache schema: force a refresh by starting with empty cache.
+		cardCache = map[string]cardMeta{}
+		return
+	}
+
+	var meta map[string]cardMeta
+	if err := json.Unmarshal(data, &meta); err == nil {
+		// Legacy unversioned cache: force refresh for current type-classification schema.
+		cardCache = map[string]cardMeta{}
+		return
 	}
 
 	// Legacy cache format: map[string]string (printing -> type)
@@ -709,15 +726,16 @@ func loadCardCache() {
 	if err := json.Unmarshal(data, &legacy); err != nil {
 		return
 	}
-	converted := make(map[string]cardMeta, len(legacy))
-	for k, v := range legacy {
-		converted[k] = cardMeta{Type: v}
-	}
-	cardCache = converted
+	_ = legacy
+	cardCache = map[string]cardMeta{}
 }
 
 func saveCardCache() {
-	data, _ := json.MarshalIndent(cardCache, "", "  ")
+	payload := cardCacheFile{
+		Version: cardCacheVersion,
+		Cards:   cardCache,
+	}
+	data, _ := json.MarshalIndent(payload, "", "  ")
 	if existing, err := os.ReadFile(cacheFile); err == nil && bytes.Equal(existing, data) {
 		return
 	}
@@ -883,6 +901,9 @@ func classifyType(typeLine string) string {
 	}
 	if strings.Contains(tl, "creature") {
 		return "creature"
+	}
+	if strings.Contains(tl, "artifact") {
+		return "artifact"
 	}
 	return "spell"
 }
@@ -1080,7 +1101,14 @@ func processDeck(deckPath, slug, battlebox string, printings map[string]string) 
 			if err := validateGuide(guide, mainboardIndex, sideboardIndex); err != nil {
 				// Keep builds unblocked when guide plans temporarily drift from manifests.
 				// Emit a warning so the mismatch is still visible and can be fixed later.
-				fmt.Fprintf(os.Stderr, "Warning: guide %s: %v\n", opponentSlug, err)
+				fmt.Fprintf(
+					os.Stderr,
+					"Warning: guide %s/%s -> %s: %v\n",
+					battlebox,
+					slug,
+					opponentSlug,
+					err,
+				)
 			}
 			deck.Guides[opponentSlug] = guide
 		}
