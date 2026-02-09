@@ -29,6 +29,10 @@ import { createCardPreview } from './app/preview.js';
 
 const app = document.getElementById('app');
 let data = { index: null, battleboxes: {}, buildId: '' };
+const qrUi = {
+  overlay: null,
+  canvas: null,
+};
 
 function getCardTarget(event) {
   if (!event.target || !event.target.closest) return null;
@@ -36,6 +40,65 @@ function getCardTarget(event) {
 }
 
 const preview = createCardPreview(app, getCardTarget);
+
+function hideQrPopup() {
+  if (!qrUi.overlay) return;
+  qrUi.overlay.hidden = true;
+}
+
+function showQrPopup() {
+  if (!qrUi.overlay || !qrUi.canvas) return;
+  const currentUrl = window.location.href;
+  qrUi.canvas.innerHTML = '';
+  if (window.QRCode) {
+    // eslint-disable-next-line no-new
+    new window.QRCode(qrUi.canvas, {
+      text: currentUrl,
+      width: 224,
+      height: 224,
+      colorDark: '#000000',
+      colorLight: '#ffffff',
+      correctLevel: window.QRCode.CorrectLevel.M,
+    });
+  } else {
+    qrUi.canvas.innerHTML = '<div class="qr-popup-fallback">QR unavailable</div>';
+  }
+  qrUi.overlay.hidden = false;
+}
+
+function ensureQrOverlay() {
+  if (qrUi.overlay) return;
+
+  const overlay = document.createElement('div');
+  overlay.className = 'qr-popup-overlay';
+  overlay.hidden = true;
+  overlay.innerHTML = `
+    <div class="qr-popup-canvas" id="qr-popup-canvas" role="dialog" aria-modal="true" aria-label="Page QR code"></div>
+  `;
+
+  overlay.addEventListener('click', (event) => {
+    if (event.target === overlay) hideQrPopup();
+  });
+
+  document.addEventListener('keydown', (event) => {
+    if (event.key === 'Escape') hideQrPopup();
+  });
+
+  document.body.appendChild(overlay);
+
+  qrUi.overlay = overlay;
+  qrUi.canvas = overlay.querySelector('#qr-popup-canvas');
+}
+
+function bindBreadcrumbQrButton() {
+  const button = app.querySelector('.qr-breadcrumb-button');
+  if (!button) return;
+  button.addEventListener('click', (event) => {
+    event.preventDefault();
+    event.stopPropagation();
+    showQrPopup();
+  });
+}
 
 function withCacheBust(path) {
   if (!data.buildId) return path;
@@ -112,7 +175,12 @@ async function route() {
 
 function renderHome() {
   app.innerHTML = `
-    <h1 class="breadcrumbs">Battlebox</h1>
+    <h1 class="breadcrumbs">
+      <span class="breadcrumbs-trail">Battlebox</span>
+      <button type="button" class="qr-breadcrumb-button" title="Show QR code" aria-label="Show QR code for this page">
+        <img class="qr-breadcrumb-icon" src="/assets/qrcode.svg" alt="">
+      </button>
+    </h1>
     <ul class="deck-list">
       ${data.index.battleboxes.map(bb => `
         <li>
@@ -127,6 +195,7 @@ function renderHome() {
       `).join('')}
     </ul>
   `;
+  bindBreadcrumbQrButton();
 }
 
 function renderBattlebox(bbSlug, initialSortMode, initialSortDirection) {
@@ -137,9 +206,14 @@ function renderBattlebox(bbSlug, initialSortMode, initialSortDirection) {
 
   app.innerHTML = `
     <h1 class="breadcrumbs">
-      <a href="#/">Battlebox</a>
-      <span class="crumb-sep">/</span>
-      <span>${capitalize(bb.slug)}</span>
+      <span class="breadcrumbs-trail">
+        <a href="#/">Battlebox</a>
+        <span class="crumb-sep">/</span>
+        <span>${capitalize(bb.slug)}</span>
+      </span>
+      <button type="button" class="qr-breadcrumb-button" title="Show QR code" aria-label="Show QR code for this page">
+        <img class="qr-breadcrumb-icon" src="/assets/qrcode.svg" alt="">
+      </button>
     </h1>
     <div class="randomizer-controls">
       <div class="randomizer-roll-controls">
@@ -162,6 +236,7 @@ function renderBattlebox(bbSlug, initialSortMode, initialSortDirection) {
       `).join('')}
     </ul>
   `;
+  bindBreadcrumbQrButton();
 
   const deckList = app.querySelector('.deck-list');
   const difficultyOrder = {
@@ -377,11 +452,16 @@ async function renderDeck(bbSlug, deckSlug, selectedGuide, sortMode, sortDirecti
 
   app.innerHTML = `
     <h1 class="breadcrumbs">
-      <a href="#/">Battlebox</a>
-      <span class="crumb-sep">/</span>
-      <a href="${buildBattleboxHash(bb.slug, currentSortMode, currentSortDirection)}">${capitalize(bb.slug)}</a>
-      <span class="crumb-sep">/</span>
-      <span>${deck.name}</span>
+      <span class="breadcrumbs-trail">
+        <a href="#/">Battlebox</a>
+        <span class="crumb-sep">/</span>
+        <a href="${buildBattleboxHash(bb.slug, currentSortMode, currentSortDirection)}">${capitalize(bb.slug)}</a>
+        <span class="crumb-sep">/</span>
+        <span>${deck.name}</span>
+      </span>
+      <button type="button" class="qr-breadcrumb-button" title="Show QR code" aria-label="Show QR code for this page">
+        <img class="qr-breadcrumb-icon" src="/assets/qrcode.svg" alt="">
+      </button>
     </h1>
     <div class="deck-info-pane">
       <div class="deck-colors">${formatColors(deck.colors)}</div>
@@ -411,6 +491,7 @@ async function renderDeck(bbSlug, deckSlug, selectedGuide, sortMode, sortDirecti
       </div>
     </details>
   `;
+  bindBreadcrumbQrButton();
 
   const decklistDetails = document.getElementById('decklist-details');
   const primerDetails = document.getElementById('primer-details');
@@ -561,6 +642,7 @@ function renderNotFound() {
 
 async function init() {
   app.innerHTML = '<div class="loading">Loading...</div>';
+  ensureQrOverlay();
 
   data.index = await fetchJsonData('/data/index.json', { cache: 'no-store' });
   if (!data.index) {

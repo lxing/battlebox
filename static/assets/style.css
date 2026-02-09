@@ -47,6 +47,65 @@ body {
   padding: var(--pane-gap);
 }
 
+.qr-breadcrumb-button {
+  margin-left: auto;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  width: 1.5rem;
+  height: 1.5rem;
+  min-height: 1.5rem;
+  padding: 0;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.qr-breadcrumb-icon {
+  display: block;
+  width: 1.5rem;
+  height: 1.5rem;
+  filter: invert(1);
+}
+
+.qr-popup-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 2300;
+  background: rgba(0, 0, 0, 0.42);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+}
+
+.qr-popup-overlay[hidden] {
+  display: none !important;
+}
+
+.qr-popup-canvas {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 0;
+}
+
+.qr-popup-canvas img,
+.qr-popup-canvas canvas {
+  width: 224px;
+  height: 224px;
+}
+
+.qr-popup-canvas table {
+  margin: 0 auto;
+}
+
+.qr-popup-fallback {
+  font-size: var(--font-size-sm);
+  color: #bbb;
+}
+
 /* Navigation */
 .back {
   display: inline-block;
