@@ -23,6 +23,9 @@ function renderManaCostSymbols(rawCost) {
     if (/^[0-9]$/.test(token)) {
       return `<img class="mana-cost-symbol" src="/assets/mana/${token}.svg" alt="{${token}}" loading="lazy" decoding="async">`;
     }
+    if (token === 'X') {
+      return `<img class="mana-cost-symbol" src="/assets/mana/x.svg" alt="{X}" loading="lazy" decoding="async">`;
+    }
     if (token === 'W' || token === 'U' || token === 'B' || token === 'R' || token === 'G') {
       return `<span class="mana-symbol mana-${token.toLowerCase()}" role="img" aria-label="{${token}}"></span>`;
     }
@@ -152,6 +155,13 @@ function renderCardRow(card, bannedSet, highlightClass) {
   return `<div class="${rowClass}"><span class="card-qty">${card.qty}</span><span class="card" data-name="${card.name}" data-printing="${card.printing}"${doubleFacedAttr}>${card.name}${bannedTag}</span>${manaCostHtml}</div>`;
 }
 
+function compareCardsByManaThenName(a, b) {
+  const aValue = Number.isFinite(a.mana_value) ? a.mana_value : 0;
+  const bValue = Number.isFinite(b.mana_value) ? b.mana_value : 0;
+  if (aValue !== bValue) return aValue - bValue;
+  return normalizeName(a.name).localeCompare(normalizeName(b.name));
+}
+
 export function renderCardsByType(cards, bannedSet, types, highlightMap, highlightClass) {
   const groups = { creature: [], spell: [], artifact: [], land: [] };
   cards.forEach(c => {
@@ -164,7 +174,7 @@ export function renderCardsByType(cards, bannedSet, types, highlightMap, highlig
 
   const order = types && types.length ? types : ['creature', 'spell', 'artifact', 'land'];
   for (const type of order) {
-    const group = groups[type];
+    const group = [...groups[type]].sort(compareCardsByManaThenName);
     if (group.length === 0) continue;
     const count = group.reduce((sum, c) => sum + c.qty, 0);
     html += `<div class="card-group">`;
@@ -181,11 +191,12 @@ export function renderCardsByType(cards, bannedSet, types, highlightMap, highlig
 
 export function renderCardGroup(cards, label, bannedSet, highlightMap, highlightClass) {
   if (!cards || cards.length === 0) return '';
-  const count = cards.reduce((sum, c) => sum + c.qty, 0);
+  const sorted = [...cards].sort(compareCardsByManaThenName);
+  const count = sorted.reduce((sum, c) => sum + c.qty, 0);
   return `
     <div class="card-group">
       <div class="card-group-label">${label} (${count})</div>
-      ${cards.map(c => {
+      ${sorted.map(c => {
         const key = normalizeName(c.name);
         const rowHighlight = highlightMap && highlightMap[key] ? highlightClass : '';
         return renderCardRow(c, bannedSet, rowHighlight);

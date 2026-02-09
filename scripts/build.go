@@ -32,6 +32,8 @@ type Card struct {
 	Type string `json:"type"` // creature, spell, artifact, land
 	// Mana cost string from Scryfall (for example "{1}{U}").
 	ManaCost string `json:"mana_cost,omitempty"`
+	// Mana value derived from mana_cost using build-time parsing.
+	ManaValue int `json:"mana_value"`
 	// True when Scryfall layout indicates a card with a back face.
 	DoubleFaced bool `json:"double_faced,omitempty"`
 }
@@ -193,6 +195,7 @@ type guideCardInfo struct {
 }
 
 var guideCountRE = regexp.MustCompile(`^(\d+)\s*x?\s+(.*)$`)
+var manaSymbolRE = regexp.MustCompile(`\{([^}]+)\}`)
 
 const jsonGzipLevel = 5
 
@@ -237,6 +240,8 @@ type cardMeta struct {
 	Type string `json:"type"`
 	// Mana cost string cached by printing key.
 	ManaCost string `json:"mana_cost,omitempty"`
+	// Mana value cached by printing key.
+	ManaValue int `json:"mana_value"`
 	// Double-faced flag cached by printing key.
 	DoubleFaced *bool `json:"double_faced,omitempty"`
 }
@@ -248,7 +253,7 @@ type cardCacheFile struct {
 
 var cardCache = map[string]cardMeta{} // printing -> meta
 const cacheFile = ".card-types.json"
-const cardCacheVersion = 4
+const cardCacheVersion = 5
 const printingsFileName = "printings.json"
 const stampFile = "tmp/build-stamps.json"
 const buildFingerprintVersion = "v1"
@@ -886,9 +891,11 @@ func fetchMissingCardMeta(cards []Card) {
 		for _, card := range result.Data {
 			printing := card.Set + "/" + card.Collector
 			isDouble := isDoubleFacedLayout(card.Layout)
+			manaCost := strings.TrimSpace(card.ManaCost)
 			meta := cardMeta{
 				Type:        classifyType(card.TypeLine),
-				ManaCost:    strings.TrimSpace(card.ManaCost),
+				ManaCost:    manaCost,
+				ManaValue:   parseManaValue(manaCost),
 				DoubleFaced: &isDouble,
 			}
 			cardCache[printing] = meta
@@ -913,6 +920,38 @@ func classifyType(typeLine string) string {
 		return "artifact"
 	}
 	return "spell"
+}
+
+func parseManaValue(manaCost string) int {
+	tokens := manaSymbolRE.FindAllStringSubmatch(manaCost, -1)
+	if len(tokens) == 0 {
+		return 0
+	}
+
+	total := 0
+	for _, token := range tokens {
+		if len(token) < 2 {
+			continue
+		}
+		symbol := strings.ToUpper(strings.TrimSpace(token[1]))
+		if symbol == "" || symbol == "X" {
+			continue
+		}
+
+		if n, err := strconv.Atoi(symbol); err == nil {
+			total += n
+			continue
+		}
+
+		for _, ch := range symbol {
+			switch ch {
+			case 'W', 'U', 'B', 'R', 'G':
+				total++
+			}
+		}
+	}
+
+	return total
 }
 
 func isDoubleFacedLayout(layout string) bool {
@@ -1040,6 +1079,7 @@ func processDeck(deckPath, slug, battlebox string, printings map[string]string) 
 		meta := cardCache[manifest.Cards[i].Printing]
 		manifest.Cards[i].Type = meta.Type
 		manifest.Cards[i].ManaCost = meta.ManaCost
+		manifest.Cards[i].ManaValue = meta.ManaValue
 		if meta.DoubleFaced != nil {
 			manifest.Cards[i].DoubleFaced = *meta.DoubleFaced
 		}
@@ -1048,6 +1088,7 @@ func processDeck(deckPath, slug, battlebox string, printings map[string]string) 
 		meta := cardCache[manifest.Sideboard[i].Printing]
 		manifest.Sideboard[i].Type = meta.Type
 		manifest.Sideboard[i].ManaCost = meta.ManaCost
+		manifest.Sideboard[i].ManaValue = meta.ManaValue
 		if meta.DoubleFaced != nil {
 			manifest.Sideboard[i].DoubleFaced = *meta.DoubleFaced
 		}
