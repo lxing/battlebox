@@ -6,20 +6,20 @@
   ],
   "cards": [
     {
-      "name": "Blood Fountain",
-      "qty": 3
+      "name": "Black Mage's Rod",
+      "qty": 2
     },
     {
-      "name": "Candy Trail",
-      "qty": 2
+      "name": "Blood Fountain",
+      "qty": 3
     },
     {
       "name": "Cast Down",
       "qty": 2
     },
     {
-      "name": "Deadly Dispute",
-      "qty": 4
+      "name": "Cryogen Relic",
+      "qty": 1
     },
     {
       "name": "Drossforge Bridge",
@@ -34,16 +34,16 @@
       "qty": 2
     },
     {
+      "name": "Fanatical Offering",
+      "qty": 2
+    },
+    {
       "name": "Ichor Wellspring",
       "qty": 4
     },
     {
-      "name": "Kenku Artificer",
-      "qty": 2
-    },
-    {
       "name": "Krark-Clan Shaman",
-      "qty": 2
+      "qty": 3
     },
     {
       "name": "Makeshift Munitions",
@@ -52,6 +52,10 @@
     {
       "name": "Mistvault Bridge",
       "qty": 4
+    },
+    {
+      "name": "Hunter's Blowgun",
+      "qty": 1
     },
     {
       "name": "Myr Enforcer",
@@ -87,7 +91,7 @@
     },
     {
       "name": "Toxin Analysis",
-      "qty": 1
+      "qty": 2
     },
     {
       "name": "Vault of Whispers",
@@ -108,8 +112,8 @@
       "qty": 4
     },
     {
-      "name": "Krark-Clan Shaman",
-      "qty": 1
+      "name": "Blue Elemental Blast",
+      "qty": 2
     },
     {
       "name": "Pyroblast",
@@ -118,10 +122,6 @@
     {
       "name": "Red Elemental Blast",
       "qty": 4
-    },
-    {
-      "name": "Toxin Analysis",
-      "qty": 1
     }
   ],
   "difficulty_tags": [
