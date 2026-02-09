@@ -31,9 +31,9 @@ body {
 }
 
 #app {
-  max-width: 600px;
+  max-width: 720px;
   margin: 0 auto;
-  padding: 1rem;
+  padding: 0.32rem;
 }
 
 /* Navigation */
@@ -51,9 +51,9 @@ h1 {
   justify-content: flex-start;
   align-items: center;
   font-size: 1.1rem;
-  margin-bottom: 1rem;
+  margin-bottom: 0.45rem;
   border-bottom: 1px solid #333;
-  padding-bottom: 0.5rem;
+  padding-bottom: 0.35rem;
   gap: 0.4rem;
 }
 
@@ -255,7 +255,7 @@ input[type="reset"] {
   border: 1px solid #2f2f53;
   border-radius: 6px;
   padding: 0.5rem 0.75rem;
-  margin: 0.5rem 0;
+  margin: 0.32rem 0;
   display: flex;
   align-items: center;
   gap: 0.75rem;
@@ -415,12 +415,34 @@ input[type="reset"] {
 .decklist-grid {
   display: grid;
   grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-  gap: 2rem;
+  column-gap: 0;
+  row-gap: 0.75rem;
   align-items: start;
+  position: relative;
+}
+
+.decklist-grid::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 50%;
+  width: 1px;
+  background: #2f2f53;
+  pointer-events: none;
 }
 
 .decklist-grid.single {
   grid-template-columns: minmax(0, 1fr);
+}
+
+.decklist-grid.single::before {
+  display: none;
+}
+
+.decklist-col {
+  padding: 0;
+  margin: 0;
 }
 
 .card-row {
@@ -456,6 +478,7 @@ input[type="reset"] {
   font-size: 0.75rem;
   text-transform: uppercase;
   margin-bottom: 0.25rem;
+  padding-left: calc(2ch + 0.05rem);
 }
 
 @media (max-width: 300px) {
@@ -471,6 +494,39 @@ input[type="reset"] {
   flex: 0 0 2ch;
 }
 
+.card-mana-cost {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.08rem;
+  white-space: nowrap;
+  margin-left: auto;
+  justify-content: flex-end;
+}
+
+.card-mana-cost .mana-symbol {
+  width: 0.72rem;
+  height: 0.72rem;
+  position: relative;
+  top: 0.24rem;
+}
+
+.mana-cost-symbol {
+  width: 0.72rem;
+  height: 0.72rem;
+  display: inline-block;
+  vertical-align: middle;
+  position: relative;
+  top: 0.24rem;
+}
+
+.mana-cost-token {
+  color: #888;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+  font-size: 0.72rem;
+  letter-spacing: 0.01em;
+  white-space: nowrap;
+}
+
 /* Card references */
 .card {
   color: #7eb8ff;
@@ -479,6 +535,8 @@ input[type="reset"] {
   text-underline-offset: 2px;
   position: relative;
   overflow-anchor: none;
+  flex: 1 1 auto;
+  min-width: 0;
 }
 
 .card:hover {
@@ -542,7 +600,7 @@ details.collapsible {
   border: 1px solid #2f2f53;
   border-radius: 6px;
   padding: 0.5rem 0.75rem;
-  margin: 0.5rem 0;
+  margin: 0.32rem 0;
 }
 
 details.collapsible summary {

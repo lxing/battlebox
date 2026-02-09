@@ -1,5 +1,39 @@
 import { normalizeName } from './utils.js';
 
+function escapeHtml(text) {
+  return String(text)
+    .replaceAll('&', '&amp;')
+    .replaceAll('<', '&lt;')
+    .replaceAll('>', '&gt;')
+    .replaceAll('"', '&quot;')
+    .replaceAll("'", '&#39;');
+}
+
+function renderManaCostSymbols(rawCost) {
+  const manaCost = (rawCost || '').trim();
+  if (!manaCost) return '';
+
+  const tokens = manaCost.match(/\{[^}]+\}/g) || [];
+  if (tokens.length === 0) return '';
+
+  const pieces = tokens.map((tokenRaw) => {
+    const token = tokenRaw.slice(1, -1).trim().toUpperCase();
+    if (!token) return '';
+
+    if (/^[0-9]$/.test(token)) {
+      return `<img class="mana-cost-symbol" src="/assets/mana/${token}.svg" alt="{${token}}" loading="lazy" decoding="async">`;
+    }
+    if (token === 'W' || token === 'U' || token === 'B' || token === 'R' || token === 'G') {
+      return `<span class="mana-symbol mana-${token.toLowerCase()}" role="img" aria-label="{${token}}"></span>`;
+    }
+
+    return `<span class="mana-cost-token">{${escapeHtml(token)}}</span>`;
+  }).filter(Boolean);
+
+  if (pieces.length === 0) return '';
+  return `<span class="card-mana-cost">${pieces.join('')}</span>`;
+}
+
 function resolvePrinting(target, printingsList) {
   const key = normalizeName(target);
   if (!key) return '';
@@ -113,8 +147,9 @@ function renderCardRow(card, bannedSet, highlightClass) {
   const banned = bannedSet && bannedSet.has(normalizeName(card.name));
   const bannedTag = banned ? '<span class="banned-inline-tag" title="Banned">🔨 BAN</span>' : '';
   const doubleFacedAttr = card.double_faced ? ' data-double-faced="1"' : '';
+  const manaCostHtml = renderManaCostSymbols(card.mana_cost);
   const rowClass = highlightClass ? `card-row ${highlightClass}` : 'card-row';
-  return `<div class="${rowClass}"><span class="card-qty">${card.qty}</span><span class="card" data-name="${card.name}" data-printing="${card.printing}"${doubleFacedAttr}>${card.name}${bannedTag}</span></div>`;
+  return `<div class="${rowClass}"><span class="card-qty">${card.qty}</span><span class="card" data-name="${card.name}" data-printing="${card.printing}"${doubleFacedAttr}>${card.name}${bannedTag}</span>${manaCostHtml}</div>`;
 }
 
 export function renderCardsByType(cards, bannedSet, types, highlightMap, highlightClass) {

@@ -30,6 +30,8 @@ type Card struct {
 	Qty int `json:"qty"`
 	// Coarse type bucket for decklist grouping: creature, spell, artifact, or land.
 	Type string `json:"type"` // creature, spell, artifact, land
+	// Mana cost string from Scryfall (for example "{1}{U}").
+	ManaCost string `json:"mana_cost,omitempty"`
 	// True when Scryfall layout indicates a card with a back face.
 	DoubleFaced bool `json:"double_faced,omitempty"`
 }
@@ -217,6 +219,8 @@ type ScryfallCard struct {
 	Collector string `json:"collector_number"`
 	// Type line used to derive the coarse card type.
 	TypeLine string `json:"type_line"`
+	// Mana cost string returned by Scryfall.
+	ManaCost string `json:"mana_cost"`
 	// Layout used to detect cards with back faces.
 	Layout string `json:"layout"`
 }
@@ -231,6 +235,8 @@ type ScryfallResponse struct {
 type cardMeta struct {
 	// Coarse type bucket cached by printing key.
 	Type string `json:"type"`
+	// Mana cost string cached by printing key.
+	ManaCost string `json:"mana_cost,omitempty"`
 	// Double-faced flag cached by printing key.
 	DoubleFaced *bool `json:"double_faced,omitempty"`
 }
@@ -242,7 +248,7 @@ type cardCacheFile struct {
 
 var cardCache = map[string]cardMeta{} // printing -> meta
 const cacheFile = ".card-types.json"
-const cardCacheVersion = 3
+const cardCacheVersion = 4
 const printingsFileName = "printings.json"
 const stampFile = "tmp/build-stamps.json"
 const buildFingerprintVersion = "v1"
@@ -882,6 +888,7 @@ func fetchMissingCardMeta(cards []Card) {
 			isDouble := isDoubleFacedLayout(card.Layout)
 			meta := cardMeta{
 				Type:        classifyType(card.TypeLine),
+				ManaCost:    strings.TrimSpace(card.ManaCost),
 				DoubleFaced: &isDouble,
 			}
 			cardCache[printing] = meta
@@ -1032,6 +1039,7 @@ func processDeck(deckPath, slug, battlebox string, printings map[string]string) 
 	for i := range manifest.Cards {
 		meta := cardCache[manifest.Cards[i].Printing]
 		manifest.Cards[i].Type = meta.Type
+		manifest.Cards[i].ManaCost = meta.ManaCost
 		if meta.DoubleFaced != nil {
 			manifest.Cards[i].DoubleFaced = *meta.DoubleFaced
 		}
@@ -1039,6 +1047,7 @@ func processDeck(deckPath, slug, battlebox string, printings map[string]string) 
 	for i := range manifest.Sideboard {
 		meta := cardCache[manifest.Sideboard[i].Printing]
 		manifest.Sideboard[i].Type = meta.Type
+		manifest.Sideboard[i].ManaCost = meta.ManaCost
 		if meta.DoubleFaced != nil {
 			manifest.Sideboard[i].DoubleFaced = *meta.DoubleFaced
 		}
