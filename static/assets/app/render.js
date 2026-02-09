@@ -12,6 +12,10 @@ function escapeHtml(text) {
 function renderManaCostSymbols(rawCost) {
   const manaCost = (rawCost || '').trim();
   if (!manaCost) return '';
+  const hybridSymbolFiles = {
+    'G/U': 'gu',
+    'R/G': 'rg',
+  };
 
   const renderTokenSymbol = (token) => {
     if (/^[0-9]$/.test(token)) {
@@ -26,8 +30,10 @@ function renderManaCostSymbols(rawCost) {
     // Render only true two-color hybrid symbols (for example {G/U}).
     // Split cards are handled via the outer // side split, not here.
     if (/^[WUBRG]\/[WUBRG]$/.test(token)) {
-      const symbolCode = token.replaceAll('/', '');
-      return `<img class="mana-cost-symbol" src="https://svgs.scryfall.io/card-symbols/${symbolCode}.svg" alt="{${token}}" loading="lazy" decoding="async">`;
+      const hybridFile = hybridSymbolFiles[token];
+      if (hybridFile) {
+        return `<img class="mana-cost-symbol" src="/assets/mana/${hybridFile}.svg" alt="{${token}}" loading="lazy" decoding="async">`;
+      }
     }
     return '';
   };
