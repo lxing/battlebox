@@ -58,6 +58,7 @@ export function createLifeCounter(container, startingLife = 20) {
   container.innerHTML = `
     <div class="life-counter" aria-label="Life counter">
       <section class="life-player life-player-top" data-player="p2" aria-label="Player 2 life total">
+        <span class="life-player-icon life-player-icon-p2" aria-hidden="true">🐭</span>
         <span class="life-hit-hint life-hit-hint-left" aria-hidden="true">-</span>
         <span class="life-total" data-life-total="p2">${state.p2}</span>
         <span class="life-hit-hint life-hit-hint-right" aria-hidden="true">+</span>
@@ -68,6 +69,7 @@ export function createLifeCounter(container, startingLife = 20) {
         <button type="button" class="static-button life-control-button" id="life-right-button" aria-label="Reserved life control">x</button>
       </section>
       <section class="life-player life-player-bottom" data-player="p1" aria-label="Player 1 life total">
+        <span class="life-player-icon life-player-icon-p1" aria-hidden="true">🐿️</span>
         <span class="life-hit-hint life-hit-hint-left" aria-hidden="true">-</span>
         <span class="life-total" data-life-total="p1">${state.p1}</span>
         <span class="life-hit-hint life-hit-hint-right" aria-hidden="true">+</span>

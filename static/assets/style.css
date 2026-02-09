@@ -176,6 +176,26 @@ body {
   border-color: #fff;
 }
 
+.life-player-icon {
+  position: absolute;
+  top: 0.45rem;
+  font-size: 1rem;
+  line-height: 1;
+  opacity: 0.9;
+  pointer-events: none;
+}
+
+.life-player-icon-p1 {
+  left: 0.65rem;
+}
+
+.life-player-icon-p2 {
+  right: 0.65rem;
+  top: 0.45rem;
+  left: auto;
+  bottom: auto;
+}
+
 .life-player-top {
   transform: rotate(180deg);
 }
