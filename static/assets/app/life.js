@@ -60,6 +60,9 @@ export function createLifeCounter(container, startingLife = 20) {
         <span class="life-total" data-life-total="p2">${state.p2}</span>
         <span class="life-hit-hint life-hit-hint-right" aria-hidden="true">+</span>
       </section>
+      <section class="life-controls" aria-label="Life controls">
+        <button type="button" class="action-button life-control-button" id="life-reset-button" aria-label="Reset life totals">🔄</button>
+      </section>
       <section class="life-player life-player-bottom" data-player="p1" aria-label="Player 1 life total">
         <span class="life-hit-hint life-hit-hint-left" aria-hidden="true">-</span>
         <span class="life-total" data-life-total="p1">${state.p1}</span>
@@ -72,6 +75,7 @@ export function createLifeCounter(container, startingLife = 20) {
     p1: container.querySelector('[data-life-total="p1"]'),
     p2: container.querySelector('[data-life-total="p2"]'),
   };
+  const resetButton = container.querySelector('#life-reset-button');
 
   const render = () => {
     totals.p1.textContent = String(state.p1);
@@ -80,6 +84,13 @@ export function createLifeCounter(container, startingLife = 20) {
 
   const applyDelta = (player, delta) => {
     state[player] += delta;
+    render();
+    writeLifeState(state);
+  };
+
+  const setLifeTotals = (p1, p2) => {
+    state.p1 = p1;
+    state.p2 = p2;
     render();
     writeLifeState(state);
   };
@@ -155,6 +166,14 @@ export function createLifeCounter(container, startingLife = 20) {
       event.stopPropagation();
     });
   });
+
+  if (resetButton) {
+    resetButton.addEventListener('click', (event) => {
+      event.preventDefault();
+      clearActiveHold();
+      setLifeTotals(startingLife, startingLife);
+    });
+  }
 
   render();
 }

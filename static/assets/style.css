@@ -115,8 +115,21 @@ body {
 .life-counter {
   height: 100%;
   display: grid;
-  grid-template-rows: 1fr 1fr;
+  grid-template-rows: 1fr auto 1fr;
   gap: var(--pane-gap);
+}
+
+.life-controls {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.life-control-button {
+  min-height: 2.25rem;
+  min-width: 3rem;
+  padding: 0.2rem 0.7rem;
+  font-size: 1.05rem;
 }
 
 .life-player {
