@@ -1,5 +1,5 @@
 const LIFE_STORAGE_KEY = 'battlebox.life.v1'; // Do not bump version unless explicitly requested.
-const HOLD_DELAY_MS = 1000;
+const HOLD_DELAY_MS = 500;
 const HOLD_REPEAT_MS = 500;
 const HOLD_DELTA_MULTIPLIER = 10;
 
@@ -61,7 +61,9 @@ export function createLifeCounter(container, startingLife = 20) {
         <span class="life-hit-hint life-hit-hint-right" aria-hidden="true">+</span>
       </section>
       <section class="life-controls" aria-label="Life controls">
-        <button type="button" class="action-button life-control-button" id="life-reset-button" aria-label="Reset life totals">🔄</button>
+        <button type="button" class="static-button life-control-button" id="life-left-button" aria-label="Reserved life control">x</button>
+        <button type="button" class="static-button life-control-button" id="life-reset-button" aria-label="Reset life totals">🔄</button>
+        <button type="button" class="static-button life-control-button" id="life-right-button" aria-label="Reserved life control">x</button>
       </section>
       <section class="life-player life-player-bottom" data-player="p1" aria-label="Player 1 life total">
         <span class="life-hit-hint life-hit-hint-left" aria-hidden="true">-</span>
@@ -76,6 +78,8 @@ export function createLifeCounter(container, startingLife = 20) {
     p2: container.querySelector('[data-life-total="p2"]'),
   };
   const resetButton = container.querySelector('#life-reset-button');
+  const leftButton = container.querySelector('#life-left-button');
+  const rightButton = container.querySelector('#life-right-button');
 
   const render = () => {
     totals.p1.textContent = String(state.p1);
@@ -173,6 +177,16 @@ export function createLifeCounter(container, startingLife = 20) {
       clearActiveHold();
       setLifeTotals(startingLife, startingLife);
     });
+  }
+
+  const handleNoopControlClick = (event) => {
+    event.preventDefault();
+  };
+  if (leftButton) {
+    leftButton.addEventListener('click', handleNoopControlClick);
+  }
+  if (rightButton) {
+    rightButton.addEventListener('click', handleNoopControlClick);
   }
 
   render();

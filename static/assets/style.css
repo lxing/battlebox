@@ -103,9 +103,29 @@ body {
   -webkit-touch-callout: none;
 }
 
+.tabbar-button:hover,
+.tabbar-button:active,
+.tabbar-button:focus,
+.tabbar-button:focus-visible {
+  background: var(--color-button-bg);
+  border-color: var(--color-button-border);
+  color: #fff;
+  outline: none;
+}
+
 .tabbar-button.active {
   background: #4a4a78;
   border-color: #6969a1;
+}
+
+.tabbar-button.active:hover,
+.tabbar-button.active:active,
+.tabbar-button.active:focus,
+.tabbar-button.active:focus-visible {
+  background: #4a4a78;
+  border-color: #6969a1;
+  color: #fff;
+  outline: none;
 }
 
 .tab-pane[hidden] {
@@ -120,16 +140,22 @@ body {
 }
 
 .life-controls {
-  display: flex;
-  justify-content: center;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--pane-gap);
+  width: 100%;
   align-items: center;
 }
 
 .life-control-button {
+  width: 100%;
   min-height: 2.25rem;
-  min-width: 3rem;
-  padding: 0.2rem 0.7rem;
+  padding: 0.2rem 0.5rem;
   font-size: 1.05rem;
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-touch-callout: none;
+  -webkit-tap-highlight-color: transparent;
 }
 
 .life-player {
@@ -381,7 +407,10 @@ input[type="reset"] {
   touch-action: manipulation;
 }
 
-.action-button {
+.action-button,
+.static-button {
+  appearance: none;
+  -webkit-appearance: none;
   background: var(--color-button-bg);
   color: #fff;
   border: 1px solid var(--color-button-border);
@@ -392,6 +421,8 @@ input[type="reset"] {
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  outline: none;
+  touch-action: manipulation;
 }
 
 .action-button:hover {
@@ -402,6 +433,16 @@ input[type="reset"] {
 .action-button:active {
   background: #4a4a78;
   border-color: #6969a1;
+}
+
+.static-button:hover,
+.static-button:active,
+.static-button:focus,
+.static-button:focus-visible {
+  background: var(--color-button-bg);
+  border-color: var(--color-button-border);
+  color: #fff;
+  outline: none;
 }
 
 .randomizer-roll,
