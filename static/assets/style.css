@@ -432,7 +432,7 @@ input[type="reset"] {
 
 .card-row {
   display: flex;
-  align-items: baseline;
+  align-items: center;
   gap: 0.3rem;
 }
 
@@ -487,13 +487,13 @@ input[type="reset"] {
   margin-left: auto;
   justify-content: flex-end;
   padding-right: 0.2rem;
+  line-height: 1;
 }
 
 .card-mana-cost .mana-symbol {
   width: 0.72rem;
   height: 0.72rem;
-  position: relative;
-  top: 0.24rem;
+  display: inline-block;
 }
 
 .mana-cost-symbol {
@@ -501,8 +501,6 @@ input[type="reset"] {
   height: 0.72rem;
   display: inline-block;
   vertical-align: middle;
-  position: relative;
-  top: 0.24rem;
 }
 
 .mana-cost-token {
