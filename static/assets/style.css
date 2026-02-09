@@ -69,6 +69,14 @@ body {
   filter: invert(1);
 }
 
+.qr-breadcrumb-button:hover,
+.qr-breadcrumb-button:active,
+.qr-breadcrumb-button:focus,
+.qr-breadcrumb-button:focus-visible {
+  background: transparent;
+  outline: none;
+}
+
 .qr-popup-overlay {
   position: fixed;
   inset: 0;
@@ -420,8 +428,13 @@ input[type="reset"] {
   text-decoration: none;
 }
 
-.breadcrumbs a:hover {
-  color: #fff;
+.breadcrumbs a:hover,
+.breadcrumbs a:focus,
+.breadcrumbs a:focus-visible,
+.breadcrumbs a:active {
+  color: #bbb;
+  text-decoration: none;
+  outline: none;
 }
 
 .crumb-sep {
