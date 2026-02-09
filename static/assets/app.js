@@ -29,6 +29,17 @@ import { createCardPreview } from './app/preview.js';
 
 const app = document.getElementById('app');
 let data = { index: null, battleboxes: {}, buildId: '' };
+const TAB_BATTLEBOX = 'battlebox';
+const TAB_LIFE = 'life';
+const ui = {
+  shell: null,
+  header: null,
+  body: null,
+  footer: null,
+  battleboxPane: null,
+  lifePane: null,
+  activeTab: TAB_BATTLEBOX,
+};
 const qrUi = {
   overlay: null,
   canvas: null,
@@ -95,8 +106,9 @@ function ensureQrOverlay() {
   qrUi.canvas = overlay.querySelector('#qr-popup-canvas');
 }
 
-function bindBreadcrumbQrButton() {
-  const button = app.querySelector('.qr-breadcrumb-button');
+function bindBreadcrumbQrButton(container) {
+  const scope = container || ui.header || app;
+  const button = scope.querySelector('.qr-breadcrumb-button');
   if (!button) return;
   button.addEventListener('click', (event) => {
     event.preventDefault();
@@ -105,14 +117,55 @@ function bindBreadcrumbQrButton() {
   });
 }
 
-function applyViewShell() {
-  const breadcrumb = app.querySelector(':scope > .breadcrumbs');
-  if (!breadcrumb) {
-    preview.setScrollContainer(app);
-    return null;
-  }
+function normalizeTab(tab) {
+  return tab === TAB_LIFE ? TAB_LIFE : TAB_BATTLEBOX;
+}
 
-  const children = [...app.children];
+function readTabFromUrl() {
+  const params = new URLSearchParams(location.search);
+  return normalizeTab(params.get('tab'));
+}
+
+function buildSearchForTab(tab) {
+  const params = new URLSearchParams(location.search);
+  if (tab === TAB_BATTLEBOX) {
+    params.delete('tab');
+  } else {
+    params.set('tab', TAB_LIFE);
+  }
+  const next = params.toString();
+  return next ? `?${next}` : '';
+}
+
+function writeTabToUrl(tab, pushState) {
+  const nextSearch = buildSearchForTab(tab);
+  const nextHash = location.hash || '#/';
+  const nextUrl = `${location.pathname}${nextSearch}${nextHash}`;
+  history[pushState ? 'pushState' : 'replaceState'](null, '', nextUrl);
+}
+
+function applyActiveTab(tab) {
+  if (!ui.battleboxPane || !ui.lifePane || !ui.footer) return;
+  const nextTab = normalizeTab(tab);
+  ui.activeTab = nextTab;
+  ui.battleboxPane.hidden = nextTab !== TAB_BATTLEBOX;
+  ui.lifePane.hidden = nextTab !== TAB_LIFE;
+  if (nextTab === TAB_LIFE) {
+    preview.hidePreview();
+  }
+  ui.footer.querySelectorAll('.tabbar-button').forEach((button) => {
+    button.classList.toggle('active', button.dataset.tab === nextTab);
+  });
+}
+
+function setActiveTab(tab, pushState) {
+  const nextTab = normalizeTab(tab);
+  applyActiveTab(nextTab);
+  writeTabToUrl(nextTab, Boolean(pushState));
+}
+
+function ensureShell() {
+  if (ui.shell) return;
   const shell = document.createElement('div');
   shell.className = 'view-shell';
   const header = document.createElement('div');
@@ -120,19 +173,49 @@ function applyViewShell() {
   const body = document.createElement('div');
   body.className = 'view-body';
   body.id = 'view-body';
+  const battleboxPane = document.createElement('div');
+  battleboxPane.className = 'tab-pane tab-pane-battlebox';
+  battleboxPane.id = 'tab-battlebox';
+  const lifePane = document.createElement('div');
+  lifePane.className = 'tab-pane tab-pane-life';
+  lifePane.id = 'tab-life';
+  lifePane.innerHTML = '<div class="life-tab-placeholder">life</div>';
+  const footer = document.createElement('div');
+  footer.className = 'view-footer';
+  footer.innerHTML = `
+    <div class="tabbar">
+      <button type="button" class="action-button tabbar-button" data-tab="battlebox" aria-label="Battlebox tab">📚</button>
+      <button type="button" class="action-button tabbar-button" data-tab="life" aria-label="Life tab">❤️‍🩹</button>
+    </div>
+  `;
 
-  header.appendChild(breadcrumb);
-  children.forEach((child) => {
-    if (child === breadcrumb) return;
-    body.appendChild(child);
+  footer.addEventListener('click', (event) => {
+    const button = event.target.closest('.tabbar-button');
+    if (!button) return;
+    setActiveTab(button.dataset.tab, true);
   });
 
+  body.appendChild(battleboxPane);
+  body.appendChild(lifePane);
   shell.appendChild(header);
   shell.appendChild(body);
+  shell.appendChild(footer);
   app.replaceChildren(shell);
-  body.scrollTo({ top: 0, left: 0, behavior: 'auto' });
+
+  ui.shell = shell;
+  ui.header = header;
+  ui.body = body;
+  ui.footer = footer;
+  ui.battleboxPane = battleboxPane;
+  ui.lifePane = lifePane;
   preview.setScrollContainer(body);
-  return body;
+}
+
+function renderBattleboxPane(headerHtml, bodyHtml) {
+  ensureShell();
+  ui.header.innerHTML = headerHtml;
+  ui.battleboxPane.innerHTML = bodyHtml;
+  bindBreadcrumbQrButton(ui.header);
 }
 
 function withCacheBust(path) {
@@ -203,16 +286,22 @@ async function route() {
   } else {
     renderNotFound();
   }
+
+  if (ui.body) {
+    ui.body.scrollTo({ top: 0, left: 0, behavior: 'auto' });
+  }
 }
 
 function renderHome() {
-  app.innerHTML = `
+  const headerHtml = `
     <h1 class="breadcrumbs">
       <span class="breadcrumbs-trail">Battlebox</span>
       <button type="button" class="qr-breadcrumb-button" title="Show QR code" aria-label="Show QR code for this page">
         <img class="qr-breadcrumb-icon" src="/assets/qrcode.svg" alt="">
       </button>
     </h1>
+  `;
+  const bodyHtml = `
     <ul class="deck-list">
       ${data.index.battleboxes.map(bb => `
         <li>
@@ -227,8 +316,7 @@ function renderHome() {
       `).join('')}
     </ul>
   `;
-  applyViewShell();
-  bindBreadcrumbQrButton();
+  renderBattleboxPane(headerHtml, bodyHtml);
 }
 
 function renderBattlebox(bbSlug, initialSortMode, initialSortDirection) {
@@ -237,7 +325,7 @@ function renderBattlebox(bbSlug, initialSortMode, initialSortDirection) {
   const initialSort = normalizeSortMode(initialSortMode);
   const initialDirection = normalizeSortDirection(initialSortDirection);
 
-  app.innerHTML = `
+  const headerHtml = `
     <h1 class="breadcrumbs">
       <span class="breadcrumbs-trail">
         <a href="#/">Battlebox</a>
@@ -248,6 +336,8 @@ function renderBattlebox(bbSlug, initialSortMode, initialSortDirection) {
         <img class="qr-breadcrumb-icon" src="/assets/qrcode.svg" alt="">
       </button>
     </h1>
+  `;
+  const bodyHtml = `
     <div class="randomizer-controls">
       <div class="randomizer-roll-controls">
         <button type="button" class="randomizer-roll action-button" data-count="1" title="Roll 1 deck" aria-label="Roll 1 deck">🎲</button>
@@ -269,10 +359,9 @@ function renderBattlebox(bbSlug, initialSortMode, initialSortDirection) {
       `).join('')}
     </ul>
   `;
-  applyViewShell();
-  bindBreadcrumbQrButton();
+  renderBattleboxPane(headerHtml, bodyHtml);
 
-  const deckList = app.querySelector('.deck-list');
+  const deckList = ui.battleboxPane.querySelector('.deck-list');
   const difficultyOrder = {
     beginner: 0,
     intermediate: 1,
@@ -297,8 +386,8 @@ function renderBattlebox(bbSlug, initialSortMode, initialSortDirection) {
       difficultyRank: resolveDifficultyRank(deck.difficulty_tags),
     }])
   );
-  const rollButtons = [...app.querySelectorAll('.randomizer-roll')];
-  const sortButtons = [...app.querySelectorAll('.randomizer-sort')];
+  const rollButtons = [...ui.battleboxPane.querySelectorAll('.randomizer-roll')];
+  const sortButtons = [...ui.battleboxPane.querySelectorAll('.randomizer-sort')];
   let sortMode = null;
   let sortDirection = initialDirection;
 
@@ -363,7 +452,7 @@ function renderBattlebox(bbSlug, initialSortMode, initialSortDirection) {
   };
 
   const clearHighlights = () => {
-    app.querySelectorAll('.deck-link.deck-highlight').forEach(link => link.classList.remove('deck-highlight'));
+    ui.battleboxPane.querySelectorAll('.deck-link.deck-highlight').forEach(link => link.classList.remove('deck-highlight'));
   };
   const setActiveRollButton = (count) => {
     rollButtons.forEach(btn => {
@@ -484,7 +573,7 @@ async function renderDeck(bbSlug, deckSlug, selectedGuide, sortMode, sortDirecti
     </details>
   ` : '';
 
-  app.innerHTML = `
+  const headerHtml = `
     <h1 class="breadcrumbs">
       <span class="breadcrumbs-trail">
         <a href="#/">Battlebox</a>
@@ -497,6 +586,8 @@ async function renderDeck(bbSlug, deckSlug, selectedGuide, sortMode, sortDirecti
         <img class="qr-breadcrumb-icon" src="/assets/qrcode.svg" alt="">
       </button>
     </h1>
+  `;
+  const bodyHtml = `
     <div class="deck-info-pane">
       <div class="deck-colors">${formatColors(deck.colors)}</div>
       <div class="deck-tags">${renderDeckTags(deck.tags)}${renderDifficultyTags(deck.difficulty_tags)}</div>
@@ -525,13 +616,12 @@ async function renderDeck(bbSlug, deckSlug, selectedGuide, sortMode, sortDirecti
       </div>
     </details>
   `;
-  applyViewShell();
-  bindBreadcrumbQrButton();
+  renderBattleboxPane(headerHtml, bodyHtml);
 
-  const decklistDetails = document.getElementById('decklist-details');
-  const primerDetails = document.getElementById('primer-details');
-  const matchupDetails = document.getElementById('matchup-details');
-  const decklistBody = document.getElementById('decklist-body');
+  const decklistDetails = ui.battleboxPane.querySelector('#decklist-details');
+  const primerDetails = ui.battleboxPane.querySelector('#primer-details');
+  const matchupDetails = ui.battleboxPane.querySelector('#matchup-details');
+  const decklistBody = ui.battleboxPane.querySelector('#decklist-body');
 
   const computeCollapsedMask = () => {
     let mask = 0;
@@ -591,10 +681,10 @@ async function renderDeck(bbSlug, deckSlug, selectedGuide, sortMode, sortDirecti
   };
 
   if (guideKeys.length) {
-    const select = document.getElementById('guide-select');
-    const guideBox = document.getElementById('guide-box');
-    const opponentLink = document.getElementById('guide-opponent-link');
-    const applyButton = document.getElementById('apply-sideboard-button');
+    const select = ui.battleboxPane.querySelector('#guide-select');
+    const guideBox = ui.battleboxPane.querySelector('#guide-box');
+    const opponentLink = ui.battleboxPane.querySelector('#guide-opponent-link');
+    const applyButton = ui.battleboxPane.querySelector('#apply-sideboard-button');
     const updateOpponentLink = (key) => {
       if (!opponentLink) return;
       const opponent = bb.decks.find(d => d.slug === key);
@@ -669,11 +759,11 @@ async function renderDeck(bbSlug, deckSlug, selectedGuide, sortMode, sortDirecti
 }
 
 function renderNotFound() {
-  app.innerHTML = `
+  const bodyHtml = `
     <a href="#/" class="back">← Home</a>
     <h1>Not Found</h1>
   `;
-  preview.setScrollContainer(app);
+  renderBattleboxPane('', bodyHtml);
 }
 
 async function init() {
@@ -688,8 +778,17 @@ async function init() {
   data.buildId = data.index.build_id || '';
 
   preview.setupCardHover();
-  window.addEventListener('hashchange', route);
+  window.addEventListener('hashchange', async () => {
+    await route();
+    setActiveTab(TAB_BATTLEBOX, false);
+  });
+  window.addEventListener('popstate', async () => {
+    await route();
+    applyActiveTab(readTabFromUrl());
+  });
   await route();
+  applyActiveTab(readTabFromUrl());
+  writeTabToUrl(ui.activeTab, false);
 }
 
 init();

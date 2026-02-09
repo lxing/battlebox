@@ -72,6 +72,36 @@ body {
   padding-bottom: var(--pane-gap);
 }
 
+.view-footer {
+  flex: 0 0 auto;
+  padding-top: var(--pane-gap);
+}
+
+.tabbar {
+  display: flex;
+  gap: var(--pane-gap);
+}
+
+.tabbar-button {
+  flex: 1 1 0;
+  min-height: 2rem;
+}
+
+.tabbar-button.active {
+  background: #4a4a78;
+  border-color: #6969a1;
+}
+
+.tab-pane[hidden] {
+  display: none !important;
+}
+
+.life-tab-placeholder {
+  color: #bbb;
+  font-size: var(--font-size-sm);
+  padding: 0.5rem 0;
+}
+
 .qr-breadcrumb-button {
   margin-left: auto;
   border: 0;
