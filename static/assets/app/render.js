@@ -182,7 +182,7 @@ function renderCardRow(card, bannedSet, highlightClass) {
   const doubleFacedAttr = card.double_faced ? ' data-double-faced="1"' : '';
   const manaCostHtml = renderManaCostSymbols(card.mana_cost);
   const rowClass = highlightClass ? `card-row ${highlightClass}` : 'card-row';
-  return `<div class="${rowClass}"><span class="card-qty">${card.qty}</span><span class="card" data-name="${card.name}" data-printing="${card.printing}"${doubleFacedAttr}>${card.name}${bannedTag}</span>${manaCostHtml}</div>`;
+  return `<div class="${rowClass}"><span class="card-qty">${card.qty}</span><span class="card" data-name="${card.name}" data-printing="${card.printing}"${doubleFacedAttr}><span class="card-hit">${card.name}${bannedTag}</span></span>${manaCostHtml}</div>`;
 }
 
 function compareCardsByManaThenName(a, b) {

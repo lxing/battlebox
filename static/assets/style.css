@@ -578,6 +578,12 @@ input[type="reset"] {
 
 .card-list .card-row > .card {
   font-size: 0.74rem;
+  pointer-events: none;
+}
+
+.card-list .card-row > .card > .card-hit {
+  display: inline-block;
+  pointer-events: auto;
 }
 
 .card:hover {

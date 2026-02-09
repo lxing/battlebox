@@ -36,6 +36,11 @@ const qrUi = {
 
 function getCardTarget(event) {
   if (!event.target || !event.target.closest) return null;
+  const hit = event.target.closest('.card-hit');
+  if (hit) {
+    const parentCard = hit.closest('.card');
+    if (parentCard) return parentCard;
+  }
   return event.target.closest('.card');
 }
 
@@ -442,7 +447,7 @@ async function renderDeck(bbSlug, deckSlug, selectedGuide, sortMode, sortDirecti
           </select>
           <a class="guide-opponent-link action-button" id="guide-opponent-link" href="#">Go to</a>
           <button type="button" class="action-button apply-sideboard-button${currentApplySideboard ? ' active' : ''}" id="apply-sideboard-button">
-            Apply
+            Sideboard
           </button>
         </div>
         <div class="guide-box" id="guide-box"></div>
@@ -574,7 +579,7 @@ async function renderDeck(bbSlug, deckSlug, selectedGuide, sortMode, sortDirecti
     const syncApplyButton = () => {
       if (!applyButton) return;
       applyButton.classList.toggle('active', currentApplySideboard);
-      applyButton.textContent = 'Apply';
+      applyButton.textContent = 'Sideboard';
     };
     const renderGuide = (key) => {
       const guideData = deck.guides[key] || '';
