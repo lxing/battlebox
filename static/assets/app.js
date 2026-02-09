@@ -65,12 +65,13 @@ function hideQrPopup() {
 
 function showQrPopup() {
   if (!qrUi.overlay || !qrUi.canvas) return;
-  const currentUrl = window.location.href;
+  const currentUrl = new URL(window.location.href);
+  currentUrl.searchParams.delete('tab');
   qrUi.canvas.innerHTML = '';
   if (window.QRCode) {
     // eslint-disable-next-line no-new
     new window.QRCode(qrUi.canvas, {
-      text: currentUrl,
+      text: currentUrl.toString(),
       width: 224,
       height: 224,
       colorDark: '#000000',
@@ -143,6 +144,11 @@ function writeTabToUrl(tab, pushState) {
   const nextHash = location.hash || '#/';
   const nextUrl = `${location.pathname}${nextSearch}${nextHash}`;
   history[pushState ? 'pushState' : 'replaceState'](null, '', nextUrl);
+}
+
+function replaceHashPreserveSearch(nextHash) {
+  const nextUrl = `${location.pathname}${location.search}${nextHash}`;
+  history.replaceState(null, '', nextUrl);
 }
 
 function applyActiveTab(tab) {
@@ -395,7 +401,7 @@ function renderBattlebox(bbSlug, initialSortMode, initialSortDirection) {
   const updateBattleboxHash = () => {
     const nextHash = buildBattleboxHash(bb.slug, sortMode, sortDirection);
     if (location.hash !== nextHash) {
-      history.replaceState(null, '', nextHash);
+      replaceHashPreserveSearch(nextHash);
     }
   };
 
@@ -643,7 +649,7 @@ async function renderDeck(bbSlug, deckSlug, selectedGuide, sortMode, sortDirecti
       currentApplySideboard
     );
     if (location.hash !== nextHash) {
-      history.replaceState(null, '', nextHash);
+      replaceHashPreserveSearch(nextHash);
     }
   };
 
