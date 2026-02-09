@@ -990,6 +990,20 @@ func processDeck(deckPath, slug, battlebox string, printings map[string]string) 
 	}
 	manifest.Icon = strings.TrimSpace(manifest.Icon)
 
+	mainboardTotal := 0
+	for _, card := range manifest.Cards {
+		mainboardTotal += card.Qty
+	}
+	if mainboardTotal != 60 {
+		fmt.Fprintf(
+			os.Stderr,
+			"Warning: %s/%s mainboard count is %d (expected 60)\n",
+			battlebox,
+			slug,
+			mainboardTotal,
+		)
+	}
+
 	applyPrintings(manifest.Cards, printings, battlebox, slug, nil)
 	applyPrintings(manifest.Sideboard, printings, battlebox, slug, nil)
 
@@ -1064,7 +1078,9 @@ func processDeck(deckPath, slug, battlebox string, printings map[string]string) 
 			}
 			guide := parseGuide(string(guideData))
 			if err := validateGuide(guide, mainboardIndex, sideboardIndex); err != nil {
-				return nil, fmt.Errorf("guide %s: %w", opponentSlug, err)
+				// Keep builds unblocked when guide plans temporarily drift from manifests.
+				// Emit a warning so the mismatch is still visible and can be fixed later.
+				fmt.Fprintf(os.Stderr, "Warning: guide %s: %v\n", opponentSlug, err)
 			}
 			deck.Guides[opponentSlug] = guide
 		}

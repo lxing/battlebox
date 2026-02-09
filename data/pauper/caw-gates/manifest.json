@@ -26,16 +26,8 @@
       "qty": 4
     },
     {
-      "name": "Dawnbringer Cleric",
-      "qty": 2
-    },
-    {
       "name": "Glacial Floodplain",
       "qty": 1
-    },
-    {
-      "name": "Guardian of the Guildpact",
-      "qty": 2
     },
     {
       "name": "Heap Gate",
@@ -52,6 +44,10 @@
     {
       "name": "Lórien Revealed",
       "qty": 3
+    },
+    {
+      "name": "Outlaw Medic",
+      "qty": 4
     },
     {
       "name": "Preordain",

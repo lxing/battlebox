@@ -26,10 +26,6 @@
       "qty": 3
     },
     {
-      "name": "Deadly Dispute",
-      "qty": 4
-    },
-    {
       "name": "Defile",
       "qty": 3
     },
@@ -55,7 +51,7 @@
     },
     {
       "name": "Ichor Wellspring",
-      "qty": 2
+      "qty": 3
     },
     {
       "name": "Khalni Garden",
@@ -63,7 +59,7 @@
     },
     {
       "name": "Lembas",
-      "qty": 4
+      "qty": 2
     },
     {
       "name": "Mountain",
@@ -72,6 +68,10 @@
     {
       "name": "Nihil Spellbomb",
       "qty": 1
+    },
+    {
+      "name": "Reckoner's Bargain",
+      "qty": 3
     },
     {
       "name": "Snuff Out",
@@ -91,7 +91,7 @@
     },
     {
       "name": "Tithing Blade / Consuming Sepulcher",
-      "qty": 2
+      "qty": 3
     },
     {
       "name": "Troll of Khazad-dûm",
