@@ -628,7 +628,7 @@ details.collapsible[open] summary::after {
 
 .guide-select {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-columns: minmax(0, 2fr) minmax(0, 1fr) minmax(0, 1fr);
   align-items: stretch;
   gap: 0.5rem;
   margin-bottom: 0.5rem;
@@ -637,7 +637,6 @@ details.collapsible[open] summary::after {
 }
 
 .apply-sideboard-button {
-  grid-column: 1 / 2;
   width: 100%;
   padding: 0 0.8rem;
 }
@@ -650,6 +649,16 @@ details.collapsible[open] summary::after {
 .guide-opponent-link {
   width: 100%;
   padding: 0 0.8rem;
+}
+
+.guide-opponent-link:hover,
+.guide-opponent-link:active,
+.guide-opponent-link:focus,
+.guide-opponent-link:focus-visible {
+  background: #2e2e50;
+  border-color: #343456;
+  color: #fff;
+  outline: none;
 }
 
 .guide-opponent-link,
