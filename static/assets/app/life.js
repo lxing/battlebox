@@ -110,6 +110,10 @@ export function createLifeCounter(container, startingLife = 20) {
       if (!marker) return;
       marker.hidden = state.monarch !== player;
     });
+    Object.entries(players).forEach(([player, panel]) => {
+      if (!panel) return;
+      panel.classList.toggle('life-player-has-monarch', state.monarch === player);
+    });
   };
 
   const applyDelta = (player, delta) => {
