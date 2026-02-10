@@ -711,20 +711,14 @@ input[type="reset"] {
 
 .card-row.sb-added .card,
 .card-row.sb-added .card-qty {
+  --card-ref-color: #63a96a;
   color: #63a96a;
-}
-
-.card-row.sb-added .card:hover {
-  color: #7fd58a;
 }
 
 .card-row.sb-removed .card,
 .card-row.sb-removed .card-qty {
+  --card-ref-color: #cf7a7a;
   color: #cf7a7a;
-}
-
-.card-row.sb-removed .card:hover {
-  color: #e79a9a;
 }
 
 .card-group {
@@ -806,13 +800,19 @@ input[type="reset"] {
   pointer-events: auto;
 }
 
-.card:hover {
-  color: #fff;
+.card-ref {
+  color: var(--card-ref-color, #7eb8ff);
+  text-decoration: none;
+  -webkit-tap-highlight-color: transparent;
 }
 
-.guide-box .card,
-.primer .card {
+.card-ref:hover,
+.card-ref:active,
+.card-ref:focus,
+.card-ref:focus-visible {
+  color: var(--card-ref-color, #7eb8ff);
   text-decoration: none;
+  outline: none;
 }
 
 /* Card hover preview */
