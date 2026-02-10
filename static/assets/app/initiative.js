@@ -226,7 +226,7 @@ export function createInitiativeOverlay(container, state, persist) {
       const room = Number.parseInt(slot.dataset.roomPlayerLeft || '', 10);
       const hasToken = room === p1Room;
       slot.textContent = hasToken ? '🐿️' : '';
-      slot.draggable = hasToken;
+      slot.draggable = false;
       slot.classList.toggle('initiative-player-token', hasToken);
       slot.classList.toggle('initiative-player-selected', hasToken && draggedPlayer === 'p1');
     });
@@ -235,7 +235,7 @@ export function createInitiativeOverlay(container, state, persist) {
       const room = Number.parseInt(slot.dataset.roomPlayerRight || '', 10);
       const hasToken = room === p2Room;
       slot.textContent = hasToken ? '🐭' : '';
-      slot.draggable = hasToken;
+      slot.draggable = false;
       slot.classList.toggle('initiative-player-token', hasToken);
       slot.classList.toggle('initiative-player-selected', hasToken && draggedPlayer === 'p2');
     });
@@ -266,82 +266,38 @@ export function createInitiativeOverlay(container, state, persist) {
     const backdrop = overlay.querySelector('[data-initiative-overlay-backdrop]');
     if (backdrop) backdrop.addEventListener('click', hide);
 
-    const readPlayerRoom = (slot, player) => {
-      if (player === 'p2') {
-        return Number.parseInt(slot.dataset.roomPlayerRight || '', 10);
-      }
-      return Number.parseInt(slot.dataset.roomPlayerLeft || '', 10);
-    };
-
-    const hasTokenAtSlot = (slot, player) => {
-      const room = readPlayerRoom(slot, player);
+    const tryMoveSelectedPlayer = (room) => {
+      if (!draggedPlayer || room == null) return false;
       const initiative = getInitiativeState();
-      return getPlayerRoom(initiative, player) === room;
+      if (!canMoveToRoom(initiative, draggedPlayer, room)) return false;
+      const result = applyInitiativeMove(initiative, draggedPlayer, room);
+      if (!result.changed) return false;
+      state.initiative = result.state;
+      writeState();
+      return true;
     };
 
     overlay.querySelectorAll('[data-initiative-player]').forEach((slot) => {
-      slot.addEventListener('dragstart', (event) => {
-        const player = slot.dataset.initiativePlayer === 'p2' ? 'p2' : 'p1';
-        if (!hasTokenAtSlot(slot, player)) {
-          event.preventDefault();
-          return;
-        }
-        draggedPlayer = player;
-        if (event.dataTransfer) {
-          event.dataTransfer.effectAllowed = 'move';
-          event.dataTransfer.setData('text/plain', player);
-        }
-        sync();
-      });
-
-      slot.addEventListener('dragend', () => {
-        draggedPlayer = null;
-        sync();
-      });
-
-      // Tap fallback for mobile Safari where native HTML drag can be unreliable.
       slot.addEventListener('click', (event) => {
         const player = slot.dataset.initiativePlayer === 'p2' ? 'p2' : 'p1';
-        if (!hasTokenAtSlot(slot, player)) return;
+        const hasToken = slot.textContent && slot.textContent.trim().length > 0;
+        if (!hasToken) return;
         event.preventDefault();
+        event.stopPropagation();
         draggedPlayer = draggedPlayer === player ? null : player;
         sync();
       });
     });
 
     overlay.querySelectorAll('.initiative-room-item').forEach((item) => {
-      item.addEventListener('dragover', (event) => {
-        const room = Number.parseInt(item.dataset.room || '', 10);
-        if (!draggedPlayer) return;
-        const initiative = getInitiativeState();
-        if (!canMoveToRoom(initiative, draggedPlayer, room)) return;
-        event.preventDefault();
-        if (event.dataTransfer) event.dataTransfer.dropEffect = 'move';
-      });
-
-      item.addEventListener('drop', (event) => {
-        const room = Number.parseInt(item.dataset.room || '', 10);
-        if (!draggedPlayer) return;
-        const initiative = getInitiativeState();
-        if (!canMoveToRoom(initiative, draggedPlayer, room)) return;
-        event.preventDefault();
-        const result = applyInitiativeMove(initiative, draggedPlayer, room);
-        if (!result.changed) return;
-        state.initiative = result.state;
-        writeState();
-        sync();
-      });
-
       item.addEventListener('click', (event) => {
         const room = Number.parseInt(item.dataset.room || '', 10);
         if (!draggedPlayer) return;
-        const initiative = getInitiativeState();
-        if (!canMoveToRoom(initiative, draggedPlayer, room)) return;
+        if (!canMoveToRoom(getInitiativeState(), draggedPlayer, room)) return;
         event.preventDefault();
-        const result = applyInitiativeMove(initiative, draggedPlayer, room);
-        if (!result.changed) return;
-        state.initiative = result.state;
-        writeState();
+        event.stopPropagation();
+        if (!tryMoveSelectedPlayer(room)) return;
+        draggedPlayer = null;
         sync();
       });
     });

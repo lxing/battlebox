@@ -465,7 +465,7 @@ body {
 }
 
 .initiative-player-token {
-  cursor: grab;
+  cursor: pointer;
 }
 
 .initiative-player-selected {
