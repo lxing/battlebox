@@ -13,6 +13,13 @@
   --color-button-bg: #2e2e50;
   --color-button-border: #343456;
   --color-control-bg: #171726;
+  --color-matrix-cell-default: #32324e;
+  --color-matrix-band-0: #903737;
+  --color-matrix-band-1: #a1723d;
+  --color-matrix-band-2: #9b8a3a;
+  --color-matrix-band-3: #5b8e53;
+  --color-matrix-band-4: #376b48;
+  --color-matrix-band-5: #4863a1;
 }
 
 body {
@@ -169,9 +176,34 @@ body {
 }
 
 .matrix-cell {
-  color: #e8e8f1;
+  color: #101010;
   white-space: normal;
   line-height: 1.05;
+  background: var(--color-matrix-cell-default);
+}
+
+.matrix-cell-band-0 {
+  background: var(--color-matrix-band-0);
+}
+
+.matrix-cell-band-1 {
+  background: var(--color-matrix-band-1);
+}
+
+.matrix-cell-band-2 {
+  background: var(--color-matrix-band-2);
+}
+
+.matrix-cell-band-3 {
+  background: var(--color-matrix-band-3);
+}
+
+.matrix-cell-band-4 {
+  background: var(--color-matrix-band-4);
+}
+
+.matrix-cell-band-5 {
+  background: var(--color-matrix-band-5);
 }
 
 .matrix-cell-main {
@@ -180,7 +212,7 @@ body {
 
 .matrix-cell-record {
   margin-top: 0.12rem;
-  color: #b7b7cf;
+  color: #181818;
   font-size: 0.65rem;
 }
 

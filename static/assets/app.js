@@ -150,6 +150,17 @@ function setActiveTab(tab) {
   applyActiveTab(nextTab);
 }
 
+function setMatrixTabEnabled(enabled) {
+  if (!ui.footer) return;
+  const matrixButton = ui.footer.querySelector('.tabbar-button[data-tab="matrix"]');
+  if (!matrixButton) return;
+  matrixButton.disabled = !enabled;
+  matrixButton.setAttribute('aria-disabled', enabled ? 'false' : 'true');
+  if (!enabled && ui.activeTab === TAB_MATRIX) {
+    setActiveTab(TAB_BATTLEBOX);
+  }
+}
+
 function ensureShell() {
   if (ui.shell) return;
   const shell = document.createElement('div');
@@ -291,6 +302,15 @@ function fitMatrixHeaderHeight(scope) {
   scope.style.setProperty('--matrix-header-height', `${headHeight}px`);
 }
 
+function getWinrateBand(percent) {
+  if (percent <= 30) return 0;
+  if (percent <= 40) return 1;
+  if (percent <= 50) return 2;
+  if (percent <= 60) return 3;
+  if (percent <= 70) return 4;
+  return 5;
+}
+
 async function renderMatrixPane(bbSlug) {
   if (!ui.matrixPane || !data.index) return;
 
@@ -325,9 +345,10 @@ async function renderMatrixPane(bbSlug) {
       const matches = Number.isFinite(result.matches) ? result.matches : 0;
       const won = Math.max(0, Math.min(matches, Math.round(matches * result.wr)));
       const percent = Math.round(result.wr * 100);
+      const band = getWinrateBand(percent);
       const title = `${percent}% WR (${won}/${matches})`;
       return `
-        <td class="matrix-cell" title="${title}">
+        <td class="matrix-cell matrix-cell-band-${band}" title="${title}">
           <div class="matrix-cell-main">${percent}%</div>
           <div class="matrix-cell-record">${won}/${matches}</div>
         </td>
@@ -372,6 +393,8 @@ async function route() {
     applySideboard,
   } = parseHashRoute(location.hash.slice(1) || '/');
   const currentBattleboxSlug = parts.length > 0 ? normalizeName(parts[0]) : '';
+  const hasBattleboxContext = parts.length > 0;
+  setMatrixTabEnabled(hasBattleboxContext);
 
   if (parts.length === 0) {
     renderHome();
