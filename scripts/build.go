@@ -7,6 +7,7 @@ import (
 	"compress/gzip"
 	"crypto/sha256"
 	"encoding/json"
+	"errors"
 	"flag"
 	"fmt"
 	"io/fs"
@@ -264,6 +265,7 @@ const cardCacheVersion = 6
 const printingsFileName = "printings.json"
 const stampFile = "tmp/build-stamps.json"
 const buildFingerprintVersion = "v1"
+
 var cardTypeOverrideByPrinting = map[string]string{
 	// The Modern Age front face is an enchantment saga; force non-creature coarse bucket.
 	"neo/66": "enchantment",
@@ -320,7 +322,10 @@ func main() {
 	for _, slug := range battleboxSlugs {
 		prevHash := stamp.Battleboxes[slug]
 		outPath := filepath.Join(outputDir, slug+".json")
-		if *fullBuild || stamp.GlobalHash != globalHash || prevHash != battleboxHashes[slug] || !fileExists(outPath) {
+		matrixSourcePath := filepath.Join(dataDir, slug, "mtgdecks-winrate-matrix.json")
+		matrixOutputPath := filepath.Join(outputDir, slug, "mtgdecks-winrate-matrix.json")
+		matrixOutputDrifted := fileExists(matrixSourcePath) != fileExists(matrixOutputPath)
+		if *fullBuild || stamp.GlobalHash != globalHash || prevHash != battleboxHashes[slug] || !fileExists(outPath) || matrixOutputDrifted {
 			dirtySlugs = append(dirtySlugs, slug)
 		}
 	}
@@ -459,6 +464,11 @@ func main() {
 			os.Exit(1)
 		}
 		fmt.Printf("Written: %s (%d bytes), %s.gz (%d bytes)\n", bbPath, len(jsonData), bbPath, gzipSize)
+
+		if err := writeBattleboxMatrix(dataDir, outputDir, battlebox.Slug); err != nil {
+			fmt.Fprintf(os.Stderr, "Error writing matrix output for %s: %v\n", battlebox.Slug, err)
+			os.Exit(1)
+		}
 	}
 
 	// Index always reflects current source manifests; rewrite when data changed
@@ -717,6 +727,53 @@ func writeJSONAndGzip(outPath string, data []byte) (int, error) {
 		return 0, err
 	}
 	return gz.Len(), nil
+}
+
+func removeJSONAndGzip(path string) error {
+	if err := os.Remove(path); err != nil && !errors.Is(err, os.ErrNotExist) {
+		return err
+	}
+	if err := os.Remove(path + ".gz"); err != nil && !errors.Is(err, os.ErrNotExist) {
+		return err
+	}
+	return nil
+}
+
+func writeBattleboxMatrix(dataDir, outputDir, slug string) error {
+	srcPath := filepath.Join(dataDir, slug, "mtgdecks-winrate-matrix.json")
+	outPath := filepath.Join(outputDir, slug, "mtgdecks-winrate-matrix.json")
+
+	if !fileExists(srcPath) {
+		if err := removeJSONAndGzip(outPath); err != nil {
+			return fmt.Errorf("removing stale matrix %s: %w", outPath, err)
+		}
+		return nil
+	}
+
+	srcData, err := os.ReadFile(srcPath)
+	if err != nil {
+		return fmt.Errorf("reading source matrix %s: %w", srcPath, err)
+	}
+
+	var payload map[string]any
+	if err := json.Unmarshal(srcData, &payload); err != nil {
+		return fmt.Errorf("parsing source matrix %s: %w", srcPath, err)
+	}
+	jsonData, err := json.Marshal(payload)
+	if err != nil {
+		return fmt.Errorf("marshaling matrix %s: %w", srcPath, err)
+	}
+
+	if err := os.MkdirAll(filepath.Dir(outPath), 0755); err != nil {
+		return fmt.Errorf("creating matrix output directory: %w", err)
+	}
+
+	gzipSize, err := writeJSONAndGzip(outPath, jsonData)
+	if err != nil {
+		return fmt.Errorf("writing matrix output %s: %w", outPath, err)
+	}
+	fmt.Printf("Written: %s (%d bytes), %s.gz (%d bytes)\n", outPath, len(jsonData), outPath, gzipSize)
+	return nil
 }
 
 func loadCardCache() {

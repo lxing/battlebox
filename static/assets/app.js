@@ -29,7 +29,7 @@ import { createCardPreview } from './app/preview.js';
 import { createLifeCounter } from './app/life.js';
 
 const app = document.getElementById('app');
-let data = { index: null, battleboxes: {}, buildId: '' };
+let data = { index: null, battleboxes: {}, matrices: {}, buildId: '' };
 const TAB_BATTLEBOX = 'battlebox';
 const TAB_LIFE = 'life';
 const TAB_MATRIX = 'matrix';
@@ -250,6 +250,85 @@ async function loadBattlebox(bbSlug) {
   return bb;
 }
 
+async function loadWinrateMatrix(bbSlug) {
+  if (!bbSlug) return null;
+  if (Object.prototype.hasOwnProperty.call(data.matrices, bbSlug)) {
+    return data.matrices[bbSlug];
+  }
+  const matrix = await fetchJsonData(withCacheBust(`/data/${bbSlug}/mtgdecks-winrate-matrix.json`));
+  data.matrices[bbSlug] = matrix || null;
+  return data.matrices[bbSlug];
+}
+
+async function renderMatrixPane(bbSlug) {
+  if (!ui.matrixPane || !data.index) return;
+
+  const battlebox = data.index.battleboxes.find((b) => b.slug === bbSlug);
+  if (!battlebox) {
+    ui.matrixPane.innerHTML = '<div class="matrix-empty">Open a battlebox to view its winrate matrix.</div>';
+    return;
+  }
+
+  const matrix = await loadWinrateMatrix(battlebox.slug);
+  if (!matrix || !matrix.matchups) {
+    ui.matrixPane.innerHTML = `<div class="matrix-empty">No winrate matrix found for ${battlebox.name || capitalize(battlebox.slug)}.</div>`;
+    return;
+  }
+
+  const orderedDecks = [...battlebox.decks].sort((a, b) => {
+    const nameA = normalizeName(a.name || a.slug);
+    const nameB = normalizeName(b.name || b.slug);
+    return nameA.localeCompare(nameB);
+  });
+
+  const colHeadHtml = orderedDecks.map((deck) => (
+    `<th scope="col" class="matrix-col-head"><span class="matrix-col-head-text">${deck.name}</span></th>`
+  )).join('');
+
+  const rowHtml = orderedDecks.map((rowDeck) => {
+    const cellHtml = orderedDecks.map((colDeck) => {
+      const result = matrix.matchups?.[rowDeck.slug]?.[colDeck.slug];
+      if (!result || !Number.isFinite(result.wr)) {
+        return '<td class="matrix-cell matrix-cell-empty">-</td>';
+      }
+      const matches = Number.isFinite(result.matches) ? result.matches : 0;
+      const won = Math.max(0, Math.min(matches, Math.round(matches * result.wr)));
+      const percent = Math.round(result.wr * 100);
+      const title = `${percent}% WR (${won}/${matches})`;
+      return `
+        <td class="matrix-cell" title="${title}">
+          <div class="matrix-cell-main">${percent}%</div>
+          <div class="matrix-cell-record">${won}/${matches}</div>
+        </td>
+      `;
+    }).join('');
+    return `
+      <tr>
+        <th scope="row" class="matrix-row-head">${rowDeck.name}</th>
+        ${cellHtml}
+      </tr>
+    `;
+  }).join('');
+
+  ui.matrixPane.innerHTML = `
+    <div class="matrix-panel">
+      <div class="matrix-scroll">
+        <table class="winrate-matrix">
+          <thead>
+            <tr>
+              <th class="matrix-corner"></th>
+              ${colHeadHtml}
+            </tr>
+          </thead>
+          <tbody>
+            ${rowHtml}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  `;
+}
+
 async function route() {
   preview.hidePreview();
   const {
@@ -260,6 +339,7 @@ async function route() {
     collapsedMask,
     applySideboard,
   } = parseHashRoute(location.hash.slice(1) || '/');
+  const currentBattleboxSlug = parts.length > 0 ? normalizeName(parts[0]) : '';
 
   if (parts.length === 0) {
     renderHome();
@@ -278,6 +358,8 @@ async function route() {
   } else {
     renderNotFound();
   }
+
+  await renderMatrixPane(currentBattleboxSlug);
 
   if (ui.battleboxPane) {
     ui.battleboxPane.scrollTo({ top: 0, left: 0, behavior: 'auto' });
