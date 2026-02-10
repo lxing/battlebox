@@ -12,15 +12,6 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Dict
 
-try:
-    import cloudscraper
-    from bs4 import BeautifulSoup
-except ImportError as exc:  # pragma: no cover - dependency guard
-    raise SystemExit(
-        "Missing dependencies. Install with:\n"
-        "  python3 -m pip install cloudscraper beautifulsoup4 lxml"
-    ) from exc
-
 
 CELL_RE = re.compile(
     r"(?P<ci_low>\d+(?:\.\d+)?)%\s*-\s*(?P<ci_high>\d+(?:\.\d+)?)%\s*"
@@ -57,6 +48,11 @@ def parse_args() -> argparse.Namespace:
         action="store_true",
         help="Parse and validate but do not write output files.",
     )
+    parser.add_argument(
+        "--prune-existing",
+        action="store_true",
+        help="Prune mirror matchup cells from existing output files without fetching.",
+    )
     return parser.parse_args()
 
 
@@ -69,6 +65,23 @@ def find_repo_root(start: Path) -> Path:
 
 def clean_text(value: str) -> str:
     return value.replace("\xa0", " ").strip()
+
+
+def fetch_winrate_html(source: str) -> str:
+    try:
+        import cloudscraper
+    except ImportError as exc:  # pragma: no cover - dependency guard
+        raise SystemExit(
+            "Missing dependencies. Install with:\n"
+            "  python3 -m pip install cloudscraper beautifulsoup4 lxml"
+        ) from exc
+
+    scraper = cloudscraper.create_scraper(
+        browser={"browser": "chrome", "platform": "darwin", "desktop": True}
+    )
+    response = scraper.get(source, timeout=45)
+    response.raise_for_status()
+    return response.text
 
 
 def parse_cell(text: str) -> Dict[str, float | int] | None:
@@ -144,6 +157,18 @@ def infer_missing_reverse_matchups(
             row[to_slug] = inferred
 
 
+def prune_mirror_matchups(
+    matchups: Dict[str, Dict[str, Dict[str, float | int]]],
+) -> Dict[str, Dict[str, Dict[str, float | int]]]:
+    """Drop mirror matchup cells (`A -> A`) from all rows."""
+    cleaned: Dict[str, Dict[str, Dict[str, float | int]]] = {}
+    for from_slug, row in matchups.items():
+        next_row = {to_slug: cell for to_slug, cell in row.items() if to_slug != from_slug}
+        if next_row:
+            cleaned[from_slug] = next_row
+    return cleaned
+
+
 def compute_totals(
     matchups: Dict[str, Dict[str, Dict[str, float | int]]],
     slugs: list[str],
@@ -176,19 +201,21 @@ def compute_totals(
 
 
 def build_matrix(config: FormatConfig, fetched_at: str) -> Dict[str, object]:
+    try:
+        from bs4 import BeautifulSoup
+    except ImportError as exc:  # pragma: no cover - dependency guard
+        raise SystemExit(
+            "Missing dependencies. Install with:\n"
+            "  python3 -m pip install cloudscraper beautifulsoup4 lxml"
+        ) from exc
+
     alias_doc = json.loads(config.alias_path.read_text())
     source = alias_doc["source"]
     name_to_slug = alias_doc["name_to_slug"]
 
     enforce_one_to_one(name_to_slug, config.name)
 
-    scraper = cloudscraper.create_scraper(
-        browser={"browser": "chrome", "platform": "darwin", "desktop": True}
-    )
-    response = scraper.get(source, timeout=45)
-    response.raise_for_status()
-
-    soup = BeautifulSoup(response.text, "lxml")
+    soup = BeautifulSoup(fetch_winrate_html(source), "lxml")
     table = soup.find("table")
     if table is None:
         raise SystemExit(f"No matchup table found for {config.name} at {source}")
@@ -217,6 +244,8 @@ def build_matrix(config: FormatConfig, fetched_at: str) -> Dict[str, object]:
             to_slug = name_to_slug.get(opp_name)
             if not to_slug:
                 continue
+            if to_slug == from_slug:
+                continue
             parsed = parse_cell(cells[idx].get_text(" ", strip=True))
             if parsed is None:
                 continue
@@ -227,6 +256,7 @@ def build_matrix(config: FormatConfig, fetched_at: str) -> Dict[str, object]:
 
     slugs = sorted(set(name_to_slug.values()))
     infer_missing_reverse_matchups(matchups, slugs)
+    matchups = prune_mirror_matchups(matchups)
     # Keep only non-empty rows after inference pass.
     matchups = {slug: row for slug, row in matchups.items() if row}
     totals = compute_totals(matchups, slugs)
@@ -240,6 +270,41 @@ def build_matrix(config: FormatConfig, fetched_at: str) -> Dict[str, object]:
     }
 
 
+def prune_existing_matrix(config: FormatConfig, dry_run: bool) -> tuple[int, int]:
+    alias_doc = json.loads(config.alias_path.read_text())
+    name_to_slug = alias_doc["name_to_slug"]
+    slugs = sorted(set(name_to_slug.values()))
+
+    if not config.output_path.exists():
+        raise SystemExit(f"Output matrix missing for {config.name}: {config.output_path}")
+
+    payload = json.loads(config.output_path.read_text())
+    raw_matchups = payload.get("matchups", {})
+    if not isinstance(raw_matchups, dict):
+        raise SystemExit(f"Invalid matchups payload in {config.output_path}")
+
+    matchups: Dict[str, Dict[str, Dict[str, float | int]]] = {}
+    for from_slug, row in raw_matchups.items():
+        if not isinstance(row, dict):
+            continue
+        matchups[from_slug] = {
+            to_slug: cell
+            for to_slug, cell in row.items()
+            if isinstance(cell, dict)
+        }
+
+    matchups = prune_mirror_matchups(matchups)
+    payload["matchups"] = matchups
+    payload["totals"] = compute_totals(matchups, slugs)
+
+    if not dry_run:
+        config.output_path.write_text(json.dumps(payload, indent=2, sort_keys=True) + "\n")
+
+    rows = len(matchups)
+    cells = sum(len(v) for v in matchups.values())
+    return rows, cells
+
+
 def main() -> int:
     args = parse_args()
     repo_root = args.repo_root or find_repo_root(Path(__file__).resolve())
@@ -251,6 +316,11 @@ def main() -> int:
 
     for fmt in formats:
         config = load_format_config(repo_root, fmt)
+        if args.prune_existing:
+            rows, cells = prune_existing_matrix(config, args.dry_run)
+            print(f"{fmt}: pruned mirrors rows={rows} cells={cells} output={config.output_path}")
+            continue
+
         payload = build_matrix(config, fetched_at)
         rows = len(payload["matchups"])
         cells = sum(len(v) for v in payload["matchups"].values())

@@ -17,14 +17,17 @@ description: Fetch and normalize MTGDecks winrate data into a slug-only matchup 
 4. Parse pairwise matchup rows from MTGDecks table content.
 5. Convert MTGDecks names to local slugs using `name_to_slug`.
 6. Drop any matchup entry where either side is missing from alias map.
-7. Fill missing directed cells by inverting the reverse cell when available (`A->B = 1 - (B->A)`), preserving `matches` from the reverse edge.
-8. Emit slug-only matrix JSON in canonical output format.
-9. Optionally run the local generator script as fallback when needed:
+7. Drop all mirror cells (`slug -> same slug`).
+8. Fill missing directed cells by inverting the reverse cell when available (`A->B = 1 - (B->A)`), preserving `matches` from the reverse edge.
+9. Emit slug-only matrix JSON in canonical output format.
+10. Optionally run the local generator script as fallback when needed:
 - `python3 .codex/skills/mtgdecks-winrate-matrix/scripts/generate.py pauper`
 - `python3 .codex/skills/mtgdecks-winrate-matrix/scripts/generate.py premodern`
 - Or both in one call:
 - `python3 .codex/skills/mtgdecks-winrate-matrix/scripts/generate.py`
-10. Verify generated outputs:
+11. To prune mirror cells from existing matrix files without refetching:
+- `python3 .codex/skills/mtgdecks-winrate-matrix/scripts/generate.py --prune-existing pauper premodern`
+12. Verify generated outputs:
 - `data/pauper/mtgdecks-winrate-matrix.json`
 - `data/premodern/mtgdecks-winrate-matrix.json`
 
@@ -32,6 +35,7 @@ description: Fetch and normalize MTGDecks winrate data into a slug-only matchup 
 - Keep mapping strict one-to-one as defined in the alias file.
 - Never emit MTGDecks display names in output matrix keys.
 - Use only local slugs as row/column keys.
+- Never emit mirror cells (`A -> A`).
 - Drop unmapped archetypes instead of inventing slugs.
 - If alias map has duplicate slug targets where one-to-one is expected, treat as config error and stop.
 - When one direction is missing but reverse exists, infer via inversion (`wr = 1 - reverse.wr`).

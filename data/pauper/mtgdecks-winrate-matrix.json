@@ -3,12 +3,6 @@
   "format": "pauper",
   "matchups": {
     "affinity": {
-      "affinity": {
-        "ci_high": 0.6,
-        "ci_low": 0.4,
-        "matches": 106,
-        "wr": 0.5
-      },
       "bogles": {
         "ci_high": 0.69,
         "ci_low": 0.31,
@@ -93,12 +87,6 @@
         "ci_high": 0.69,
         "ci_low": 0.31,
         "matches": 28,
-        "wr": 0.5
-      },
-      "bogles": {
-        "ci_high": 0.75,
-        "ci_low": 0.25,
-        "matches": 16,
         "wr": 0.5
       },
       "caw-gates": {
@@ -187,12 +175,6 @@
         "matches": 29,
         "wr": 0.83
       },
-      "caw-gates": {
-        "ci_high": 0.68,
-        "ci_low": 0.32,
-        "matches": 34,
-        "wr": 0.5
-      },
       "delver": {
         "ci_high": 0.75,
         "ci_low": 0.56,
@@ -278,12 +260,6 @@
         "ci_low": 0.25,
         "matches": 97,
         "wr": 0.34
-      },
-      "delver": {
-        "ci_high": 0.55,
-        "ci_low": 0.45,
-        "matches": 360,
-        "wr": 0.5
       },
       "elves": {
         "ci_high": 0.35,
@@ -371,12 +347,6 @@
         "matches": 174,
         "wr": 0.72
       },
-      "elves": {
-        "ci_high": 0.6,
-        "ci_low": 0.4,
-        "matches": 112,
-        "wr": 0.5
-      },
       "ephemerate": {
         "ci_high": 0.7,
         "ci_low": 0.2,
@@ -462,12 +432,6 @@
         "ci_low": 0.3,
         "matches": 16,
         "wr": 0.56
-      },
-      "ephemerate": {
-        "ci_high": 0.99,
-        "ci_low": 0.01,
-        "matches": 2,
-        "wr": 0.5
       },
       "gardens": {
         "ci_high": 1.0,
@@ -555,12 +519,6 @@
         "matches": 10,
         "wr": 0.1
       },
-      "gardens": {
-        "ci_high": 0.71,
-        "ci_low": 0.29,
-        "matches": 24,
-        "wr": 0.5
-      },
       "glintblade": {
         "ci_high": 0.85,
         "ci_low": 0.35,
@@ -646,12 +604,6 @@
         "ci_low": 0.15,
         "matches": 16,
         "wr": 0.38
-      },
-      "glintblade": {
-        "ci_high": 0.81,
-        "ci_low": 0.19,
-        "matches": 10,
-        "wr": 0.5
       },
       "madness-burn": {
         "ci_high": 0.64,
@@ -739,12 +691,6 @@
         "matches": 33,
         "wr": 0.55
       },
-      "madness-burn": {
-        "ci_high": 0.57,
-        "ci_low": 0.43,
-        "matches": 184,
-        "wr": 0.5
-      },
       "ramp": {
         "ci_high": 0.54,
         "ci_low": 0.33,
@@ -830,12 +776,6 @@
         "ci_low": 0.46,
         "matches": 91,
         "wr": 0.57
-      },
-      "ramp": {
-        "ci_high": 0.61,
-        "ci_low": 0.39,
-        "matches": 84,
-        "wr": 0.5
       },
       "skred": {
         "ci_high": 0.78,
@@ -923,12 +863,6 @@
         "matches": 24,
         "wr": 0.42
       },
-      "skred": {
-        "ci_high": 0.88,
-        "ci_low": 0.12,
-        "matches": 6,
-        "wr": 0.5
-      },
       "synthesizer": {
         "ci_high": 0.72,
         "ci_low": 0.28,
@@ -1013,12 +947,6 @@
         "ci_high": 0.72,
         "ci_low": 0.28,
         "matches": 22,
-        "wr": 0.5
-      },
-      "synthesizer": {
-        "ci_high": 0.58,
-        "ci_low": 0.42,
-        "matches": 142,
         "wr": 0.5
       },
       "turbo-fog": {
@@ -1192,12 +1120,6 @@
         "ci_low": 0.0,
         "matches": 5,
         "wr": 0.0
-      },
-      "white-weenie": {
-        "ci_high": 0.65,
-        "ci_low": 0.35,
-        "matches": 46,
-        "wr": 0.5
       }
     }
   },
