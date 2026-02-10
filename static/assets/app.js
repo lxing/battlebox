@@ -260,6 +260,37 @@ async function loadWinrateMatrix(bbSlug) {
   return data.matrices[bbSlug];
 }
 
+function fitMatrixHeaderHeight(scope) {
+  if (!scope) return;
+  const labels = [...scope.querySelectorAll('.matrix-col-head-text')];
+  if (labels.length === 0) return;
+
+  const probe = document.createElement('span');
+  probe.className = 'matrix-col-head-text';
+  probe.style.position = 'absolute';
+  probe.style.visibility = 'hidden';
+  probe.style.pointerEvents = 'none';
+  probe.style.height = 'auto';
+  probe.style.width = 'auto';
+  probe.style.padding = '0';
+  probe.style.margin = '0';
+  document.body.appendChild(probe);
+
+  let maxWidth = 0;
+  for (const label of labels) {
+    const text = (label.textContent || '').trim();
+    if (!text) continue;
+    probe.textContent = text;
+    const width = probe.getBoundingClientRect().width;
+    if (width > maxWidth) maxWidth = width;
+  }
+  probe.remove();
+
+  if (maxWidth <= 0) return;
+  const headHeight = Math.ceil(maxWidth) + 6;
+  scope.style.setProperty('--matrix-header-height', `${headHeight}px`);
+}
+
 async function renderMatrixPane(bbSlug) {
   if (!ui.matrixPane || !data.index) return;
 
@@ -327,6 +358,7 @@ async function renderMatrixPane(bbSlug) {
       </div>
     </div>
   `;
+  fitMatrixHeaderHeight(ui.matrixPane.querySelector('.matrix-panel'));
 }
 
 async function route() {

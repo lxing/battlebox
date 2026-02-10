@@ -97,6 +97,7 @@ body {
 }
 
 .matrix-panel {
+  --matrix-header-height: 8.2rem;
   display: flex;
   flex-direction: column;
   gap: var(--pane-gap);
@@ -141,7 +142,7 @@ body {
   font-weight: 600;
   width: 2.2rem;
   min-width: 2.2rem;
-  height: 8.2rem;
+  height: var(--matrix-header-height);
   vertical-align: bottom;
   padding: 0 !important;
 }
