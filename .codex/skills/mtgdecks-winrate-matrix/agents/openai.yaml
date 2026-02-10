@@ -1,0 +1,3 @@
+interface:
+  display_name: "MTGDecks Winrate Matrix"
+  short_description: "Map MTGDecks archetype names to local slugs and emit matchup matrix JSON"
