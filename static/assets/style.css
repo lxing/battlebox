@@ -709,16 +709,20 @@ input[type="reset"] {
   gap: 0.3rem;
 }
 
-.card-row.sb-added .card,
-.card-row.sb-added .card-qty {
+.card-row.sb-added {
   --card-ref-color: #63a96a;
-  color: #63a96a;
 }
 
-.card-row.sb-removed .card,
-.card-row.sb-removed .card-qty {
+.card-row.sb-added .card-qty {
+  color: var(--card-ref-color);
+}
+
+.card-row.sb-removed {
   --card-ref-color: #cf7a7a;
-  color: #cf7a7a;
+}
+
+.card-row.sb-removed .card-qty {
+  color: var(--card-ref-color);
 }
 
 .card-group {
@@ -780,10 +784,6 @@ input[type="reset"] {
 
 /* Card references */
 .card {
-  color: #7eb8ff;
-  cursor: pointer;
-  text-decoration: underline dotted;
-  text-underline-offset: 2px;
   position: relative;
   overflow-anchor: none;
   flex: 1 1 auto;
@@ -802,6 +802,7 @@ input[type="reset"] {
 
 .card-ref {
   color: var(--card-ref-color, #7eb8ff);
+  cursor: pointer;
   text-decoration: none;
   -webkit-tap-highlight-color: transparent;
 }
