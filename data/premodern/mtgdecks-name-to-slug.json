@@ -1,0 +1,22 @@
+{
+  "source": "https://mtgdecks.net/Premodern/winrates",
+  "format": "premodern",
+  "one_to_one": true,
+  "name_to_slug": {
+    "BW Control": "bw-control",
+    "Elves": "elves",
+    "Enchantress": "enchantress",
+    "Goblins": "goblins",
+    "Gro-a-Tog": "gro-a-tog",
+    "Landstill": "landstill",
+    "Madness": "madness",
+    "Oath Ponza": "oath",
+    "Survival": "recsur",
+    "Replenish": "replenish",
+    "Burn": "sligh",
+    "Stasis": "stasis",
+    "Stiflenought": "stiflenought",
+    "Terrageddon": "terrageddon",
+    "The Rock": "the-rock"
+  }
+}

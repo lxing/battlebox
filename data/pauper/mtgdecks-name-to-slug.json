@@ -1,0 +1,22 @@
+{
+  "source": "https://mtgdecks.net/Pauper/winrates",
+  "format": "pauper",
+  "one_to_one": true,
+  "name_to_slug": {
+    "Grixis Affinity": "affinity",
+    "GW Bogles": "bogles",
+    "Golgari Broodscale": "broodscale",
+    "Caw Gates": "caw-gates",
+    "Mono Blue Terror": "delver",
+    "Elves": "elves",
+    "Jeskai Ephemerate": "ephemerate",
+    "Golgari Gardens": "gardens",
+    "Orzhov Blade": "glintblade",
+    "Rakdos Madness": "madness-burn",
+    "Gruul Ramp": "ramp",
+    "Izzet Skred": "skred",
+    "Mono Red Rally": "synthesizer",
+    "Turbo Fog": "turbo-fog",
+    "White Weenie": "white-weenie"
+  }
+}
