@@ -144,6 +144,37 @@ def infer_missing_reverse_matchups(
             row[to_slug] = inferred
 
 
+def compute_totals(
+    matchups: Dict[str, Dict[str, Dict[str, float | int]]],
+    slugs: list[str],
+) -> Dict[str, Dict[str, float | int]]:
+    """Compute per-deck aggregate wins/matches/wr across all opponents."""
+    totals: Dict[str, Dict[str, float | int]] = {}
+    for slug in slugs:
+        row = matchups.get(slug, {})
+        wins = 0
+        matches = 0
+        for opp_slug, cell in row.items():
+            if opp_slug == slug:
+                continue
+            wr = cell.get("wr")
+            played = cell.get("matches")
+            if not isinstance(wr, (int, float)) or not isinstance(played, int):
+                continue
+            if played <= 0:
+                continue
+            wins += round(float(played) * float(wr))
+            matches += played
+
+        total_wr = round(float(wins) / float(matches), 4) if matches > 0 else 0.0
+        totals[slug] = {
+            "wins": wins,
+            "matches": matches,
+            "wr": total_wr,
+        }
+    return totals
+
+
 def build_matrix(config: FormatConfig, fetched_at: str) -> Dict[str, object]:
     alias_doc = json.loads(config.alias_path.read_text())
     source = alias_doc["source"]
@@ -198,12 +229,14 @@ def build_matrix(config: FormatConfig, fetched_at: str) -> Dict[str, object]:
     infer_missing_reverse_matchups(matchups, slugs)
     # Keep only non-empty rows after inference pass.
     matchups = {slug: row for slug, row in matchups.items() if row}
+    totals = compute_totals(matchups, slugs)
 
     return {
         "format": config.name,
         "source": source,
         "fetched_at": fetched_at,
         "matchups": matchups,
+        "totals": totals,
     }
 
 

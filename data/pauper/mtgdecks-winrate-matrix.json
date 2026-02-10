@@ -1,5 +1,5 @@
 {
-  "fetched_at": "2026-02-10T04:13:36Z",
+  "fetched_at": "2026-02-10T04:34:00Z",
   "format": "pauper",
   "matchups": {
     "affinity": {
@@ -1201,5 +1201,82 @@
       }
     }
   },
-  "source": "https://mtgdecks.net/Pauper/winrates"
+  "source": "https://mtgdecks.net/Pauper/winrates",
+  "totals": {
+    "affinity": {
+      "matches": 965,
+      "wins": 459,
+      "wr": 0.4756
+    },
+    "bogles": {
+      "matches": 387,
+      "wins": 173,
+      "wr": 0.447
+    },
+    "broodscale": {
+      "matches": 0,
+      "wins": 0,
+      "wr": 0.0
+    },
+    "caw-gates": {
+      "matches": 502,
+      "wins": 297,
+      "wr": 0.5916
+    },
+    "delver": {
+      "matches": 1489,
+      "wins": 679,
+      "wr": 0.456
+    },
+    "elves": {
+      "matches": 892,
+      "wins": 522,
+      "wr": 0.5852
+    },
+    "ephemerate": {
+      "matches": 220,
+      "wins": 117,
+      "wr": 0.5318
+    },
+    "gardens": {
+      "matches": 489,
+      "wins": 222,
+      "wr": 0.454
+    },
+    "glintblade": {
+      "matches": 202,
+      "wins": 97,
+      "wr": 0.4802
+    },
+    "madness-burn": {
+      "matches": 1035,
+      "wins": 466,
+      "wr": 0.4502
+    },
+    "ramp": {
+      "matches": 778,
+      "wins": 417,
+      "wr": 0.536
+    },
+    "skred": {
+      "matches": 224,
+      "wins": 107,
+      "wr": 0.4777
+    },
+    "synthesizer": {
+      "matches": 1163,
+      "wins": 586,
+      "wr": 0.5039
+    },
+    "turbo-fog": {
+      "matches": 95,
+      "wins": 53,
+      "wr": 0.5579
+    },
+    "white-weenie": {
+      "matches": 665,
+      "wins": 358,
+      "wr": 0.5383
+    }
+  }
 }

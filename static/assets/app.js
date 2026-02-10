@@ -337,6 +337,22 @@ async function renderMatrixPane(bbSlug) {
   )).join('');
 
   const rowHtml = orderedDecks.map((rowDeck) => {
+    const total = matrix.totals?.[rowDeck.slug];
+    const totalPercent = total && Number.isFinite(total.wr) ? Math.round(total.wr * 100) : null;
+    const totalWins = total && Number.isFinite(total.wins) ? total.wins : null;
+    const totalMatches = total && Number.isFinite(total.matches) ? total.matches : null;
+    const totalBand = totalPercent === null ? null : getWinrateBand(totalPercent);
+    const totalCellHtml = (
+      totalPercent === null || totalWins === null || totalMatches === null
+    )
+      ? '<td class="matrix-cell matrix-cell-empty">-</td>'
+      : `
+        <td class="matrix-cell matrix-cell-band-${totalBand}" title="Total ${totalPercent}% WR (${totalWins}/${totalMatches})">
+          <div class="matrix-cell-main">${totalPercent}%</div>
+          <div class="matrix-cell-record">${totalWins}/${totalMatches}</div>
+        </td>
+      `;
+
     const cellHtml = orderedDecks.map((colDeck) => {
       const result = matrix.matchups?.[rowDeck.slug]?.[colDeck.slug];
       if (!result || !Number.isFinite(result.wr)) {
@@ -357,6 +373,7 @@ async function renderMatrixPane(bbSlug) {
     return `
       <tr>
         <th scope="row" class="matrix-row-head">${rowDeck.name}</th>
+        ${totalCellHtml}
         ${cellHtml}
       </tr>
     `;
@@ -369,6 +386,7 @@ async function renderMatrixPane(bbSlug) {
           <thead>
             <tr>
               <th class="matrix-corner"></th>
+              <th scope="col" class="matrix-col-head"><span class="matrix-col-head-text">Total</span></th>
               ${colHeadHtml}
             </tr>
           </thead>

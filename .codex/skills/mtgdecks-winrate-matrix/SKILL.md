@@ -53,6 +53,13 @@ Emit JSON with this structure (meta layer only):
   "format": "pauper",
   "source": "https://mtgdecks.net/Pauper/winrates",
   "fetched_at": "2026-02-10T00:00:00Z",
+  "totals": {
+    "affinity": {
+      "wins": 312,
+      "matches": 601,
+      "wr": 0.5191
+    }
+  },
   "matchups": {
     "affinity": {
       "bogles": {
@@ -70,6 +77,10 @@ Field guidance:
 - `wr`: decimal in `[0,1]`.
 - `matches`: integer sample size.
 - `ci_low` / `ci_high`: decimals in `[0,1]` when available; omit if unavailable.
+- `totals`: per-slug aggregate computed at generation time.
+- `totals.<slug>.wins`: sum of estimated wins across all opponents (`round(matches * wr)` per opponent).
+- `totals.<slug>.matches`: sum of matchup sample sizes across all opponents.
+- `totals.<slug>.wr`: `wins / matches` as decimal in `[0,1]` (or `0` when no matches).
 - `matchups`: directed matrix keyed by slug `from -> to`.
 
 ## Data Sources
