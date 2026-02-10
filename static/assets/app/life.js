@@ -1,3 +1,9 @@
+import {
+  createInitialInitiativeState,
+  resetInitiativeState,
+  createInitiativeOverlay,
+} from './initiative.js';
+
 const LIFE_STORAGE_KEY = 'battlebox.life.v1'; // Do not bump version unless explicitly requested.
 const HOLD_DELAY_MS = 500;
 const HOLD_REPEAT_MS = 500;
@@ -15,7 +21,12 @@ function parseMonarchOwner(value) {
 }
 
 function readLifeState(startingLife) {
-  const fallback = { p1: startingLife, p2: startingLife, monarch: null };
+  const fallback = {
+    p1: startingLife,
+    p2: startingLife,
+    monarch: null,
+    initiative: createInitialInitiativeState(),
+  };
   try {
     const raw = window.localStorage.getItem(LIFE_STORAGE_KEY);
     if (!raw) return fallback;
@@ -24,6 +35,7 @@ function readLifeState(startingLife) {
       p1: parseLifeTotal(parsed?.p1, startingLife),
       p2: parseLifeTotal(parsed?.p2, startingLife),
       monarch: parseMonarchOwner(parsed?.monarch),
+      initiative: createInitialInitiativeState(parsed?.initiative),
     };
   } catch (_) {
     return fallback;
@@ -34,7 +46,12 @@ function writeLifeState(state) {
   try {
     window.localStorage.setItem(
       LIFE_STORAGE_KEY,
-      JSON.stringify({ p1: state.p1, p2: state.p2, monarch: parseMonarchOwner(state.monarch) })
+      JSON.stringify({
+        p1: state.p1,
+        p2: state.p2,
+        monarch: parseMonarchOwner(state.monarch),
+        initiative: createInitialInitiativeState(state.initiative),
+      })
     );
   } catch (_) {
     // Ignore storage failures (e.g., private mode restrictions).
@@ -81,7 +98,7 @@ export function createLifeCounter(container, startingLife = 20) {
       <section class="life-controls" aria-label="Life controls">
         <button type="button" class="static-button life-control-button" id="life-left-button" aria-label="Toggle monarch">👑</button>
         <button type="button" class="static-button life-control-button" id="life-reset-button" aria-label="Reset life totals">🔄</button>
-        <button type="button" class="static-button life-control-button" id="life-right-button" aria-label="Reserved life control">x</button>
+        <button type="button" class="static-button life-control-button" id="life-right-button" aria-label="Open initiative tracker">⚔️</button>
       </section>
       <section class="life-player life-player-bottom" data-player="p1" aria-label="Player 1 life total">
         <span class="life-player-icon life-player-icon-p1" aria-hidden="true">🐿️</span>
@@ -124,6 +141,9 @@ export function createLifeCounter(container, startingLife = 20) {
       panel.classList.toggle('life-player-has-monarch', state.monarch === player);
     });
   };
+  const initiativeOverlay = createInitiativeOverlay(container, state, () => {
+    writeLifeState(state);
+  });
 
   const applyDelta = (player, delta) => {
     state[player] += delta;
@@ -135,9 +155,11 @@ export function createLifeCounter(container, startingLife = 20) {
     state.p1 = startingLife;
     state.p2 = startingLife;
     state.monarch = null;
+    state.initiative = resetInitiativeState();
     render();
     renderMonarch();
     writeLifeState(state);
+    initiativeOverlay.sync();
   };
 
   const clearActiveHold = () => {
@@ -277,8 +299,11 @@ export function createLifeCounter(container, startingLife = 20) {
     writeLifeState(state);
   });
 
-  bindControlAction(rightButton, () => {});
+  bindControlAction(rightButton, () => {
+    initiativeOverlay.toggle();
+  });
 
   render();
   renderMonarch();
+  initiativeOverlay.sync();
 }
