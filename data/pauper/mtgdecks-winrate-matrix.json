@@ -1,0 +1,1127 @@
+{
+  "fetched_at": "2026-02-10T03:29:28Z",
+  "format": "pauper",
+  "matchups": {
+    "affinity": {
+      "affinity": {
+        "ci_high": 0.6,
+        "ci_low": 0.4,
+        "matches": 106,
+        "wr": 0.5
+      },
+      "bogles": {
+        "ci_high": 0.69,
+        "ci_low": 0.31,
+        "matches": 28,
+        "wr": 0.5
+      },
+      "caw-gates": {
+        "ci_high": 0.51,
+        "ci_low": 0.27,
+        "matches": 65,
+        "wr": 0.38
+      },
+      "delver": {
+        "ci_high": 0.58,
+        "ci_low": 0.43,
+        "matches": 187,
+        "wr": 0.5
+      },
+      "elves": {
+        "ci_high": 0.57,
+        "ci_low": 0.37,
+        "matches": 101,
+        "wr": 0.47
+      },
+      "ephemerate": {
+        "ci_high": 0.82,
+        "ci_low": 0.46,
+        "matches": 29,
+        "wr": 0.66
+      },
+      "gardens": {
+        "ci_high": 0.67,
+        "ci_low": 0.4,
+        "matches": 58,
+        "wr": 0.53
+      },
+      "glintblade": {
+        "ci_high": 0.59,
+        "ci_low": 0.17,
+        "matches": 22,
+        "wr": 0.36
+      },
+      "madness-burn": {
+        "ci_high": 0.59,
+        "ci_low": 0.41,
+        "matches": 125,
+        "wr": 0.5
+      },
+      "ramp": {
+        "ci_high": 0.55,
+        "ci_low": 0.32,
+        "matches": 81,
+        "wr": 0.43
+      },
+      "skred": {
+        "ci_high": 0.66,
+        "ci_low": 0.31,
+        "matches": 35,
+        "wr": 0.49
+      },
+      "synthesizer": {
+        "ci_high": 0.6,
+        "ci_low": 0.44,
+        "matches": 144,
+        "wr": 0.52
+      },
+      "white-weenie": {
+        "ci_high": 0.44,
+        "ci_low": 0.23,
+        "matches": 79,
+        "wr": 0.33
+      }
+    },
+    "bogles": {
+      "affinity": {
+        "ci_high": 0.69,
+        "ci_low": 0.31,
+        "matches": 28,
+        "wr": 0.5
+      },
+      "bogles": {
+        "ci_high": 0.75,
+        "ci_low": 0.25,
+        "matches": 16,
+        "wr": 0.5
+      },
+      "caw-gates": {
+        "ci_high": 0.36,
+        "ci_low": 0.06,
+        "matches": 29,
+        "wr": 0.17
+      },
+      "delver": {
+        "ci_high": 0.4,
+        "ci_low": 0.19,
+        "matches": 74,
+        "wr": 0.28
+      },
+      "elves": {
+        "ci_high": 0.4,
+        "ci_low": 0.15,
+        "matches": 50,
+        "wr": 0.26
+      },
+      "ephemerate": {
+        "ci_high": 0.9,
+        "ci_low": 0.18,
+        "matches": 7,
+        "wr": 0.57
+      },
+      "gardens": {
+        "ci_high": 0.76,
+        "ci_low": 0.35,
+        "matches": 25,
+        "wr": 0.56
+      },
+      "glintblade": {
+        "ci_high": 0.93,
+        "ci_low": 0.07,
+        "matches": 4,
+        "wr": 0.5
+      },
+      "madness-burn": {
+        "ci_high": 0.84,
+        "ci_low": 0.58,
+        "matches": 50,
+        "wr": 0.72
+      },
+      "ramp": {
+        "ci_high": 0.86,
+        "ci_low": 0.53,
+        "matches": 32,
+        "wr": 0.72
+      },
+      "skred": {
+        "ci_high": 0.96,
+        "ci_low": 0.29,
+        "matches": 7,
+        "wr": 0.71
+      },
+      "synthesizer": {
+        "ci_high": 0.68,
+        "ci_low": 0.38,
+        "matches": 47,
+        "wr": 0.53
+      },
+      "white-weenie": {
+        "ci_high": 0.56,
+        "ci_low": 0.19,
+        "matches": 28,
+        "wr": 0.36
+      }
+    },
+    "caw-gates": {
+      "affinity": {
+        "ci_high": 0.73,
+        "ci_low": 0.49,
+        "matches": 65,
+        "wr": 0.62
+      },
+      "bogles": {
+        "ci_high": 0.94,
+        "ci_low": 0.64,
+        "matches": 29,
+        "wr": 0.83
+      },
+      "caw-gates": {
+        "ci_high": 0.68,
+        "ci_low": 0.32,
+        "matches": 34,
+        "wr": 0.5
+      },
+      "delver": {
+        "ci_high": 0.75,
+        "ci_low": 0.56,
+        "matches": 97,
+        "wr": 0.66
+      },
+      "elves": {
+        "ci_high": 0.61,
+        "ci_low": 0.35,
+        "matches": 62,
+        "wr": 0.48
+      },
+      "ephemerate": {
+        "ci_high": 0.79,
+        "ci_low": 0.14,
+        "matches": 9,
+        "wr": 0.44
+      },
+      "gardens": {
+        "ci_high": 0.79,
+        "ci_low": 0.36,
+        "matches": 22,
+        "wr": 0.59
+      },
+      "glintblade": {
+        "ci_high": 0.77,
+        "ci_low": 0.17,
+        "matches": 11,
+        "wr": 0.45
+      },
+      "madness-burn": {
+        "ci_high": 0.82,
+        "ci_low": 0.52,
+        "matches": 41,
+        "wr": 0.68
+      },
+      "ramp": {
+        "ci_high": 0.67,
+        "ci_low": 0.35,
+        "matches": 43,
+        "wr": 0.51
+      },
+      "skred": {
+        "ci_high": 0.98,
+        "ci_low": 0.52,
+        "matches": 12,
+        "wr": 0.83
+      },
+      "synthesizer": {
+        "ci_high": 0.66,
+        "ci_low": 0.41,
+        "matches": 67,
+        "wr": 0.54
+      },
+      "white-weenie": {
+        "ci_high": 0.68,
+        "ci_low": 0.34,
+        "matches": 37,
+        "wr": 0.51
+      }
+    },
+    "delver": {
+      "affinity": {
+        "ci_high": 0.57,
+        "ci_low": 0.42,
+        "matches": 187,
+        "wr": 0.5
+      },
+      "bogles": {
+        "ci_high": 0.81,
+        "ci_low": 0.6,
+        "matches": 74,
+        "wr": 0.72
+      },
+      "caw-gates": {
+        "ci_high": 0.44,
+        "ci_low": 0.25,
+        "matches": 97,
+        "wr": 0.34
+      },
+      "delver": {
+        "ci_high": 0.55,
+        "ci_low": 0.45,
+        "matches": 360,
+        "wr": 0.5
+      },
+      "elves": {
+        "ci_high": 0.35,
+        "ci_low": 0.22,
+        "matches": 174,
+        "wr": 0.28
+      },
+      "ephemerate": {
+        "ci_high": 0.62,
+        "ci_low": 0.29,
+        "matches": 40,
+        "wr": 0.45
+      },
+      "gardens": {
+        "ci_high": 0.62,
+        "ci_low": 0.4,
+        "matches": 92,
+        "wr": 0.51
+      },
+      "glintblade": {
+        "ci_high": 0.49,
+        "ci_low": 0.15,
+        "matches": 30,
+        "wr": 0.3
+      },
+      "madness-burn": {
+        "ci_high": 0.55,
+        "ci_low": 0.41,
+        "matches": 203,
+        "wr": 0.48
+      },
+      "ramp": {
+        "ci_high": 0.59,
+        "ci_low": 0.43,
+        "matches": 153,
+        "wr": 0.51
+      },
+      "skred": {
+        "ci_high": 0.64,
+        "ci_low": 0.31,
+        "matches": 38,
+        "wr": 0.47
+      },
+      "synthesizer": {
+        "ci_high": 0.54,
+        "ci_low": 0.42,
+        "matches": 262,
+        "wr": 0.48
+      },
+      "white-weenie": {
+        "ci_high": 0.47,
+        "ci_low": 0.29,
+        "matches": 122,
+        "wr": 0.38
+      }
+    },
+    "elves": {
+      "affinity": {
+        "ci_high": 0.63,
+        "ci_low": 0.43,
+        "matches": 101,
+        "wr": 0.53
+      },
+      "bogles": {
+        "ci_high": 0.85,
+        "ci_low": 0.6,
+        "matches": 50,
+        "wr": 0.74
+      },
+      "caw-gates": {
+        "ci_high": 0.65,
+        "ci_low": 0.39,
+        "matches": 62,
+        "wr": 0.52
+      },
+      "delver": {
+        "ci_high": 0.78,
+        "ci_low": 0.65,
+        "matches": 174,
+        "wr": 0.72
+      },
+      "elves": {
+        "ci_high": 0.6,
+        "ci_low": 0.4,
+        "matches": 112,
+        "wr": 0.5
+      },
+      "ephemerate": {
+        "ci_high": 0.7,
+        "ci_low": 0.2,
+        "matches": 16,
+        "wr": 0.44
+      },
+      "gardens": {
+        "ci_high": 0.53,
+        "ci_low": 0.24,
+        "matches": 48,
+        "wr": 0.38
+      },
+      "glintblade": {
+        "ci_high": 0.96,
+        "ci_low": 0.54,
+        "matches": 16,
+        "wr": 0.81
+      },
+      "madness-burn": {
+        "ci_high": 0.65,
+        "ci_low": 0.47,
+        "matches": 119,
+        "wr": 0.56
+      },
+      "ramp": {
+        "ci_high": 0.75,
+        "ci_low": 0.55,
+        "matches": 101,
+        "wr": 0.65
+      },
+      "skred": {
+        "ci_high": 0.48,
+        "ci_low": 0.06,
+        "matches": 18,
+        "wr": 0.22
+      },
+      "synthesizer": {
+        "ci_high": 0.56,
+        "ci_low": 0.37,
+        "matches": 115,
+        "wr": 0.46
+      },
+      "white-weenie": {
+        "ci_high": 0.8,
+        "ci_low": 0.57,
+        "matches": 65,
+        "wr": 0.69
+      }
+    },
+    "ephemerate": {
+      "affinity": {
+        "ci_high": 0.54,
+        "ci_low": 0.18,
+        "matches": 29,
+        "wr": 0.34
+      },
+      "bogles": {
+        "ci_high": 0.82,
+        "ci_low": 0.1,
+        "matches": 7,
+        "wr": 0.43
+      },
+      "caw-gates": {
+        "ci_high": 0.86,
+        "ci_low": 0.21,
+        "matches": 9,
+        "wr": 0.56
+      },
+      "delver": {
+        "ci_high": 0.71,
+        "ci_low": 0.38,
+        "matches": 40,
+        "wr": 0.55
+      },
+      "elves": {
+        "ci_high": 0.8,
+        "ci_low": 0.3,
+        "matches": 16,
+        "wr": 0.56
+      },
+      "ephemerate": {
+        "ci_high": 0.99,
+        "ci_low": 0.01,
+        "matches": 2,
+        "wr": 0.5
+      },
+      "gardens": {
+        "ci_high": 1.0,
+        "ci_low": 0.55,
+        "matches": 10,
+        "wr": 0.9
+      },
+      "glintblade": {
+        "ci_high": 0.96,
+        "ci_low": 0.29,
+        "matches": 7,
+        "wr": 0.71
+      },
+      "madness-burn": {
+        "ci_high": 0.71,
+        "ci_low": 0.33,
+        "matches": 29,
+        "wr": 0.52
+      },
+      "ramp": {
+        "ci_high": 0.65,
+        "ci_low": 0.15,
+        "matches": 16,
+        "wr": 0.38
+      },
+      "skred": {
+        "ci_high": 0.95,
+        "ci_low": 0.15,
+        "matches": 5,
+        "wr": 0.6
+      },
+      "synthesizer": {
+        "ci_high": 0.64,
+        "ci_low": 0.27,
+        "matches": 31,
+        "wr": 0.45
+      },
+      "white-weenie": {
+        "ci_high": 0.96,
+        "ci_low": 0.59,
+        "matches": 18,
+        "wr": 0.83
+      }
+    },
+    "gardens": {
+      "affinity": {
+        "ci_high": 0.6,
+        "ci_low": 0.33,
+        "matches": 58,
+        "wr": 0.47
+      },
+      "bogles": {
+        "ci_high": 0.65,
+        "ci_low": 0.24,
+        "matches": 25,
+        "wr": 0.44
+      },
+      "caw-gates": {
+        "ci_high": 0.64,
+        "ci_low": 0.21,
+        "matches": 22,
+        "wr": 0.41
+      },
+      "delver": {
+        "ci_high": 0.6,
+        "ci_low": 0.38,
+        "matches": 92,
+        "wr": 0.49
+      },
+      "elves": {
+        "ci_high": 0.76,
+        "ci_low": 0.47,
+        "matches": 48,
+        "wr": 0.63
+      },
+      "ephemerate": {
+        "ci_high": 0.45,
+        "ci_low": 0.0,
+        "matches": 10,
+        "wr": 0.1
+      },
+      "gardens": {
+        "ci_high": 0.71,
+        "ci_low": 0.29,
+        "matches": 24,
+        "wr": 0.5
+      },
+      "glintblade": {
+        "ci_high": 0.85,
+        "ci_low": 0.35,
+        "matches": 16,
+        "wr": 0.63
+      },
+      "madness-burn": {
+        "ci_high": 0.45,
+        "ci_low": 0.18,
+        "matches": 50,
+        "wr": 0.3
+      },
+      "ramp": {
+        "ci_high": 0.51,
+        "ci_low": 0.23,
+        "matches": 47,
+        "wr": 0.36
+      },
+      "skred": {
+        "ci_high": 0.97,
+        "ci_low": 0.44,
+        "matches": 10,
+        "wr": 0.8
+      },
+      "synthesizer": {
+        "ci_high": 0.5,
+        "ci_low": 0.25,
+        "matches": 63,
+        "wr": 0.37
+      },
+      "white-weenie": {
+        "ci_high": 0.69,
+        "ci_low": 0.38,
+        "matches": 43,
+        "wr": 0.53
+      }
+    },
+    "glintblade": {
+      "affinity": {
+        "ci_high": 0.83,
+        "ci_low": 0.41,
+        "matches": 22,
+        "wr": 0.64
+      },
+      "bogles": {
+        "ci_high": 0.93,
+        "ci_low": 0.07,
+        "matches": 4,
+        "wr": 0.5
+      },
+      "caw-gates": {
+        "ci_high": 0.83,
+        "ci_low": 0.23,
+        "matches": 11,
+        "wr": 0.55
+      },
+      "delver": {
+        "ci_high": 0.85,
+        "ci_low": 0.51,
+        "matches": 30,
+        "wr": 0.7
+      },
+      "elves": {
+        "ci_high": 0.46,
+        "ci_low": 0.04,
+        "matches": 16,
+        "wr": 0.19
+      },
+      "ephemerate": {
+        "ci_high": 0.71,
+        "ci_low": 0.04,
+        "matches": 7,
+        "wr": 0.29
+      },
+      "gardens": {
+        "ci_high": 0.65,
+        "ci_low": 0.15,
+        "matches": 16,
+        "wr": 0.38
+      },
+      "glintblade": {
+        "ci_high": 0.81,
+        "ci_low": 0.19,
+        "matches": 10,
+        "wr": 0.5
+      },
+      "madness-burn": {
+        "ci_high": 0.64,
+        "ci_low": 0.28,
+        "matches": 33,
+        "wr": 0.45
+      },
+      "ramp": {
+        "ci_high": 0.59,
+        "ci_low": 0.15,
+        "matches": 20,
+        "wr": 0.35
+      },
+      "skred": {
+        "ci_high": 0.91,
+        "ci_low": 0.01,
+        "matches": 3,
+        "wr": 0.33
+      },
+      "synthesizer": {
+        "ci_high": 0.7,
+        "ci_low": 0.3,
+        "matches": 26,
+        "wr": 0.5
+      },
+      "white-weenie": {
+        "ci_high": 0.75,
+        "ci_low": 0.19,
+        "matches": 13,
+        "wr": 0.46
+      }
+    },
+    "madness-burn": {
+      "affinity": {
+        "ci_high": 0.59,
+        "ci_low": 0.41,
+        "matches": 125,
+        "wr": 0.5
+      },
+      "bogles": {
+        "ci_high": 0.42,
+        "ci_low": 0.16,
+        "matches": 50,
+        "wr": 0.28
+      },
+      "caw-gates": {
+        "ci_high": 0.48,
+        "ci_low": 0.18,
+        "matches": 41,
+        "wr": 0.32
+      },
+      "delver": {
+        "ci_high": 0.59,
+        "ci_low": 0.45,
+        "matches": 203,
+        "wr": 0.52
+      },
+      "elves": {
+        "ci_high": 0.53,
+        "ci_low": 0.35,
+        "matches": 119,
+        "wr": 0.44
+      },
+      "ephemerate": {
+        "ci_high": 0.67,
+        "ci_low": 0.29,
+        "matches": 29,
+        "wr": 0.48
+      },
+      "gardens": {
+        "ci_high": 0.82,
+        "ci_low": 0.55,
+        "matches": 50,
+        "wr": 0.7
+      },
+      "glintblade": {
+        "ci_high": 0.72,
+        "ci_low": 0.36,
+        "matches": 33,
+        "wr": 0.55
+      },
+      "madness-burn": {
+        "ci_high": 0.57,
+        "ci_low": 0.43,
+        "matches": 184,
+        "wr": 0.5
+      },
+      "ramp": {
+        "ci_high": 0.54,
+        "ci_low": 0.33,
+        "matches": 91,
+        "wr": 0.43
+      },
+      "skred": {
+        "ci_high": 0.69,
+        "ci_low": 0.31,
+        "matches": 30,
+        "wr": 0.5
+      },
+      "synthesizer": {
+        "ci_high": 0.4,
+        "ci_low": 0.26,
+        "matches": 175,
+        "wr": 0.33
+      },
+      "white-weenie": {
+        "ci_high": 0.54,
+        "ci_low": 0.31,
+        "matches": 74,
+        "wr": 0.42
+      }
+    },
+    "ramp": {
+      "affinity": {
+        "ci_high": 0.68,
+        "ci_low": 0.45,
+        "matches": 81,
+        "wr": 0.57
+      },
+      "bogles": {
+        "ci_high": 0.47,
+        "ci_low": 0.14,
+        "matches": 32,
+        "wr": 0.28
+      },
+      "caw-gates": {
+        "ci_high": 0.65,
+        "ci_low": 0.33,
+        "matches": 43,
+        "wr": 0.49
+      },
+      "delver": {
+        "ci_high": 0.57,
+        "ci_low": 0.41,
+        "matches": 153,
+        "wr": 0.49
+      },
+      "elves": {
+        "ci_high": 0.45,
+        "ci_low": 0.25,
+        "matches": 101,
+        "wr": 0.35
+      },
+      "ephemerate": {
+        "ci_high": 0.85,
+        "ci_low": 0.35,
+        "matches": 16,
+        "wr": 0.63
+      },
+      "gardens": {
+        "ci_high": 0.77,
+        "ci_low": 0.49,
+        "matches": 47,
+        "wr": 0.64
+      },
+      "glintblade": {
+        "ci_high": 0.85,
+        "ci_low": 0.41,
+        "matches": 20,
+        "wr": 0.65
+      },
+      "madness-burn": {
+        "ci_high": 0.67,
+        "ci_low": 0.46,
+        "matches": 91,
+        "wr": 0.57
+      },
+      "ramp": {
+        "ci_high": 0.61,
+        "ci_low": 0.39,
+        "matches": 84,
+        "wr": 0.5
+      },
+      "skred": {
+        "ci_high": 0.78,
+        "ci_low": 0.37,
+        "matches": 24,
+        "wr": 0.58
+      },
+      "synthesizer": {
+        "ci_high": 0.76,
+        "ci_low": 0.57,
+        "matches": 101,
+        "wr": 0.67
+      },
+      "white-weenie": {
+        "ci_high": 0.76,
+        "ci_low": 0.51,
+        "matches": 64,
+        "wr": 0.64
+      }
+    },
+    "skred": {
+      "affinity": {
+        "ci_high": 0.69,
+        "ci_low": 0.34,
+        "matches": 35,
+        "wr": 0.51
+      },
+      "bogles": {
+        "ci_high": 0.71,
+        "ci_low": 0.04,
+        "matches": 7,
+        "wr": 0.29
+      },
+      "caw-gates": {
+        "ci_high": 0.48,
+        "ci_low": 0.02,
+        "matches": 12,
+        "wr": 0.17
+      },
+      "delver": {
+        "ci_high": 0.69,
+        "ci_low": 0.36,
+        "matches": 38,
+        "wr": 0.53
+      },
+      "elves": {
+        "ci_high": 0.94,
+        "ci_low": 0.52,
+        "matches": 18,
+        "wr": 0.78
+      },
+      "ephemerate": {
+        "ci_high": 0.85,
+        "ci_low": 0.05,
+        "matches": 5,
+        "wr": 0.4
+      },
+      "gardens": {
+        "ci_high": 0.56,
+        "ci_low": 0.03,
+        "matches": 10,
+        "wr": 0.2
+      },
+      "glintblade": {
+        "ci_high": 0.99,
+        "ci_low": 0.09,
+        "matches": 3,
+        "wr": 0.67
+      },
+      "madness-burn": {
+        "ci_high": 0.69,
+        "ci_low": 0.31,
+        "matches": 30,
+        "wr": 0.5
+      },
+      "ramp": {
+        "ci_high": 0.63,
+        "ci_low": 0.22,
+        "matches": 24,
+        "wr": 0.42
+      },
+      "skred": {
+        "ci_high": 0.88,
+        "ci_low": 0.12,
+        "matches": 6,
+        "wr": 0.5
+      },
+      "synthesizer": {
+        "ci_high": 0.72,
+        "ci_low": 0.28,
+        "matches": 22,
+        "wr": 0.5
+      },
+      "white-weenie": {
+        "ci_high": 0.67,
+        "ci_low": 0.2,
+        "matches": 19,
+        "wr": 0.42
+      }
+    },
+    "synthesizer": {
+      "affinity": {
+        "ci_high": 0.56,
+        "ci_low": 0.4,
+        "matches": 144,
+        "wr": 0.48
+      },
+      "bogles": {
+        "ci_high": 0.62,
+        "ci_low": 0.32,
+        "matches": 47,
+        "wr": 0.47
+      },
+      "caw-gates": {
+        "ci_high": 0.59,
+        "ci_low": 0.34,
+        "matches": 67,
+        "wr": 0.46
+      },
+      "delver": {
+        "ci_high": 0.58,
+        "ci_low": 0.46,
+        "matches": 262,
+        "wr": 0.52
+      },
+      "elves": {
+        "ci_high": 0.63,
+        "ci_low": 0.44,
+        "matches": 115,
+        "wr": 0.54
+      },
+      "ephemerate": {
+        "ci_high": 0.73,
+        "ci_low": 0.36,
+        "matches": 31,
+        "wr": 0.55
+      },
+      "gardens": {
+        "ci_high": 0.75,
+        "ci_low": 0.5,
+        "matches": 63,
+        "wr": 0.63
+      },
+      "glintblade": {
+        "ci_high": 0.7,
+        "ci_low": 0.3,
+        "matches": 26,
+        "wr": 0.5
+      },
+      "madness-burn": {
+        "ci_high": 0.74,
+        "ci_low": 0.6,
+        "matches": 175,
+        "wr": 0.67
+      },
+      "ramp": {
+        "ci_high": 0.43,
+        "ci_low": 0.24,
+        "matches": 101,
+        "wr": 0.33
+      },
+      "skred": {
+        "ci_high": 0.72,
+        "ci_low": 0.28,
+        "matches": 22,
+        "wr": 0.5
+      },
+      "synthesizer": {
+        "ci_high": 0.58,
+        "ci_low": 0.42,
+        "matches": 142,
+        "wr": 0.5
+      },
+      "white-weenie": {
+        "ci_high": 0.43,
+        "ci_low": 0.24,
+        "matches": 98,
+        "wr": 0.33
+      }
+    },
+    "turbo-fog": {
+      "affinity": {
+        "ci_high": 0.77,
+        "ci_low": 0.17,
+        "matches": 11,
+        "wr": 0.45
+      },
+      "bogles": {
+        "ci_high": 1.0,
+        "ci_low": 0.36,
+        "matches": 6,
+        "wr": 0.83
+      },
+      "caw-gates": {
+        "ci_high": 0.96,
+        "ci_low": 0.29,
+        "matches": 7,
+        "wr": 0.71
+      },
+      "delver": {
+        "ci_high": 0.62,
+        "ci_low": 0.14,
+        "matches": 17,
+        "wr": 0.35
+      },
+      "elves": {
+        "ci_high": 1.0,
+        "ci_low": 0.42,
+        "matches": 7,
+        "wr": 0.86
+      },
+      "ephemerate": {
+        "ci_high": 0.99,
+        "ci_low": 0.09,
+        "matches": 3,
+        "wr": 0.67
+      },
+      "gardens": {
+        "ci_high": 0.85,
+        "ci_low": 0.05,
+        "matches": 5,
+        "wr": 0.4
+      },
+      "glintblade": {
+        "ci_high": 0.98,
+        "ci_low": 0.0,
+        "matches": 1,
+        "wr": 0.0
+      },
+      "madness-burn": {
+        "ci_high": 0.68,
+        "ci_low": 0.16,
+        "matches": 15,
+        "wr": 0.4
+      },
+      "ramp": {
+        "ci_high": 0.85,
+        "ci_low": 0.05,
+        "matches": 5,
+        "wr": 0.4
+      },
+      "skred": {
+        "ci_high": 0.98,
+        "ci_low": 0.0,
+        "matches": 1,
+        "wr": 0.0
+      },
+      "synthesizer": {
+        "ci_high": 0.95,
+        "ci_low": 0.43,
+        "matches": 12,
+        "wr": 0.75
+      },
+      "white-weenie": {
+        "ci_high": 1.0,
+        "ci_low": 0.48,
+        "matches": 5,
+        "wr": 1.0
+      }
+    },
+    "white-weenie": {
+      "affinity": {
+        "ci_high": 0.77,
+        "ci_low": 0.56,
+        "matches": 79,
+        "wr": 0.67
+      },
+      "bogles": {
+        "ci_high": 0.81,
+        "ci_low": 0.44,
+        "matches": 28,
+        "wr": 0.64
+      },
+      "caw-gates": {
+        "ci_high": 0.66,
+        "ci_low": 0.32,
+        "matches": 37,
+        "wr": 0.49
+      },
+      "delver": {
+        "ci_high": 0.71,
+        "ci_low": 0.53,
+        "matches": 122,
+        "wr": 0.62
+      },
+      "elves": {
+        "ci_high": 0.43,
+        "ci_low": 0.2,
+        "matches": 65,
+        "wr": 0.31
+      },
+      "ephemerate": {
+        "ci_high": 0.41,
+        "ci_low": 0.04,
+        "matches": 18,
+        "wr": 0.17
+      },
+      "gardens": {
+        "ci_high": 0.62,
+        "ci_low": 0.31,
+        "matches": 43,
+        "wr": 0.47
+      },
+      "glintblade": {
+        "ci_high": 0.81,
+        "ci_low": 0.25,
+        "matches": 13,
+        "wr": 0.54
+      },
+      "madness-burn": {
+        "ci_high": 0.69,
+        "ci_low": 0.46,
+        "matches": 74,
+        "wr": 0.58
+      },
+      "ramp": {
+        "ci_high": 0.49,
+        "ci_low": 0.24,
+        "matches": 64,
+        "wr": 0.36
+      },
+      "skred": {
+        "ci_high": 0.8,
+        "ci_low": 0.33,
+        "matches": 19,
+        "wr": 0.58
+      },
+      "synthesizer": {
+        "ci_high": 0.76,
+        "ci_low": 0.57,
+        "matches": 98,
+        "wr": 0.67
+      },
+      "white-weenie": {
+        "ci_high": 0.65,
+        "ci_low": 0.35,
+        "matches": 46,
+        "wr": 0.5
+      }
+    }
+  },
+  "source": "https://mtgdecks.net/Pauper/winrates"
+}

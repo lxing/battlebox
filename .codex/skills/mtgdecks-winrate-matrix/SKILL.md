@@ -7,14 +7,25 @@ description: Fetch and normalize MTGDecks winrate data into a slug-only matchup 
 
 ## Workflow
 1. Determine target format from user request (`pauper` or `premodern`).
-2. Fetch the MTGDecks winrates page for the format.
+2. Fetch the MTGDecks winrates page with the built-in `web` tool:
+- `web.search_query` with the format URL.
+- `web.open` on the result page to read the rendered table content.
+- Do not use `curl` for MTGDecks pages (Cloudflare blocks it in this environment).
 3. Load alias map from repo:
 - `data/pauper/mtgdecks-name-to-slug.json`
 - `data/premodern/mtgdecks-name-to-slug.json`
-4. Parse archetype names and pairwise matchup rows from MTGDecks.
+4. Parse pairwise matchup rows from MTGDecks table content.
 5. Convert MTGDecks names to local slugs using `name_to_slug`.
 6. Drop any matchup entry where either side is missing from alias map.
 7. Emit slug-only matrix JSON in canonical output format.
+8. Optionally run the local generator script as fallback when needed:
+- `python3 .codex/skills/mtgdecks-winrate-matrix/scripts/generate.py pauper`
+- `python3 .codex/skills/mtgdecks-winrate-matrix/scripts/generate.py premodern`
+- Or both in one call:
+- `python3 .codex/skills/mtgdecks-winrate-matrix/scripts/generate.py`
+9. Verify generated outputs:
+- `data/pauper/mtgdecks-winrate-matrix.json`
+- `data/premodern/mtgdecks-winrate-matrix.json`
 
 ## Rules
 - Keep mapping strict one-to-one as defined in the alias file.
@@ -22,6 +33,15 @@ description: Fetch and normalize MTGDecks winrate data into a slug-only matchup 
 - Use only local slugs as row/column keys.
 - Drop unmapped archetypes instead of inventing slugs.
 - If alias map has duplicate slug targets where one-to-one is expected, treat as config error and stop.
+- Prefer `web` tool fetches over shell/network tools for MTGDecks pages.
+- Do not use `curl` against MTGDecks in this workflow.
+
+## Script Dependencies
+- `cloudscraper`
+- `beautifulsoup4`
+- `lxml`
+- Install if needed:
+- `python3 -m pip install cloudscraper beautifulsoup4 lxml`
 
 ## Output Format
 Emit JSON with this structure (meta layer only):

@@ -1,0 +1,1381 @@
+{
+  "fetched_at": "2026-02-10T03:29:28Z",
+  "format": "premodern",
+  "matchups": {
+    "bw-control": {
+      "bw-control": {
+        "ci_high": 0.99,
+        "ci_low": 0.01,
+        "matches": 2,
+        "wr": 0.5
+      },
+      "elves": {
+        "ci_high": 0.91,
+        "ci_low": 0.01,
+        "matches": 3,
+        "wr": 0.33
+      },
+      "enchantress": {
+        "ci_high": 0.74,
+        "ci_low": 0.12,
+        "matches": 10,
+        "wr": 0.4
+      },
+      "goblins": {
+        "ci_high": 0.75,
+        "ci_low": 0.25,
+        "matches": 16,
+        "wr": 0.5
+      },
+      "gro-a-tog": {
+        "ci_high": 0.81,
+        "ci_low": 0.01,
+        "matches": 4,
+        "wr": 0.25
+      },
+      "landstill": {
+        "ci_high": 0.77,
+        "ci_low": 0.23,
+        "matches": 14,
+        "wr": 0.5
+      },
+      "madness": {
+        "ci_high": 0.99,
+        "ci_low": 0.19,
+        "matches": 4,
+        "wr": 0.75
+      },
+      "oath": {
+        "ci_high": 0.88,
+        "ci_low": 0.12,
+        "matches": 6,
+        "wr": 0.5
+      },
+      "recsur": {
+        "ci_high": 0.88,
+        "ci_low": 0.12,
+        "matches": 6,
+        "wr": 0.5
+      },
+      "replenish": {
+        "ci_high": 0.52,
+        "ci_low": 0.02,
+        "matches": 11,
+        "wr": 0.18
+      },
+      "sligh": {
+        "ci_high": 0.68,
+        "ci_low": 0.16,
+        "matches": 15,
+        "wr": 0.4
+      },
+      "stasis": {
+        "ci_high": 0.93,
+        "ci_low": 0.07,
+        "matches": 4,
+        "wr": 0.5
+      },
+      "stiflenought": {
+        "ci_high": 0.77,
+        "ci_low": 0.23,
+        "matches": 14,
+        "wr": 0.5
+      },
+      "terrageddon": {
+        "ci_high": 0.64,
+        "ci_low": 0.0,
+        "matches": 6,
+        "wr": 0.17
+      },
+      "the-rock": {
+        "ci_high": 0.99,
+        "ci_low": 0.19,
+        "matches": 4,
+        "wr": 0.75
+      }
+    },
+    "elves": {
+      "bw-control": {
+        "ci_high": 0.99,
+        "ci_low": 0.09,
+        "matches": 3,
+        "wr": 0.67
+      },
+      "elves": {
+        "ci_high": 0.84,
+        "ci_low": 0.16,
+        "matches": 8,
+        "wr": 0.5
+      },
+      "enchantress": {
+        "ci_high": 0.8,
+        "ci_low": 0.33,
+        "matches": 19,
+        "wr": 0.58
+      },
+      "goblins": {
+        "ci_high": 0.59,
+        "ci_low": 0.22,
+        "matches": 28,
+        "wr": 0.39
+      },
+      "gro-a-tog": {
+        "ci_high": 0.99,
+        "ci_low": 0.09,
+        "matches": 3,
+        "wr": 0.67
+      },
+      "landstill": {
+        "ci_high": 1.0,
+        "ci_low": 0.63,
+        "matches": 8,
+        "wr": 1.0
+      },
+      "madness": {
+        "ci_high": 0.98,
+        "ci_low": 0.48,
+        "matches": 11,
+        "wr": 0.82
+      },
+      "oath": {
+        "ci_high": 0.99,
+        "ci_low": 0.09,
+        "matches": 3,
+        "wr": 0.67
+      },
+      "recsur": {
+        "ci_high": 1.0,
+        "ci_low": 0.36,
+        "matches": 6,
+        "wr": 0.83
+      },
+      "replenish": {
+        "ci_high": 0.84,
+        "ci_low": 0.16,
+        "matches": 8,
+        "wr": 0.5
+      },
+      "sligh": {
+        "ci_high": 0.66,
+        "ci_low": 0.23,
+        "matches": 23,
+        "wr": 0.43
+      },
+      "stasis": {
+        "ci_high": 0.96,
+        "ci_low": 0.52,
+        "matches": 15,
+        "wr": 0.8
+      },
+      "stiflenought": {
+        "ci_high": 0.65,
+        "ci_low": 0.29,
+        "matches": 32,
+        "wr": 0.47
+      },
+      "terrageddon": {
+        "ci_high": 0.79,
+        "ci_low": 0.27,
+        "matches": 15,
+        "wr": 0.53
+      },
+      "the-rock": {
+        "ci_high": 1.0,
+        "ci_low": 0.36,
+        "matches": 6,
+        "wr": 0.83
+      }
+    },
+    "enchantress": {
+      "bw-control": {
+        "ci_high": 0.88,
+        "ci_low": 0.26,
+        "matches": 10,
+        "wr": 0.6
+      },
+      "elves": {
+        "ci_high": 0.67,
+        "ci_low": 0.2,
+        "matches": 19,
+        "wr": 0.42
+      },
+      "enchantress": {
+        "ci_high": 0.74,
+        "ci_low": 0.26,
+        "matches": 18,
+        "wr": 0.5
+      },
+      "goblins": {
+        "ci_high": 0.85,
+        "ci_low": 0.51,
+        "matches": 30,
+        "wr": 0.7
+      },
+      "gro-a-tog": {
+        "ci_high": 1.0,
+        "ci_low": 0.16,
+        "matches": 2,
+        "wr": 1.0
+      },
+      "landstill": {
+        "ci_high": 0.94,
+        "ci_low": 0.52,
+        "matches": 18,
+        "wr": 0.78
+      },
+      "madness": {
+        "ci_high": 0.98,
+        "ci_low": 0.48,
+        "matches": 11,
+        "wr": 0.82
+      },
+      "oath": {
+        "ci_high": 0.96,
+        "ci_low": 0.22,
+        "matches": 6,
+        "wr": 0.67
+      },
+      "recsur": {
+        "ci_high": 0.97,
+        "ci_low": 0.4,
+        "matches": 9,
+        "wr": 0.78
+      },
+      "replenish": {
+        "ci_high": 0.54,
+        "ci_low": 0.05,
+        "matches": 13,
+        "wr": 0.23
+      },
+      "sligh": {
+        "ci_high": 0.86,
+        "ci_low": 0.32,
+        "matches": 13,
+        "wr": 0.62
+      },
+      "stasis": {
+        "ci_high": 0.94,
+        "ci_low": 0.39,
+        "matches": 11,
+        "wr": 0.73
+      },
+      "stiflenought": {
+        "ci_high": 0.86,
+        "ci_low": 0.55,
+        "matches": 36,
+        "wr": 0.72
+      },
+      "terrageddon": {
+        "ci_high": 0.57,
+        "ci_low": 0.15,
+        "matches": 21,
+        "wr": 0.33
+      },
+      "the-rock": {
+        "ci_high": 0.97,
+        "ci_low": 0.4,
+        "matches": 9,
+        "wr": 0.78
+      }
+    },
+    "goblins": {
+      "bw-control": {
+        "ci_high": 0.75,
+        "ci_low": 0.25,
+        "matches": 16,
+        "wr": 0.5
+      },
+      "elves": {
+        "ci_high": 0.78,
+        "ci_low": 0.41,
+        "matches": 28,
+        "wr": 0.61
+      },
+      "enchantress": {
+        "ci_high": 0.49,
+        "ci_low": 0.15,
+        "matches": 30,
+        "wr": 0.3
+      },
+      "goblins": {
+        "ci_high": 0.61,
+        "ci_low": 0.39,
+        "matches": 86,
+        "wr": 0.5
+      },
+      "gro-a-tog": {
+        "ci_high": 0.71,
+        "ci_low": 0.18,
+        "matches": 14,
+        "wr": 0.43
+      },
+      "landstill": {
+        "ci_high": 0.73,
+        "ci_low": 0.36,
+        "matches": 31,
+        "wr": 0.55
+      },
+      "madness": {
+        "ci_high": 0.74,
+        "ci_low": 0.26,
+        "matches": 18,
+        "wr": 0.5
+      },
+      "oath": {
+        "ci_high": 0.72,
+        "ci_low": 0.15,
+        "matches": 12,
+        "wr": 0.42
+      },
+      "recsur": {
+        "ci_high": 0.74,
+        "ci_low": 0.26,
+        "matches": 18,
+        "wr": 0.5
+      },
+      "replenish": {
+        "ci_high": 0.52,
+        "ci_low": 0.07,
+        "matches": 16,
+        "wr": 0.25
+      },
+      "sligh": {
+        "ci_high": 0.73,
+        "ci_low": 0.47,
+        "matches": 58,
+        "wr": 0.6
+      },
+      "stasis": {
+        "ci_high": 0.71,
+        "ci_low": 0.33,
+        "matches": 29,
+        "wr": 0.52
+      },
+      "stiflenought": {
+        "ci_high": 0.6,
+        "ci_low": 0.35,
+        "matches": 68,
+        "wr": 0.47
+      },
+      "terrageddon": {
+        "ci_high": 0.54,
+        "ci_low": 0.18,
+        "matches": 29,
+        "wr": 0.34
+      },
+      "the-rock": {
+        "ci_high": 0.84,
+        "ci_low": 0.32,
+        "matches": 15,
+        "wr": 0.6
+      }
+    },
+    "gro-a-tog": {
+      "bw-control": {
+        "ci_high": 0.99,
+        "ci_low": 0.19,
+        "matches": 4,
+        "wr": 0.75
+      },
+      "elves": {
+        "ci_high": 0.91,
+        "ci_low": 0.01,
+        "matches": 3,
+        "wr": 0.33
+      },
+      "enchantress": {
+        "ci_high": 0.84,
+        "ci_low": 0.0,
+        "matches": 2,
+        "wr": 0.0
+      },
+      "goblins": {
+        "ci_high": 0.82,
+        "ci_low": 0.29,
+        "matches": 14,
+        "wr": 0.57
+      },
+      "landstill": {
+        "ci_high": 0.78,
+        "ci_low": 0.04,
+        "matches": 6,
+        "wr": 0.33
+      },
+      "madness": {
+        "ci_high": 1.0,
+        "ci_low": 0.29,
+        "matches": 3,
+        "wr": 1.0
+      },
+      "oath": {
+        "ci_high": 0.84,
+        "ci_low": 0.0,
+        "matches": 2,
+        "wr": 0.0
+      },
+      "recsur": {
+        "ci_high": 0.99,
+        "ci_low": 0.01,
+        "matches": 2,
+        "wr": 0.5
+      },
+      "replenish": {
+        "ci_high": 1.0,
+        "ci_low": 0.02,
+        "matches": 1,
+        "wr": 1.0
+      },
+      "sligh": {
+        "ci_high": 0.34,
+        "ci_low": 0.0,
+        "matches": 14,
+        "wr": 0.07
+      },
+      "stasis": {
+        "ci_high": 1.0,
+        "ci_low": 0.16,
+        "matches": 2,
+        "wr": 1.0
+      },
+      "stiflenought": {
+        "ci_high": 0.9,
+        "ci_low": 0.18,
+        "matches": 7,
+        "wr": 0.57
+      },
+      "terrageddon": {
+        "ci_high": 0.95,
+        "ci_low": 0.15,
+        "matches": 5,
+        "wr": 0.6
+      },
+      "the-rock": {
+        "ci_high": 1.0,
+        "ci_low": 0.29,
+        "matches": 3,
+        "wr": 1.0
+      }
+    },
+    "landstill": {
+      "bw-control": {
+        "ci_high": 0.77,
+        "ci_low": 0.23,
+        "matches": 14,
+        "wr": 0.5
+      },
+      "elves": {
+        "ci_high": 0.37,
+        "ci_low": 0.0,
+        "matches": 8,
+        "wr": 0.0
+      },
+      "enchantress": {
+        "ci_high": 0.48,
+        "ci_low": 0.06,
+        "matches": 18,
+        "wr": 0.22
+      },
+      "goblins": {
+        "ci_high": 0.64,
+        "ci_low": 0.27,
+        "matches": 31,
+        "wr": 0.45
+      },
+      "gro-a-tog": {
+        "ci_high": 0.96,
+        "ci_low": 0.22,
+        "matches": 6,
+        "wr": 0.67
+      },
+      "landstill": {
+        "ci_high": 0.73,
+        "ci_low": 0.27,
+        "matches": 20,
+        "wr": 0.5
+      },
+      "madness": {
+        "ci_high": 0.88,
+        "ci_low": 0.26,
+        "matches": 10,
+        "wr": 0.6
+      },
+      "oath": {
+        "ci_high": 0.75,
+        "ci_low": 0.19,
+        "matches": 13,
+        "wr": 0.46
+      },
+      "recsur": {
+        "ci_high": 0.86,
+        "ci_low": 0.21,
+        "matches": 9,
+        "wr": 0.56
+      },
+      "replenish": {
+        "ci_high": 0.78,
+        "ci_low": 0.31,
+        "matches": 18,
+        "wr": 0.56
+      },
+      "sligh": {
+        "ci_high": 0.64,
+        "ci_low": 0.19,
+        "matches": 20,
+        "wr": 0.4
+      },
+      "stasis": {
+        "ci_high": 0.88,
+        "ci_low": 0.26,
+        "matches": 10,
+        "wr": 0.6
+      },
+      "stiflenought": {
+        "ci_high": 0.61,
+        "ci_low": 0.27,
+        "matches": 37,
+        "wr": 0.43
+      },
+      "terrageddon": {
+        "ci_high": 0.54,
+        "ci_low": 0.05,
+        "matches": 13,
+        "wr": 0.23
+      },
+      "the-rock": {
+        "ci_high": 0.83,
+        "ci_low": 0.23,
+        "matches": 11,
+        "wr": 0.55
+      }
+    },
+    "madness": {
+      "bw-control": {
+        "ci_high": 0.81,
+        "ci_low": 0.01,
+        "matches": 4,
+        "wr": 0.25
+      },
+      "elves": {
+        "ci_high": 0.52,
+        "ci_low": 0.02,
+        "matches": 11,
+        "wr": 0.18
+      },
+      "enchantress": {
+        "ci_high": 0.52,
+        "ci_low": 0.02,
+        "matches": 11,
+        "wr": 0.18
+      },
+      "goblins": {
+        "ci_high": 0.74,
+        "ci_low": 0.26,
+        "matches": 18,
+        "wr": 0.5
+      },
+      "gro-a-tog": {
+        "ci_high": 0.71,
+        "ci_low": 0.0,
+        "matches": 3,
+        "wr": 0.0
+      },
+      "landstill": {
+        "ci_high": 0.74,
+        "ci_low": 0.12,
+        "matches": 10,
+        "wr": 0.4
+      },
+      "madness": {
+        "ci_high": 0.99,
+        "ci_low": 0.01,
+        "matches": 2,
+        "wr": 0.5
+      },
+      "oath": {
+        "ci_high": 0.78,
+        "ci_low": 0.04,
+        "matches": 6,
+        "wr": 0.33
+      },
+      "recsur": {
+        "ci_high": 0.93,
+        "ci_low": 0.07,
+        "matches": 4,
+        "wr": 0.5
+      },
+      "replenish": {
+        "ci_high": 0.81,
+        "ci_low": 0.01,
+        "matches": 4,
+        "wr": 0.25
+      },
+      "sligh": {
+        "ci_high": 0.72,
+        "ci_low": 0.23,
+        "matches": 17,
+        "wr": 0.47
+      },
+      "stasis": {
+        "ci_high": 0.78,
+        "ci_low": 0.04,
+        "matches": 6,
+        "wr": 0.33
+      },
+      "stiflenought": {
+        "ci_high": 0.52,
+        "ci_low": 0.07,
+        "matches": 16,
+        "wr": 0.25
+      },
+      "terrageddon": {
+        "ci_high": 0.78,
+        "ci_low": 0.04,
+        "matches": 6,
+        "wr": 0.33
+      },
+      "the-rock": {
+        "ci_high": 0.81,
+        "ci_low": 0.01,
+        "matches": 4,
+        "wr": 0.25
+      }
+    },
+    "oath": {
+      "bw-control": {
+        "ci_high": 0.88,
+        "ci_low": 0.12,
+        "matches": 6,
+        "wr": 0.5
+      },
+      "elves": {
+        "ci_high": 0.91,
+        "ci_low": 0.01,
+        "matches": 3,
+        "wr": 0.33
+      },
+      "enchantress": {
+        "ci_high": 0.78,
+        "ci_low": 0.04,
+        "matches": 6,
+        "wr": 0.33
+      },
+      "goblins": {
+        "ci_high": 0.85,
+        "ci_low": 0.28,
+        "matches": 12,
+        "wr": 0.58
+      },
+      "gro-a-tog": {
+        "ci_high": 1.0,
+        "ci_low": 0.16,
+        "matches": 2,
+        "wr": 1.0
+      },
+      "landstill": {
+        "ci_high": 0.81,
+        "ci_low": 0.25,
+        "matches": 13,
+        "wr": 0.54
+      },
+      "madness": {
+        "ci_high": 0.96,
+        "ci_low": 0.22,
+        "matches": 6,
+        "wr": 0.67
+      },
+      "oath": {
+        "ci_high": 0.93,
+        "ci_low": 0.07,
+        "matches": 4,
+        "wr": 0.5
+      },
+      "recsur": {
+        "ci_high": 0.88,
+        "ci_low": 0.12,
+        "matches": 6,
+        "wr": 0.5
+      },
+      "replenish": {
+        "ci_high": 0.65,
+        "ci_low": 0.03,
+        "matches": 8,
+        "wr": 0.25
+      },
+      "sligh": {
+        "ci_high": 0.86,
+        "ci_low": 0.32,
+        "matches": 13,
+        "wr": 0.62
+      },
+      "stasis": {
+        "ci_high": 0.85,
+        "ci_low": 0.05,
+        "matches": 5,
+        "wr": 0.4
+      },
+      "stiflenought": {
+        "ci_high": 0.93,
+        "ci_low": 0.3,
+        "matches": 9,
+        "wr": 0.67
+      },
+      "terrageddon": {
+        "ci_high": 0.6,
+        "ci_low": 0.03,
+        "matches": 9,
+        "wr": 0.22
+      },
+      "the-rock": {
+        "ci_high": 1.0,
+        "ci_low": 0.36,
+        "matches": 6,
+        "wr": 0.83
+      }
+    },
+    "recsur": {
+      "bw-control": {
+        "ci_high": 0.88,
+        "ci_low": 0.12,
+        "matches": 6,
+        "wr": 0.5
+      },
+      "elves": {
+        "ci_high": 0.64,
+        "ci_low": 0.0,
+        "matches": 6,
+        "wr": 0.17
+      },
+      "enchantress": {
+        "ci_high": 0.6,
+        "ci_low": 0.03,
+        "matches": 9,
+        "wr": 0.22
+      },
+      "goblins": {
+        "ci_high": 0.74,
+        "ci_low": 0.26,
+        "matches": 18,
+        "wr": 0.5
+      },
+      "gro-a-tog": {
+        "ci_high": 0.99,
+        "ci_low": 0.01,
+        "matches": 2,
+        "wr": 0.5
+      },
+      "landstill": {
+        "ci_high": 0.79,
+        "ci_low": 0.14,
+        "matches": 9,
+        "wr": 0.44
+      },
+      "madness": {
+        "ci_high": 0.93,
+        "ci_low": 0.07,
+        "matches": 4,
+        "wr": 0.5
+      },
+      "oath": {
+        "ci_high": 0.88,
+        "ci_low": 0.12,
+        "matches": 6,
+        "wr": 0.5
+      },
+      "recsur": {
+        "ci_high": 0.93,
+        "ci_low": 0.07,
+        "matches": 4,
+        "wr": 0.5
+      },
+      "replenish": {
+        "ci_high": 0.65,
+        "ci_low": 0.07,
+        "matches": 10,
+        "wr": 0.3
+      },
+      "sligh": {
+        "ci_high": 0.69,
+        "ci_low": 0.11,
+        "matches": 11,
+        "wr": 0.36
+      },
+      "stasis": {
+        "ci_high": 0.93,
+        "ci_low": 0.07,
+        "matches": 4,
+        "wr": 0.5
+      },
+      "stiflenought": {
+        "ci_high": 0.65,
+        "ci_low": 0.15,
+        "matches": 16,
+        "wr": 0.38
+      },
+      "terrageddon": {
+        "ci_high": 0.65,
+        "ci_low": 0.07,
+        "matches": 10,
+        "wr": 0.3
+      },
+      "the-rock": {
+        "ci_high": 0.98,
+        "ci_low": 0.0,
+        "matches": 1,
+        "wr": 0.0
+      }
+    },
+    "replenish": {
+      "bw-control": {
+        "ci_high": 0.98,
+        "ci_low": 0.48,
+        "matches": 11,
+        "wr": 0.82
+      },
+      "elves": {
+        "ci_high": 0.84,
+        "ci_low": 0.16,
+        "matches": 8,
+        "wr": 0.5
+      },
+      "enchantress": {
+        "ci_high": 0.95,
+        "ci_low": 0.46,
+        "matches": 13,
+        "wr": 0.77
+      },
+      "goblins": {
+        "ci_high": 0.93,
+        "ci_low": 0.48,
+        "matches": 16,
+        "wr": 0.75
+      },
+      "gro-a-tog": {
+        "ci_high": 0.98,
+        "ci_low": 0.0,
+        "matches": 1,
+        "wr": 0.0
+      },
+      "landstill": {
+        "ci_high": 0.69,
+        "ci_low": 0.22,
+        "matches": 18,
+        "wr": 0.44
+      },
+      "madness": {
+        "ci_high": 0.99,
+        "ci_low": 0.19,
+        "matches": 4,
+        "wr": 0.75
+      },
+      "oath": {
+        "ci_high": 0.97,
+        "ci_low": 0.35,
+        "matches": 8,
+        "wr": 0.75
+      },
+      "recsur": {
+        "ci_high": 0.93,
+        "ci_low": 0.35,
+        "matches": 10,
+        "wr": 0.7
+      },
+      "replenish": {
+        "ci_high": 0.84,
+        "ci_low": 0.16,
+        "matches": 8,
+        "wr": 0.5
+      },
+      "sligh": {
+        "ci_high": 0.71,
+        "ci_low": 0.24,
+        "matches": 19,
+        "wr": 0.47
+      },
+      "stasis": {
+        "ci_high": 0.99,
+        "ci_low": 0.09,
+        "matches": 3,
+        "wr": 0.67
+      },
+      "stiflenought": {
+        "ci_high": 0.93,
+        "ci_low": 0.48,
+        "matches": 16,
+        "wr": 0.75
+      },
+      "terrageddon": {
+        "ci_high": 0.88,
+        "ci_low": 0.12,
+        "matches": 6,
+        "wr": 0.5
+      },
+      "the-rock": {
+        "ci_high": 0.99,
+        "ci_low": 0.19,
+        "matches": 4,
+        "wr": 0.75
+      }
+    },
+    "sligh": {
+      "bw-control": {
+        "ci_high": 0.84,
+        "ci_low": 0.32,
+        "matches": 15,
+        "wr": 0.6
+      },
+      "elves": {
+        "ci_high": 0.77,
+        "ci_low": 0.34,
+        "matches": 23,
+        "wr": 0.57
+      },
+      "enchantress": {
+        "ci_high": 0.68,
+        "ci_low": 0.14,
+        "matches": 13,
+        "wr": 0.38
+      },
+      "goblins": {
+        "ci_high": 0.53,
+        "ci_low": 0.27,
+        "matches": 58,
+        "wr": 0.4
+      },
+      "gro-a-tog": {
+        "ci_high": 1.0,
+        "ci_low": 0.66,
+        "matches": 14,
+        "wr": 0.93
+      },
+      "landstill": {
+        "ci_high": 0.81,
+        "ci_low": 0.36,
+        "matches": 20,
+        "wr": 0.6
+      },
+      "madness": {
+        "ci_high": 0.77,
+        "ci_low": 0.28,
+        "matches": 17,
+        "wr": 0.53
+      },
+      "oath": {
+        "ci_high": 0.68,
+        "ci_low": 0.14,
+        "matches": 13,
+        "wr": 0.38
+      },
+      "recsur": {
+        "ci_high": 0.89,
+        "ci_low": 0.31,
+        "matches": 11,
+        "wr": 0.64
+      },
+      "replenish": {
+        "ci_high": 0.76,
+        "ci_low": 0.29,
+        "matches": 19,
+        "wr": 0.53
+      },
+      "sligh": {
+        "ci_high": 0.64,
+        "ci_low": 0.36,
+        "matches": 52,
+        "wr": 0.5
+      },
+      "stasis": {
+        "ci_high": 0.69,
+        "ci_low": 0.28,
+        "matches": 25,
+        "wr": 0.48
+      },
+      "stiflenought": {
+        "ci_high": 0.31,
+        "ci_low": 0.09,
+        "matches": 55,
+        "wr": 0.18
+      },
+      "terrageddon": {
+        "ci_high": 0.55,
+        "ci_low": 0.14,
+        "matches": 22,
+        "wr": 0.32
+      },
+      "the-rock": {
+        "ci_high": 0.62,
+        "ci_low": 0.12,
+        "matches": 15,
+        "wr": 0.33
+      }
+    },
+    "stasis": {
+      "bw-control": {
+        "ci_high": 0.93,
+        "ci_low": 0.07,
+        "matches": 4,
+        "wr": 0.5
+      },
+      "elves": {
+        "ci_high": 0.48,
+        "ci_low": 0.04,
+        "matches": 15,
+        "wr": 0.2
+      },
+      "enchantress": {
+        "ci_high": 0.61,
+        "ci_low": 0.06,
+        "matches": 11,
+        "wr": 0.27
+      },
+      "goblins": {
+        "ci_high": 0.67,
+        "ci_low": 0.29,
+        "matches": 29,
+        "wr": 0.48
+      },
+      "gro-a-tog": {
+        "ci_high": 0.84,
+        "ci_low": 0.0,
+        "matches": 2,
+        "wr": 0.0
+      },
+      "landstill": {
+        "ci_high": 0.74,
+        "ci_low": 0.12,
+        "matches": 10,
+        "wr": 0.4
+      },
+      "madness": {
+        "ci_high": 0.96,
+        "ci_low": 0.22,
+        "matches": 6,
+        "wr": 0.67
+      },
+      "oath": {
+        "ci_high": 0.95,
+        "ci_low": 0.15,
+        "matches": 5,
+        "wr": 0.6
+      },
+      "recsur": {
+        "ci_high": 0.93,
+        "ci_low": 0.07,
+        "matches": 4,
+        "wr": 0.5
+      },
+      "replenish": {
+        "ci_high": 0.91,
+        "ci_low": 0.01,
+        "matches": 3,
+        "wr": 0.33
+      },
+      "sligh": {
+        "ci_high": 0.72,
+        "ci_low": 0.31,
+        "matches": 25,
+        "wr": 0.52
+      },
+      "stasis": {
+        "ci_high": 0.88,
+        "ci_low": 0.12,
+        "matches": 6,
+        "wr": 0.5
+      },
+      "stiflenought": {
+        "ci_high": 0.68,
+        "ci_low": 0.24,
+        "matches": 22,
+        "wr": 0.45
+      },
+      "terrageddon": {
+        "ci_high": 0.9,
+        "ci_low": 0.18,
+        "matches": 7,
+        "wr": 0.57
+      },
+      "the-rock": {
+        "ci_high": 0.96,
+        "ci_low": 0.22,
+        "matches": 6,
+        "wr": 0.67
+      }
+    },
+    "stiflenought": {
+      "bw-control": {
+        "ci_high": 0.77,
+        "ci_low": 0.23,
+        "matches": 14,
+        "wr": 0.5
+      },
+      "elves": {
+        "ci_high": 0.71,
+        "ci_low": 0.35,
+        "matches": 32,
+        "wr": 0.53
+      },
+      "enchantress": {
+        "ci_high": 0.45,
+        "ci_low": 0.14,
+        "matches": 36,
+        "wr": 0.28
+      },
+      "goblins": {
+        "ci_high": 0.65,
+        "ci_low": 0.4,
+        "matches": 68,
+        "wr": 0.53
+      },
+      "gro-a-tog": {
+        "ci_high": 0.82,
+        "ci_low": 0.1,
+        "matches": 7,
+        "wr": 0.43
+      },
+      "landstill": {
+        "ci_high": 0.73,
+        "ci_low": 0.39,
+        "matches": 37,
+        "wr": 0.57
+      },
+      "madness": {
+        "ci_high": 0.93,
+        "ci_low": 0.48,
+        "matches": 16,
+        "wr": 0.75
+      },
+      "oath": {
+        "ci_high": 0.7,
+        "ci_low": 0.07,
+        "matches": 9,
+        "wr": 0.33
+      },
+      "recsur": {
+        "ci_high": 0.85,
+        "ci_low": 0.35,
+        "matches": 16,
+        "wr": 0.63
+      },
+      "replenish": {
+        "ci_high": 0.52,
+        "ci_low": 0.07,
+        "matches": 16,
+        "wr": 0.25
+      },
+      "sligh": {
+        "ci_high": 0.91,
+        "ci_low": 0.69,
+        "matches": 55,
+        "wr": 0.82
+      },
+      "stasis": {
+        "ci_high": 0.76,
+        "ci_low": 0.32,
+        "matches": 22,
+        "wr": 0.55
+      },
+      "stiflenought": {
+        "ci_high": 0.69,
+        "ci_low": 0.31,
+        "matches": 28,
+        "wr": 0.5
+      },
+      "terrageddon": {
+        "ci_high": 0.71,
+        "ci_low": 0.33,
+        "matches": 29,
+        "wr": 0.52
+      },
+      "the-rock": {
+        "ci_high": 0.79,
+        "ci_low": 0.14,
+        "matches": 9,
+        "wr": 0.44
+      }
+    },
+    "terrageddon": {
+      "bw-control": {
+        "ci_high": 1.0,
+        "ci_low": 0.36,
+        "matches": 6,
+        "wr": 0.83
+      },
+      "elves": {
+        "ci_high": 0.73,
+        "ci_low": 0.21,
+        "matches": 15,
+        "wr": 0.47
+      },
+      "enchantress": {
+        "ci_high": 0.85,
+        "ci_low": 0.43,
+        "matches": 21,
+        "wr": 0.67
+      },
+      "goblins": {
+        "ci_high": 0.82,
+        "ci_low": 0.46,
+        "matches": 29,
+        "wr": 0.66
+      },
+      "gro-a-tog": {
+        "ci_high": 0.85,
+        "ci_low": 0.05,
+        "matches": 5,
+        "wr": 0.4
+      },
+      "landstill": {
+        "ci_high": 0.95,
+        "ci_low": 0.46,
+        "matches": 13,
+        "wr": 0.77
+      },
+      "madness": {
+        "ci_high": 0.96,
+        "ci_low": 0.22,
+        "matches": 6,
+        "wr": 0.67
+      },
+      "oath": {
+        "ci_high": 0.97,
+        "ci_low": 0.4,
+        "matches": 9,
+        "wr": 0.78
+      },
+      "recsur": {
+        "ci_high": 0.93,
+        "ci_low": 0.35,
+        "matches": 10,
+        "wr": 0.7
+      },
+      "replenish": {
+        "ci_high": 0.88,
+        "ci_low": 0.12,
+        "matches": 6,
+        "wr": 0.5
+      },
+      "sligh": {
+        "ci_high": 0.86,
+        "ci_low": 0.45,
+        "matches": 22,
+        "wr": 0.68
+      },
+      "stasis": {
+        "ci_high": 0.82,
+        "ci_low": 0.1,
+        "matches": 7,
+        "wr": 0.43
+      },
+      "stiflenought": {
+        "ci_high": 0.67,
+        "ci_low": 0.29,
+        "matches": 29,
+        "wr": 0.48
+      },
+      "terrageddon": {
+        "ci_high": 0.79,
+        "ci_low": 0.21,
+        "matches": 12,
+        "wr": 0.5
+      },
+      "the-rock": {
+        "ci_high": 0.99,
+        "ci_low": 0.19,
+        "matches": 4,
+        "wr": 0.75
+      }
+    },
+    "the-rock": {
+      "bw-control": {
+        "ci_high": 0.81,
+        "ci_low": 0.01,
+        "matches": 4,
+        "wr": 0.25
+      },
+      "elves": {
+        "ci_high": 0.64,
+        "ci_low": 0.0,
+        "matches": 6,
+        "wr": 0.17
+      },
+      "enchantress": {
+        "ci_high": 0.6,
+        "ci_low": 0.03,
+        "matches": 9,
+        "wr": 0.22
+      },
+      "goblins": {
+        "ci_high": 0.68,
+        "ci_low": 0.16,
+        "matches": 15,
+        "wr": 0.4
+      },
+      "gro-a-tog": {
+        "ci_high": 0.71,
+        "ci_low": 0.0,
+        "matches": 3,
+        "wr": 0.0
+      },
+      "landstill": {
+        "ci_high": 0.77,
+        "ci_low": 0.17,
+        "matches": 11,
+        "wr": 0.45
+      },
+      "madness": {
+        "ci_high": 0.99,
+        "ci_low": 0.19,
+        "matches": 4,
+        "wr": 0.75
+      },
+      "oath": {
+        "ci_high": 0.64,
+        "ci_low": 0.0,
+        "matches": 6,
+        "wr": 0.17
+      },
+      "recsur": {
+        "ci_high": 1.0,
+        "ci_low": 0.02,
+        "matches": 1,
+        "wr": 1.0
+      },
+      "replenish": {
+        "ci_high": 0.81,
+        "ci_low": 0.01,
+        "matches": 4,
+        "wr": 0.25
+      },
+      "sligh": {
+        "ci_high": 0.88,
+        "ci_low": 0.38,
+        "matches": 15,
+        "wr": 0.67
+      },
+      "stasis": {
+        "ci_high": 0.78,
+        "ci_low": 0.04,
+        "matches": 6,
+        "wr": 0.33
+      },
+      "stiflenought": {
+        "ci_high": 0.86,
+        "ci_low": 0.21,
+        "matches": 9,
+        "wr": 0.56
+      },
+      "terrageddon": {
+        "ci_high": 0.81,
+        "ci_low": 0.01,
+        "matches": 4,
+        "wr": 0.25
+      },
+      "the-rock": {
+        "ci_high": 0.84,
+        "ci_low": 0.16,
+        "matches": 8,
+        "wr": 0.5
+      }
+    }
+  },
+  "source": "https://mtgdecks.net/Premodern/winrates"
+}
