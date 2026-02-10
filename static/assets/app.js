@@ -32,6 +32,7 @@ const app = document.getElementById('app');
 let data = { index: null, battleboxes: {}, buildId: '' };
 const TAB_BATTLEBOX = 'battlebox';
 const TAB_LIFE = 'life';
+const TAB_MATRIX = 'matrix';
 const ui = {
   shell: null,
   header: null,
@@ -39,6 +40,7 @@ const ui = {
   footer: null,
   battleboxPane: null,
   lifePane: null,
+  matrixPane: null,
   activeTab: TAB_BATTLEBOX,
 };
 const qrUi = {
@@ -120,7 +122,7 @@ function bindBreadcrumbQrButton(container) {
 }
 
 function normalizeTab(tab) {
-  return tab === TAB_LIFE ? TAB_LIFE : TAB_BATTLEBOX;
+  return [TAB_BATTLEBOX, TAB_LIFE, TAB_MATRIX].includes(tab) ? tab : TAB_BATTLEBOX;
 }
 
 function replaceHashPreserveSearch(nextHash) {
@@ -129,12 +131,13 @@ function replaceHashPreserveSearch(nextHash) {
 }
 
 function applyActiveTab(tab) {
-  if (!ui.battleboxPane || !ui.lifePane || !ui.footer) return;
+  if (!ui.battleboxPane || !ui.lifePane || !ui.matrixPane || !ui.footer) return;
   const nextTab = normalizeTab(tab);
   ui.activeTab = nextTab;
   ui.battleboxPane.hidden = nextTab !== TAB_BATTLEBOX;
   ui.lifePane.hidden = nextTab !== TAB_LIFE;
-  if (nextTab === TAB_LIFE) {
+  ui.matrixPane.hidden = nextTab !== TAB_MATRIX;
+  if (nextTab !== TAB_BATTLEBOX) {
     preview.hidePreview();
   }
   ui.footer.querySelectorAll('.tabbar-button').forEach((button) => {
@@ -163,12 +166,16 @@ function ensureShell() {
   lifePane.className = 'tab-pane tab-pane-life';
   lifePane.id = 'tab-life';
   createLifeCounter(lifePane);
+  const matrixPane = document.createElement('div');
+  matrixPane.className = 'tab-pane tab-pane-matrix';
+  matrixPane.id = 'tab-matrix';
   const footer = document.createElement('div');
   footer.className = 'view-footer';
   footer.innerHTML = `
     <div class="tabbar">
       <button type="button" class="action-button tabbar-button" data-tab="battlebox" aria-label="Battlebox tab">📚</button>
       <button type="button" class="action-button tabbar-button" data-tab="life" aria-label="Life tab">❤️‍🩹</button>
+      <button type="button" class="action-button tabbar-button" data-tab="matrix" aria-label="Winrate matrix tab">📊</button>
     </div>
   `;
 
@@ -180,6 +187,7 @@ function ensureShell() {
 
   body.appendChild(battleboxPane);
   body.appendChild(lifePane);
+  body.appendChild(matrixPane);
   shell.appendChild(header);
   shell.appendChild(body);
   shell.appendChild(footer);
@@ -191,6 +199,7 @@ function ensureShell() {
   ui.footer = footer;
   ui.battleboxPane = battleboxPane;
   ui.lifePane = lifePane;
+  ui.matrixPane = matrixPane;
   preview.setScrollContainer(battleboxPane);
 }
 
