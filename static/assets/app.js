@@ -394,7 +394,6 @@ async function route() {
   } = parseHashRoute(location.hash.slice(1) || '/');
   const currentBattleboxSlug = parts.length > 0 ? normalizeName(parts[0]) : '';
   const hasBattleboxContext = parts.length > 0;
-  setMatrixTabEnabled(hasBattleboxContext);
 
   if (parts.length === 0) {
     renderHome();
@@ -415,6 +414,7 @@ async function route() {
   }
 
   await renderMatrixPane(currentBattleboxSlug);
+  setMatrixTabEnabled(hasBattleboxContext);
 
   if (ui.battleboxPane) {
     ui.battleboxPane.scrollTo({ top: 0, left: 0, behavior: 'auto' });

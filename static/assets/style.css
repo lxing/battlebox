@@ -239,6 +239,16 @@ body {
   -webkit-touch-callout: none;
 }
 
+.tabbar-button:disabled,
+.tabbar-button[aria-disabled='true'] {
+  opacity: 0.45;
+  cursor: default;
+  pointer-events: none;
+  background: #2a2a3f;
+  border-color: #3a3a54;
+  color: #b7b7ca;
+}
+
 .tabbar-button:hover,
 .tabbar-button:active,
 .tabbar-button:focus,
