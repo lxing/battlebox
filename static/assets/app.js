@@ -311,7 +311,7 @@ function getWinrateBand(percent) {
   return 5;
 }
 
-async function renderMatrixPane(bbSlug) {
+async function renderMatrixPane(bbSlug, selectedDeckSlug = '') {
   if (!ui.matrixPane || !data.index) return;
 
   const battlebox = data.index.battleboxes.find((b) => b.slug === bbSlug);
@@ -337,6 +337,8 @@ async function renderMatrixPane(bbSlug) {
   )).join('');
 
   const rowHtml = orderedDecks.map((rowDeck) => {
+    const isSelectedRow = selectedDeckSlug && normalizeName(rowDeck.slug) === normalizeName(selectedDeckSlug);
+    const rowClass = isSelectedRow ? 'matrix-row-selected' : '';
     const total = matrix.totals?.[rowDeck.slug];
     const totalPercent = total && Number.isFinite(total.wr) ? Math.round(total.wr * 100) : null;
     const totalWins = total && Number.isFinite(total.wins) ? total.wins : null;
@@ -371,7 +373,7 @@ async function renderMatrixPane(bbSlug) {
       `;
     }).join('');
     return `
-      <tr>
+      <tr class="${rowClass}">
         <th scope="row" class="matrix-row-head">${rowDeck.name}</th>
         ${totalCellHtml}
         ${cellHtml}
@@ -411,6 +413,7 @@ async function route() {
     applySideboard,
   } = parseHashRoute(location.hash.slice(1) || '/');
   const currentBattleboxSlug = parts.length > 0 ? normalizeName(parts[0]) : '';
+  const currentDeckSlug = parts.length === 2 ? normalizeName(parts[1]) : '';
   const hasBattleboxContext = parts.length > 0;
 
   if (parts.length === 0) {
@@ -431,7 +434,7 @@ async function route() {
     renderNotFound();
   }
 
-  await renderMatrixPane(currentBattleboxSlug);
+  await renderMatrixPane(currentBattleboxSlug, currentDeckSlug);
   setMatrixTabEnabled(hasBattleboxContext);
 
   if (ui.battleboxPane) {
