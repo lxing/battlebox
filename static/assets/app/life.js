@@ -58,33 +58,7 @@ function getLifeInteraction(panel, event) {
 function bindControlAction(button, onActivate) {
   if (!(button instanceof HTMLElement) || typeof onActivate !== 'function') return;
 
-  let pointerActivated = false;
-
-  button.addEventListener('pointerdown', (event) => {
-    if (!event.isPrimary) return;
-    if (event.pointerType === 'mouse' && event.button !== 0) return;
-    event.preventDefault();
-    event.stopPropagation();
-  });
-
-  button.addEventListener('pointerup', (event) => {
-    if (!event.isPrimary) return;
-    if (event.pointerType === 'mouse' && event.button !== 0) return;
-    event.preventDefault();
-    event.stopPropagation();
-    pointerActivated = true;
-    onActivate();
-  });
-
-  button.addEventListener('click', (event) => {
-    event.preventDefault();
-    event.stopPropagation();
-    if (pointerActivated) {
-      pointerActivated = false;
-      return;
-    }
-    onActivate();
-  });
+  button.addEventListener('click', onActivate);
 }
 
 export function createLifeCounter(container, startingLife = 20) {
