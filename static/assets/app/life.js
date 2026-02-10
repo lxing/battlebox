@@ -55,6 +55,38 @@ function getLifeInteraction(panel, event) {
   return { player, step };
 }
 
+function bindControlAction(button, onActivate) {
+  if (!(button instanceof HTMLElement) || typeof onActivate !== 'function') return;
+
+  let pointerActivated = false;
+
+  button.addEventListener('pointerdown', (event) => {
+    if (!event.isPrimary) return;
+    if (event.pointerType === 'mouse' && event.button !== 0) return;
+    event.preventDefault();
+    event.stopPropagation();
+  });
+
+  button.addEventListener('pointerup', (event) => {
+    if (!event.isPrimary) return;
+    if (event.pointerType === 'mouse' && event.button !== 0) return;
+    event.preventDefault();
+    event.stopPropagation();
+    pointerActivated = true;
+    onActivate();
+  });
+
+  button.addEventListener('click', (event) => {
+    event.preventDefault();
+    event.stopPropagation();
+    if (pointerActivated) {
+      pointerActivated = false;
+      return;
+    }
+    onActivate();
+  });
+}
+
 export function createLifeCounter(container, startingLife = 20) {
   const state = readLifeState(startingLife);
   let activeHold = null;
@@ -227,31 +259,21 @@ export function createLifeCounter(container, startingLife = 20) {
     });
   });
 
-  if (resetButton) {
-    resetButton.addEventListener('click', (event) => {
-      event.preventDefault();
-      const confirmed = window.confirm('Reset?');
-      if (!confirmed) return;
-      clearActiveHold();
-      resetGameState();
-      highlightRandomPlayer();
-    });
-  }
+  bindControlAction(resetButton, () => {
+    clearActiveHold();
+    const confirmed = window.confirm('Reset?');
+    if (!confirmed) return;
+    resetGameState();
+    highlightRandomPlayer();
+  });
 
-  const handleNoopControlClick = (event) => {
-    event.preventDefault();
-  };
-  if (leftButton) {
-    leftButton.addEventListener('click', (event) => {
-      event.preventDefault();
-      state.monarch = state.monarch === 'p1' ? 'p2' : 'p1';
-      renderMonarch();
-      writeLifeState(state);
-    });
-  }
-  if (rightButton) {
-    rightButton.addEventListener('click', handleNoopControlClick);
-  }
+  bindControlAction(leftButton, () => {
+    state.monarch = state.monarch === 'p1' ? 'p2' : 'p1';
+    renderMonarch();
+    writeLifeState(state);
+  });
+
+  bindControlAction(rightButton, () => {});
 
   render();
   renderMonarch();
