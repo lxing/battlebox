@@ -103,6 +103,47 @@ def enforce_one_to_one(name_to_slug: Dict[str, str], fmt: str) -> None:
         seen[slug] = name
 
 
+def infer_missing_reverse_matchups(
+    matchups: Dict[str, Dict[str, Dict[str, float | int]]],
+    slugs: list[str],
+) -> None:
+    """Fill missing directed cells by inverting the reverse matchup when available."""
+    for from_slug in slugs:
+        row = matchups.setdefault(from_slug, {})
+        for to_slug in slugs:
+            if from_slug == to_slug:
+                continue
+            if to_slug in row:
+                continue
+
+            reverse = matchups.get(to_slug, {}).get(from_slug)
+            if not reverse:
+                continue
+
+            reverse_wr = reverse.get("wr")
+            if not isinstance(reverse_wr, (int, float)):
+                continue
+
+            inferred_wr = round(1.0 - float(reverse_wr), 4)
+            if inferred_wr < 0.0:
+                inferred_wr = 0.0
+            if inferred_wr > 1.0:
+                inferred_wr = 1.0
+
+            inferred: Dict[str, float | int] = {
+                "wr": inferred_wr,
+                "matches": int(reverse.get("matches", 0)),
+            }
+            # Confidence interval inversion is symmetric around 0.5.
+            ci_low = reverse.get("ci_low")
+            ci_high = reverse.get("ci_high")
+            if isinstance(ci_low, (int, float)) and isinstance(ci_high, (int, float)):
+                inferred["ci_low"] = round(1.0 - float(ci_high), 4)
+                inferred["ci_high"] = round(1.0 - float(ci_low), 4)
+
+            row[to_slug] = inferred
+
+
 def build_matrix(config: FormatConfig, fetched_at: str) -> Dict[str, object]:
     alias_doc = json.loads(config.alias_path.read_text())
     source = alias_doc["source"]
@@ -152,6 +193,11 @@ def build_matrix(config: FormatConfig, fetched_at: str) -> Dict[str, object]:
 
         if row_matchups:
             matchups[from_slug] = row_matchups
+
+    slugs = sorted(set(name_to_slug.values()))
+    infer_missing_reverse_matchups(matchups, slugs)
+    # Keep only non-empty rows after inference pass.
+    matchups = {slug: row for slug, row in matchups.items() if row}
 
     return {
         "format": config.name,
