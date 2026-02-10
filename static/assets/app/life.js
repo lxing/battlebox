@@ -3,6 +3,7 @@ const HOLD_DELAY_MS = 500;
 const HOLD_REPEAT_MS = 500;
 const HOLD_DELTA_MULTIPLIER = 10;
 const RESET_HIGHLIGHT_MS = 10000;
+const RESET_CONFIRM_WINDOW_MS = 2500;
 
 function parseLifeTotal(value, fallback) {
   const parsed = Number.parseInt(String(value), 10);
@@ -65,6 +66,8 @@ export function createLifeCounter(container, startingLife = 20) {
   const state = readLifeState(startingLife);
   let activeHold = null;
   let resetHighlightTimer = null;
+  let resetConfirmTimer = null;
+  let resetArmed = false;
 
   container.innerHTML = `
     <div class="life-counter" aria-label="Life counter">
@@ -156,6 +159,30 @@ export function createLifeCounter(container, startingLife = 20) {
     });
   };
 
+  const disarmReset = () => {
+    resetArmed = false;
+    if (resetConfirmTimer) {
+      window.clearTimeout(resetConfirmTimer);
+      resetConfirmTimer = null;
+    }
+    if (resetButton) {
+      resetButton.textContent = '🔄';
+      resetButton.setAttribute('aria-label', 'Reset life totals');
+    }
+  };
+
+  const armReset = () => {
+    disarmReset();
+    resetArmed = true;
+    if (resetButton) {
+      resetButton.textContent = 'Reset?';
+      resetButton.setAttribute('aria-label', 'Confirm reset');
+    }
+    resetConfirmTimer = window.setTimeout(() => {
+      disarmReset();
+    }, RESET_CONFIRM_WINDOW_MS);
+  };
+
   const highlightRandomPlayer = () => {
     clearResetHighlight();
     const chosenPlayer = Math.random() < 0.5 ? 'p1' : 'p2';
@@ -235,8 +262,11 @@ export function createLifeCounter(container, startingLife = 20) {
 
   bindControlAction(resetButton, () => {
     clearActiveHold();
-    const confirmed = window.confirm('Reset?');
-    if (!confirmed) return;
+    if (!resetArmed) {
+      armReset();
+      return;
+    }
+    disarmReset();
     resetGameState();
     highlightRandomPlayer();
   });
