@@ -447,45 +447,64 @@ body {
 }
 
 .initiative-room-item {
-  display: grid;
-  grid-template-columns: 1.35rem minmax(0, 1fr) 1.35rem;
-  align-items: center;
-  gap: 0.2rem;
+  --initiative-highlight-color: #86b89b;
+  --initiative-highlight-width: 2px;
+  position: relative;
+  display: block;
   min-height: 2.95rem;
   border: 1px solid var(--color-panel-border);
   border-radius: var(--radius-md);
-  padding: 0.15rem 0.25rem;
+  padding: 0.2rem 0.25rem;
 }
 
 .initiative-room-body {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 0.04rem;
+  display: grid;
+  grid-template-rows: 1fr 1fr;
+  align-items: stretch;
   min-width: 0;
+  width: 100%;
+  min-height: 2.45rem;
+}
+
+.initiative-room-body-entrance {
+  grid-template-rows: 1fr;
 }
 
 .initiative-room-label {
   color: #ddd;
   font-size: 0.72rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 1.3rem;
   text-align: center;
-  justify-self: center;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 }
 
+.initiative-room-label-entrance {
+  font-size: 0.78rem;
+  white-space: normal;
+  text-overflow: clip;
+}
+
 .initiative-room-desc {
   color: #9ea0b8;
   font-size: 0.6rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   line-height: 1.15;
   text-align: center;
   max-width: 100%;
 }
 
 .initiative-room-player {
+  position: absolute;
+  top: 0.21rem;
   color: #fff;
-  min-width: 1.25rem;
+  width: 1.38rem;
   height: 1.2rem;
   text-align: center;
   line-height: 1.2rem;
@@ -495,17 +514,26 @@ body {
   -webkit-touch-callout: none;
 }
 
+.initiative-room-player-left {
+  left: 0.18rem;
+}
+
+.initiative-room-player-right {
+  right: 0.18rem;
+}
+
 .initiative-player-token {
   cursor: pointer;
 }
 
 .initiative-player-selected {
-  outline: 1px solid #86b89b;
-  border-radius: 4px;
+  outline: var(--initiative-highlight-width) solid var(--initiative-highlight-color);
+  border-radius: 5px;
 }
 
 .initiative-room-valid-drop {
-  border-color: #86b89b;
+  border-color: var(--initiative-highlight-color);
+  border-width: var(--initiative-highlight-width);
 }
 
 .qr-breadcrumb-button {

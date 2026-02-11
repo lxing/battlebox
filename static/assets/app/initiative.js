@@ -1,4 +1,5 @@
 const ROOM_LABELS = {
+  0: 'Entrance',
   1: 'Secret Entrance',
   2: 'Forge',
   3: 'Lost Well',
@@ -22,8 +23,10 @@ const ROOM_DESCRIPTIONS = {
   9: 'Reveal 10 cards; put a creature onto the battlefield with three +1/+1 counters.',
 };
 
-// Undercity transitions used for life-tracker initiative (1-indexed).
+// Undercity transitions used for life-tracker initiative.
+// Room 0 (Entrance) exists in state but is not rendered as a room card in the UI.
 const ROOM_TRANSITIONS = {
+  0: [1],
   1: [2, 3],
   2: [4, 5],
   3: [5, 6],
@@ -39,10 +42,9 @@ function normalizePlayerId(playerId) {
   return playerId === 'p2' ? 'p2' : 'p1';
 }
 
-function normalizeRoomIndex(roomIndex, fallback = 1) {
+function normalizeRoomIndex(roomIndex, fallback = 0) {
   const parsed = Number.parseInt(String(roomIndex), 10);
   if (!Number.isInteger(parsed)) return fallback;
-  if (parsed === 0) return 1; // Legacy stored "Entrance" maps to Secret Entrance.
   if (!Object.prototype.hasOwnProperty.call(ROOM_LABELS, parsed)) return fallback;
   return parsed;
 }
@@ -55,8 +57,8 @@ function normalizeOwner(owner) {
 function normalizeRooms(rooms) {
   const source = rooms && typeof rooms === 'object' ? rooms : {};
   return {
-    p1: normalizeRoomIndex(source.p1, 1),
-    p2: normalizeRoomIndex(source.p2, 1),
+    p1: normalizeRoomIndex(source.p1, 0),
+    p2: normalizeRoomIndex(source.p2, 0),
   };
 }
 
@@ -71,7 +73,7 @@ export function createInitialInitiativeState(input) {
 export function resetInitiativeState() {
   return {
     owner: null,
-    rooms: { p1: 1, p2: 1 },
+    rooms: { p1: 0, p2: 0 },
   };
 }
 
@@ -142,6 +144,7 @@ export function createInitiativeOverlay(container, state, persist) {
   let draggedPlayer = null;
 
   const displayRows = [
+    [0],
     [1],
     [2, 3],
     [4, 5, 6],
@@ -153,8 +156,15 @@ export function createInitiativeOverlay(container, state, persist) {
     const rowsHtml = displayRows.map((row) => {
       const rowItems = row
         .map((idx) => {
+          const isEntrance = idx === 0;
           const label = ROOM_LABELS[idx] || `Room ${idx}`;
           const description = ROOM_DESCRIPTIONS[idx] || '';
+          const bodyClass = isEntrance
+            ? 'initiative-room-body initiative-room-body-entrance'
+            : 'initiative-room-body';
+          const bodyHtml = isEntrance
+            ? '<span class="initiative-room-label initiative-room-label-entrance">The Initiative</span>'
+            : `<span class="initiative-room-label">${label}</span><span class="initiative-room-desc">${description}</span>`;
           return `
             <li class="initiative-room-item" data-room="${idx}">
               <span
@@ -163,9 +173,8 @@ export function createInitiativeOverlay(container, state, persist) {
                 data-initiative-player="p1"
                 aria-label="Player 1 initiative token"
               ></span>
-              <span class="initiative-room-body">
-                <span class="initiative-room-label">${label}</span>
-                <span class="initiative-room-desc">${description}</span>
+              <span class="${bodyClass}">
+                ${bodyHtml}
               </span>
               <span
                 class="initiative-room-player initiative-room-player-right"
@@ -198,8 +207,8 @@ export function createInitiativeOverlay(container, state, persist) {
   const sync = () => {
     if (!overlay || !roomList) return;
     const initiative = getInitiativeState();
-    const p1Room = getPlayerRoom(initiative, 'p1') || 1;
-    const p2Room = getPlayerRoom(initiative, 'p2') || 1;
+    const p1Room = getPlayerRoom(initiative, 'p1');
+    const p2Room = getPlayerRoom(initiative, 'p2');
 
     overlay.classList.toggle('initiative-owner-p1', initiative.owner === 'p1');
     overlay.classList.toggle('initiative-owner-p2', initiative.owner === 'p2');
