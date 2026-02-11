@@ -370,6 +370,22 @@ body {
   right: 0.65rem;
 }
 
+.life-initiative {
+  position: absolute;
+  top: 0.45rem;
+  font-size: 1.8rem;
+  line-height: 1;
+  pointer-events: none;
+}
+
+.life-initiative-p1 {
+  right: 0.35rem;
+}
+
+.life-initiative-p2 {
+  left: 0.35rem;
+}
+
 .life-player-top {
   transform: rotate(180deg);
 }

@@ -163,7 +163,7 @@ export function createInitiativeOverlay(container, state, persist) {
             ? 'initiative-room-body initiative-room-body-entrance'
             : 'initiative-room-body';
           const bodyHtml = isEntrance
-            ? '<span class="initiative-room-label initiative-room-label-entrance">The Initiative</span>'
+            ? '<span class="initiative-room-label initiative-room-label-entrance">The Initiative ♿️</span>'
             : `<span class="initiative-room-label">${label}</span><span class="initiative-room-desc">${description}</span>`;
           return `
             <li class="initiative-room-item" data-room="${idx}">

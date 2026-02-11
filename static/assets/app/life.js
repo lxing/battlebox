@@ -91,6 +91,7 @@ export function createLifeCounter(container, startingLife = 20) {
       <section class="life-player life-player-top" data-player="p2" aria-label="Player 2 life total">
         <span class="life-player-icon life-player-icon-p2" aria-hidden="true">🐭</span>
         <span class="life-monarch life-monarch-p2" data-life-monarch="p2" aria-hidden="true" hidden>👑</span>
+        <span class="life-initiative life-initiative-p2" data-life-initiative="p2" aria-hidden="true" hidden>♿️</span>
         <span class="life-hit-hint life-hit-hint-left" aria-hidden="true">-</span>
         <span class="life-total" data-life-total="p2">${state.p2}</span>
         <span class="life-hit-hint life-hit-hint-right" aria-hidden="true">+</span>
@@ -103,6 +104,7 @@ export function createLifeCounter(container, startingLife = 20) {
       <section class="life-player life-player-bottom" data-player="p1" aria-label="Player 1 life total">
         <span class="life-player-icon life-player-icon-p1" aria-hidden="true">🐿️</span>
         <span class="life-monarch life-monarch-p1" data-life-monarch="p1" aria-hidden="true" hidden>👑</span>
+        <span class="life-initiative life-initiative-p1" data-life-initiative="p1" aria-hidden="true" hidden>♿️</span>
         <span class="life-hit-hint life-hit-hint-left" aria-hidden="true">-</span>
         <span class="life-total" data-life-total="p1">${state.p1}</span>
         <span class="life-hit-hint life-hit-hint-right" aria-hidden="true">+</span>
@@ -125,6 +127,10 @@ export function createLifeCounter(container, startingLife = 20) {
     p1: container.querySelector('[data-life-monarch="p1"]'),
     p2: container.querySelector('[data-life-monarch="p2"]'),
   };
+  const initiativeMarkers = {
+    p1: container.querySelector('[data-life-initiative="p1"]'),
+    p2: container.querySelector('[data-life-initiative="p2"]'),
+  };
 
   const render = () => {
     totals.p1.textContent = String(state.p1);
@@ -141,8 +147,18 @@ export function createLifeCounter(container, startingLife = 20) {
       panel.classList.toggle('life-player-has-monarch', state.monarch === player);
     });
   };
+  const renderInitiative = () => {
+    const owner = state.initiative?.owner === 'p1' || state.initiative?.owner === 'p2'
+      ? state.initiative.owner
+      : null;
+    Object.entries(initiativeMarkers).forEach(([player, marker]) => {
+      if (!marker) return;
+      marker.hidden = owner !== player;
+    });
+  };
   const initiativeOverlay = createInitiativeOverlay(container, state, () => {
     writeLifeState(state);
+    renderInitiative();
   });
 
   const applyDelta = (player, delta) => {
@@ -158,6 +174,7 @@ export function createLifeCounter(container, startingLife = 20) {
     state.initiative = resetInitiativeState();
     render();
     renderMonarch();
+    renderInitiative();
     writeLifeState(state);
     initiativeOverlay.sync();
   };
@@ -305,5 +322,6 @@ export function createLifeCounter(container, startingLife = 20) {
 
   render();
   renderMonarch();
+  renderInitiative();
   initiativeOverlay.sync();
 }
