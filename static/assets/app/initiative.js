@@ -1,7 +1,4 @@
-const PLAYERS = ['p1', 'p2'];
-
 const ROOM_LABELS = {
-  0: 'Entrance',
   1: 'Secret Entrance',
   2: 'Forge',
   3: 'Lost Well',
@@ -13,10 +10,20 @@ const ROOM_LABELS = {
   9: 'Throne of the Dead Three',
 };
 
-// Undercity transitions used for life-tracker initiative.
-// Rule: room 0 is only reachable from room 9 (or via full game reset).
+const ROOM_DESCRIPTIONS = {
+  1: 'Search for a basic land and put it into your hand.',
+  2: 'Put two +1/+1 counters on target creature.',
+  3: 'Scry 2.',
+  4: 'Target player loses 5 life.',
+  5: 'Goad target creature.',
+  6: 'Create a Treasure token.',
+  7: 'Draw a card.',
+  8: 'Create a 4/1 Skeleton token with menace.',
+  9: 'Reveal 10 cards; put a creature onto the battlefield with three +1/+1 counters.',
+};
+
+// Undercity transitions used for life-tracker initiative (1-indexed).
 const ROOM_TRANSITIONS = {
-  0: [1],
   1: [2, 3],
   2: [4, 5],
   3: [5, 6],
@@ -25,18 +32,17 @@ const ROOM_TRANSITIONS = {
   6: [8],
   7: [9],
   8: [9],
-  9: [0],
+  9: [1],
 };
-
-const DRAG_MIME = 'application/x-battlebox-initiative-player';
 
 function normalizePlayerId(playerId) {
   return playerId === 'p2' ? 'p2' : 'p1';
 }
 
-function normalizeRoomIndex(roomIndex, fallback = 0) {
+function normalizeRoomIndex(roomIndex, fallback = 1) {
   const parsed = Number.parseInt(String(roomIndex), 10);
   if (!Number.isInteger(parsed)) return fallback;
+  if (parsed === 0) return 1; // Legacy stored "Entrance" maps to Secret Entrance.
   if (!Object.prototype.hasOwnProperty.call(ROOM_LABELS, parsed)) return fallback;
   return parsed;
 }
@@ -49,8 +55,8 @@ function normalizeOwner(owner) {
 function normalizeRooms(rooms) {
   const source = rooms && typeof rooms === 'object' ? rooms : {};
   return {
-    p1: normalizeRoomIndex(source.p1, 0),
-    p2: normalizeRoomIndex(source.p2, 0),
+    p1: normalizeRoomIndex(source.p1, 1),
+    p2: normalizeRoomIndex(source.p2, 1),
   };
 }
 
@@ -65,21 +71,8 @@ export function createInitialInitiativeState(input) {
 export function resetInitiativeState() {
   return {
     owner: null,
-    rooms: { p1: 0, p2: 0 },
+    rooms: { p1: 1, p2: 1 },
   };
-}
-
-export function listInitiativeRooms() {
-  return Object.keys(ROOM_LABELS)
-    .map((key) => Number.parseInt(key, 10))
-    .sort((a, b) => a - b)
-    .map((index) => ({ index, label: ROOM_LABELS[index] }));
-}
-
-export function getInitiativeRoomLabel(roomIndex) {
-  const idx = normalizeRoomIndex(roomIndex, -1);
-  if (idx < 0) return 'Unknown';
-  return ROOM_LABELS[idx];
 }
 
 export function getPlayerRoom(state, playerId) {
@@ -141,69 +134,58 @@ export function applyInitiativeMove(state, playerId, roomIndex) {
   };
 }
 
-export function getInitiativeDragMimeType() {
-  return DRAG_MIME;
-}
-
-export function buildInitiativeDragPayload(playerId, state) {
-  const player = normalizePlayerId(playerId);
-  return JSON.stringify({
-    player,
-    fromRoom: getPlayerRoom(state, player),
-  });
-}
-
-export function parseInitiativeDragPayload(raw) {
-  try {
-    const parsed = JSON.parse(String(raw || ''));
-    return {
-      player: normalizePlayerId(parsed.player),
-      fromRoom: normalizeRoomIndex(parsed.fromRoom, 0),
-    };
-  } catch (_) {
-    return null;
-  }
-}
-
-export function getInitiativePlayers() {
-  return [...PLAYERS];
-}
-
 export function createInitiativeOverlay(container, state, persist) {
   const writeState = typeof persist === 'function' ? persist : () => {};
-  const rooms = listInitiativeRooms();
 
   let overlay = null;
   let roomList = null;
   let draggedPlayer = null;
 
+  const displayRows = [
+    [1],
+    [2, 3],
+    [4, 5, 6],
+    [7, 8],
+    [9],
+  ];
+
   const buildHtml = () => {
-    const roomItems = rooms.map(({ index, label }) => (
-      `
-      <li class="initiative-room-item" data-room="${index}">
-        <span
-          class="initiative-room-player initiative-room-player-left"
-          data-room-player-left="${index}"
-          data-initiative-player="p1"
-          aria-label="Player 1 initiative token"
-        ></span>
-        <span class="initiative-room-label">${index}. ${label}</span>
-        <span
-          class="initiative-room-player initiative-room-player-right"
-          data-room-player-right="${index}"
-          data-initiative-player="p2"
-          aria-label="Player 2 initiative token"
-        ></span>
-      </li>
-      `
-    )).join('');
+    const rowsHtml = displayRows.map((row) => {
+      const rowItems = row
+        .map((idx) => {
+          const label = ROOM_LABELS[idx] || `Room ${idx}`;
+          const description = ROOM_DESCRIPTIONS[idx] || '';
+          return `
+            <li class="initiative-room-item" data-room="${idx}">
+              <span
+                class="initiative-room-player initiative-room-player-left"
+                data-room-player-left="${idx}"
+                data-initiative-player="p1"
+                aria-label="Player 1 initiative token"
+              ></span>
+              <span class="initiative-room-body">
+                <span class="initiative-room-label">${label}</span>
+                <span class="initiative-room-desc">${description}</span>
+              </span>
+              <span
+                class="initiative-room-player initiative-room-player-right"
+                data-room-player-right="${idx}"
+                data-initiative-player="p2"
+                aria-label="Player 2 initiative token"
+              ></span>
+            </li>
+          `;
+        })
+        .join('');
+      return `<ul class="initiative-room-row" style="--initiative-cols: ${row.length};">${rowItems}</ul>`;
+    }).join('');
 
     return `
       <div class="initiative-overlay-backdrop" data-initiative-overlay-backdrop></div>
       <div class="initiative-overlay-sheet" role="dialog" aria-modal="true" aria-label="Initiative rooms">
-        <ul class="initiative-room-list" data-initiative-room-list>
-          ${roomItems}
-        </ul>
+        <div class="initiative-room-list" data-initiative-room-list>
+          ${rowsHtml}
+        </div>
       </div>
     `;
   };
@@ -216,8 +198,8 @@ export function createInitiativeOverlay(container, state, persist) {
   const sync = () => {
     if (!overlay || !roomList) return;
     const initiative = getInitiativeState();
-    const p1Room = getPlayerRoom(initiative, 'p1');
-    const p2Room = getPlayerRoom(initiative, 'p2');
+    const p1Room = getPlayerRoom(initiative, 'p1') || 1;
+    const p2Room = getPlayerRoom(initiative, 'p2') || 1;
 
     overlay.classList.toggle('initiative-owner-p1', initiative.owner === 'p1');
     overlay.classList.toggle('initiative-owner-p2', initiative.owner === 'p2');
@@ -226,7 +208,6 @@ export function createInitiativeOverlay(container, state, persist) {
       const room = Number.parseInt(slot.dataset.roomPlayerLeft || '', 10);
       const hasToken = room === p1Room;
       slot.textContent = hasToken ? '🐿️' : '';
-      slot.draggable = false;
       slot.classList.toggle('initiative-player-token', hasToken);
       slot.classList.toggle('initiative-player-selected', hasToken && draggedPlayer === 'p1');
     });
@@ -235,7 +216,6 @@ export function createInitiativeOverlay(container, state, persist) {
       const room = Number.parseInt(slot.dataset.roomPlayerRight || '', 10);
       const hasToken = room === p2Room;
       slot.textContent = hasToken ? '🐭' : '';
-      slot.draggable = false;
       slot.classList.toggle('initiative-player-token', hasToken);
       slot.classList.toggle('initiative-player-selected', hasToken && draggedPlayer === 'p2');
     });

@@ -403,8 +403,8 @@ body {
   z-index: 30;
   display: flex;
   align-items: center;
-  justify-content: center;
-  padding: 0.5rem;
+  justify-content: stretch;
+  padding: 0;
 }
 
 .initiative-overlay[hidden] {
@@ -420,36 +420,67 @@ body {
 .initiative-overlay-sheet {
   position: relative;
   z-index: 1;
-  width: min(30rem, calc(100% - 0.5rem));
-  max-height: calc(100% - 0.5rem);
+  width: 100%;
+  max-height: 100%;
   overflow: auto;
   background: var(--color-control-bg);
   border: 1px solid var(--color-panel-border);
   border-radius: var(--radius-md);
-  padding: 0.55rem;
+  padding: 0.2rem;
 }
 
 .initiative-room-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  margin: 0;
+  padding: 0;
+}
+
+.initiative-room-row {
   list-style: none;
   display: grid;
-  gap: 0.35rem;
+  grid-template-columns: repeat(var(--initiative-cols, 1), minmax(0, 1fr));
+  gap: 0.2rem;
+  margin: 0;
+  padding: 0;
 }
 
 .initiative-room-item {
   display: grid;
   grid-template-columns: 1.35rem minmax(0, 1fr) 1.35rem;
   align-items: center;
-  gap: 0.35rem;
-  min-height: 1.8rem;
+  gap: 0.2rem;
+  min-height: 2.95rem;
   border: 1px solid var(--color-panel-border);
   border-radius: var(--radius-md);
-  padding: 0.25rem 0.4rem;
+  padding: 0.15rem 0.25rem;
+}
+
+.initiative-room-body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.04rem;
+  min-width: 0;
 }
 
 .initiative-room-label {
   color: #ddd;
-  font-size: 0.82rem;
-  text-align: left;
+  font-size: 0.72rem;
+  text-align: center;
+  justify-self: center;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.initiative-room-desc {
+  color: #9ea0b8;
+  font-size: 0.6rem;
+  line-height: 1.15;
+  text-align: center;
+  max-width: 100%;
 }
 
 .initiative-room-player {

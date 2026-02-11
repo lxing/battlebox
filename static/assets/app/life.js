@@ -98,7 +98,7 @@ export function createLifeCounter(container, startingLife = 20) {
       <section class="life-controls" aria-label="Life controls">
         <button type="button" class="static-button life-control-button" id="life-left-button" aria-label="Toggle monarch">👑</button>
         <button type="button" class="static-button life-control-button" id="life-reset-button" aria-label="Reset life totals">🔄</button>
-        <button type="button" class="static-button life-control-button" id="life-right-button" aria-label="Open initiative tracker">⚔️</button>
+        <button type="button" class="static-button life-control-button" id="life-right-button" aria-label="Open initiative tracker">♿️</button>
       </section>
       <section class="life-player life-player-bottom" data-player="p1" aria-label="Player 1 life total">
         <span class="life-player-icon life-player-icon-p1" aria-hidden="true">🐿️</span>
