@@ -6,4 +6,6 @@
 -1 [[Mirri's Guile]]
 -1 [[Seal of Cleansing]]
 
+<AI-generated placeholder. Probably nonsense>
+
 [[Swords to Plowshares]] cleanly answers [[Exalted Angel]] and keeps [[Eternal Dragon]] honest. [[Xantid Swarm]] helps force key enchantments through their discard and countermagic so they can't sit behind [[Decree of Justice]].

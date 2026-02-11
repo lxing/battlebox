@@ -6,4 +6,6 @@
 -1 [[Foil]]
 -1 [[Impulse]]
 
+<AI-generated placeholder. Probably nonsense>
+
 [[Powder Keg]] cleans up [[Meddling Mage]] and other cheap threats, and [[Gaea's Blessing]] keeps you safe in long games.

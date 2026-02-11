@@ -7,4 +7,6 @@
 -1 [[Yavimaya Granger]]
 -1 [[Spike Feeder]]
 
+<AI-generated placeholder. Probably nonsense>
+
 Use [[Lobotomy]] to take away their finishers, and [[Tsabo's Web]] limits [[Dust Bowl]] and [[Mishra's Factory]].

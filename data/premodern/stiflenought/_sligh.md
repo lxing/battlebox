@@ -5,4 +5,6 @@
 -2 [[Opt]]
 -1 [[Portent]]
 
+<AI-generated placeholder. Probably nonsense>
+
 Blasts trade for burn and key creatures, and [[Powder Keg]] buys time against early pressure.

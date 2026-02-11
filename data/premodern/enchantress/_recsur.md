@@ -6,4 +6,6 @@
 -1 [[Seal of Cleansing]]
 -1 [[Worship]]
 
+<AI-generated placeholder. Probably nonsense>
+
 [[Tormod's Crypt]] disrupts [[Recurring Nightmare]] and [[Genesis]] loops, and [[Swords to Plowshares]] keeps [[Deranged Hermit]] and [[Masticore]] from taking over.

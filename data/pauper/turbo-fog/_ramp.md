@@ -3,4 +3,6 @@
 -2 [[Disrupt]]
 -2 [[Weather the Storm]]
 
+<AI-generated placeholder. Probably nonsense>
+
 Counter their payoffs and use [[Unable to Scream]] to neutralize the first big threat.

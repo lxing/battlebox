@@ -6,4 +6,6 @@
 -1 [[Mirri's Guile]]
 -1 [[Seal of Cleansing]]
 
+<AI-generated placeholder. Probably nonsense>
+
 [[Swords to Plowshares]] is your cleanest answer to [[Phyrexian Dreadnought]], and [[Xantid Swarm]] helps resolve your engines through their dense countermagic.

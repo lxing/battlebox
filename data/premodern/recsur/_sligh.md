@@ -5,4 +5,6 @@
 -1 [[Phantom Nishoba]]
 -1 [[Krosan Tusker]]
 
+<AI-generated placeholder. Probably nonsense>
+
 [[Spike Feeder]] buys time against burn, and extra removal keeps [[Grim Lavamancer]] and [[Ball Lightning]] from racing you.

@@ -10,4 +10,6 @@
 -1 [[Phyrexian Furnace]]
 -1 [[Fact or Fiction]]
 
+<AI-generated placeholder. Probably nonsense>
+
 The blasts and [[Circle of Protection: Red]] take the pressure off your life total, and an extra [[Wrath of God]] buys time.

@@ -6,4 +6,6 @@
 -1 [[Mogg Fanatic]]
 -1 [[Siege-Gang Commander]]
 
+<AI-generated placeholder. Probably nonsense>
+
 [[Naturalize]] answers [[Oath of Druids]] and [[Mox Diamond]], while [[Tormod's Crypt]] keeps their graveyard from refueling Oath hits.

@@ -5,4 +5,6 @@
 -1 [[Goblin Sharpshooter]]
 -1 [[Mogg Fanatic]]
 
+<AI-generated placeholder. Probably nonsense>
+
 [[Anarchy]] clears white threats like [[Exalted Angel]] and [[Decree of Justice]] tokens, while [[Naturalize]] answers their artifact and enchantment interaction.

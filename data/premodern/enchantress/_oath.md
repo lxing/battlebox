@@ -5,4 +5,6 @@
 -1 [[Opalescence]]
 -1 [[Mirri's Guile]]
 
+<AI-generated placeholder. Probably nonsense>
+
 Keep [[Oath of Druids]] from snowballing by exiling their graveyard with [[Tormod's Crypt]], and use [[Swords to Plowshares]] to answer whatever creature they cheat in.

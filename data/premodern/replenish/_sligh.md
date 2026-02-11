@@ -5,4 +5,6 @@
 -2 [[Frantic Search]]
 -1 [[Attunement]]
 
+<AI-generated placeholder. Probably nonsense>
+
 [[Chill]] slows burn-heavy turns, blasts trade for [[Fireblast]] and key threats, and the extra [[Swords to Plowshares]] helps stabilize.

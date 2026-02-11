@@ -5,4 +5,6 @@
 -4 [[Sphere of Resistance]]
 -1 [[Winter's Grasp]]
 
+<AI-generated placeholder. Probably nonsense>
+
 Load up on enchantment interaction to keep [[Elephant Grass]] and [[Solitary Confinement]] off the board.

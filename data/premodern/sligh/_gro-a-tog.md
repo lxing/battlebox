@@ -6,4 +6,6 @@
 -1 [[Mogg Fanatic]]
 -1 [[Cursed Scroll]]
 
+<AI-generated placeholder. Probably nonsense>
+
 Blasts fight their countermagic, and [[Crash]] punishes their Island-heavy mana so your burn can land.

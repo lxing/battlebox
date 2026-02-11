@@ -4,4 +4,6 @@
 -1 [[Fireblast]]
 -3 [[Chain Lightning]]
 
+<AI-generated placeholder. Probably nonsense>
+
 Pick apart their artifact mana and payoffs; [[Gorilla Shaman]] and [[Cast into the Fire]] keep bridges and key threats off the table.

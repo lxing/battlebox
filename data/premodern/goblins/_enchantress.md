@@ -8,4 +8,6 @@
 -1 [[Siege-Gang Commander]]
 -1 [[Goblin Matron]]
 
+<AI-generated placeholder. Probably nonsense>
+
 [[Tranquil Domain]] and [[Naturalize]] keep [[Elephant Grass]] and [[Solitary Confinement]] off the table, and [[Anarchy]] cleanly removes their white enchantments.

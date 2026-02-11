@@ -5,4 +5,6 @@
 -4 [[Sphere of Resistance]]
 -1 [[Winter's Grasp]]
 
+<AI-generated placeholder. Probably nonsense>
+
 You must answer [[Stasis]] immediately; this brings your full suite of enchantment removal to the table.

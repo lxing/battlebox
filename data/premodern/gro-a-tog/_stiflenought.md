@@ -7,4 +7,6 @@
 -1 [[Portent]]
 -1 [[Opt]]
 
+<AI-generated placeholder. Probably nonsense>
+
 [[Annul]] and [[Disenchant]] give you clean answers to [[Phyrexian Dreadnought]], and [[Winter Orb]] taxes their reactive game plan.

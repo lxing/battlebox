@@ -6,4 +6,6 @@
 -1 [[Chainer's Edict]]
 -1 [[Wall of Blossoms]]
 
+<AI-generated placeholder. Probably nonsense>
+
 Graveyard hate keeps [[Psychatog]] small and turns off their long game.

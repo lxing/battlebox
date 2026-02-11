@@ -6,4 +6,6 @@
 -1 [[Seal of Cleansing]]
 -1 [[Enlightened Tutor]]
 
+<AI-generated placeholder. Probably nonsense>
+
 [[Tormod's Crypt]] shrinks their [[Arrogant Wurm]] and keeps [[Wonder]] lines in check, while [[Swords to Plowshares]] answers their biggest threats on tempo.

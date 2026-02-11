@@ -10,4 +10,6 @@
 -1 [[Phyrexian Furnace]]
 -1 [[Fact or Fiction]]
 
+<AI-generated placeholder. Probably nonsense>
+
 [[Circle of Protection: Red]] and the blasts soak up burn and key attackers, and the extra [[Wrath of God]] cleans up wide boards.

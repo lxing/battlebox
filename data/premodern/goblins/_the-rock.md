@@ -6,4 +6,6 @@
 -1 [[Mogg Fanatic]]
 -1 [[Siege-Gang Commander]]
 
+<AI-generated placeholder. Probably nonsense>
+
 [[Tormod's Crypt]] stops [[Genesis]] recursion, and [[Pyrokinesis]] keeps [[Birds of Paradise]] and utility creatures off the board.

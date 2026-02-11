@@ -7,4 +7,6 @@
 -1 [[Mogg Fanatic]]
 -1 [[Siege-Gang Commander]]
 
+<AI-generated placeholder. Probably nonsense>
+
 Keep their graveyard plan off balance with [[Tranquil Domain]] and [[Naturalize]], and use a blast to fight their blue setup spells.

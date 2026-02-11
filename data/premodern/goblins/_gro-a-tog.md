@@ -7,4 +7,6 @@
 -1 [[Mogg Fanatic]]
 -1 [[Siege-Gang Commander]]
 
+<AI-generated placeholder. Probably nonsense>
+
 Blasts fight their [[Counterspell]] and [[Gush]] turns, and [[Tormod's Crypt]] keeps [[Psychatog]] from growing out of control.

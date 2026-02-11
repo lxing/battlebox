@@ -6,4 +6,6 @@
 -1 [[Standstill]]
 -1 [[Disenchant]]
 
+<AI-generated placeholder. Probably nonsense>
+
 [[Phyrexian Furnace]] checks their graveyard synergies, and the extra [[Wrath of God]] punishes their creature swarms.

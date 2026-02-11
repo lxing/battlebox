@@ -9,4 +9,6 @@
 -1 [[Siege-Gang Commander]]
 -1 [[Gempalm Incinerator]]
 
+<AI-generated placeholder. Probably nonsense>
+
 Use [[Naturalize]] and [[Goblin Tinkerer]] to answer [[Phyrexian Dreadnought]], and rely on blasts to force threats through their counters.

@@ -8,4 +8,6 @@
 -2 [[Impulse]]
 -1 [[Gush]]
 
+<AI-generated placeholder. Probably nonsense>
+
 [[Chill]] and [[Hydroblast]] slow their burn-heavy starts, and [[Powder Keg]] keeps their board from growing out of control.

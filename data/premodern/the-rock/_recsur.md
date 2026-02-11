@@ -6,4 +6,6 @@
 -1 [[Chainer's Edict]]
 -1 [[Krosan Tusker]]
 
+<AI-generated placeholder. Probably nonsense>
+
 Graveyard hate keeps [[Genesis]] and [[Recurring Nightmare]] from taking over the game.

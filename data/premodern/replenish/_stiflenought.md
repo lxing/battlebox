@@ -4,4 +4,6 @@
 -1 [[Mana Leak]]
 -1 [[Frantic Search]]
 
+<AI-generated placeholder. Probably nonsense>
+
 [[Meddling Mage]] naming [[Phyrexian Dreadnought]] buys time, and [[Stifle]] disrupts their combo turn.

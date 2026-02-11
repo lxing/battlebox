@@ -3,4 +3,6 @@
 -4 [[Counterspell]]
 -2 [[Daze]]
 
+<AI-generated placeholder. Probably nonsense>
+
 [[Pyrokinesis]] and [[Cave-In]] break up their mana engine and sweep early boards before they can stabilize.

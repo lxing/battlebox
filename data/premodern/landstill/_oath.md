@@ -8,4 +8,6 @@
 -1 [[Forbid]]
 -1 [[Standstill]]
 
+<AI-generated placeholder. Probably nonsense>
+
 You must answer [[Oath of Druids]] on sight; [[Annul]] and extra enchantment removal keep it from resolving.

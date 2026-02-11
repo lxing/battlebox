@@ -7,4 +7,6 @@
 -1 [[Wall of Blossoms]]
 -1 [[Krosan Tusker]]
 
+<AI-generated placeholder. Probably nonsense>
+
 Extra removal keeps [[Phyrexian Dreadnought]] off the table and forces them to fight fair.

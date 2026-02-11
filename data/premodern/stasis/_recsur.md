@@ -6,4 +6,6 @@
 -1 [[Foil]]
 -1 [[Impulse]]
 
+<AI-generated placeholder. Probably nonsense>
+
 [[Powder Keg]] sweeps up their mana dorks, and [[Gaea's Blessing]] keeps you safe once the game drags on.

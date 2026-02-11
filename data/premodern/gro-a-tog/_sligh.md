@@ -5,4 +5,6 @@
 -1 [[Sleight of Hand]]
 -1 [[Portent]]
 
+<AI-generated placeholder. Probably nonsense>
+
 [[Pyroclasm]] wipes their early board, and [[Call of the Herd]] gives you sturdy blockers to stabilize against burn.

@@ -6,4 +6,6 @@
 -1 [[Weathered Wayfarer]]
 -1 [[Sylvan Library]]
 
+<AI-generated placeholder. Probably nonsense>
+
 Stack lifegain with [[Warmth]] and [[Zuran Orb]] to survive their burn and finish behind larger threats.

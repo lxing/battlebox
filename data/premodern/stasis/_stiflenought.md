@@ -6,4 +6,6 @@
 -1 [[Foil]]
 -1 [[Impulse]]
 
+<AI-generated placeholder. Probably nonsense>
+
 [[Powder Keg]] can answer [[Phyrexian Dreadnought]] cleanly, and [[Gaea's Blessing]] keeps you from decking in a long game.

@@ -6,4 +6,6 @@
 -1 [[Foil]]
 -1 [[Impulse]]
 
+<AI-generated placeholder. Probably nonsense>
+
 [[Powder Keg]] clears early creatures and mana dorks, and [[Gaea's Blessing]] protects you in the grind.

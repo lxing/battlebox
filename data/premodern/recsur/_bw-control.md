@@ -7,4 +7,6 @@
 -1 [[Yavimaya Granger]]
 -1 [[Spike Feeder]]
 
+<AI-generated placeholder. Probably nonsense>
+
 [[Lobotomy]] can strip [[Decree of Justice]] or key removal, and [[Tsabo's Web]] slows [[Dust Bowl]] and manlands so your engines stick.

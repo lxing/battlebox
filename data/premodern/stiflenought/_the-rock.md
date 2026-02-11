@@ -5,4 +5,6 @@
 -2 [[Opt]]
 -1 [[Portent]]
 
+<AI-generated placeholder. Probably nonsense>
+
 [[Annul]] handles [[Pernicious Deed]] and other key permanents, and [[Powder Keg]] punishes their mana creatures.

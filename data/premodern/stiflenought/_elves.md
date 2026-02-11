@@ -5,4 +5,6 @@
 -2 [[Portent]]
 -1 [[Vision Charm]]
 
+<AI-generated placeholder. Probably nonsense>
+
 [[Powder Keg]] and [[Chain of Vapor]] buy time against their early swarm, and [[Parallax Tide]] taxes their mana engine.

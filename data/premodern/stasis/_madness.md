@@ -3,4 +3,6 @@
 -1 [[Mana Short]]
 -1 [[Foil]]
 
+<AI-generated placeholder. Probably nonsense>
+
 [[Powder Keg]] answers their early board so you can lock the game before [[Arrogant Wurm]] becomes a problem.

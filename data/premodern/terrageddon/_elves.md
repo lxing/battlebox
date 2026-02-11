@@ -5,4 +5,6 @@
 -1 [[Call of the Herd]]
 -1 [[Weathered Wayfarer]]
 
+<AI-generated placeholder. Probably nonsense>
+
 [[Cursed Totem]] shuts off [[Priest of Titania]] and [[Quirion Ranger]], and extra removal helps keep their board small.

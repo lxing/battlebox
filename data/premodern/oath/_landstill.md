@@ -3,4 +3,6 @@
 -4 [[Sphere of Resistance]]
 -1 [[Winter's Grasp]]
 
+<AI-generated placeholder. Probably nonsense>
+
 Extra threats from [[Call of the Herd]] force them to tap out, and [[Seal of Cleansing]] answers [[Humility]] or [[Standstill]].

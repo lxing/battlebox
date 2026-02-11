@@ -8,4 +8,6 @@
 -1 [[Phantom Nishoba]]
 -1 [[Spike Feeder]]
 
+<AI-generated placeholder. Probably nonsense>
+
 Lean on [[Naturalize]] to answer [[Phyrexian Dreadnought]] and use [[Lobotomy]] to cut off their combo pieces.

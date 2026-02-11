@@ -7,4 +7,6 @@
 -1 [[Cursed Scroll]]
 -1 [[Price of Progress]]
 
+<AI-generated placeholder. Probably nonsense>
+
 Blasts help force damage through counters, and [[Anarchy]] clears their white win conditions like [[Decree of Justice]].

@@ -5,4 +5,6 @@
 -1 [[Mobilization]]
 -1 [[Opalescence]]
 
+<AI-generated placeholder. Probably nonsense>
+
 [[Aura of Silence]] taxes their setup and gives you answers to [[Attunement]] and [[Parallax Wave]], while [[Tormod's Crypt]] keeps [[Replenish]] from being lethal.

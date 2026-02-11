@@ -4,4 +4,6 @@
 -3 [[Eagles of the North]]
 -1 [[Battle Screech]]
 
+<AI-generated placeholder. Probably nonsense>
+
 Lean hard on artifact exile; [[Dust to Dust]] and [[Revoke Existence]] slow their engine enough to swarm.

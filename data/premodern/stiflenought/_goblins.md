@@ -5,4 +5,6 @@
 -2 [[Opt]]
 -1 [[Portent]]
 
+<AI-generated placeholder. Probably nonsense>
+
 Blasts trade efficiently for [[Goblin Lackey]] and burn, and [[Powder Keg]] cleans up their early board.

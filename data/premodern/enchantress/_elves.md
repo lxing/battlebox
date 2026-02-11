@@ -3,4 +3,6 @@
 -1 [[Opalescence]]
 -1 [[Mirri's Guile]]
 
+<AI-generated placeholder. Probably nonsense>
+
 Use [[Swords to Plowshares]] on [[Priest of Titania]] to break up their mana and combat math. Keep [[Elephant Grass]] and [[Parallax Wave]] to blunt their swarm.

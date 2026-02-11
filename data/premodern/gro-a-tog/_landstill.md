@@ -7,4 +7,6 @@
 -1 [[Portent]]
 -1 [[Opt]]
 
+<AI-generated placeholder. Probably nonsense>
+
 Extra threats stress their removal suite, and [[Winter Orb]] makes it hard for them to sit behind [[Decree of Justice]] and countermagic.

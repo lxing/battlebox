@@ -5,4 +5,6 @@
 -2 [[Opt]]
 -1 [[Portent]]
 
+<AI-generated placeholder. Probably nonsense>
+
 Blasts answer their red pressure, and [[Powder Keg]] can clear early creatures before they snowball.

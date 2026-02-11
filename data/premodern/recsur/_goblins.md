@@ -7,4 +7,6 @@
 -1 [[Krosan Tusker]]
 -1 [[Yavimaya Granger]]
 
+<AI-generated placeholder. Probably nonsense>
+
 The extra removal and [[Shard Phoenix]] help you survive early [[Goblin Lackey]] and [[Goblin Warchief]] pushes.

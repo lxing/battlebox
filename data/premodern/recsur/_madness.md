@@ -7,4 +7,6 @@
 -1 [[Krosan Tusker]]
 -1 [[Yavimaya Granger]]
 
+<AI-generated placeholder. Probably nonsense>
+
 [[Withered Wretch]] shuts off [[Wonder]] lines and shrinks their graveyard, while extra removal keeps [[Arrogant Wurm]] in check.

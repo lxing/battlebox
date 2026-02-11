@@ -6,4 +6,6 @@
 -1 [[Weathered Wayfarer]]
 -1 [[Sylvan Library]]
 
+<AI-generated placeholder. Probably nonsense>
+
 [[Disenchant]] is your cleanest answer to [[Oath of Druids]], and [[Tormod's Crypt]] prevents a big graveyard payoff.

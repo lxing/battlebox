@@ -8,4 +8,6 @@
 -1 [[Phantom Nishoba]]
 -1 [[Spike Feeder]]
 
+<AI-generated placeholder. Probably nonsense>
+
 Keep [[Elephant Grass]] and [[Solitary Confinement]] off the table with artifact and enchantment removal, and use [[Tsabo's Web]] to tax [[Serra's Sanctum]].

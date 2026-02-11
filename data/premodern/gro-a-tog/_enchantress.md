@@ -6,4 +6,6 @@
 -1 [[Daze]]
 -1 [[Armageddon]]
 
+<AI-generated placeholder. Probably nonsense>
+
 Load up on enchantment interaction to keep [[Elephant Grass]] and [[Solitary Confinement]] off the table, and use [[Annul]] to counter their key engines.

@@ -8,4 +8,6 @@
 -1 [[Impulse]]
 -1 [[Gush]]
 
+<AI-generated placeholder. Probably nonsense>
+
 [[Powder Keg]] pressures their enchantments, and extra [[Mana Short]] gives you a key turn to resolve [[Stasis]].

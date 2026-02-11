@@ -4,4 +4,6 @@
 -1 [[Seal of Cleansing]]
 -1 [[Mana Leak]]
 
+<AI-generated placeholder. Probably nonsense>
+
 [[Meddling Mage]] can name [[Psychatog]] or [[Gush]], and [[Stifle]] hits their fetches and key activated abilities.

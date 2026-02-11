@@ -7,4 +7,6 @@
 -1 [[Phantom Nishoba]]
 -1 [[Spike Feeder]]
 
+<AI-generated placeholder. Probably nonsense>
+
 You must answer [[Oath of Druids]] quickly; load up on [[Naturalize]] and back it with [[Withered Wretch]] to keep their graveyard clean.

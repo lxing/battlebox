@@ -6,4 +6,6 @@
 -1 [[Mogg Fanatic]]
 -1 [[Cursed Scroll]]
 
+<AI-generated placeholder. Probably nonsense>
+
 Blasts line up well against [[Counterspell]] and [[Careful Study]], and [[Crash]] can steal tempo on their Islands.

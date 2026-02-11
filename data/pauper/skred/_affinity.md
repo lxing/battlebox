@@ -6,4 +6,6 @@
 -1 [[Breath Weapon]]
 -1 [[Azure Fleet Admiral]]
 
+<AI-generated placeholder. Probably nonsense>
+
 Attack their artifact engine early; [[Gorilla Shaman]] and [[Cast into the Fire]] keep bridges and payoffs off the table while [[Annul]] covers the big turn.

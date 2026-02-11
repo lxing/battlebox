@@ -8,4 +8,6 @@
 -1 [[Standstill]]
 -1 [[Forbid]]
 
+<AI-generated placeholder. Probably nonsense>
+
 Extra [[Stifle]] and artifact removal are your cleanest answers to [[Phyrexian Dreadnought]] and their combo protection.

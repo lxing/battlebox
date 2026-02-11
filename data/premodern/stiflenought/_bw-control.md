@@ -5,4 +5,6 @@
 -1 [[Portent]]
 -2 [[Vision Charm]]
 
+<AI-generated placeholder. Probably nonsense>
+
 [[Parallax Tide]] pressures their mana and opens a window for [[Phyrexian Dreadnought]], while [[Misdirection]] protects it from [[Swords to Plowshares]].

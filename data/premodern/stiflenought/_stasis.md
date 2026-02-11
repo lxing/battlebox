@@ -5,4 +5,6 @@
 -2 [[Opt]]
 -1 [[Portent]]
 
+<AI-generated placeholder. Probably nonsense>
+
 [[Annul]] is your best tool for [[Stasis]], and extra bounce helps you break the lock long enough to win.

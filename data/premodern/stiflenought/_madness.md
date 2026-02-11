@@ -6,4 +6,6 @@
 -2 [[Opt]]
 -1 [[Portent]]
 
+<AI-generated placeholder. Probably nonsense>
+
 Extra interaction helps you keep [[Wild Mongrel]] and [[Arrogant Wurm]] in check while you set up the combo.
