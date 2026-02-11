@@ -47,6 +47,10 @@ const qrUi = {
   overlay: null,
   canvas: null,
 };
+const matrixUi = {
+  lastAutoScrollKey: '',
+  pendingAutoScrollKey: '',
+};
 
 function getCardTarget(event) {
   if (!event.target || !event.target.closest) return null;
@@ -139,6 +143,9 @@ function applyActiveTab(tab) {
   ui.matrixPane.hidden = nextTab !== TAB_MATRIX;
   if (nextTab !== TAB_BATTLEBOX) {
     preview.hidePreview();
+  }
+  if (nextTab === TAB_MATRIX) {
+    tryAutoScrollHighlightedMatrixCell();
   }
   ui.footer.querySelectorAll('.tabbar-button').forEach((button) => {
     button.classList.toggle('active', button.dataset.tab === nextTab);
@@ -311,7 +318,20 @@ function getWinrateBand(percent) {
   return 5;
 }
 
-async function renderMatrixPane(bbSlug, selectedDeckSlug = '') {
+function tryAutoScrollHighlightedMatrixCell() {
+  if (!ui.matrixPane || ui.matrixPane.hidden) return false;
+  if (!matrixUi.pendingAutoScrollKey) return false;
+  const highlightedCell = ui.matrixPane.querySelector('.matrix-cell-matchup[data-cell-key]');
+  if (!highlightedCell) return false;
+  const cellKey = highlightedCell.dataset.cellKey || '';
+  if (!cellKey || cellKey !== matrixUi.pendingAutoScrollKey) return false;
+  highlightedCell.scrollIntoView({ block: 'nearest', inline: 'nearest', behavior: 'auto' });
+  matrixUi.lastAutoScrollKey = cellKey;
+  matrixUi.pendingAutoScrollKey = '';
+  return true;
+}
+
+async function renderMatrixPane(bbSlug, selectedDeckSlug = '', selectedMatchupSlug = '') {
   if (!ui.matrixPane || !data.index) return;
 
   const battlebox = data.index.battleboxes.find((b) => b.slug === bbSlug);
@@ -332,12 +352,23 @@ async function renderMatrixPane(bbSlug, selectedDeckSlug = '') {
     return nameA.localeCompare(nameB);
   });
 
-  const colHeadHtml = orderedDecks.map((deck) => (
-    `<th scope="col" class="matrix-col-head"><span class="matrix-col-head-text">${deck.name}</span></th>`
-  )).join('');
+  const normalizedSelectedDeckSlug = normalizeName(selectedDeckSlug || '');
+  const normalizedSelectedMatchupSlug = normalizeName(selectedMatchupSlug || '');
+  const selectedCellKey = (
+    normalizedSelectedDeckSlug && normalizedSelectedMatchupSlug
+  )
+    ? `${battlebox.slug}:${normalizedSelectedDeckSlug}:${normalizedSelectedMatchupSlug}`
+    : '';
+  const colHeadHtml = orderedDecks.map((deck) => {
+    const colSlug = normalizeName(deck.slug);
+    const isMatchupCol = normalizedSelectedMatchupSlug && colSlug === normalizedSelectedMatchupSlug;
+    const headClass = isMatchupCol ? 'matrix-col-head matrix-col-matchup' : 'matrix-col-head';
+    return `<th scope="col" class="${headClass}"><span class="matrix-col-head-text">${deck.name}</span></th>`;
+  }).join('');
 
   const rowHtml = orderedDecks.map((rowDeck) => {
-    const isSelectedRow = selectedDeckSlug && normalizeName(rowDeck.slug) === normalizeName(selectedDeckSlug);
+    const rowSlug = normalizeName(rowDeck.slug);
+    const isSelectedRow = normalizedSelectedDeckSlug && rowSlug === normalizedSelectedDeckSlug;
     const rowClass = isSelectedRow ? 'matrix-row-selected' : '';
     const total = matrix.totals?.[rowDeck.slug];
     const totalPercent = total && Number.isFinite(total.wr) ? Math.round(total.wr * 100) : null;
@@ -356,17 +387,39 @@ async function renderMatrixPane(bbSlug, selectedDeckSlug = '') {
       `;
 
     const cellHtml = orderedDecks.map((colDeck) => {
+      const colSlug = normalizeName(colDeck.slug);
+      const isSelectedMatchupCell = (
+        normalizedSelectedDeckSlug &&
+        normalizedSelectedMatchupSlug &&
+        rowSlug === normalizedSelectedDeckSlug &&
+        colSlug === normalizedSelectedMatchupSlug
+      );
+      const isMatchupCol = normalizedSelectedMatchupSlug && colSlug === normalizedSelectedMatchupSlug;
       const result = matrix.matchups?.[rowDeck.slug]?.[colDeck.slug];
       if (!result || !Number.isFinite(result.wr)) {
-        return '<td class="matrix-cell matrix-cell-empty">-</td>';
+        const cellClass = [
+          'matrix-cell',
+          'matrix-cell-empty',
+          isMatchupCol ? 'matrix-cell-col-matchup' : '',
+          isSelectedMatchupCell ? 'matrix-cell-matchup' : '',
+        ].filter(Boolean).join(' ');
+        const selectedCellAttr = isSelectedMatchupCell ? ` data-cell-key="${selectedCellKey}"` : '';
+        return `<td class="${cellClass}"${selectedCellAttr}>-</td>`;
       }
       const matches = Number.isFinite(result.matches) ? result.matches : 0;
       const won = Math.max(0, Math.min(matches, Math.round(matches * result.wr)));
       const percent = Math.round(result.wr * 100);
       const band = getWinrateBand(percent);
       const title = `${percent}% WR (${won}/${matches})`;
+      const cellClass = [
+        'matrix-cell',
+        `matrix-cell-band-${band}`,
+        isMatchupCol ? 'matrix-cell-col-matchup' : '',
+        isSelectedMatchupCell ? 'matrix-cell-matchup' : '',
+      ].filter(Boolean).join(' ');
+      const selectedCellAttr = isSelectedMatchupCell ? ` data-cell-key="${selectedCellKey}"` : '';
       return `
-        <td class="matrix-cell matrix-cell-band-${band}" title="${title}">
+        <td class="${cellClass}" title="${title}"${selectedCellAttr}>
           <div class="matrix-cell-main">${percent}%</div>
           <div class="matrix-cell-record">${won}/${matches}</div>
         </td>
@@ -400,6 +453,15 @@ async function renderMatrixPane(bbSlug, selectedDeckSlug = '') {
     </div>
   `;
   fitMatrixHeaderHeight(ui.matrixPane.querySelector('.matrix-panel'));
+  if (!selectedCellKey) {
+    matrixUi.pendingAutoScrollKey = '';
+    matrixUi.lastAutoScrollKey = '';
+    return;
+  }
+  if (matrixUi.lastAutoScrollKey !== selectedCellKey) {
+    matrixUi.pendingAutoScrollKey = selectedCellKey;
+    tryAutoScrollHighlightedMatrixCell();
+  }
 }
 
 async function route() {
@@ -434,7 +496,7 @@ async function route() {
     renderNotFound();
   }
 
-  await renderMatrixPane(currentBattleboxSlug, currentDeckSlug);
+  await renderMatrixPane(currentBattleboxSlug, currentDeckSlug, matchupSlug);
   setMatrixTabEnabled(hasBattleboxContext);
 
   if (ui.battleboxPane) {
@@ -687,7 +749,9 @@ async function renderDeck(bbSlug, deckSlug, selectedGuide, sortMode, sortDirecti
   const initialGuide = guideKeys.length
     ? (selectedGuide && guideKeys.includes(selectedGuide) ? selectedGuide : guideKeys[0])
     : '';
+  const hasExplicitMatchupInUrl = Boolean(selectedGuide && guideKeys.includes(selectedGuide));
   let currentMatchupSlug = initialGuide;
+  let hasExplicitMatchupSelection = hasExplicitMatchupInUrl;
   let currentApplySideboard = guideKeys.length ? normalizeApplySideboard(applySideboard) : false;
   let deckView = computeDeckView(
     deck,
@@ -798,18 +862,20 @@ async function renderDeck(bbSlug, deckSlug, selectedGuide, sortMode, sortDirecti
   };
 
   const updateDeckHashFromState = () => {
+    const matchupForUrl = hasExplicitMatchupSelection ? (currentMatchupSlug || undefined) : undefined;
     const nextHash = buildDeckHash(
       bb.slug,
       deck.slug,
       currentSortMode,
       currentSortDirection,
-      currentMatchupSlug || undefined,
+      matchupForUrl,
       currentCollapsedMask,
       currentApplySideboard
     );
     if (location.hash !== nextHash) {
       replaceHashPreserveSearch(nextHash);
     }
+    void renderMatrixPane(bb.slug, deck.slug, matchupForUrl || '');
   };
 
   const renderDecklistBody = () => {
@@ -885,6 +951,7 @@ async function renderDeck(bbSlug, deckSlug, selectedGuide, sortMode, sortDirecti
     select.addEventListener('change', () => {
       const key = select.value;
       currentMatchupSlug = key;
+      hasExplicitMatchupSelection = true;
       renderGuide(key);
       renderDecklistBody();
       updateDeckHashFromState();
