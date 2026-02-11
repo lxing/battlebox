@@ -1184,6 +1184,8 @@ input[type="reset"] {
   width: 2ch;
   text-align: right;
   flex: 0 0 2ch;
+  font-size: 0.74rem;
+  line-height: 1.5;
 }
 
 .card-mana-cost {
