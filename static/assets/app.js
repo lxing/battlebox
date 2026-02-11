@@ -380,7 +380,7 @@ async function renderMatrixPane(bbSlug, selectedDeckSlug = '', selectedMatchupSl
     const totalMatches = total && Number.isFinite(total.matches) ? total.matches : null;
     const totalBand = totalPercent === null ? null : getWinrateBand(totalPercent);
     const totalCellHtml = (
-      totalPercent === null || totalWins === null || totalMatches === null
+      totalPercent === null || totalWins === null || totalMatches === null || totalMatches === 0
     )
       ? '<td class="matrix-cell matrix-cell-empty">-</td>'
       : `
