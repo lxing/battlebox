@@ -1,10 +1,5 @@
 Chain ETB effects to create soft-infinite loops. [[Ephemerate]] creates nonstop value with every creature in the deck, then you can muscle into a win with defensive interaction.
 
-### Nonobvious Combos
-[[Ephemerate]] + [[Archaeomancer]]
-[[Ephemerate]] + [[Mulldrifter]] (Evoked)
-[[Cleansing Wildfire]] + [[Rustvale Bridge]]
-
 ### Early game
 Use cantrips and setup tools like [[Brainstorm]] and [[Lórien Revealed]] to hit land drops and find interaction. [[Cleansing Wildfire]] smooths the manabase by targeting your Bridges for an easy 2-for-1. Use removal like [[Galvanic Discharge]] and [[Abrade]] liberally.
 

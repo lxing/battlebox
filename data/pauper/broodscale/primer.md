@@ -1,9 +1,5 @@
 Combo [[Basking Broodscale]] and [[Sadistic Glee]] for infinite colorless mana, an arbitrarily large Broodscale, and infinite sac effects. [[Nadier's Nightblade]] converts to an instant kill by draining on each sacrifice.
 
-### Nonobvious Combos
-[[Basking Broodscale]] + [[Sadistic Glee]] + [[Nadier's Nightblade]]
-[[Deadly Dispute]] + [[Ichor Wellspring]]
-
 ### Early game
 Lead with fixing and cheap artifacts like [[Chromatic Star]] and [[Ichor Wellspring]] to smooth mana and set up sacrifice value. Use [[Duress]] to clear interaction and [[Malevolent Rumble]] to dig. You don't have much defense against aggressive decks, so focus on the combo.
 

@@ -1,9 +1,5 @@
 Flood the board with mana creatures and use [[Priest of Titania]] with [[Quirion Ranger]] to convert that into huge mana and payoff threats like [[Nyxborn Hydra]] and [[Timberwatch Elf]].
 
-### Nonobvious Combos
-[[Quirion Ranger]] + [[Priest of Titania]]
-[[Quirion Ranger]] + [[Wellwisher]]
-
 ### Early game
 Lead with mana dorks like [[Llanowar Elves]] and [[Jaspera Sentinel]]. [[Quirion Ranger]] lets [[Priest of Titania]] explode.
 

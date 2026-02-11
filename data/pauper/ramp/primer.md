@@ -1,8 +1,5 @@
 Ramp is a GR big‑mana deck that accelerates quickly with enchantment auras and then cascades into huge threats. [[Arbor Elf]], [[Utopia Sprawl]], and [[Wild Growth]] create explosive starts, while cascade creatures like [[Boarding Party]] and [[Annoyed Altisaur]] provide free spells and a steady stream of large bodies. Initiative and venture cards such as [[Avenging Hunter]] and [[Writhing Chrysalis]] give the deck a powerful midgame payoff.
 
-### Nonobvious Combos
-[[Arbor Elf]] + [[Wild Growth]] / [[Utopia Sprawl]]
-
 ### Early game
 Focus on ramping: attach [[Utopia Sprawl]] or [[Wild Growth]] early and pair with [[Arbor Elf]] for up to 4 mana on turn 2. [[Malevolent Rumble]] does double duty on ramp and card selection and [[Eldrazi Repurposer]] is an incredibly annoying defensive piece. The goal is to jump from setup turns into a fast six‑drop.
 
