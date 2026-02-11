@@ -86,6 +86,10 @@ export function createCardPreview(app, getCardTarget) {
     if (e.pointerType && e.pointerType !== 'mouse' && e.pointerType !== 'pen') return;
     lastPointerX = e.clientX;
     lastPointerY = e.clientY;
+    if (!isScrolling) return;
+    isScrolling = false;
+    if (!pendingLeaveClose) return;
+    requestCloseFromLeave();
   }
 
   function pointerIsOverAnchorOrPreview() {
@@ -137,6 +141,7 @@ export function createCardPreview(app, getCardTarget) {
     previewEl.appendChild(previewStatus);
     previewEl.appendChild(previewImages);
     previewEl.addEventListener('mouseleave', (e) => {
+      recordPointerPosition(e);
       if (!previewAnchor) return;
       const cardEl = previewAnchor.el;
       if (cardEl && e.relatedTarget && (cardEl === e.relatedTarget || cardEl.contains(e.relatedTarget))) {
