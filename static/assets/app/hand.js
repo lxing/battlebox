@@ -1,0 +1,259 @@
+function getCardImageUrl(printing) {
+  if (!printing) return '';
+  const [set, number] = String(printing).split('/');
+  if (!set || !number) return '';
+  return `https://api.scryfall.com/cards/${set}/${number}?format=image&version=normal`;
+}
+
+function normalizeQty(value) {
+  const parsed = Number.parseInt(String(value), 10);
+  return Number.isNaN(parsed) || parsed < 0 ? 0 : parsed;
+}
+
+function expandDeck(cards) {
+  const copies = [];
+  (cards || []).forEach((card) => {
+    const qty = normalizeQty(card.qty);
+    for (let i = 0; i < qty; i += 1) {
+      copies.push({
+        name: card.name || 'Unknown',
+        printing: card.printing || '',
+      });
+    }
+  });
+  return copies;
+}
+
+function buildDeckSignature(cards) {
+  return (cards || [])
+    .map((card) => `${card.name || ''}|${normalizeQty(card.qty)}|${card.printing || ''}`)
+    .sort()
+    .join('||');
+}
+
+function shuffle(array) {
+  const out = array.slice();
+  for (let i = out.length - 1; i > 0; i -= 1) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [out[i], out[j]] = [out[j], out[i]];
+  }
+  return out;
+}
+
+function drawCards(state, count) {
+  const nextCount = Math.max(0, Number.parseInt(String(count), 10) || 0);
+  for (let i = 0; i < nextCount && state.drawIndex < state.deck.length; i += 1) {
+    state.hand.push(state.deck[state.drawIndex]);
+    state.drawIndex += 1;
+  }
+}
+
+function resetDeckState(state) {
+  state.deck = shuffle(state.source);
+  state.drawIndex = 0;
+  state.hand = [];
+  drawCards(state, 7);
+  state.initialized = true;
+}
+
+function createDeckState(cards, signature) {
+  return {
+    signature,
+    source: expandDeck(cards),
+    deck: [],
+    hand: [],
+    drawIndex: 0,
+    initialized: false,
+  };
+}
+
+export function createSampleHandViewer() {
+  const stateByKey = new Map();
+  let overlay = null;
+  let gridWrap = null;
+  let grid = null;
+  let drawButton = null;
+  let resetButton = null;
+  let contextKey = '';
+  let contextCards = [];
+  let activeKey = '';
+
+  function ensureOverlay() {
+    if (overlay) return;
+    overlay = document.createElement('div');
+    overlay.className = 'sample-hand-overlay';
+    overlay.hidden = true;
+    overlay.innerHTML = `
+      <div class="sample-hand-backdrop"></div>
+      <div class="sample-hand-sheet" role="dialog" aria-modal="true" aria-label="Sample hand viewer">
+        <div class="sample-hand-grid-wrap" data-sample-hand-grid-wrap>
+          <div class="sample-hand-grid" data-sample-hand-grid></div>
+        </div>
+        <div class="sample-hand-footer">
+          <div class="sample-hand-controls">
+            <button type="button" class="action-button sample-hand-control" data-sample-hand-action="draw">Draw</button>
+            <button type="button" class="action-button sample-hand-control" data-sample-hand-action="reset">Reset</button>
+            <button type="button" class="action-button sample-hand-control" data-sample-hand-action="close">Close</button>
+          </div>
+        </div>
+      </div>
+    `;
+
+    const backdrop = overlay.querySelector('.sample-hand-backdrop');
+    gridWrap = overlay.querySelector('[data-sample-hand-grid-wrap]');
+    grid = overlay.querySelector('[data-sample-hand-grid]');
+    drawButton = overlay.querySelector('[data-sample-hand-action="draw"]');
+    resetButton = overlay.querySelector('[data-sample-hand-action="reset"]');
+    const closeButton = overlay.querySelector('[data-sample-hand-action="close"]');
+
+    backdrop.addEventListener('click', () => {
+      hide();
+    });
+    closeButton.addEventListener('click', () => {
+      hide();
+    });
+    drawButton.addEventListener('click', () => {
+      const state = getActiveState(false);
+      if (!state) return;
+      const prevRows = Math.ceil(state.hand.length / 3);
+      drawCards(state, 1);
+      renderState(state);
+      const nextRows = Math.ceil(state.hand.length / 3);
+      if (nextRows > prevRows) {
+        window.requestAnimationFrame(() => {
+          scrollToRow(nextRows - 1);
+        });
+      }
+    });
+    resetButton.addEventListener('click', () => {
+      const state = getActiveState(false);
+      if (!state) return;
+      resetDeckState(state);
+      renderState(state);
+    });
+    document.addEventListener('keydown', (event) => {
+      if (event.key !== 'Escape' || !overlay || overlay.hidden) return;
+      hide();
+    });
+
+    document.body.appendChild(overlay);
+  }
+
+  function getDeckState(key, cards, initialize) {
+    if (!key) return null;
+    const signature = buildDeckSignature(cards);
+    let state = stateByKey.get(key);
+    if (!state || state.signature !== signature) {
+      state = createDeckState(cards, signature);
+      stateByKey.set(key, state);
+    }
+    if (initialize && !state.initialized) {
+      resetDeckState(state);
+    }
+    return state;
+  }
+
+  function getActiveState(initialize) {
+    if (!activeKey) return null;
+    return getDeckState(activeKey, contextCards, initialize);
+  }
+
+  function renderState(state) {
+    if (!grid || !drawButton || !resetButton) return;
+    const cards = state?.hand || [];
+    if (cards.length === 0) {
+      grid.innerHTML = '<div class="sample-hand-empty">No cards</div>';
+    } else {
+      grid.innerHTML = cards.map((card) => {
+        const imageUrl = getCardImageUrl(card.printing);
+        if (imageUrl) {
+          return `
+            <div class="sample-hand-card">
+              <img src="${imageUrl}" alt="${card.name}">
+            </div>
+          `;
+        }
+        return `<div class="sample-hand-card sample-hand-card-fallback">${card.name}</div>`;
+      }).join('');
+    }
+
+    const total = state.deck.length;
+    drawButton.disabled = state.drawIndex >= total;
+    resetButton.disabled = total === 0;
+    syncGridViewport(cards.length);
+  }
+
+  function syncGridViewport(cardCount) {
+    if (!gridWrap || !grid) return;
+    if (cardCount <= 9) {
+      gridWrap.style.maxHeight = 'none';
+      gridWrap.scrollTop = 0;
+      return;
+    }
+    const firstCard = grid.querySelector('.sample-hand-card');
+    if (!(firstCard instanceof HTMLElement)) return;
+    const cardHeight = firstCard.getBoundingClientRect().height;
+    if (!cardHeight) {
+      window.requestAnimationFrame(() => {
+        syncGridViewport(cardCount);
+      });
+      return;
+    }
+    const gridStyles = window.getComputedStyle(grid);
+    const rowGap = Number.parseFloat(gridStyles.rowGap || gridStyles.gap || '0') || 0;
+    const maxHeight = (cardHeight * 3) + (rowGap * 2);
+    gridWrap.style.maxHeight = `${maxHeight}px`;
+    gridWrap.style.overflowY = 'auto';
+  }
+
+  function scrollToRow(rowIndex) {
+    if (!gridWrap || !grid) return;
+    if (rowIndex < 0) return;
+    const cards = grid.querySelectorAll('.sample-hand-card');
+    const cardIndex = rowIndex * 3;
+    if (cardIndex >= cards.length) return;
+    const target = cards[cardIndex];
+    if (!(target instanceof HTMLElement)) return;
+
+    const targetTop = target.offsetTop;
+    const targetBottom = targetTop + target.offsetHeight;
+    const viewTop = gridWrap.scrollTop;
+    const viewBottom = viewTop + gridWrap.clientHeight;
+
+    if (targetTop >= viewTop && targetBottom <= viewBottom) return;
+    const nextTop = Math.max(0, targetBottom - gridWrap.clientHeight);
+    gridWrap.scrollTo({ top: nextTop, behavior: 'auto' });
+  }
+
+  function setDeckContext(key, cards) {
+    contextKey = String(key || '');
+    contextCards = Array.isArray(cards) ? cards : [];
+    if (!overlay || overlay.hidden) return;
+    if (!contextKey) return;
+    activeKey = contextKey;
+    const state = getDeckState(activeKey, contextCards, true);
+    if (!state) return;
+    renderState(state);
+  }
+
+  function open() {
+    if (!contextKey) return;
+    ensureOverlay();
+    activeKey = contextKey;
+    const state = getDeckState(activeKey, contextCards, true);
+    if (!state) return;
+    renderState(state);
+    overlay.hidden = false;
+  }
+
+  function hide() {
+    if (!overlay) return;
+    overlay.hidden = true;
+  }
+
+  return {
+    setDeckContext,
+    open,
+    hide,
+  };
+}

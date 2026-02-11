@@ -27,6 +27,7 @@ import {
 } from './app/render.js';
 import { createCardPreview } from './app/preview.js';
 import { createLifeCounter } from './app/life.js';
+import { createSampleHandViewer } from './app/hand.js';
 
 const app = document.getElementById('app');
 let data = { index: null, battleboxes: {}, matrices: {}, buildId: '' };
@@ -63,6 +64,7 @@ function getCardTarget(event) {
 }
 
 const preview = createCardPreview(app, getCardTarget);
+const sampleHand = createSampleHandViewer();
 
 function hideQrPopup() {
   if (!qrUi.overlay) return;
@@ -143,6 +145,7 @@ function applyActiveTab(tab) {
   ui.matrixPane.hidden = nextTab !== TAB_MATRIX;
   if (nextTab !== TAB_BATTLEBOX) {
     preview.hidePreview();
+    sampleHand.hide();
   }
   if (nextTab === TAB_MATRIX) {
     tryAutoScrollHighlightedMatrixCell();
@@ -466,6 +469,7 @@ async function renderMatrixPane(bbSlug, selectedDeckSlug = '', selectedMatchupSl
 
 async function route() {
   preview.hidePreview();
+  sampleHand.hide();
   const {
     parts,
     sortMode,
@@ -827,14 +831,19 @@ async function renderDeck(bbSlug, deckSlug, selectedGuide, sortMode, sortDirecti
 
     <details id="decklist-details" class="collapsible"${decklistOpenAttr}>
       <summary>Decklist</summary>
-      <div class="collapsible-body" id="decklist-body">
-        <div class="decklist-grid${hasSecondColumn ? '' : ' single'}">
-          <div class="decklist-col">
-            <div class="card-list">
-              ${renderCardsByType(deckView.mainCards, bannedSet, mainTypes, deckView.mainboardAdded, 'sb-added')}
+      <div class="collapsible-body">
+        <div id="decklist-body">
+          <div class="decklist-grid${hasSecondColumn ? '' : ' single'}">
+            <div class="decklist-col">
+              <div class="card-list">
+                ${renderCardsByType(deckView.mainCards, bannedSet, mainTypes, deckView.mainboardAdded, 'sb-added')}
+              </div>
             </div>
+            ${sideboardHtml || landColumnHtml}
           </div>
-          ${sideboardHtml || landColumnHtml}
+        </div>
+        <div class="decklist-toolbar">
+          <button type="button" class="action-button sample-hand-open-button" id="sample-hand-open-button">Sample Hand</button>
         </div>
       </div>
     </details>
@@ -852,6 +861,7 @@ async function renderDeck(bbSlug, deckSlug, selectedGuide, sortMode, sortDirecti
   const primerDetails = ui.battleboxPane.querySelector('#primer-details');
   const matchupDetails = ui.battleboxPane.querySelector('#matchup-details');
   const decklistBody = ui.battleboxPane.querySelector('#decklist-body');
+  const sampleHandButton = ui.battleboxPane.querySelector('#sample-hand-open-button');
 
   const computeCollapsedMask = () => {
     let mask = 0;
@@ -876,6 +886,15 @@ async function renderDeck(bbSlug, deckSlug, selectedGuide, sortMode, sortDirecti
       replaceHashPreserveSearch(nextHash);
     }
     void renderMatrixPane(bb.slug, deck.slug, matchupForUrl || '');
+  };
+
+  const buildSampleHandKey = () => {
+    const matchupKey = currentApplySideboard ? (currentMatchupSlug || '') : '';
+    return `${bb.slug}/${deck.slug}|sb=${currentApplySideboard ? '1' : '0'}|m=${matchupKey}`;
+  };
+
+  const syncSampleHandContext = () => {
+    sampleHand.setDeckContext(buildSampleHandKey(), deckView.mainCards);
   };
 
   const renderDecklistBody = () => {
@@ -910,6 +929,7 @@ async function renderDeck(bbSlug, deckSlug, selectedGuide, sortMode, sortDirecti
         ${currentSideboardHtml || currentLandColumnHtml}
       </div>
     `;
+    syncSampleHandContext();
   };
 
   if (guideKeys.length) {
@@ -983,6 +1003,13 @@ async function renderDeck(bbSlug, deckSlug, selectedGuide, sortMode, sortDirecti
     [decklistDetails, primerDetails].forEach((details) => {
       if (!details) return;
       details.addEventListener('toggle', syncCollapsedAndUrl);
+    });
+  }
+
+  if (sampleHandButton) {
+    sampleHandButton.addEventListener('click', () => {
+      preview.hidePreview();
+      sampleHand.open();
     });
   }
 
