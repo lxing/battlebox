@@ -1,10 +1,10 @@
-Goblins is a fast, disruptive tribal deck that combines explosive starts with steady card advantage. [[Goblin Lackey]] creates the most threatening openings, while [[Goblin Matron]] and [[Goblin Ringleader]] keep the deck stocked with action. [[Goblin Warchief]] turns on haste and cost reduction, making the deck’s midgame swings especially punishing.
+Combine explosive starts with a relentless swarm of Golblins. [[Goblin Lackey]] and [[Goblin Warchief]] accelerate your development for [[Goblin Matron]] and [[Goblin Ringleader]] to grind out a steady stream of threats. Numerous late game options give you the option of playing for combo or combat lines.
 
 ### Early game
-Look for pressure plus a way to sustain it. Turn one [[Goblin Lackey]] forces early interaction, and a second-wave [[Goblin Warchief]] accelerates your curve into the key three- and four-drops. [[Rishadan Port]] is very flexible and can either buy you time into the midgame or create a brutal asymmetry with [[Goblin Lackey]].
+Look for early pressure. The dream is turn-one [[Goblin Lackey]] with maybe a [[Mogg Fanatic]] to clear out blockers, with [[Goblin Warchief]] as backup plan to accelerate into the heavy part of your curve. [[Rishadan Port]] is very flexible and can either buy time to bridge into the midgame or create a strong asymmetry with [[Goblin Lackey]].
 
 ### Midgame
-This is where the deck’s tutoring and refuel engines take over. Spam [[Goblin Matron]] and [[Goblin Ringleader]]. Use [[Gempalm Incinerator]] and [[Goblin Sharpshooter]] to dominate creature boards. An unchecked [[Goblin Piledriver]] with moderate goblin support can rampage here.
+Let the deck’s tutoring and refuel engines take over. Spam [[Goblin Matron]] and [[Goblin Ringleader]]. Use [[Gempalm Incinerator]] and [[Goblin Sharpshooter]] to attack creature-heavy boards. An unchecked [[Goblin Piledriver]] with moderate goblin support can kill quickly here.
 
 ### Endgame
-[[Siege-Gang Commander]] provides reach and inevitability by turning extra goblins into direct damage. [[Goblin King]] will wreck any red deck. Lastly, [[Goblin Sharpshooter]] and [[Skirk Prospector]] can kill out of nowhere.
+Dig for [[Siege-Gang Commander]] to provide reach and inevitability, turning extra goblins into direct damage. [[Goblin King]] will wreck any red opponent. [[Goblin Sharpshooter]] and [[Skirk Prospector]] provide a combo flourish to your otherwise aggressive game plan.

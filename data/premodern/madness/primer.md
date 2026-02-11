@@ -1,10 +1,10 @@
-Madness is a tempo deck that converts discard into free or discounted threats. [[Wild Mongrel]], [[Frantic Search]] and [[Careful Study]] enable the engine, letting you cast [[Basking Rootwalla]] and [[Arrogant Wurm]] at a steep discount. With cheap permission like [[Counterspell]] and [[Daze]], the deck can apply pressure while leaving up just enough reactivity to squeeze through the win.
+Use various Madness enablers to cheat on mana and play a tempo game. [[Wild Mongrel]], [[Frantic Search]] and [[Careful Study]] enable the engine, letting you cast [[Basking Rootwalla]] and [[Arrogant Wurm]] at a steep discount. With cheap permission like [[Counterspell]] and [[Daze]], you can apply pressure while leaving up just enough reactivity to squeeze through a win.
 
 ### Early game
-Prioritize a cheap repeatable enabler. [[Wild Mongrel]] is the most important early play because it's repeatable discard, [[Survival of the Fittest]] is the next best option.
+Prioritize a cheap repeatable enabler. [[Wild Mongrel]] and [[Survival of the Fittest]] are the lynchpins of the deck.
 
 ### Midgame
-This is where the deck’s efficiency shines. Use [[Frantic Search]] to refuel and trigger cheap Madness spells to build up a large and efficient board. Grab [[Squee, Goblin Nabob]] with [[Survival of the Fittest]] and start tutoring out every creature in your library. Disrupt with countermagic as needed; all your Madness spells play well at instant speed.
+This is where the deck’s efficiency shines. Build up a large and efficient board of [[Basking Rootwalla]] and [[Arrogant Wurm]]. Grab [[Squee, Goblin Nabob]] with [[Survival of the Fittest]] and start tutoring out every creature in your library. Disrupt with countermagic as needed; most of your Madness enablers play well at instant speed.
 
 ### Endgame
-Close by keeping pressure with evasive oversized threats. Your endgame trumps are [[Wonder]] for an alpha strike and the infuriating [[Waterfront Bouncer]] + [[Gilded Drake]] combo.
+[[Survival of the Fittest]] gives you nonstop pressure against control decks. If the board stalls, dump [[Wonder]] in the graveyard for an alpha strike or use the infuriating [[Waterfront Bouncer]] + [[Gilded Drake]] combo.

@@ -1,10 +1,10 @@
-Landstill is a slow control deck that turns a stable board into a stream of cards and inevitability. [[Standstill]] is the centerpiece: once you establish a safe battlefield, it pressures opponents to pop it while you beatdown with manlands like [[Mishra's Factory]] and [[Faerie Conclave]].
+Use [[Standstill]] and [[manlands|Mishra's Factory]] as a powerful card advantage engine. When the coast is clear, dropping [[Standstill]] will force your opponent to pop it under pressure from your high-density creature manabase. Draw into removal, counters, and more card advantage to bury them.
 
 ### Early game
-Focus on development and interaction. Use [[Impulse]] to find lands and answers while keeping up [[Counterspell]] or [[Mana Leak]]. Stabilize with [[Swords to Plowshares]] and [[Wrath of God]].
+Focus on development and interaction at instant speed with [[Swords to Plowshares]], [[Impulse]], [[Counterspell]], and [[Mana Leak]]. Stabilize with [[Wrath of God]] if needed.
 
 ### Midgame
-Midgame is all about card advantage. Aim to resolve [[Standstill]] on a board state you can win with manlands. Drop [[Fact or Fiction]] whenever the opportunity presents itself. Trade to neutralize opposing threats the entire time.
+Midgame is all about card advantage and continuing instant-speed interaction. Aim to resolve [[Standstill]] on a board state you can win with manlands. Mix in [[Fact or Fiction]] whenever the opportunity presents itself.
 
 ### Endgame
-After you have the edge in resources, convert your sustained land drops into a kill with [[Decree of Justice]]. [[Humility]] is an excellent lock piece to embarrass creature decks.
+After you've neutralized most of your opponent's threats, convert your sustained land drops into a kill with [[Decree of Justice]]. [[Humility]] is an excellent lock piece to embarrass creature decks.
