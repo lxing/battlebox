@@ -1,9 +1,12 @@
 +2 [[Winter Orb]]
-+2 [[Naturalize]]
-+1 [[Genesis]]
++3 [[Naturalize]]
 +1 [[Caller of the Claw]]
--4 [[Multani's Acolyte]]
++1 [[Genesis]]
 -1 [[Yavimaya Granger]]
--1 [[Anger]]
+-1 [[Masticore]]
+-1 [[Wellwisher]]
+-1 [[Kamahl, Fist of Krosa]]
+-1 [[Deranged Hermit]]
+-2 [[Priest of Titania]]
 
-Force action through [[Standstill]] and answer it with [[Naturalize]] before they can set up.
+Develop your board quickly to blunt [[Standstill]]. [[Naturalize]] is useless against [[Standstill]] but necessary against [[Humility]].

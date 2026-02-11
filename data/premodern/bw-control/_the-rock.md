@@ -3,4 +3,4 @@
 -1 [[Disenchant]]
 -1 [[Duress]]
 
-Focus on stopping [[Recurring Nightmare]] and the random [[Blastoderm]] kills.
+Focus on blunting [[Recurring Nightmare]] and the random [[Blastoderm]] kills.

@@ -1,8 +1,6 @@
 +4 [[Naturalize]]
 +1 [[Druid Lyrist]]
-+1 [[Genesis]]
 -4 [[Tangle Wire]]
--1 [[Anger]]
--1 [[Squee, Goblin Nabob]]
+-1 [[Masticore]]
 
-Keep [[Oath of Druids]] off the table and pressure before a large [[Terravore]] takes over.
+Keep [[Oath of Druids]] off the table. Otherwise, you are quite resilient to their land destruction.

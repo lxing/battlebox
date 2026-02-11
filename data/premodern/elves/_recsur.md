@@ -1,6 +1,7 @@
-+2 [[Naturalize]]
-+1 [[Genesis]]
-+1 [[Elvish Champion]]
--4 [[Multani's Acolyte]]
++3 [[Naturalize]]
++1 [[Druid Lyrist]]
+-1 [[Yavimaya Granger]]
+-1 [[Deranged Hermit]]
+-2 [[Priest of Titania]]
 
-Disrupt [[Survival of the Fittest]] and [[Recurring Nightmare]] before the engine grinds you out.
+Kill [[Survival of the Fittest]] on sight. [[Shard Phoenix]] is their biggest threat, and they can rebuy it repeatedly.

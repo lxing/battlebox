@@ -1,1 +1,1 @@
-    Try really hard to strip [[Armageddon]] from their hand, but if you can't manage that, then don't overextend on lands. You don't have a good sideboard for this matchup, but your maindeck can get the job done.
+    Try really hard to strip [[Armageddon]] from their hand, but if you can't manage that, then don't overextend on lands. You don't have a good sideboard for this matchup.
