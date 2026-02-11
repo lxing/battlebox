@@ -451,10 +451,11 @@ body {
   --initiative-highlight-width: 2px;
   position: relative;
   display: block;
-  min-height: 2.95rem;
+  height: 2.95rem;
   border: 1px solid var(--color-panel-border);
   border-radius: var(--radius-md);
   padding: 0.2rem 0.25rem;
+  overflow: hidden;
 }
 
 .initiative-room-body {
@@ -463,7 +464,8 @@ body {
   align-items: stretch;
   min-width: 0;
   width: 100%;
-  min-height: 2.45rem;
+  height: 2.45rem;
+  min-height: 0;
 }
 
 .initiative-room-body-entrance {
@@ -481,6 +483,7 @@ body {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  min-height: 0;
 }
 
 .initiative-room-label-entrance {
@@ -498,6 +501,9 @@ body {
   line-height: 1.15;
   text-align: center;
   max-width: 100%;
+  min-height: 0;
+  overflow: hidden;
+  padding: 0 0.18rem;
 }
 
 .initiative-room-player {
@@ -533,7 +539,7 @@ body {
 
 .initiative-room-valid-drop {
   border-color: var(--initiative-highlight-color);
-  border-width: var(--initiative-highlight-width);
+  box-shadow: inset 0 0 0 var(--initiative-highlight-width) var(--initiative-highlight-color);
 }
 
 .qr-breadcrumb-button {
