@@ -34,6 +34,7 @@ let data = { index: null, battleboxes: {}, matrices: {}, buildId: '' };
 const TAB_BATTLEBOX = 'battlebox';
 const TAB_LIFE = 'life';
 const TAB_MATRIX = 'matrix';
+const MATRIX_DISABLED_BATTLEBOXES = new Set(['bloomburrow']);
 const ui = {
   shell: null,
   header: null,
@@ -481,6 +482,7 @@ async function route() {
   const currentBattleboxSlug = parts.length > 0 ? normalizeName(parts[0]) : '';
   const currentDeckSlug = parts.length === 2 ? normalizeName(parts[1]) : '';
   const hasBattleboxContext = parts.length > 0;
+  const matrixTabEnabled = hasBattleboxContext && !MATRIX_DISABLED_BATTLEBOXES.has(currentBattleboxSlug);
 
   if (parts.length === 0) {
     renderHome();
@@ -501,7 +503,7 @@ async function route() {
   }
 
   await renderMatrixPane(currentBattleboxSlug, currentDeckSlug, matchupSlug);
-  setMatrixTabEnabled(hasBattleboxContext);
+  setMatrixTabEnabled(matrixTabEnabled);
 
   if (ui.battleboxPane) {
     ui.battleboxPane.scrollTo({ top: 0, left: 0, behavior: 'auto' });
