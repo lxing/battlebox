@@ -91,8 +91,8 @@ export function createSampleHandViewer() {
         </div>
         <div class="sample-hand-footer">
           <div class="sample-hand-controls">
-            <button type="button" class="action-button sample-hand-control" data-sample-hand-action="draw">Draw</button>
             <button type="button" class="action-button sample-hand-control" data-sample-hand-action="reset">Reset</button>
+            <button type="button" class="action-button sample-hand-control" data-sample-hand-action="draw">Draw</button>
             <button type="button" class="action-button sample-hand-control" data-sample-hand-action="close">Close</button>
           </div>
         </div>
