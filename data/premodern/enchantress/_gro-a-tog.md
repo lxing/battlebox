@@ -7,4 +7,4 @@
 
 <AI-generated placeholder. Probably nonsense>
 
-Keep their graveyard small for [[Psychatog]] with [[Tormod's Crypt]], and use [[Xantid Swarm]] to push key enchantments through [[Counterspell]] and [[Daze]].
+Their biggest lever against you is [[Armageddon]]. Play around it by conserving land drops.

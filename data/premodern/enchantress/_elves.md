@@ -5,4 +5,4 @@
 
 <AI-generated placeholder. Probably nonsense>
 
-Use [[Swords to Plowshares]] on [[Priest of Titania]] to break up their mana and combat math. Keep [[Elephant Grass]] and [[Parallax Wave]] to blunt their swarm.
+Although Elves is creature-based, your prison pieces primarily lock out combat, not value swarms. Left unmolested, Elves will destroy your manabase with [[Kamahl, Fist of Krosa]] and [[Masticore]] (though they are certainly capable of killing you via combat too). To suppress them, you need to dig out the [[Seal of Cleansing]] + [[Parallax Wave]] combo and race with an [[Opalescence]] kill.

@@ -3,6 +3,4 @@
 -1 [[Opalescence]]
 -1 [[Mirri's Guile]]
 
-<AI-generated placeholder. Probably nonsense>
-
-Prioritize [[Swords to Plowshares]] on [[Goblin Lackey]] and [[Goblin Piledriver]] so they never snowball. [[Elephant Grass]] buys the time you need to set up your lock pieces.
+Game 1, your main risk is getting overrun. Prioritize locking them out with prison pieces. Game 2, [[Tranquil Domain]] plus their other spot enchantment removal is a menace. You must neutralize them quickly and go for an [[Opalescence]] kill, while also playing conservatively to not get blown out.

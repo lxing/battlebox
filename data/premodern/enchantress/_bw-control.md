@@ -1,11 +1,6 @@
-+3 [[Swords to Plowshares]]
-+3 [[Xantid Swarm]]
--2 [[Elephant Grass]]
--1 [[Mobilization]]
--1 [[Opalescence]]
++3 [[Aura of Silence]]
++2 [[Tormod's Crypt]]
+-4 [[Elephant Grass]]
 -1 [[Mirri's Guile]]
--1 [[Seal of Cleansing]]
 
-<AI-generated placeholder. Probably nonsense>
-
-[[Swords to Plowshares]] cleanly answers [[Exalted Angel]] and keeps [[Eternal Dragon]] honest. [[Xantid Swarm]] helps force key enchantments through their discard and countermagic so they can't sit behind [[Decree of Justice]].
+Bring in more enchantment hate to counterplay their own [[Aura of Silence]] and [[Engineered Plague]]. [[Tormod's Crypt]] neutralizes their light recursion and card advantage engines. Sequence [[Mirri's Guile]] with the expectation your hand will be shredded by discard.
