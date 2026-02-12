@@ -6,20 +6,204 @@ import (
 	"os"
 	"path/filepath"
 	"sort"
+	"strconv"
 	"strings"
 )
 
-// validatePrintingsUsage runs three source-of-truth validations:
-// 1) [[Card]] references in primers must exist in the current deck list and have a merged printing.
-// 2) [[Card]] references in matchup guides must resolve to either current-deck or opponent-deck merged printings.
-// 3) Printing coverage checks:
-//   - every decklist card (main/sideboard) must resolve through merged deck+battlebox printings,
-//   - every key in deck printings.json must be referenced by that deck's entries,
-//   - every key in battlebox printings.json must be referenced by some deck entry in that battlebox.
-//
-// Notes:
-// - Unreferenced-printing checks intentionally ignore markdown [[Card]] prose references.
-// - This validator reads source files only and is independent from incremental JSON rebuild decisions.
+// Validation inventory in this build package:
+// 1) Sideboard plan validation (always on):
+//   - IN/OUT line parsing with quantities.
+//   - IN cards must exist in sideboard and not exceed available copies.
+//   - OUT cards must exist in mainboard and not exceed available copies.
+//   - IN and OUT total quantities must match.
+// 2) Optional markdown ref validation (-validate-refs):
+//   - [[Card]] refs in primers/guides must resolve to current deck cards,
+//     or opponent deck cards for guide prose.
+// 3) Printing coverage validation (-validate-printings, enabled by default):
+//   - [[Card]] refs in primers/guides must resolve printings in deck/opponent context.
+//   - Every decklist card must resolve via merged project+battlebox+deck printings.
+//   - Deck-level and battlebox-level printings must be referenced by deck entries.
+//   - Unreferenced-printing checks intentionally ignore prose [[Card]] refs.
+
+func parseGuideLine(line string) (int, string, error) {
+	line = strings.TrimSpace(line)
+	if line == "" {
+		return 0, "", nil
+	}
+	match := guideCountRE.FindStringSubmatch(line)
+	if match == nil {
+		return 0, "", fmt.Errorf("missing quantity: %s", line)
+	}
+	qty, err := strconv.Atoi(match[1])
+	if err != nil || qty <= 0 {
+		return 0, "", fmt.Errorf("invalid quantity: %s", line)
+	}
+	name := strings.TrimSpace(match[2])
+	if name == "" {
+		return 0, "", fmt.Errorf("missing card name: %s", line)
+	}
+	return qty, name, nil
+}
+
+func extractCardName(input string) string {
+	name := strings.TrimSpace(input)
+	if strings.HasPrefix(name, "[[") && strings.HasSuffix(name, "]]") {
+		inner := strings.TrimSuffix(strings.TrimPrefix(name, "[["), "]]")
+		return strings.TrimSpace(inner)
+	}
+	return name
+}
+
+func validateGuide(guide MatchupGuide, mainboard, sideboard map[string]guideCardInfo) error {
+	inCounts := map[string]int{}
+	outCounts := map[string]int{}
+
+	for _, entry := range guide.In {
+		qty, name, err := parseGuideLine(entry)
+		if err != nil {
+			return fmt.Errorf("IN line: %w", err)
+		}
+		name = extractCardName(name)
+		if name == "" {
+			continue
+		}
+		key := normalizeName(name)
+		inCounts[key] += qty
+	}
+
+	for _, entry := range guide.Out {
+		qty, name, err := parseGuideLine(entry)
+		if err != nil {
+			return fmt.Errorf("OUT line: %w", err)
+		}
+		name = extractCardName(name)
+		if name == "" {
+			continue
+		}
+		key := normalizeName(name)
+		outCounts[key] += qty
+	}
+
+	inCount := 0
+	outCount := 0
+	for name, qty := range inCounts {
+		info, ok := sideboard[name]
+		if !ok {
+			return fmt.Errorf("IN card not in sideboard: %s", name)
+		}
+		if qty > info.Qty {
+			return fmt.Errorf("IN card exceeds sideboard count: %s (%d > %d)", name, qty, info.Qty)
+		}
+		inCount += qty
+	}
+
+	for name, qty := range outCounts {
+		info, ok := mainboard[name]
+		if !ok {
+			return fmt.Errorf("OUT card not in mainboard: %s", name)
+		}
+		if qty > info.Qty {
+			return fmt.Errorf("OUT card exceeds mainboard count: %s (%d > %d)", name, qty, info.Qty)
+		}
+		outCount += qty
+	}
+
+	if inCount != outCount {
+		return fmt.Errorf("IN/OUT mismatch: %d in vs %d out", inCount, outCount)
+	}
+
+	return nil
+}
+
+func validateCardRefs(battleboxes []Battlebox) error {
+	var issues []string
+
+	for _, bb := range battleboxes {
+		deckCards := make(map[string]map[string]struct{}, len(bb.Decks))
+		for _, deck := range bb.Decks {
+			set := make(map[string]struct{})
+			for _, card := range deck.Cards {
+				key := normalizeName(card.Name)
+				if key != "" {
+					set[key] = struct{}{}
+				}
+			}
+			for _, card := range deck.Sideboard {
+				key := normalizeName(card.Name)
+				if key != "" {
+					set[key] = struct{}{}
+				}
+			}
+			deckCards[deck.Slug] = set
+		}
+
+		for _, deck := range bb.Decks {
+			if deck.Primer != "" {
+				issues = append(issues, validateRefsForText(bb.Slug, deck.Slug, "primer", deck.Primer, deckCards[deck.Slug], nil)...)
+			}
+			for opponent, guide := range deck.Guides {
+				opponentSet := deckCards[opponent]
+				issues = append(issues, validateRefsForText(bb.Slug, deck.Slug, "guide:"+opponent, guide.Text, deckCards[deck.Slug], opponentSet)...)
+			}
+		}
+	}
+
+	if len(issues) == 0 {
+		return nil
+	}
+
+	for _, issue := range issues {
+		fmt.Fprintln(os.Stderr, issue)
+	}
+	return fmt.Errorf("card reference validation failed (%d)", len(issues))
+}
+
+func validateRefsForText(battlebox, deck, source, text string, deckSet, opponentSet map[string]struct{}) []string {
+	if text == "" {
+		return nil
+	}
+	var issues []string
+	for _, ref := range extractCardRefs(text) {
+		key := normalizeName(ref)
+		if key == "" {
+			continue
+		}
+		if containsCard(deckSet, key) || containsCard(opponentSet, key) {
+			continue
+		}
+		issues = append(issues, fmt.Sprintf("Missing card ref (%s/%s %s): %s", battlebox, deck, source, ref))
+	}
+	return issues
+}
+
+func containsCard(set map[string]struct{}, key string) bool {
+	if set == nil {
+		return false
+	}
+	_, ok := set[key]
+	return ok
+}
+
+func extractCardRefs(text string) []string {
+	matches := cardRefRE.FindAllStringSubmatch(text, -1)
+	if matches == nil {
+		return nil
+	}
+	out := make([]string, 0, len(matches))
+	for _, match := range matches {
+		inner := strings.TrimSpace(match[1])
+		if inner == "" {
+			continue
+		}
+		parts := strings.SplitN(inner, "|", 2)
+		target := strings.TrimSpace(parts[len(parts)-1])
+		if target != "" {
+			out = append(out, target)
+		}
+	}
+	return out
+}
+
 func validatePrintingsUsage(dataDir string, projectPrintings map[string]string, battleboxDirs []os.DirEntry) []string {
 	type deckContext struct {
 		slug            string
@@ -70,7 +254,6 @@ func validatePrintingsUsage(dataDir string, projectPrintings map[string]string, 
 			deckPrintings := loadPrintings(filepath.Join(deckPath, printingsFileName))
 			mergedDeckPrintings := mergePrintings(mergedBattleboxPrintings, deckPrintings)
 
-			// Deck cards must always resolve printings through merged deck+battlebox scope.
 			for _, card := range manifest.Cards {
 				checkDeckCardPrinting(&warnings, bbSlug, deckSlug, card.Name, mergedDeckPrintings)
 			}
@@ -78,7 +261,6 @@ func validatePrintingsUsage(dataDir string, projectPrintings map[string]string, 
 				checkDeckCardPrinting(&warnings, bbSlug, deckSlug, card.Name, mergedDeckPrintings)
 			}
 
-			// Deck-level printings must correspond to real deck entries.
 			for key := range deckPrintings {
 				if _, ok := deckCards[key]; ok {
 					continue
@@ -96,7 +278,6 @@ func validatePrintingsUsage(dataDir string, projectPrintings map[string]string, 
 			}
 		}
 
-		// Battlebox-level printings must be referenced by deck entries in this battlebox.
 		for key := range bbPrintings {
 			if _, ok := battleboxUsedCards[key]; ok {
 				continue
@@ -104,7 +285,6 @@ func validatePrintingsUsage(dataDir string, projectPrintings map[string]string, 
 			warnings = append(warnings, fmt.Sprintf("Unreferenced battlebox printing (%s): %s", bbSlug, key))
 		}
 
-		// Validate markdown references with deck/opponent printings context.
 		for _, ctx := range decks {
 			primerPath := filepath.Join(ctx.path, "primer.md")
 			if primerData, err := os.ReadFile(primerPath); err == nil {

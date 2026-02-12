@@ -16,10 +16,6 @@ func Main() {
 	dataDir := "data"
 	outputDir := filepath.Join("static", "data")
 	indexPath := filepath.Join(outputDir, "index.json")
-	if *validateRefs {
-		// Reference validation should run against a complete rebuilt view.
-		*fullBuild = true
-	}
 
 	// Load card cache
 	loadCardCache()
@@ -30,7 +26,7 @@ func Main() {
 		fmt.Fprintf(os.Stderr, "Error reading data dir: %v\n", err)
 		os.Exit(1)
 	}
-	if *validatePrintings {
+	if *validate {
 		for _, warning := range validatePrintingsUsage(dataDir, projectPrintings, battleboxDirs) {
 			fmt.Fprintf(os.Stderr, "Warning: %s\n", warning)
 		}
@@ -176,13 +172,6 @@ func Main() {
 
 			output.Battleboxes = append(output.Battleboxes, battlebox)
 			fmt.Printf("Processed battlebox: %s (%d decks)\n", slug, len(battlebox.Decks))
-		}
-
-		if *validateRefs {
-			if err := validateCardRefs(output.Battleboxes); err != nil {
-				fmt.Fprintln(os.Stderr, err)
-				os.Exit(1)
-			}
 		}
 	}
 

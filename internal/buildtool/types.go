@@ -255,6 +255,5 @@ var cardTypeOverrideByPrinting = map[string]string{
 	"neo/66": "enchantment",
 }
 
-var validateRefs = flag.Bool("validate-refs", false, "validate [[Card]] references in primers and guides")
-var validatePrintings = flag.Bool("validate-printings", true, "validate printing coverage and [[Card]] references against deck/opponent printings")
+var validate = flag.Bool("validate", true, "run all build validations (sideboard plans + printing/reference coverage) as warnings")
 var fullBuild = flag.Bool("full", false, "force full rebuild (ignore incremental cache)")
