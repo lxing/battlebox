@@ -91,9 +91,6 @@ func processDeck(deckPath, slug, battlebox string, printings map[string]string) 
 	}
 
 	// Read sideboard guides
-	mainboardIndex := indexCards(manifest.Cards)
-	sideboardIndex := indexCards(manifest.Sideboard)
-
 	entries, _ := os.ReadDir(deckPath)
 	for _, entry := range entries {
 		name := entry.Name()
@@ -112,20 +109,6 @@ func processDeck(deckPath, slug, battlebox string, printings map[string]string) 
 				continue
 			}
 			guide := parseGuide(string(guideData))
-			if *validate {
-				if err := validateGuide(guide, mainboardIndex, sideboardIndex); err != nil {
-					// Keep builds unblocked when guide plans temporarily drift from manifests.
-					// Emit a warning so the mismatch is still visible and can be fixed later.
-					fmt.Fprintf(
-						os.Stderr,
-						"Warning: Malformed sideboard plan (%s/%s -> %s): %v\n",
-						battlebox,
-						slug,
-						opponentSlug,
-						err,
-					)
-				}
-			}
 			deck.Guides[opponentSlug] = guide
 		}
 	}

@@ -210,6 +210,8 @@ func validatePrintingsUsage(dataDir string, projectPrintings map[string]string, 
 		path            string
 		mergedPrintings map[string]string
 		deckCards       map[string]struct{}
+		mainboardIndex  map[string]guideCardInfo
+		sideboardIndex  map[string]guideCardInfo
 		guideFiles      []string
 	}
 
@@ -247,6 +249,8 @@ func validatePrintingsUsage(dataDir string, projectPrintings map[string]string, 
 			}
 
 			deckCards := collectManifestCards(manifest)
+			mainboardIndex := indexCards(manifest.Cards)
+			sideboardIndex := indexCards(manifest.Sideboard)
 			for key := range deckCards {
 				battleboxUsedCards[key] = struct{}{}
 			}
@@ -274,6 +278,8 @@ func validatePrintingsUsage(dataDir string, projectPrintings map[string]string, 
 				path:            deckPath,
 				mergedPrintings: mergedDeckPrintings,
 				deckCards:       deckCards,
+				mainboardIndex:  mainboardIndex,
+				sideboardIndex:  sideboardIndex,
 				guideFiles:      guideFiles,
 			}
 		}
@@ -312,8 +318,14 @@ func validatePrintingsUsage(dataDir string, projectPrintings map[string]string, 
 					warnings = append(warnings, fmt.Sprintf("Validator input error (%s/%s): %s", bbSlug, ctx.slug, filepath.Base(guideFile)))
 					continue
 				}
+				guide := parseGuide(string(guideData))
+				if err := validateGuide(guide, ctx.mainboardIndex, ctx.sideboardIndex); err != nil {
+					warnings = append(warnings, fmt.Sprintf("Malformed sideboard plan (%s/%s -> %s): %v", bbSlug, ctx.slug, opponentSlug, err))
+				}
 
-				for _, ref := range extractCardRefs(string(guideData)) {
+				// Avoid duplicate noise with sideboard-plan validation:
+				// printing coverage for guides only checks prose refs.
+				for _, ref := range extractCardRefs(guide.Text) {
 					key := normalizeName(ref)
 					if key == "" {
 						continue
