@@ -30,6 +30,10 @@
       "qty": 1
     },
     {
+      "name": "Guardian of the Guildpact",
+      "qty": 1
+    },
+    {
       "name": "Heap Gate",
       "qty": 1
     },
@@ -47,7 +51,7 @@
     },
     {
       "name": "Outlaw Medic",
-      "qty": 4
+      "qty": 3
     },
     {
       "name": "Preordain",
