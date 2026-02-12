@@ -1,7 +1,6 @@
 +4 [[Dust to Dust]]
 +2 [[Gorilla Shaman]]
--2 [[Dawnbringer Cleric]]
--1 [[Counterspell]]
--3 [[Thraben Charm]]
+-2 [[Prismatic Strands]]
+-4 [[Counterspell]]
 
-[[Dust to Dust]] and [[Gorilla Shaman]] completely wreck their manabase. Keep this under control, as their recursion and card advantage engine is otherwise quite strong. [[Prismatic Strands]] is good against [[Krark-Clan Shaman]], though they can keep reactivating it.
+[[Dust to Dust]] and [[Gorilla Shaman]] completely wreck their manabase. Their recursion value engine is quite strong, but your Lifelink plan scales even better into the long game.
