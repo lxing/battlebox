@@ -267,6 +267,8 @@ body {
   -webkit-touch-callout: none;
 }
 
+.action-button:disabled,
+.action-button[aria-disabled='true'],
 .tabbar-button:disabled,
 .tabbar-button[aria-disabled='true'] {
   opacity: 0.45;

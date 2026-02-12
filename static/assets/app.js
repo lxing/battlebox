@@ -35,6 +35,7 @@ const TAB_BATTLEBOX = 'battlebox';
 const TAB_LIFE = 'life';
 const TAB_MATRIX = 'matrix';
 const MATRIX_DISABLED_BATTLEBOXES = new Set(['bloomburrow', 'shared']);
+const RANDOM_ROLL_DISABLED_BATTLEBOXES = new Set(['shared']);
 const ui = {
   shell: null,
   header: null,
@@ -606,8 +607,16 @@ function renderBattlebox(bbSlug, initialSortMode, initialSortDirection) {
   );
   const rollButtons = [...ui.battleboxPane.querySelectorAll('.randomizer-roll')];
   const sortButtons = [...ui.battleboxPane.querySelectorAll('.randomizer-sort')];
+  const randomRollEnabled = !RANDOM_ROLL_DISABLED_BATTLEBOXES.has(bb.slug);
   let sortMode = null;
   let sortDirection = initialDirection;
+
+  if (!randomRollEnabled) {
+    rollButtons.forEach(btn => {
+      btn.disabled = true;
+      btn.setAttribute('aria-disabled', 'true');
+    });
+  }
 
   const updateBattleboxHash = () => {
     const nextHash = buildBattleboxHash(bb.slug, sortMode, sortDirection);
@@ -723,13 +732,15 @@ function renderBattlebox(bbSlug, initialSortMode, initialSortDirection) {
     }
   };
 
-  rollButtons.forEach(btn => {
-    btn.addEventListener('click', () => {
-      const count = Number(btn.dataset.count);
-      setActiveRollButton(count);
-      roll(count);
+  if (randomRollEnabled) {
+    rollButtons.forEach(btn => {
+      btn.addEventListener('click', () => {
+        const count = Number(btn.dataset.count);
+        setActiveRollButton(count);
+        roll(count);
+      });
     });
-  });
+  }
   sortButtons.forEach(btn => {
     btn.addEventListener('click', () => applySort(btn.dataset.sort));
   });
