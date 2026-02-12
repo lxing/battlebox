@@ -31,8 +31,6 @@ export function createCardPreview(app, getCardTarget) {
 
   function positionPreviewAtPoint(absX, absY) {
     if (!previewEl) return;
-    const width = previewEl.offsetWidth || 250;
-    const height = previewEl.offsetHeight || 350;
     const margin = 10;
 
     const viewportW = (window.visualViewport && window.visualViewport.width) || document.documentElement.clientWidth;
@@ -50,6 +48,16 @@ export function createCardPreview(app, getCardTarget) {
       boundsRight = Math.min(boundsRight, rect.right - margin);
       boundsBottom = Math.min(boundsBottom, rect.bottom - margin);
     }
+
+    const boundsWidth = Math.max(0, boundsRight - boundsLeft);
+    if (boundsWidth > 0) {
+      const isDouble = previewEl.classList.contains('card-preview-double');
+      const desiredWidth = isDouble ? boundsWidth : (boundsWidth / 2);
+      previewEl.style.width = `${Math.floor(desiredWidth)}px`;
+    }
+
+    const width = previewEl.offsetWidth || 250;
+    const height = previewEl.offsetHeight || 350;
 
     let x = absX;
     let y = absY;
