@@ -34,7 +34,7 @@ let data = { index: null, battleboxes: {}, matrices: {}, buildId: '' };
 const TAB_BATTLEBOX = 'battlebox';
 const TAB_LIFE = 'life';
 const TAB_MATRIX = 'matrix';
-const MATRIX_DISABLED_BATTLEBOXES = new Set(['bloomburrow']);
+const MATRIX_DISABLED_BATTLEBOXES = new Set(['bloomburrow', 'shared']);
 const ui = {
   shell: null,
   header: null,

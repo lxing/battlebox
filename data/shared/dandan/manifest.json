@@ -1,0 +1,108 @@
+{
+  "name": "Dandân",
+  "colors": "u",
+  "tags": [
+    "tempo"
+  ],
+  "cards": [
+    {
+      "name": "Dandan",
+      "qty": 10
+    },
+    {
+      "name": "Brainstorm",
+      "qty": 2
+    },
+    {
+      "name": "Magical Hack",
+      "qty": 2
+    },
+    {
+      "name": "Mystical Tutor",
+      "qty": 2
+    },
+    {
+      "name": "Memory Lapse",
+      "qty": 8
+    },
+    {
+      "name": "Vision Charm",
+      "qty": 2
+    },
+    {
+      "name": "Accumulated Knowledge",
+      "qty": 4
+    },
+    {
+      "name": "Dance of the Skywise",
+      "qty": 2
+    },
+    {
+      "name": "Metamorphose",
+      "qty": 2
+    },
+    {
+      "name": "Predict",
+      "qty": 2
+    },
+    {
+      "name": "Unsubstantiate",
+      "qty": 2
+    },
+    {
+      "name": "Crystal Spray",
+      "qty": 2
+    },
+    {
+      "name": "Ray of Command",
+      "qty": 2
+    },
+    {
+      "name": "Supplant Form",
+      "qty": 2
+    },
+    {
+      "name": "Diminishing Returns",
+      "qty": 2
+    },
+    {
+      "name": "Izzet Boilerworks",
+      "qty": 2
+    },
+    {
+      "name": "Temple of Epiphany",
+      "qty": 2
+    },
+    {
+      "name": "Mystic Retrieval",
+      "qty": 2
+    },
+    {
+      "name": "Halimar Depths",
+      "qty": 2
+    },
+    {
+      "name": "Island",
+      "qty": 18
+    },
+    {
+      "name": "Lonely Sandbar",
+      "qty": 2
+    },
+    {
+      "name": "Mystic Sanctuary",
+      "qty": 2
+    },
+    {
+      "name": "Remote Isle",
+      "qty": 2
+    },
+    {
+      "name": "Svyelunite Temple",
+      "qty": 2
+    }
+  ],
+  "difficulty_tags": [
+    "expert"
+  ]
+}
