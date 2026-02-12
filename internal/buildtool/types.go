@@ -256,4 +256,5 @@ var cardTypeOverrideByPrinting = map[string]string{
 }
 
 var validateRefs = flag.Bool("validate-refs", false, "validate [[Card]] references in primers and guides")
+var validatePrintings = flag.Bool("validate-printings", true, "validate printing coverage and [[Card]] references against deck/opponent printings")
 var fullBuild = flag.Bool("full", false, "force full rebuild (ignore incremental cache)")

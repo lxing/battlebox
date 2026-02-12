@@ -30,6 +30,11 @@ func Main() {
 		fmt.Fprintf(os.Stderr, "Error reading data dir: %v\n", err)
 		os.Exit(1)
 	}
+	if *validatePrintings {
+		for _, warning := range validatePrintingsUsage(dataDir, projectPrintings, battleboxDirs) {
+			fmt.Fprintf(os.Stderr, "Warning: %s\n", warning)
+		}
+	}
 	stamp := loadBuildStamp(stampFile)
 
 	globalHash, err := computeGlobalInputHash(dataDir, stamp.FileCache)
