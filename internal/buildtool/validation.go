@@ -24,6 +24,39 @@ import (
 //   - Every decklist card must resolve via merged project+battlebox+deck printings.
 //   - Deck-level and battlebox-level printings must be referenced by deck entries.
 //   - Unreferenced-printing checks intentionally ignore prose [[Card]] refs.
+// 4) Deck shape validation:
+//   - Mainboard must contain exactly 60 cards.
+// Implementation note:
+// - Primer and guide parsing is memoized by file path for this build run so
+//   validation and deck emission share one parse/load result.
+
+type primerParseCacheEntry struct {
+	raw  string
+	refs []string
+	err  error
+}
+
+type guideParseCacheEntry struct {
+	raw       string
+	parsed    MatchupGuide
+	proseRefs []string
+	err       error
+}
+
+type validationParseCache struct {
+	primers map[string]primerParseCacheEntry
+	guides  map[string]guideParseCacheEntry
+}
+
+var parseCache = validationParseCache{
+	primers: make(map[string]primerParseCacheEntry),
+	guides:  make(map[string]guideParseCacheEntry),
+}
+
+func resetValidationCache() {
+	parseCache.primers = make(map[string]primerParseCacheEntry)
+	parseCache.guides = make(map[string]guideParseCacheEntry)
+}
 
 func parseGuideLine(line string) (int, string, error) {
 	line = strings.TrimSpace(line)
@@ -204,6 +237,37 @@ func extractCardRefs(text string) []string {
 	return out
 }
 
+func loadPrimerCached(path string) (string, []string, error) {
+	if entry, ok := parseCache.primers[path]; ok {
+		return entry.raw, entry.refs, entry.err
+	}
+
+	data, err := os.ReadFile(path)
+	entry := primerParseCacheEntry{err: err}
+	if err == nil {
+		entry.raw = string(data)
+		entry.refs = extractCardRefs(entry.raw)
+	}
+	parseCache.primers[path] = entry
+	return entry.raw, entry.refs, entry.err
+}
+
+func loadGuideCached(path string) (string, MatchupGuide, []string, error) {
+	if entry, ok := parseCache.guides[path]; ok {
+		return entry.raw, entry.parsed, entry.proseRefs, entry.err
+	}
+
+	data, err := os.ReadFile(path)
+	entry := guideParseCacheEntry{err: err}
+	if err == nil {
+		entry.raw = string(data)
+		entry.parsed = parseGuide(entry.raw)
+		entry.proseRefs = extractCardRefs(entry.parsed.Text)
+	}
+	parseCache.guides[path] = entry
+	return entry.raw, entry.parsed, entry.proseRefs, entry.err
+}
+
 func validatePrintingsUsage(dataDir string, projectPrintings map[string]string, battleboxDirs []os.DirEntry) []string {
 	type deckContext struct {
 		slug            string
@@ -251,6 +315,13 @@ func validatePrintingsUsage(dataDir string, projectPrintings map[string]string, 
 			deckCards := collectManifestCards(manifest)
 			mainboardIndex := indexCards(manifest.Cards)
 			sideboardIndex := indexCards(manifest.Sideboard)
+			mainboardTotal := 0
+			for _, card := range manifest.Cards {
+				mainboardTotal += card.Qty
+			}
+			if mainboardTotal != 60 {
+				warnings = append(warnings, fmt.Sprintf("%s/%s mainboard count is %d (expected 60)", bbSlug, deckSlug, mainboardTotal))
+			}
 			for key := range deckCards {
 				battleboxUsedCards[key] = struct{}{}
 			}
@@ -293,8 +364,8 @@ func validatePrintingsUsage(dataDir string, projectPrintings map[string]string, 
 
 		for _, ctx := range decks {
 			primerPath := filepath.Join(ctx.path, "primer.md")
-			if primerData, err := os.ReadFile(primerPath); err == nil {
-				for _, ref := range extractCardRefs(string(primerData)) {
+			if _, primerRefs, err := loadPrimerCached(primerPath); err == nil {
+				for _, ref := range primerRefs {
 					key := normalizeName(ref)
 					if key == "" {
 						continue
@@ -313,19 +384,18 @@ func validatePrintingsUsage(dataDir string, projectPrintings map[string]string, 
 				opponentSlug := strings.TrimPrefix(strings.TrimSuffix(filepath.Base(guideFile), ".md"), "_")
 				opponentCtx, hasOpponent := decks[opponentSlug]
 
-				guideData, err := os.ReadFile(guideFile)
+				_, guide, proseRefs, err := loadGuideCached(guideFile)
 				if err != nil {
 					warnings = append(warnings, fmt.Sprintf("Validator input error (%s/%s): %s", bbSlug, ctx.slug, filepath.Base(guideFile)))
 					continue
 				}
-				guide := parseGuide(string(guideData))
 				if err := validateGuide(guide, ctx.mainboardIndex, ctx.sideboardIndex); err != nil {
 					warnings = append(warnings, fmt.Sprintf("Malformed sideboard plan (%s/%s -> %s): %v", bbSlug, ctx.slug, opponentSlug, err))
 				}
 
 				// Avoid duplicate noise with sideboard-plan validation:
 				// printing coverage for guides only checks prose refs.
-				for _, ref := range extractCardRefs(guide.Text) {
+				for _, ref := range proseRefs {
 					key := normalizeName(ref)
 					if key == "" {
 						continue

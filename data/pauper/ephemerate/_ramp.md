@@ -1,4 +1,4 @@
-+2 [[Dawnbringer Cleric]]
--2 [[Fallaji Archaeologist]]
++1 [[Stonehorn Dignitary]]
+-1 [[Union of the Third Path]]
 
-This matchup is atrocious, they outscale you quickly. [[Writhing Chrysalis]] annihilates you. Try to pick off their enchantment-based ramp and [[Arbor Elf]]. Pick a god and pray.
+This matchup is tricky, they outscale you quickly in the midgame and you'll be playing catchup against the Initiative. [[Writhing Chrysalis]] also walls you. Target [[Arbor Elf]] immediately and defend with [[Counterspell]]. In postboard games, target an endgame of [[Stonehorn Dignitary]] plus [[Murmuring Mystic]].

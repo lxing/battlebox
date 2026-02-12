@@ -1,6 +1,8 @@
 +3 [[Pyroblast]]
++1 [[Dispel]]
 -1 [[Cast Into the Fire]]
 -1 [[Dawnbringer Cleric]]
--1 [[Jolted Awake]]
+-1 [[Breath Weapon]]
+-1 [[Union of the Third Path]]
 
-Stall with [[Kenku Artificer]]. Their counter package is better than yours, and you may need to fire double [[Galvanic Discharge]] to scratch a serpent or [[Murmuring Mystic]].
+Remove or counter their main threats and try to pull ahead in the long game. Protect you [[Ephemerate]]s with countermagic.

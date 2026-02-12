@@ -21,20 +21,6 @@ func processDeck(deckPath, slug, battlebox string, printings map[string]string) 
 	}
 	manifest.Icon = strings.TrimSpace(manifest.Icon)
 
-	mainboardTotal := 0
-	for _, card := range manifest.Cards {
-		mainboardTotal += card.Qty
-	}
-	if mainboardTotal != 60 {
-		fmt.Fprintf(
-			os.Stderr,
-			"Warning: %s/%s mainboard count is %d (expected 60)\n",
-			battlebox,
-			slug,
-			mainboardTotal,
-		)
-	}
-
 	applyPrintings(manifest.Cards, printings, battlebox, slug, nil)
 	applyPrintings(manifest.Sideboard, printings, battlebox, slug, nil)
 
@@ -86,8 +72,8 @@ func processDeck(deckPath, slug, battlebox string, printings map[string]string) 
 
 	// Read primer
 	primerPath := filepath.Join(deckPath, "primer.md")
-	if primerData, err := os.ReadFile(primerPath); err == nil {
-		deck.Primer = strings.TrimSpace(string(primerData))
+	if primerRaw, _, err := loadPrimerCached(primerPath); err == nil {
+		deck.Primer = strings.TrimSpace(primerRaw)
 	}
 
 	// Read sideboard guides
@@ -103,12 +89,11 @@ func processDeck(deckPath, slug, battlebox string, printings map[string]string) 
 			continue
 		}
 		guidePath := filepath.Join(deckPath, name)
-		if guideData, err := os.ReadFile(guidePath); err == nil && len(guideData) > 0 {
+		if guideRaw, guide, _, err := loadGuideCached(guidePath); err == nil && len(guideRaw) > 0 {
 			opponentSlug := strings.TrimPrefix(strings.TrimSuffix(name, ".md"), "_")
 			if opponentSlug == "" {
 				continue
 			}
-			guide := parseGuide(string(guideData))
 			deck.Guides[opponentSlug] = guide
 		}
 	}

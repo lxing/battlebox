@@ -2,7 +2,7 @@ root = "."
 tmp_dir = "tmp"
 
 [build]
-  cmd = "./build.sh && go build -o ./tmp/main ."
+  cmd = "go run scripts/build.go -validate=false && go build -o ./tmp/main ."
   bin = "./tmp/main"
   env = ["DEV=1"]
   args_bin = ["-ts"]

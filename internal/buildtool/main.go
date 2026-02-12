@@ -13,6 +13,7 @@ import (
 
 func Main() {
 	flag.Parse()
+	resetValidationCache()
 	dataDir := "data"
 	outputDir := filepath.Join("static", "data")
 	indexPath := filepath.Join(outputDir, "index.json")
