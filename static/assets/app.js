@@ -54,6 +54,7 @@ const matrixUi = {
   lastAutoScrollKey: '',
   pendingAutoScrollKey: '',
 };
+const guideEditorDrafts = new Map();
 
 function getCardTarget(event) {
   if (!event.target || !event.target.closest) return null;
@@ -127,6 +128,22 @@ async function saveSourceGuide(bbSlug, deckSlug, opponentSlug, raw) {
   return res.json();
 }
 
+function buildGuideDraftKey(bbSlug, deckSlug, opponentSlug) {
+  return `${bbSlug}/${deckSlug}->${opponentSlug}`;
+}
+
+async function clearBrowserCaches() {
+  if (!('caches' in window) || !window.caches || !window.caches.keys) {
+    return;
+  }
+  try {
+    const keys = await window.caches.keys();
+    await Promise.all(keys.map((key) => window.caches.delete(key)));
+  } catch (_) {
+    // Best effort only; page reload still refreshes runtime state.
+  }
+}
+
 function hideQrPopup() {
   if (!qrUi.overlay) return;
   qrUi.overlay.hidden = true;
@@ -181,9 +198,10 @@ function bindBreadcrumbQrButton(container) {
   const scope = container || ui.header || app;
   const button = scope.querySelector('.qr-breadcrumb-button');
   if (!button) return;
-  button.addEventListener('click', (event) => {
+  button.addEventListener('click', async (event) => {
     event.preventDefault();
     event.stopPropagation();
+    await clearBrowserCaches();
     showQrPopup();
   });
 }
@@ -1044,20 +1062,23 @@ async function renderDeck(bbSlug, deckSlug, selectedGuide, sortMode, sortDirecti
 
     const openGuideEditor = async (key) => {
       if (!key) return;
+      const draftKey = buildGuideDraftKey(bb.slug, deck.slug, key);
       const fallbackRaw = guideToRawMarkdown(deck.guides[key]);
-      let sourceRaw = fallbackRaw;
+      let sourceRaw = guideEditorDrafts.has(draftKey) ? guideEditorDrafts.get(draftKey) : fallbackRaw;
       let loadWarning = '';
 
-      if (editButton) editButton.disabled = true;
-      try {
-        const payload = await fetchSourceGuide(bb.slug, deck.slug, key);
-        if (payload && payload.guide && typeof payload.guide.raw === 'string') {
-          sourceRaw = payload.guide.raw;
+      if (!guideEditorDrafts.has(draftKey)) {
+        if (editButton) editButton.disabled = true;
+        try {
+          const payload = await fetchSourceGuide(bb.slug, deck.slug, key);
+          if (payload && payload.guide && typeof payload.guide.raw === 'string') {
+            sourceRaw = payload.guide.raw;
+          }
+        } catch (err) {
+          loadWarning = err && err.message ? err.message : 'Source load failed; using in-memory projection.';
+        } finally {
+          if (editButton) editButton.disabled = false;
         }
-      } catch (err) {
-        loadWarning = err && err.message ? err.message : 'Source load failed; using in-memory projection.';
-      } finally {
-        if (editButton) editButton.disabled = false;
       }
 
       const overlay = document.createElement('div');
@@ -1080,13 +1101,19 @@ async function renderDeck(bbSlug, deckSlug, selectedGuide, sortMode, sortDirecti
       const cancelBtn = overlay.querySelector('.guide-editor-cancel');
       const statusEl = overlay.querySelector('.guide-editor-status');
       textarea.value = sourceRaw;
+      textarea.addEventListener('input', () => {
+        guideEditorDrafts.set(draftKey, textarea.value);
+      });
       textarea.focus();
       textarea.setSelectionRange(textarea.value.length, textarea.value.length);
       if (loadWarning) {
         statusEl.textContent = loadWarning;
       }
 
-      const close = () => {
+      const close = (persistDraft = true) => {
+        if (persistDraft) {
+          guideEditorDrafts.set(draftKey, textarea.value);
+        }
         document.removeEventListener('keydown', onKeydown);
         overlay.remove();
       };
@@ -1109,12 +1136,9 @@ async function renderDeck(bbSlug, deckSlug, selectedGuide, sortMode, sortDirecti
           if (!payload || !payload.guide) {
             throw new Error('Invalid save response');
           }
-          deck.guides[key] = payload.guide;
-          if (select.value === key) {
-            renderGuide(key);
-            renderDecklistBody();
-          }
-          close();
+          statusEl.textContent = 'Saved. Refreshing...';
+          await clearBrowserCaches();
+          window.location.reload();
         } catch (err) {
           statusEl.textContent = err && err.message ? err.message : 'Save failed.';
           saveBtn.disabled = false;
