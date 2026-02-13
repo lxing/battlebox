@@ -13,8 +13,18 @@ function renderManaCostSymbols(rawCost) {
   const manaCost = (rawCost || '').trim();
   if (!manaCost) return '';
   const hybridSymbolFiles = {
+    'B/R': 'br',
+    'B/U': 'ub',
+    'B/W': 'wb',
     'G/U': 'gu',
+    'G/R': 'rg',
+    'R/B': 'br',
     'R/G': 'rg',
+    'U/B': 'ub',
+    'U/G': 'gu',
+    'U/W': 'wu',
+    'W/B': 'wb',
+    'W/U': 'wu',
   };
 
   const renderTokenSymbol = (token) => {
