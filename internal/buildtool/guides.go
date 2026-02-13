@@ -4,7 +4,7 @@ import (
 	"strings"
 )
 
-func parseGuide(raw string) MatchupGuide {
+func ParseGuideRaw(raw string) MatchupGuide {
 	text := strings.ReplaceAll(raw, "\r\n", "\n")
 	lines := strings.Split(text, "\n")
 
@@ -37,10 +37,15 @@ func parseGuide(raw string) MatchupGuide {
 	remaining := strings.TrimSpace(strings.Join(lines[i:], "\n"))
 
 	return MatchupGuide{
+		Raw:  raw,
 		In:   ins,
 		Out:  outs,
 		Text: remaining,
 	}
+}
+
+func parseGuide(raw string) MatchupGuide {
+	return ParseGuideRaw(raw)
 }
 
 func indexCards(cards []Card) map[string]guideCardInfo {

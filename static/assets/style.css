@@ -1372,7 +1372,7 @@ details.collapsible[open] summary::after {
 
 .guide-select {
   display: grid;
-  grid-template-columns: minmax(0, 2fr) minmax(0, 1fr) minmax(0, 1fr);
+  grid-template-columns: minmax(0, 2fr) repeat(3, minmax(0, 1fr));
   align-items: stretch;
   gap: 0.5rem;
   margin-bottom: 0.5rem;
@@ -1406,7 +1406,8 @@ details.collapsible[open] summary::after {
 }
 
 .guide-opponent-link,
-.apply-sideboard-button {
+.apply-sideboard-button,
+.guide-edit-button {
   min-height: 2rem;
 }
 
@@ -1420,6 +1421,16 @@ details.collapsible[open] summary::after {
   font-size: var(--font-size-sm);
 }
 
+@media (max-width: 560px) {
+  .guide-select {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .guide-select select {
+    grid-column: 1 / -1;
+  }
+}
+
 .guide-box {
   font-size: var(--font-size-sm);
   line-height: 1.4;
@@ -1427,6 +1438,64 @@ details.collapsible[open] summary::after {
 
 .guide-box p {
   margin: 0.35rem 0;
+}
+
+.guide-editor-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.7);
+  z-index: 1200;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+}
+
+.guide-editor-modal {
+  width: min(780px, 100%);
+  max-height: min(90vh, 900px);
+  background: var(--color-panel-bg);
+  border: 1px solid var(--color-panel-border);
+  border-radius: var(--radius-md);
+  padding: 0.75rem;
+  display: grid;
+  grid-template-rows: auto minmax(220px, 1fr) auto auto;
+  gap: 0.5rem;
+}
+
+.guide-editor-head {
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+
+.guide-editor-textarea {
+  width: 100%;
+  min-height: 220px;
+  resize: vertical;
+  border-radius: var(--radius-md);
+  border: 1px solid #353560;
+  background: var(--color-control-bg);
+  color: #eee;
+  padding: 0.6rem;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+  font-size: 0.82rem;
+  line-height: 1.35;
+}
+
+.guide-editor-actions {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.5rem;
+}
+
+.guide-editor-actions .action-button {
+  width: 100%;
+}
+
+.guide-editor-status {
+  min-height: 1rem;
+  font-size: 0.78rem;
+  color: #c3c3d0;
 }
 
 .guide-plan {

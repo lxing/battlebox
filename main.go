@@ -10,7 +10,11 @@ import (
 	"net/http"
 	"os"
 	"path"
+	"path/filepath"
+	"regexp"
 	"strings"
+
+	"github.com/lxing/battlebox/internal/buildtool"
 )
 
 //go:embed static/*
@@ -20,6 +24,15 @@ var staticFiles embed.FS
 var dataFiles embed.FS
 
 var useTailscale = flag.Bool("ts", false, "serve over Tailscale")
+var slugRE = regexp.MustCompile(`^[a-z0-9-]+$`)
+
+type sourceGuideRequest struct {
+	Raw string `json:"raw"`
+}
+
+type sourceGuideResponse struct {
+	Guide buildtool.MatchupGuide `json:"guide"`
+}
 
 func main() {
 	flag.Parse()
@@ -29,6 +42,7 @@ func main() {
 
 	// Serve deck JSON data
 	mux.HandleFunc("/api/decks/", handleDecks)
+	mux.HandleFunc("/api/source-guide", handleSourceGuide)
 
 	// Serve static files (SPA shell)
 	staticFS, _ := fs.Sub(staticFiles, "static")
@@ -87,6 +101,68 @@ func main() {
 		}
 		log.Printf("Starting server on :%s", port)
 		log.Fatal(http.ListenAndServe(":"+port, mux))
+	}
+}
+
+func normalizeSlug(raw string) string {
+	slug := strings.TrimSpace(strings.ToLower(raw))
+	if slug == "" || !slugRE.MatchString(slug) {
+		return ""
+	}
+	return slug
+}
+
+func sourceGuidePath(battlebox, deck, opponent string) string {
+	return filepath.Join("data", battlebox, deck, "_"+opponent+".md")
+}
+
+func writeSourceGuideResponse(w http.ResponseWriter, status int, guide buildtool.MatchupGuide) {
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(status)
+	_ = json.NewEncoder(w).Encode(sourceGuideResponse{Guide: guide})
+}
+
+func handleSourceGuide(w http.ResponseWriter, r *http.Request) {
+	if r.Method != http.MethodGet && r.Method != http.MethodPut {
+		w.Header().Set("Allow", "GET, PUT")
+		http.Error(w, "method not allowed", http.StatusMethodNotAllowed)
+		return
+	}
+
+	q := r.URL.Query()
+	battlebox := normalizeSlug(q.Get("bb"))
+	deck := normalizeSlug(q.Get("deck"))
+	opponent := normalizeSlug(q.Get("opponent"))
+	if battlebox == "" || deck == "" || opponent == "" {
+		http.Error(w, "invalid bb/deck/opponent query params", http.StatusBadRequest)
+		return
+	}
+
+	guidePath := sourceGuidePath(battlebox, deck, opponent)
+	switch r.Method {
+	case http.MethodGet:
+		data, err := os.ReadFile(guidePath)
+		if err != nil {
+			http.Error(w, "guide not found", http.StatusNotFound)
+			return
+		}
+		raw := strings.TrimRight(strings.ReplaceAll(string(data), "\r\n", "\n"), "\n")
+		writeSourceGuideResponse(w, http.StatusOK, buildtool.ParseGuideRaw(raw))
+		return
+	case http.MethodPut:
+		defer r.Body.Close()
+		var req sourceGuideRequest
+		if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
+			http.Error(w, "invalid json body", http.StatusBadRequest)
+			return
+		}
+		raw := strings.TrimRight(strings.ReplaceAll(req.Raw, "\r\n", "\n"), "\n")
+		if err := os.WriteFile(guidePath, []byte(raw), 0o644); err != nil {
+			http.Error(w, "failed to write guide", http.StatusInternalServerError)
+			return
+		}
+		writeSourceGuideResponse(w, http.StatusOK, buildtool.ParseGuideRaw(raw))
+		return
 	}
 }
 

@@ -153,6 +153,8 @@ type FileFingerprint struct {
 
 // MatchupGuide stores parsed sideboard plans and matchup prose.
 type MatchupGuide struct {
+	// Raw markdown source for this matchup guide.
+	Raw string `json:"raw,omitempty"`
 	// Sideboard cards to bring in.
 	In []string `json:"in,omitempty"`
 	// Mainboard cards to take out.
