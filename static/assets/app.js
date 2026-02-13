@@ -865,6 +865,79 @@ async function renderDeck(bbSlug, deckSlug, selectedGuide, sortMode, sortDirecti
     return 'default';
   };
   const decklistView = normalizeDecklistView(deck.view);
+  const parseManaColors = (manaCost) => {
+    const out = new Set();
+    const text = String(manaCost || '').toUpperCase();
+    const matches = text.match(/\{[^}]+\}/g) || [];
+    matches.forEach((raw) => {
+      const token = raw.slice(1, -1).trim();
+      if (!token) return;
+      const letters = token.match(/[WUBRG]/g) || [];
+      letters.forEach((letter) => out.add(letter));
+    });
+    return out;
+  };
+  const resolveCubeBucket = (card) => {
+    if ((card.type || 'spell') === 'land') return 'land';
+    const colors = parseManaColors(card.mana_cost);
+    if (colors.size === 0) return 'colorless';
+    if (colors.size === 1) {
+      const [only] = [...colors];
+      if (only === 'W') return 'white';
+      if (only === 'U') return 'blue';
+      if (only === 'B') return 'black';
+      if (only === 'R') return 'red';
+      if (only === 'G') return 'green';
+    }
+    return 'multicolor';
+  };
+  const countCards = (cards) => (cards || []).reduce((sum, c) => sum + (Number(c.qty) || 0), 0);
+  const renderCubeDecklist = (nextDeckView) => {
+    const buckets = {
+      white: [],
+      blue: [],
+      black: [],
+      red: [],
+      green: [],
+      multicolor: [],
+      colorless: [],
+      land: [],
+    };
+    nextDeckView.mainCards.forEach((card) => {
+      buckets[resolveCubeBucket(card)].push(card);
+    });
+    const columns = [
+      { key: 'white', label: 'White', types: ['creature', 'spell', 'artifact'] },
+      { key: 'blue', label: 'Blue', types: ['creature', 'spell', 'artifact'] },
+      { key: 'black', label: 'Black', types: ['creature', 'spell', 'artifact'] },
+      { key: 'red', label: 'Red', types: ['creature', 'spell', 'artifact'] },
+      { key: 'green', label: 'Green', types: ['creature', 'spell', 'artifact'] },
+      { key: 'multicolor', label: 'Multicolor', types: ['creature', 'spell', 'artifact'] },
+      { key: 'colorless', label: 'Colorless', types: ['creature', 'spell', 'artifact'] },
+      { key: 'land', label: 'Land', types: ['land'] },
+    ];
+
+    const columnHtml = columns.map((column) => {
+      const cards = buckets[column.key];
+      const body = cards.length
+        ? renderCardsByType(cards, bannedSet, column.types, nextDeckView.mainboardAdded, 'sb-added')
+        : '<div class="decklist-cube-empty">None</div>';
+      return `
+        <div class="decklist-col decklist-col-cube">
+          <div class="card-group-label decklist-cube-title">${column.label} (${countCards(cards)})</div>
+          <div class="card-list">${body}</div>
+        </div>
+      `;
+    }).join('');
+
+    return `
+      <div class="decklist-cube-scroll">
+        <div class="decklist-grid decklist-grid-cube">
+          ${columnHtml}
+        </div>
+      </div>
+    `;
+  };
   const computeDecklistLayout = (viewMode, nextDeckView) => {
     const hasMainLands = nextDeckView.mainCards.some(c => (c.type || 'spell') === 'land');
     const hasSideboardCards = !!(nextDeckView.sideCards && nextDeckView.sideCards.length);
@@ -890,6 +963,9 @@ async function renderDeck(bbSlug, deckSlug, selectedGuide, sortMode, sortDirecti
     };
   };
   const renderDecklistGrid = (nextDeckView) => {
+    if (decklistView === 'cube') {
+      return renderCubeDecklist(nextDeckView);
+    }
     const layout = computeDecklistLayout(decklistView, nextDeckView);
     const hasSecondColumn = layout.showSideboard || layout.showLandColumn;
     const sideboardHtml = layout.showSideboard ? `
@@ -970,9 +1046,11 @@ async function renderDeck(bbSlug, deckSlug, selectedGuide, sortMode, sortDirecti
         <div id="decklist-body">
           ${renderDecklistGrid(deckView)}
         </div>
-        <div class="decklist-toolbar">
-          <button type="button" class="action-button sample-hand-open-button" id="sample-hand-open-button">Sample Hand</button>
-        </div>
+        ${decklistView === 'cube' ? '' : `
+          <div class="decklist-toolbar">
+            <button type="button" class="action-button sample-hand-open-button" id="sample-hand-open-button">Sample Hand</button>
+          </div>
+        `}
       </div>
     </details>
 
@@ -1022,6 +1100,7 @@ async function renderDeck(bbSlug, deckSlug, selectedGuide, sortMode, sortDirecti
   };
 
   const syncSampleHandContext = () => {
+    if (decklistView === 'cube') return;
     sampleHand.setDeckContext(buildSampleHandKey(), deckView.mainCards, deck.sample_hand_size || 7);
   };
 
@@ -1031,6 +1110,32 @@ async function renderDeck(bbSlug, deckSlug, selectedGuide, sortMode, sortDirecti
     deckView = computeDeckView(deck, guideData, currentApplySideboard);
     decklistBody.innerHTML = renderDecklistGrid(deckView);
     syncSampleHandContext();
+    window.requestAnimationFrame(syncCubeColumnWidth);
+  };
+
+  let cubeResizeObserver = null;
+  const disconnectCubeResizeObserver = () => {
+    if (cubeResizeObserver) {
+      cubeResizeObserver.disconnect();
+      cubeResizeObserver = null;
+    }
+  };
+  const syncCubeColumnWidth = () => {
+    if (decklistView !== 'cube' || !decklistBody) return;
+    const grid = decklistBody.querySelector('.decklist-grid-cube');
+    if (!(grid instanceof HTMLElement)) return;
+    const hostWidth = decklistBody.clientWidth || decklistBody.getBoundingClientRect().width;
+    if (!hostWidth) return;
+    grid.style.setProperty('--cube-col-width', `${Math.floor(hostWidth / 2)}px`);
+  };
+  const setupCubeColumnSizing = () => {
+    disconnectCubeResizeObserver();
+    if (decklistView !== 'cube' || !decklistBody || !window.ResizeObserver) return;
+    cubeResizeObserver = new window.ResizeObserver(() => {
+      window.requestAnimationFrame(syncCubeColumnWidth);
+    });
+    cubeResizeObserver.observe(decklistBody);
+    window.requestAnimationFrame(syncCubeColumnWidth);
   };
 
   if (guideKeys.length) {
@@ -1208,6 +1313,7 @@ async function renderDeck(bbSlug, deckSlug, selectedGuide, sortMode, sortDirecti
   }
 
   renderDecklistBody();
+  setupCubeColumnSizing();
   currentCollapsedMask = computeCollapsedMask();
   updateDeckHashFromState();
 }
