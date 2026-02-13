@@ -1,4 +1,5 @@
 +2 [[Sacred Ground]]
--2 [[Elephant Grass]]
++2 [[Xantid Swarm]]
+-4 [[Elephant Grass]]
 
-Their biggest lever against you is [[Armageddon]]. Play around it.
+Play around [[Armageddon]].

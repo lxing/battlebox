@@ -2,9 +2,8 @@
 +1 [[Aura of Silence]]
 +1 [[Seal of Cleansing]]
 +1 [[Ray of Revelation]]
--4 [[Sphere of Resistance]]
--1 [[Winter's Grasp]]
++1 [[Enlightened Tutor]]
+-4 [[Swords to Plowshares]]
+-2 [[Oath of Druids]]
 
-<AI-generated placeholder. Probably nonsense>
-
-Load up on enchantment interaction to keep [[Elephant Grass]] and [[Solitary Confinement]] off the board.
+Load up on enchantment interaction. Reserve some land destruction for [[Serra's Sanctum]].

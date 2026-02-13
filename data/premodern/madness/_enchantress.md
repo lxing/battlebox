@@ -1,9 +1,9 @@
 +3 [[Naturalize]]
-+2 [[Tsabo's Web]]
--2 [[Daze]]
++2 [[Cave-in]]
+-2 [[Careful Study]]
 -1 [[Gilded Drake]]
 -1 [[Wonder]]
--1 [[Squee, Goblin Nabob]]
+-1 [[Waterfront Bouncer]]
 
 <AI-generated placeholder. Probably nonsense>
 
