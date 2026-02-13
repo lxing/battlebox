@@ -13,6 +13,7 @@ export function sortArchetypeTags(tags) {
     control: 3,
     combo: 4,
     tribal: 5,
+    shared: 6,
   };
   return [...tags].sort((a, b) => {
     const ak = normalizeName(a);

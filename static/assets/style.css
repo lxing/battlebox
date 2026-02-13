@@ -1046,6 +1046,12 @@ input[type="reset"] {
   border-color: #c27a3b;
 }
 
+.deck-tag-shared {
+  background: #fffef0;
+  color: #1f1f1f;
+  border-color: #d7d6c8;
+}
+
 .deck-tag-beginner {
   background: #2e7d32;
   color: #ecffec;
