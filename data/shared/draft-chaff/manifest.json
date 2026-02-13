@@ -4,7 +4,740 @@
   "tags": [
     "midrange"
   ],
-  "cards": [],
+  "cards": [
+    {
+      "name": "Dauntless Bodyguard",
+      "qty": 1
+    },
+    {
+      "name": "Nurturing Pixie",
+      "qty": 1
+    },
+    {
+      "name": "Savannah Lions",
+      "qty": 1
+    },
+    {
+      "name": "Selfless Savior",
+      "qty": 1
+    },
+    {
+      "name": "Thraben Inspector",
+      "qty": 1
+    },
+    {
+      "name": "Cathar Commando",
+      "qty": 1
+    },
+    {
+      "name": "Knight of Dawn's Light",
+      "qty": 1
+    },
+    {
+      "name": "Phantom Nomad",
+      "qty": 1
+    },
+    {
+      "name": "Rescuer Chwinga",
+      "qty": 1
+    },
+    {
+      "name": "Resolute Reinforcements",
+      "qty": 1
+    },
+    {
+      "name": "Seasoned Hallowblade",
+      "qty": 1
+    },
+    {
+      "name": "Sun-Blessed Healer",
+      "qty": 1
+    },
+    {
+      "name": "Attended Knight",
+      "qty": 1
+    },
+    {
+      "name": "Kor Hookmaster",
+      "qty": 1
+    },
+    {
+      "name": "Rayblade Trooper",
+      "qty": 1
+    },
+    {
+      "name": "All-Fates Stalker",
+      "qty": 1
+    },
+    {
+      "name": "Combat Professor",
+      "qty": 1
+    },
+    {
+      "name": "Knight Luminary",
+      "qty": 1
+    },
+    {
+      "name": "Restoration Angel",
+      "qty": 1
+    },
+    {
+      "name": "Serra Angel",
+      "qty": 1
+    },
+    {
+      "name": "Elspeth's Smite",
+      "qty": 1
+    },
+    {
+      "name": "Harm's Way",
+      "qty": 1
+    },
+    {
+      "name": "Reprieve",
+      "qty": 1
+    },
+    {
+      "name": "Terminus",
+      "qty": 1
+    },
+    {
+      "name": "Swift Reconfiguration",
+      "qty": 1
+    },
+    {
+      "name": "Oblivion Ring",
+      "qty": 1
+    },
+    {
+      "name": "Touch the Spirit Realm",
+      "qty": 1
+    },
+    {
+      "name": "Static Snare",
+      "qty": 1
+    },
+    {
+      "name": "Merfolk Looter",
+      "qty": 1
+    },
+    {
+      "name": "Saiba Cryptomancer",
+      "qty": 1
+    },
+    {
+      "name": "Scorpion Sentinel",
+      "qty": 1
+    },
+    {
+      "name": "Snapcaster Mage",
+      "qty": 1
+    },
+    {
+      "name": "Waterfront Bouncer",
+      "qty": 1
+    },
+    {
+      "name": "Codecracker Hound",
+      "qty": 1
+    },
+    {
+      "name": "Frost Lynx",
+      "qty": 1
+    },
+    {
+      "name": "Keen Buccaneer",
+      "qty": 1
+    },
+    {
+      "name": "Man-o'-War",
+      "qty": 1
+    },
+    {
+      "name": "Pestermite",
+      "qty": 1
+    },
+    {
+      "name": "Prodigal Sorcerer",
+      "qty": 1
+    },
+    {
+      "name": "Serendib Efreet",
+      "qty": 1
+    },
+    {
+      "name": "Dungeon Geists",
+      "qty": 1
+    },
+    {
+      "name": "Mist Raven",
+      "qty": 1
+    },
+    {
+      "name": "Mahamoti Djinn",
+      "qty": 1
+    },
+    {
+      "name": "Censor",
+      "qty": 1
+    },
+    {
+      "name": "Deduce",
+      "qty": 1
+    },
+    {
+      "name": "Dreams of Laguna",
+      "qty": 1
+    },
+    {
+      "name": "Into the Roil",
+      "qty": 1
+    },
+    {
+      "name": "Miscalculation",
+      "qty": 1
+    },
+    {
+      "name": "Prohibit",
+      "qty": 1
+    },
+    {
+      "name": "Remand",
+      "qty": 1
+    },
+    {
+      "name": "Think Twice",
+      "qty": 1
+    },
+    {
+      "name": "Exclude",
+      "qty": 1
+    },
+    {
+      "name": "Refute",
+      "qty": 1
+    },
+    {
+      "name": "Repulse",
+      "qty": 1
+    },
+    {
+      "name": "Hieroglyphic Illumination",
+      "qty": 1
+    },
+    {
+      "name": "Divination",
+      "qty": 1
+    },
+    {
+      "name": "Foulmire Knight",
+      "qty": 1
+    },
+    {
+      "name": "Scorn-Blade Berserker",
+      "qty": 1
+    },
+    {
+      "name": "Accursed Marauder",
+      "qty": 1
+    },
+    {
+      "name": "Bonecaller Cleric",
+      "qty": 1
+    },
+    {
+      "name": "Knight of Dusk's Shadow",
+      "qty": 1
+    },
+    {
+      "name": "Miasmic Mummy",
+      "qty": 1
+    },
+    {
+      "name": "Ravenous Rats",
+      "qty": 1
+    },
+    {
+      "name": "Eerie Soultender",
+      "qty": 1
+    },
+    {
+      "name": "Gravelighter",
+      "qty": 1
+    },
+    {
+      "name": "Phyrexian Rager",
+      "qty": 1
+    },
+    {
+      "name": "Bone Picker",
+      "qty": 1
+    },
+    {
+      "name": "Gravedigger",
+      "qty": 1
+    },
+    {
+      "name": "Skeleton Archer",
+      "qty": 1
+    },
+    {
+      "name": "Sengir Vampire",
+      "qty": 1
+    },
+    {
+      "name": "Blitz Leech",
+      "qty": 1
+    },
+    {
+      "name": "Gurmag Angler",
+      "qty": 1
+    },
+    {
+      "name": "Booster Tutor",
+      "qty": 1
+    },
+    {
+      "name": "Desperate Measures",
+      "qty": 1
+    },
+    {
+      "name": "Disfigure",
+      "qty": 1
+    },
+    {
+      "name": "Doom Blade",
+      "qty": 1
+    },
+    {
+      "name": "Final Flourish",
+      "qty": 1
+    },
+    {
+      "name": "Last Gasp",
+      "qty": 1
+    },
+    {
+      "name": "Defenestrate",
+      "qty": 1
+    },
+    {
+      "name": "Ob Nixilis's Cruelty",
+      "qty": 1
+    },
+    {
+      "name": "Bloodchief's Thirst",
+      "qty": 1
+    },
+    {
+      "name": "Unearth",
+      "qty": 1
+    },
+    {
+      "name": "Resentful Revelation",
+      "qty": 1
+    },
+    {
+      "name": "Ichor Slick",
+      "qty": 1
+    },
+    {
+      "name": "Dead Weight",
+      "qty": 1
+    },
+    {
+      "name": "Blazing Rootwalla",
+      "qty": 1
+    },
+    {
+      "name": "Clockwork Percussionist",
+      "qty": 1
+    },
+    {
+      "name": "Greasewrench Goblin",
+      "qty": 1
+    },
+    {
+      "name": "Kird Ape",
+      "qty": 1
+    },
+    {
+      "name": "Monastery Swiftspear",
+      "qty": 1
+    },
+    {
+      "name": "Cunning Coyote",
+      "qty": 1
+    },
+    {
+      "name": "Irreverent Gremlin",
+      "qty": 1
+    },
+    {
+      "name": "Kargan Intimidator",
+      "qty": 1
+    },
+    {
+      "name": "Lizard Blades",
+      "qty": 1
+    },
+    {
+      "name": "Red Herring",
+      "qty": 1
+    },
+    {
+      "name": "Sunset Strikemaster",
+      "qty": 1
+    },
+    {
+      "name": "Fire Imp",
+      "qty": 1
+    },
+    {
+      "name": "Molten Gatekeeper",
+      "qty": 1
+    },
+    {
+      "name": "Stromkirk Occultist",
+      "qty": 1
+    },
+    {
+      "name": "Flametongue Kavu",
+      "qty": 1
+    },
+    {
+      "name": "Charging Monstrosaur",
+      "qty": 1
+    },
+    {
+      "name": "Shivan Dragon",
+      "qty": 1
+    },
+    {
+      "name": "Burst Lightning",
+      "qty": 1
+    },
+    {
+      "name": "Lightning Axe",
+      "qty": 1
+    },
+    {
+      "name": "Lightning Bolt",
+      "qty": 1
+    },
+    {
+      "name": "Shock",
+      "qty": 1
+    },
+    {
+      "name": "Abrade",
+      "qty": 1
+    },
+    {
+      "name": "Lightning Strike",
+      "qty": 1
+    },
+    {
+      "name": "Fiery Temper",
+      "qty": 1
+    },
+    {
+      "name": "Super-Duper Death Ray",
+      "qty": 1
+    },
+    {
+      "name": "Firebolt",
+      "qty": 1
+    },
+    {
+      "name": "Seal of Fire",
+      "qty": 1
+    },
+    {
+      "name": "Basking Rootwalla",
+      "qty": 1
+    },
+    {
+      "name": "Dragon Sniper",
+      "qty": 1
+    },
+    {
+      "name": "Ulvenwald Tracker",
+      "qty": 1
+    },
+    {
+      "name": "Wild Nacatl",
+      "qty": 1
+    },
+    {
+      "name": "Aloe Alchemist",
+      "qty": 1
+    },
+    {
+      "name": "Ambush Viper",
+      "qty": 1
+    },
+    {
+      "name": "Elvish Visionary",
+      "qty": 1
+    },
+    {
+      "name": "Greenbelt Guardian",
+      "qty": 1
+    },
+    {
+      "name": "Heart Warden",
+      "qty": 1
+    },
+    {
+      "name": "Kavu Titan",
+      "qty": 1
+    },
+    {
+      "name": "Skinshifter",
+      "qty": 1
+    },
+    {
+      "name": "Untamed Kavu",
+      "qty": 1
+    },
+    {
+      "name": "Werebear",
+      "qty": 1
+    },
+    {
+      "name": "Wild Mongrel",
+      "qty": 1
+    },
+    {
+      "name": "Beast-Kin Ranger",
+      "qty": 1
+    },
+    {
+      "name": "Beastbond Outcaster",
+      "qty": 1
+    },
+    {
+      "name": "Oran-Rief Ooze",
+      "qty": 1
+    },
+    {
+      "name": "Phantom Tiger",
+      "qty": 1
+    },
+    {
+      "name": "Reclamation Sage",
+      "qty": 1
+    },
+    {
+      "name": "Stickytongue Sentinel",
+      "qty": 1
+    },
+    {
+      "name": "Thrashing Brontodon",
+      "qty": 1
+    },
+    {
+      "name": "Briarpack Alpha",
+      "qty": 1
+    },
+    {
+      "name": "Obstinate Baloth",
+      "qty": 1
+    },
+    {
+      "name": "Arrogant Wurm",
+      "qty": 1
+    },
+    {
+      "name": "Somberwald Stag",
+      "qty": 1
+    },
+    {
+      "name": "Colossal Dreadmaw",
+      "qty": 1
+    },
+    {
+      "name": "Regrowth",
+      "qty": 1
+    },
+    {
+      "name": "Combat Courier",
+      "qty": 1
+    },
+    {
+      "name": "Gingerbrute",
+      "qty": 1
+    },
+    {
+      "name": "Ashnod's Harvester",
+      "qty": 1
+    },
+    {
+      "name": "Containment Construct",
+      "qty": 1
+    },
+    {
+      "name": "Monoskelion",
+      "qty": 1
+    },
+    {
+      "name": "Perilous Myr",
+      "qty": 1
+    },
+    {
+      "name": "Scrapwork Mutt",
+      "qty": 1
+    },
+    {
+      "name": "Skyscanner",
+      "qty": 1
+    },
+    {
+      "name": "Juggernaut",
+      "qty": 1
+    },
+    {
+      "name": "Snare Thopter",
+      "qty": 1
+    },
+    {
+      "name": "Triskelion",
+      "qty": 1
+    },
+    {
+      "name": "Icy Manipulator",
+      "qty": 1
+    },
+    {
+      "name": "Nevinyrral's Disk",
+      "qty": 1
+    },
+    {
+      "name": "Mistmeadow Vanisher",
+      "qty": 1
+    },
+    {
+      "name": "Tolarian Geyser",
+      "qty": 1
+    },
+    {
+      "name": "Ojutai's Command",
+      "qty": 1
+    },
+    {
+      "name": "Agony Warp",
+      "qty": 1
+    },
+    {
+      "name": "Forbidden Alchemy",
+      "qty": 1
+    },
+    {
+      "name": "Messenger Hawk",
+      "qty": 1
+    },
+    {
+      "name": "Probe",
+      "qty": 1
+    },
+    {
+      "name": "Terminate",
+      "qty": 1
+    },
+    {
+      "name": "Balduvian Atrocity",
+      "qty": 1
+    },
+    {
+      "name": "Kolaghan's Command",
+      "qty": 1
+    },
+    {
+      "name": "Carnival // Carnage",
+      "qty": 1
+    },
+    {
+      "name": "Picnic Ruiner",
+      "qty": 1
+    },
+    {
+      "name": "Yavimaya Iconoclast",
+      "qty": 1
+    },
+    {
+      "name": "Ghor-Clan Rampager",
+      "qty": 1
+    },
+    {
+      "name": "Qasali Pridemage",
+      "qty": 1
+    },
+    {
+      "name": "Travel Preparations",
+      "qty": 1
+    },
+    {
+      "name": "Captured by Lagacs",
+      "qty": 1
+    },
+    {
+      "name": "Shrouded Shepherd",
+      "qty": 1
+    },
+    {
+      "name": "Mortify",
+      "qty": 1
+    },
+    {
+      "name": "Consecrate // Consume",
+      "qty": 1
+    },
+    {
+      "name": "Jilt",
+      "qty": 1
+    },
+    {
+      "name": "Electrolyze",
+      "qty": 1
+    },
+    {
+      "name": "Fire // Ice",
+      "qty": 1
+    },
+    {
+      "name": "Tear Asunder",
+      "qty": 1
+    },
+    {
+      "name": "Dreg Mangler",
+      "qty": 1
+    },
+    {
+      "name": "Vhati il-Dal",
+      "qty": 1
+    },
+    {
+      "name": "Goblin Legionnaire",
+      "qty": 1
+    },
+    {
+      "name": "Lightning Helix",
+      "qty": 1
+    },
+    {
+      "name": "Plaxmanta",
+      "qty": 1
+    },
+    {
+      "name": "Sharktocrab",
+      "qty": 1
+    },
+    {
+      "name": "Tempest Hart",
+      "qty": 1
+    }
+  ],
   "difficulty_tags": [
     "beginner"
   ]
