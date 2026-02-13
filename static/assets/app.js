@@ -858,24 +858,66 @@ async function renderDeck(bbSlug, deckSlug, selectedGuide, sortMode, sortDirecti
     return `<option value="${k}">${name}</option>`;
   }).join('');
 
-  const hasSideboard = deckView.sideCards && deckView.sideCards.length;
-  const landColumnHtml = !hasSideboard ? `
-    <div class="decklist-col">
-      <div class="card-list">
-        ${renderCardsByType(deckView.mainCards, bannedSet, ['land'], deckView.mainboardAdded, 'sb-added')}
+  const normalizeDecklistView = (rawView) => {
+    const key = String(rawView || '').trim().toLowerCase();
+    if (key === 'cube') return 'cube';
+    if (key === 'nosideboard') return 'nosideboard';
+    return 'default';
+  };
+  const decklistView = normalizeDecklistView(deck.view);
+  const computeDecklistLayout = (viewMode, nextDeckView) => {
+    const hasMainLands = nextDeckView.mainCards.some(c => (c.type || 'spell') === 'land');
+    const hasSideboardCards = !!(nextDeckView.sideCards && nextDeckView.sideCards.length);
+
+    if (viewMode === 'nosideboard') {
+      return {
+        mainTypes: ['creature', 'spell', 'artifact'],
+        showSideboard: false,
+        showLandColumn: hasMainLands,
+      };
+    }
+    if (viewMode === 'cube') {
+      return {
+        mainTypes: undefined,
+        showSideboard: false,
+        showLandColumn: false,
+      };
+    }
+    return {
+      mainTypes: hasSideboardCards ? undefined : ['creature', 'spell', 'artifact'],
+      showSideboard: hasSideboardCards,
+      showLandColumn: !hasSideboardCards && hasMainLands,
+    };
+  };
+  const renderDecklistGrid = (nextDeckView) => {
+    const layout = computeDecklistLayout(decklistView, nextDeckView);
+    const hasSecondColumn = layout.showSideboard || layout.showLandColumn;
+    const sideboardHtml = layout.showSideboard ? `
+      <div class="decklist-col">
+        <div class="card-list">
+          ${renderCardGroup(nextDeckView.sideCards, 'Sideboard', bannedSet, nextDeckView.sideboardFromMain, 'sb-removed')}
+        </div>
       </div>
-    </div>
-  ` : '';
-  const sideboardHtml = hasSideboard ? `
-    <div class="decklist-col">
-      <div class="card-list">
-        ${renderCardGroup(deckView.sideCards, 'Sideboard', bannedSet, deckView.sideboardFromMain, 'sb-removed')}
+    ` : '';
+    const landColumnHtml = layout.showLandColumn ? `
+      <div class="decklist-col">
+        <div class="card-list">
+          ${renderCardsByType(nextDeckView.mainCards, bannedSet, ['land'], nextDeckView.mainboardAdded, 'sb-added')}
+        </div>
       </div>
-    </div>
-  ` : '';
-  const hasLandColumn = !hasSideboard && deckView.mainCards.some(c => (c.type || 'spell') === 'land');
-  const hasSecondColumn = hasSideboard || hasLandColumn;
-  const mainTypes = hasSideboard ? undefined : ['creature', 'spell', 'artifact'];
+    ` : '';
+
+    return `
+      <div class="decklist-grid${hasSecondColumn ? '' : ' single'}">
+        <div class="decklist-col">
+          <div class="card-list">
+            ${renderCardsByType(nextDeckView.mainCards, bannedSet, layout.mainTypes, nextDeckView.mainboardAdded, 'sb-added')}
+          </div>
+        </div>
+        ${sideboardHtml || landColumnHtml}
+      </div>
+    `;
+  };
   const decklistOpenAttr = (currentCollapsedMask & 1) === 0 ? ' open' : '';
   const primerOpenAttr = (currentCollapsedMask & 2) === 0 ? ' open' : '';
   const matchupOpenAttr = (currentCollapsedMask & 4) === 0 ? ' open' : '';
@@ -926,14 +968,7 @@ async function renderDeck(bbSlug, deckSlug, selectedGuide, sortMode, sortDirecti
       <summary>Decklist</summary>
       <div class="collapsible-body">
         <div id="decklist-body">
-          <div class="decklist-grid${hasSecondColumn ? '' : ' single'}">
-            <div class="decklist-col">
-              <div class="card-list">
-                ${renderCardsByType(deckView.mainCards, bannedSet, mainTypes, deckView.mainboardAdded, 'sb-added')}
-              </div>
-            </div>
-            ${sideboardHtml || landColumnHtml}
-          </div>
+          ${renderDecklistGrid(deckView)}
         </div>
         <div class="decklist-toolbar">
           <button type="button" class="action-button sample-hand-open-button" id="sample-hand-open-button">Sample Hand</button>
@@ -994,34 +1029,7 @@ async function renderDeck(bbSlug, deckSlug, selectedGuide, sortMode, sortDirecti
     if (!decklistBody) return;
     const guideData = currentMatchupSlug ? deck.guides[currentMatchupSlug] : null;
     deckView = computeDeckView(deck, guideData, currentApplySideboard);
-    const hasCurrentSideboard = deckView.sideCards && deckView.sideCards.length;
-    const currentLandColumnHtml = !hasCurrentSideboard ? `
-      <div class="decklist-col">
-        <div class="card-list">
-          ${renderCardsByType(deckView.mainCards, bannedSet, ['land'], deckView.mainboardAdded, 'sb-added')}
-        </div>
-      </div>
-    ` : '';
-    const currentSideboardHtml = hasCurrentSideboard ? `
-      <div class="decklist-col">
-        <div class="card-list">
-          ${renderCardGroup(deckView.sideCards, 'Sideboard', bannedSet, deckView.sideboardFromMain, 'sb-removed')}
-        </div>
-      </div>
-    ` : '';
-    const hasCurrentLandColumn = !hasCurrentSideboard && deckView.mainCards.some(c => (c.type || 'spell') === 'land');
-    const hasCurrentSecondColumn = hasCurrentSideboard || hasCurrentLandColumn;
-    const currentMainTypes = hasCurrentSideboard ? undefined : ['creature', 'spell', 'artifact'];
-    decklistBody.innerHTML = `
-      <div class="decklist-grid${hasCurrentSecondColumn ? '' : ' single'}">
-        <div class="decklist-col">
-          <div class="card-list">
-            ${renderCardsByType(deckView.mainCards, bannedSet, currentMainTypes, deckView.mainboardAdded, 'sb-added')}
-          </div>
-        </div>
-        ${currentSideboardHtml || currentLandColumnHtml}
-      </div>
-    `;
+    decklistBody.innerHTML = renderDecklistGrid(deckView);
     syncSampleHandContext();
   };
 

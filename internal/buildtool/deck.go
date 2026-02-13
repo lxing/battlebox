@@ -51,6 +51,7 @@ func processDeck(deckPath, slug, battlebox string, printings map[string]string) 
 		Colors:         manifest.Colors,
 		Tags:           normalizeDeckTags(manifest.Tags),
 		DifficultyTags: normalizeDifficultyTags(manifest.DifficultyTags),
+		View:           strings.TrimSpace(manifest.View),
 		SampleHandSize: manifest.SampleHandSize,
 		Printings:      map[string]string{},
 		Cards:          manifest.Cards,
