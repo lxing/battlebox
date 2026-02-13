@@ -31,6 +31,11 @@ function buildDeckSignature(cards) {
     .join('||');
 }
 
+function normalizeInitialDrawCount(value) {
+  const parsed = Number.parseInt(String(value), 10);
+  return Number.isNaN(parsed) || parsed <= 0 ? 7 : parsed;
+}
+
 function shuffle(array) {
   const out = array.slice();
   for (let i = out.length - 1; i > 0; i -= 1) {
@@ -52,17 +57,18 @@ function resetDeckState(state) {
   state.deck = shuffle(state.source);
   state.drawIndex = 0;
   state.hand = [];
-  drawCards(state, 7);
+  drawCards(state, state.initialDrawCount);
   state.initialized = true;
 }
 
-function createDeckState(cards, signature) {
+function createDeckState(cards, signature, initialDrawCount) {
   return {
     signature,
     source: expandDeck(cards),
     deck: [],
     hand: [],
     drawIndex: 0,
+    initialDrawCount,
     initialized: false,
   };
 }
@@ -76,6 +82,7 @@ export function createSampleHandViewer() {
   let resetButton = null;
   let contextKey = '';
   let contextCards = [];
+  let contextInitialDrawCount = 7;
   let activeKey = '';
 
   function ensureOverlay() {
@@ -139,12 +146,13 @@ export function createSampleHandViewer() {
     document.body.appendChild(overlay);
   }
 
-  function getDeckState(key, cards, initialize) {
+  function getDeckState(key, cards, initialDrawCount, initialize) {
     if (!key) return null;
-    const signature = buildDeckSignature(cards);
+    const normalizedDraw = normalizeInitialDrawCount(initialDrawCount);
+    const signature = `${buildDeckSignature(cards)}|draw:${normalizedDraw}`;
     let state = stateByKey.get(key);
     if (!state || state.signature !== signature) {
-      state = createDeckState(cards, signature);
+      state = createDeckState(cards, signature, normalizedDraw);
       stateByKey.set(key, state);
     }
     if (initialize && !state.initialized) {
@@ -155,7 +163,7 @@ export function createSampleHandViewer() {
 
   function getActiveState(initialize) {
     if (!activeKey) return null;
-    return getDeckState(activeKey, contextCards, initialize);
+    return getDeckState(activeKey, contextCards, contextInitialDrawCount, initialize);
   }
 
   function renderState(state) {
@@ -225,13 +233,14 @@ export function createSampleHandViewer() {
     gridWrap.scrollTo({ top: nextTop, behavior: 'auto' });
   }
 
-  function setDeckContext(key, cards) {
+  function setDeckContext(key, cards, initialDrawCount) {
     contextKey = String(key || '');
     contextCards = Array.isArray(cards) ? cards : [];
+    contextInitialDrawCount = normalizeInitialDrawCount(initialDrawCount);
     if (!overlay || overlay.hidden) return;
     if (!contextKey) return;
     activeKey = contextKey;
-    const state = getDeckState(activeKey, contextCards, true);
+    const state = getDeckState(activeKey, contextCards, contextInitialDrawCount, true);
     if (!state) return;
     renderState(state);
   }
@@ -240,7 +249,7 @@ export function createSampleHandViewer() {
     if (!contextKey) return;
     ensureOverlay();
     activeKey = contextKey;
-    const state = getDeckState(activeKey, contextCards, true);
+    const state = getDeckState(activeKey, contextCards, contextInitialDrawCount, true);
     if (!state) return;
     renderState(state);
     overlay.hidden = false;

@@ -987,7 +987,7 @@ async function renderDeck(bbSlug, deckSlug, selectedGuide, sortMode, sortDirecti
   };
 
   const syncSampleHandContext = () => {
-    sampleHand.setDeckContext(buildSampleHandKey(), deckView.mainCards);
+    sampleHand.setDeckContext(buildSampleHandKey(), deckView.mainCards, deck.sample_hand_size || 7);
   };
 
   const renderDecklistBody = () => {

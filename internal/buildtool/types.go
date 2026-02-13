@@ -35,6 +35,8 @@ type Manifest struct {
 	Tags []string `json:"tags,omitempty"`
 	// Optional difficulty tags, e.g. beginner/intermediate/expert.
 	DifficultyTags []string `json:"difficulty_tags,omitempty"`
+	// Optional opening hand size override for Sample Hand viewer.
+	SampleHandSize int `json:"sample_hand_size,omitempty"`
 	// Mainboard entries from manifest.json.
 	Cards []Card `json:"cards"`
 	// Optional sideboard entries from manifest.json.
@@ -55,6 +57,8 @@ type Deck struct {
 	Tags []string `json:"tags,omitempty"`
 	// Optional difficulty tags for UI display.
 	DifficultyTags []string `json:"difficulty_tags,omitempty"`
+	// Optional opening hand size override for Sample Hand viewer.
+	SampleHandSize int `json:"sample_hand_size,omitempty"`
 	// Lookup map from normalized card name to printing key.
 	Printings map[string]string `json:"printings,omitempty"`
 	// Mainboard cards with build-time enrichments.

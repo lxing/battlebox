@@ -1,15 +1,11 @@
 Draft Chaff is a shared-library battle box built for quick, interactive kitchen-table games with iconic cards and straightforward play patterns.
 
-## Setup
-- Each player starts with 4 cards in hand.
-- No mulligans.
-- Players draw from one shared library, but each player keeps a separate graveyard.
-- Each player has 10 lands in their command zone and may play one per turn:
-  - 5 basics (one of each basic type)
-  - 5 guildgates (either allied-color set or enemy-color set)
-- Optional rule: the player on the draw creates a Treasure token at the start of the game.
+### Rules
+Start with 4 cards, 5 basic lands, and 5 allied/enemy Guildgates in the command zone. 1 mulligan to 4 allowed.
 
-## Game Plan
+Each turn, you may play 1 land from the command zone. Draw from the shared library and keep separate graveyards.
+
+### Game Plan
 Most games are about board development and efficient trades. The creature curve is low, and cheap interaction is dense, so early sequencing matters: deploy pressure, trade resources, then turn the corner with stronger 4+ mana plays.
 
 Use card selection and small value effects to stay smooth through the midgame. Spells like [[Divination]], [[Remand]], [[Miscalculation]], and [[Think Twice]] reward careful timing, while creatures with built-in value such as [[Man-o'-War]], [[Resolute Reinforcements]], [[Skeleton Archer]], and [[Scrapwork Mutt]] help keep parity while advancing your board.
