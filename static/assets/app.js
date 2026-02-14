@@ -1311,7 +1311,6 @@ async function init() {
     return;
   }
   data.buildId = data.index.build_id || '';
-
   preview.setupCardHover();
   window.addEventListener('hashchange', async () => {
     await route();

@@ -142,14 +142,29 @@ func resolveCardType(printing, scryfallTypeLine string) string {
 
 func classifyType(typeLine string) string {
 	tl := strings.ToLower(typeLine)
-	if strings.Contains(tl, "land") {
-		return "land"
-	}
-	if strings.Contains(tl, "creature") {
+	hasLand := strings.Contains(tl, "land")
+	hasCreature := strings.Contains(tl, "creature")
+	hasArtifact := strings.Contains(tl, "artifact")
+	hasOtherNonLand := strings.Contains(tl, "instant") ||
+		strings.Contains(tl, "sorcery") ||
+		strings.Contains(tl, "enchantment") ||
+		strings.Contains(tl, "planeswalker") ||
+		strings.Contains(tl, "battle") ||
+		strings.Contains(tl, "kindred") ||
+		strings.Contains(tl, "tribal")
+
+	// For mixed land/nonland cards, prefer a nonland bucket.
+	if hasCreature {
 		return "creature"
 	}
-	if strings.Contains(tl, "artifact") {
+	if hasArtifact {
 		return "artifact"
+	}
+	if hasOtherNonLand {
+		return "spell"
+	}
+	if hasLand {
+		return "land"
 	}
 	return "spell"
 }

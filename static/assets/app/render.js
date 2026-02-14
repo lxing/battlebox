@@ -9,23 +9,24 @@ function escapeHtml(text) {
     .replaceAll("'", '&#39;');
 }
 
+const manaSymbolFiles = (() => {
+  const out = {};
+  const hybridPairs = ['WU', 'WB', 'UB', 'UR', 'BR', 'BG', 'RG', 'RW', 'GW', 'GU'];
+  hybridPairs.forEach((pair) => {
+    const [a, b] = pair.split('');
+    const file = pair.toLowerCase();
+    out[`${a}/${b}`] = file;
+    out[`${b}/${a}`] = file;
+  });
+  ['W', 'U', 'B', 'R', 'G'].forEach((color) => {
+    out[`${color}/P`] = `${color.toLowerCase()}p`;
+  });
+  return out;
+})();
+
 function renderManaCostSymbols(rawCost) {
   const manaCost = (rawCost || '').trim();
   if (!manaCost) return '';
-  const hybridSymbolFiles = {
-    'B/R': 'br',
-    'B/U': 'ub',
-    'B/W': 'wb',
-    'G/U': 'gu',
-    'G/R': 'rg',
-    'R/B': 'br',
-    'R/G': 'rg',
-    'U/B': 'ub',
-    'U/G': 'gu',
-    'U/W': 'wu',
-    'W/B': 'wb',
-    'W/U': 'wu',
-  };
 
   const renderTokenSymbol = (token) => {
     if (/^[0-9]$/.test(token)) {
@@ -37,13 +38,9 @@ function renderManaCostSymbols(rawCost) {
     if (token === 'W' || token === 'U' || token === 'B' || token === 'R' || token === 'G') {
       return `<img class="mana-cost-symbol" src="/assets/mana/${token.toLowerCase()}.svg" alt="{${token}}" loading="lazy" decoding="async">`;
     }
-    // Render only true two-color hybrid symbols (for example {G/U}).
-    // Split cards are handled via the outer // side split, not here.
-    if (/^[WUBRG]\/[WUBRG]$/.test(token)) {
-      const hybridFile = hybridSymbolFiles[token];
-      if (hybridFile) {
-        return `<img class="mana-cost-symbol" src="/assets/mana/${hybridFile}.svg" alt="{${token}}" loading="lazy" decoding="async">`;
-      }
+    const symbolFile = manaSymbolFiles[token];
+    if (symbolFile) {
+      return `<img class="mana-cost-symbol" src="/assets/mana/${symbolFile}.svg" alt="{${token}}" loading="lazy" decoding="async">`;
     }
     return '';
   };
