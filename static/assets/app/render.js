@@ -21,6 +21,8 @@ const manaSymbolFiles = (() => {
   ['W', 'U', 'B', 'R', 'G'].forEach((color) => {
     out[`${color}/P`] = `${color.toLowerCase()}p`;
   });
+  out['2/W'] = '2w';
+  out['W/2'] = '2w';
   return out;
 })();
 

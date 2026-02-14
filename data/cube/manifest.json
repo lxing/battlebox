@@ -58,6 +58,11 @@
     "Sunlit Marsh": "tapland",
     "Tangled Islet": "tapland",
     "Wooded Ridgeline": "tapland",
+    "Thriving Bluff": "vivid",
+    "Thriving Grove": "vivid",
+    "Thriving Heath": "vivid",
+    "Thriving Isle": "vivid",
+    "Thriving Moor": "vivid",
     "Azorius Chancery": "bounce",
     "Boros Garrison": "bounce",
     "Dimir Aqueduct": "bounce",
@@ -80,12 +85,12 @@
     "Simic Guildgate": "gates",
     "Baldur's Gate": "gates",
     "Basilisk Gate": "gates",
-    "Black Dragon Gate": "gates",
-    "Citadel Gate": "gates",
-    "Cliffgate": "gates",
+    "Black Dragon Gate": "vivid",
+    "Citadel Gate": "vivid",
+    "Cliffgate": "vivid",
     "Gond Gate": "gates",
     "Heap Gate": "gates",
-    "Manor Gate": "gates",
-    "Sea Gate": "gates"
+    "Manor Gate": "vivid",
+    "Sea Gate": "vivid"
   }
 }
