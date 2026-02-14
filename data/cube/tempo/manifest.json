@@ -5,5 +5,726 @@
     "tempo"
   ],
   "view": "cube",
-  "cards": []
+  "cards": [
+    {
+      "name": "Esper Sentinel",
+      "qty": 1
+    },
+    {
+      "name": "Giver of Runes",
+      "qty": 1
+    },
+    {
+      "name": "Mother of Runes",
+      "qty": 1
+    },
+    {
+      "name": "Novice Inspector",
+      "qty": 1
+    },
+    {
+      "name": "Ocelot Pride",
+      "qty": 1
+    },
+    {
+      "name": "Thraben Inspector",
+      "qty": 1
+    },
+    {
+      "name": "Adanto Vanguard",
+      "qty": 1
+    },
+    {
+      "name": "Clarion Spirit",
+      "qty": 1
+    },
+    {
+      "name": "Lion Sash",
+      "qty": 1
+    },
+    {
+      "name": "Luminarch Aspirant",
+      "qty": 1
+    },
+    {
+      "name": "Selfless Spirit",
+      "qty": 1
+    },
+    {
+      "name": "Tithe Taker",
+      "qty": 1
+    },
+    {
+      "name": "Voice of Victory",
+      "qty": 1
+    },
+    {
+      "name": "Monastery Mentor",
+      "qty": 1
+    },
+    {
+      "name": "Skyclave Apparition",
+      "qty": 1
+    },
+    {
+      "name": "Path to Exile",
+      "qty": 1
+    },
+    {
+      "name": "Swords to Plowshares",
+      "qty": 1
+    },
+    {
+      "name": "Lay Down Arms",
+      "qty": 1
+    },
+    {
+      "name": "Prismatic Ending",
+      "qty": 1
+    },
+    {
+      "name": "Staff of the Storyteller",
+      "qty": 1
+    },
+    {
+      "name": "Legion's Landing",
+      "qty": 1
+    },
+    {
+      "name": "Seam Rip",
+      "qty": 1
+    },
+    {
+      "name": "Delver of Secrets",
+      "qty": 1
+    },
+    {
+      "name": "Mockingbird",
+      "qty": 1
+    },
+    {
+      "name": "Triton Wavebreaker",
+      "qty": 1
+    },
+    {
+      "name": "Drake Hatcher",
+      "qty": 1
+    },
+    {
+      "name": "Jace, Vryn's Prodigy",
+      "qty": 1
+    },
+    {
+      "name": "Kitsa, Otterball Elite",
+      "qty": 1
+    },
+    {
+      "name": "Ledger Shredder",
+      "qty": 1
+    },
+    {
+      "name": "Snapcaster Mage",
+      "qty": 1
+    },
+    {
+      "name": "Brainstorm",
+      "qty": 1
+    },
+    {
+      "name": "Consider",
+      "qty": 1
+    },
+    {
+      "name": "Mental Misstep",
+      "qty": 1
+    },
+    {
+      "name": "Opt",
+      "qty": 1
+    },
+    {
+      "name": "Piracy Charm",
+      "qty": 1
+    },
+    {
+      "name": "Shore Up",
+      "qty": 1
+    },
+    {
+      "name": "Spell Snare",
+      "qty": 1
+    },
+    {
+      "name": "Stern Scolding",
+      "qty": 1
+    },
+    {
+      "name": "Vapor Snag",
+      "qty": 1
+    },
+    {
+      "name": "Gitaxian Probe",
+      "qty": 1
+    },
+    {
+      "name": "Ponder",
+      "qty": 1
+    },
+    {
+      "name": "Portent",
+      "qty": 1
+    },
+    {
+      "name": "Preordain",
+      "qty": 1
+    },
+    {
+      "name": "Serum Visions",
+      "qty": 1
+    },
+    {
+      "name": "Stormchaser's Talent",
+      "qty": 1
+    },
+    {
+      "name": "Bloodsoaked Champion",
+      "qty": 1
+    },
+    {
+      "name": "Cecil, Dark Knight",
+      "qty": 1
+    },
+    {
+      "name": "Death's Shadow",
+      "qty": 1
+    },
+    {
+      "name": "Forsaken Miner",
+      "qty": 1
+    },
+    {
+      "name": "Knight of the Ebon Legion",
+      "qty": 1
+    },
+    {
+      "name": "Nethergoyf",
+      "qty": 1
+    },
+    {
+      "name": "Tinybones, the Pickpocket",
+      "qty": 1
+    },
+    {
+      "name": "Caustic Bronco",
+      "qty": 1
+    },
+    {
+      "name": "Dark Confidant",
+      "qty": 1
+    },
+    {
+      "name": "Scourge of the Skyclaves",
+      "qty": 1
+    },
+    {
+      "name": "Scrapheap Scrounger",
+      "qty": 1
+    },
+    {
+      "name": "Tenacious Underdog",
+      "qty": 1
+    },
+    {
+      "name": "Spitting Dilophosaurus",
+      "qty": 1
+    },
+    {
+      "name": "Cut Down",
+      "qty": 1
+    },
+    {
+      "name": "Fatal Push",
+      "qty": 1
+    },
+    {
+      "name": "Requiting Hex",
+      "qty": 1
+    },
+    {
+      "name": "Bitter Triumph",
+      "qty": 1
+    },
+    {
+      "name": "Dismember",
+      "qty": 1
+    },
+    {
+      "name": "Snuff Out",
+      "qty": 1
+    },
+    {
+      "name": "Bloodchief's Thirst",
+      "qty": 1
+    },
+    {
+      "name": "Inquisition of Kozilek",
+      "qty": 1
+    },
+    {
+      "name": "Thoughtseize",
+      "qty": 1
+    },
+    {
+      "name": "The Last Ride",
+      "qty": 1
+    },
+    {
+      "name": "Dragon's Rage Channeler",
+      "qty": 1
+    },
+    {
+      "name": "Grim Lavamancer",
+      "qty": 1
+    },
+    {
+      "name": "Monastery Swiftspear",
+      "qty": 1
+    },
+    {
+      "name": "Soul-Scar Mage",
+      "qty": 1
+    },
+    {
+      "name": "Abbot of Keral Keep",
+      "qty": 1
+    },
+    {
+      "name": "Dreadhorde Arcanist",
+      "qty": 1
+    },
+    {
+      "name": "Emberheart Challenger",
+      "qty": 1
+    },
+    {
+      "name": "Slickshot Show-Off",
+      "qty": 1
+    },
+    {
+      "name": "Young Pyromancer",
+      "qty": 1
+    },
+    {
+      "name": "Bonecrusher Giant",
+      "qty": 1
+    },
+    {
+      "name": "Burst Lightning",
+      "qty": 1
+    },
+    {
+      "name": "Gut Shot",
+      "qty": 1
+    },
+    {
+      "name": "Lava Dart",
+      "qty": 1
+    },
+    {
+      "name": "Lightning Bolt",
+      "qty": 1
+    },
+    {
+      "name": "Monstrous Rage",
+      "qty": 1
+    },
+    {
+      "name": "Redirect Lightning",
+      "qty": 1
+    },
+    {
+      "name": "Fireblast",
+      "qty": 1
+    },
+    {
+      "name": "Chain Lightning",
+      "qty": 1
+    },
+    {
+      "name": "Faithless Looting",
+      "qty": 1
+    },
+    {
+      "name": "Firebolt",
+      "qty": 1
+    },
+    {
+      "name": "Heroes' Hangout",
+      "qty": 1
+    },
+    {
+      "name": "Reckless Charge",
+      "qty": 1
+    },
+    {
+      "name": "Seal of Fire",
+      "qty": 1
+    },
+    {
+      "name": "Gnarlwood Dryad",
+      "qty": 1
+    },
+    {
+      "name": "Hexdrinker",
+      "qty": 1
+    },
+    {
+      "name": "Nimble Mongoose",
+      "qty": 1
+    },
+    {
+      "name": "Pawpatch Recruit",
+      "qty": 1
+    },
+    {
+      "name": "Bristly Bill, Spine Sower",
+      "qty": 1
+    },
+    {
+      "name": "Frenzied Baloth",
+      "qty": 1
+    },
+    {
+      "name": "Nishoba Brawler",
+      "qty": 1
+    },
+    {
+      "name": "Scavenging Ooze",
+      "qty": 1
+    },
+    {
+      "name": "Scythecat Cub",
+      "qty": 1
+    },
+    {
+      "name": "Tarmogoyf",
+      "qty": 1
+    },
+    {
+      "name": "Eternal Witness",
+      "qty": 1
+    },
+    {
+      "name": "Managorger Hydra",
+      "qty": 1
+    },
+    {
+      "name": "Ornery Tumblewagg",
+      "qty": 1
+    },
+    {
+      "name": "Tireless Tracker",
+      "qty": 1
+    },
+    {
+      "name": "Berserk",
+      "qty": 1
+    },
+    {
+      "name": "Blossoming Defense",
+      "qty": 1
+    },
+    {
+      "name": "Hornet Sting",
+      "qty": 1
+    },
+    {
+      "name": "Mutagenic Growth",
+      "qty": 1
+    },
+    {
+      "name": "Snakeskin Veil",
+      "qty": 1
+    },
+    {
+      "name": "Become Immense",
+      "qty": 1
+    },
+    {
+      "name": "Primal Might",
+      "qty": 1
+    },
+    {
+      "name": "Traverse the Ulvenwald",
+      "qty": 1
+    },
+    {
+      "name": "Rancor",
+      "qty": 1
+    },
+    {
+      "name": "Hangarback Walker",
+      "qty": 1
+    },
+    {
+      "name": "Engineered Explosives",
+      "qty": 1
+    },
+    {
+      "name": "Mishra's Bauble",
+      "qty": 1
+    },
+    {
+      "name": "Urza's Bauble",
+      "qty": 1
+    },
+    {
+      "name": "Lavaspur Boots",
+      "qty": 1
+    },
+    {
+      "name": "Smuggler's Copter",
+      "qty": 1
+    },
+    {
+      "name": "Spider-Woman, Stunning Savior",
+      "qty": 1
+    },
+    {
+      "name": "Unsettled Mariner",
+      "qty": 1
+    },
+    {
+      "name": "Baleful Strix",
+      "qty": 1
+    },
+    {
+      "name": "Drown in the Loch",
+      "qty": 1
+    },
+    {
+      "name": "Sygg, River Cutthroat",
+      "qty": 1
+    },
+    {
+      "name": "Bloodtithe Harvester",
+      "qty": 1
+    },
+    {
+      "name": "Kroxa, Titan of Death's Hunger",
+      "qty": 1
+    },
+    {
+      "name": "Kolaghan's Command",
+      "qty": 1
+    },
+    {
+      "name": "Manamorphose",
+      "qty": 1
+    },
+    {
+      "name": "Questing Druid",
+      "qty": 1
+    },
+    {
+      "name": "Bloodbraid Elf",
+      "qty": 1
+    },
+    {
+      "name": "Figure of Fable",
+      "qty": 1
+    },
+    {
+      "name": "Voice of Resurgence",
+      "qty": 1
+    },
+    {
+      "name": "Kitchen Finks",
+      "qty": 1
+    },
+    {
+      "name": "Qasali Ambusher",
+      "qty": 1
+    },
+    {
+      "name": "Tidehollow Sculler",
+      "qty": 1
+    },
+    {
+      "name": "Lingering Souls",
+      "qty": 1
+    },
+    {
+      "name": "Vindicate",
+      "qty": 1
+    },
+    {
+      "name": "Expressive Iteration",
+      "qty": 1
+    },
+    {
+      "name": "Third Path Iconoclast",
+      "qty": 1
+    },
+    {
+      "name": "Fire // Ice",
+      "qty": 1
+    },
+    {
+      "name": "Deathrite Shaman",
+      "qty": 1
+    },
+    {
+      "name": "Grim Flayer",
+      "qty": 1
+    },
+    {
+      "name": "Mosswood Dreadknight",
+      "qty": 1
+    },
+    {
+      "name": "Figure of Destiny",
+      "qty": 1
+    },
+    {
+      "name": "Heartflame Duelist",
+      "qty": 1
+    },
+    {
+      "name": "Lightning Helix",
+      "qty": 1
+    },
+    {
+      "name": "Elusive Otter",
+      "qty": 1
+    },
+    {
+      "name": "Shardless Agent",
+      "qty": 1
+    },
+    {
+      "name": "Hallowed Fountain",
+      "qty": 1
+    },
+    {
+      "name": "Meticulous Archive",
+      "qty": 1
+    },
+    {
+      "name": "Undercity Sewers",
+      "qty": 1
+    },
+    {
+      "name": "Watery Grave",
+      "qty": 1
+    },
+    {
+      "name": "Blood Crypt",
+      "qty": 1
+    },
+    {
+      "name": "Raucous Theater",
+      "qty": 1
+    },
+    {
+      "name": "Commercial District",
+      "qty": 1
+    },
+    {
+      "name": "Stomping Ground",
+      "qty": 1
+    },
+    {
+      "name": "Lush Portico",
+      "qty": 1
+    },
+    {
+      "name": "Temple Garden",
+      "qty": 1
+    },
+    {
+      "name": "Godless Shrine",
+      "qty": 1
+    },
+    {
+      "name": "Shadowy Backstreet",
+      "qty": 1
+    },
+    {
+      "name": "Steam Vents",
+      "qty": 1
+    },
+    {
+      "name": "Thundering Falls",
+      "qty": 1
+    },
+    {
+      "name": "Overgrown Tomb",
+      "qty": 1
+    },
+    {
+      "name": "Underground Mortuary",
+      "qty": 1
+    },
+    {
+      "name": "Elegant Parlor",
+      "qty": 1
+    },
+    {
+      "name": "Sacred Foundry",
+      "qty": 1
+    },
+    {
+      "name": "Breeding Pool",
+      "qty": 1
+    },
+    {
+      "name": "Hedge Maze",
+      "qty": 1
+    },
+    {
+      "name": "Arid Mesa",
+      "qty": 1
+    },
+    {
+      "name": "Bloodstained Mire",
+      "qty": 1
+    },
+    {
+      "name": "Flooded Strand",
+      "qty": 1
+    },
+    {
+      "name": "Mana Confluence",
+      "qty": 1
+    },
+    {
+      "name": "Marsh Flats",
+      "qty": 1
+    },
+    {
+      "name": "Misty Rainforest",
+      "qty": 1
+    },
+    {
+      "name": "Polluted Delta",
+      "qty": 1
+    },
+    {
+      "name": "Scalding Tarn",
+      "qty": 1
+    },
+    {
+      "name": "Verdant Catacombs",
+      "qty": 1
+    },
+    {
+      "name": "Windswept Heath",
+      "qty": 1
+    },
+    {
+      "name": "Wooded Foothills",
+      "qty": 1
+    }
+  ]
 }
