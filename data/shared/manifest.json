@@ -5,7 +5,7 @@
   "disable_type_sort": true,
   "disable_matrix_tab": true,
   "ui_profiles": {
-    "shared_nosideboard_hand": {
+    "dandan": {
       "decklist_view": "nosideboard",
       "sample": {
         "mode": "hand",
@@ -15,7 +15,7 @@
       "deck_info_badge": "card_count",
       "deck_selection_badge": "card_count"
     },
-    "shared_cube_hand4": {
+    "chaff": {
       "decklist_view": "cube",
       "sample": {
         "mode": "hand",

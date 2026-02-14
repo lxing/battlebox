@@ -3,13 +3,13 @@
   "description": "The distilled Magic lootbox experience.",
   "disable_double_random_roll": true,
   "disable_type_sort": true,
-  "default_ui_profile": "cube_pack",
+  "default_ui_profile": "cube",
   "ui_profiles": {
-    "cube_pack": {
+    "cube": {
       "decklist_view": "cube",
       "sample": {
         "mode": "pack",
-        "size": 8,
+        "size": 7,
         "allow_draw": false
       },
       "deck_info_badge": "card_count",
