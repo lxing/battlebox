@@ -1,0 +1,3 @@
+interface:
+  display_name: "CubeCobra Importer"
+  short_description: "Import CubeCobra lists into manifest cards and Scryfall-backed printings"
