@@ -55,6 +55,7 @@ const matrixUi = {
   pendingAutoScrollKey: '',
 };
 const guideEditorDrafts = new Map();
+const runtimeCacheBust = Date.now().toString(36);
 
 function getCardTarget(event) {
   if (!event.target || !event.target.closest) return null;
@@ -311,9 +312,10 @@ function renderBattleboxPane(headerHtml, bodyHtml) {
 }
 
 function withCacheBust(path) {
-  if (!data.buildId) return path;
+  const version = data.buildId || runtimeCacheBust;
+  if (!version) return path;
   const sep = path.includes('?') ? '&' : '?';
-  return `${path}${sep}v=${encodeURIComponent(data.buildId)}`;
+  return `${path}${sep}v=${encodeURIComponent(version)}`;
 }
 
 function toGzipPath(path) {
@@ -1330,7 +1332,7 @@ async function init() {
   app.innerHTML = '<div class="loading">Loading...</div>';
   ensureQrOverlay();
 
-  data.index = await fetchJsonData('/data/index.json', { cache: 'no-store' });
+  data.index = await fetchJsonData(withCacheBust('/data/index.json'), { cache: 'no-store' });
   if (!data.index) {
     app.innerHTML = '<div class="loading">Failed to load data.</div>';
     return;

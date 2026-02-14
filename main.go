@@ -45,8 +45,13 @@ func main() {
 	mux.HandleFunc("/api/source-guide", handleSourceGuide)
 
 	// Serve static files (SPA shell)
-	staticFS, _ := fs.Sub(staticFiles, "static")
-	fileServer := http.FileServer(http.FS(staticFS))
+	var fileServer http.Handler
+	if dev {
+		fileServer = http.FileServer(http.Dir("static"))
+	} else {
+		staticFS, _ := fs.Sub(staticFiles, "static")
+		fileServer = http.FileServer(http.FS(staticFS))
+	}
 	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 		if dev {
 			w.Header().Set("Cache-Control", "no-store")
