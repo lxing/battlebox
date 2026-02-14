@@ -5,4 +5,4 @@
 -1 [[Goblin Sharpshooter]]
 -1 [[Mogg Fanatic]]
 
-[[Tranquil Domain]] and [[Anarvhy]] are incredible sideboard gas.
+[[Tranquil Domain]] and [[Anarchy]] are incredible sideboard gas.

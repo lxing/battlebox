@@ -25,7 +25,7 @@ import (
 //   - Deck-level and battlebox-level printings must be referenced by deck entries.
 //   - Unreferenced-printing checks intentionally ignore prose [[Card]] refs.
 // 4) Deck shape validation:
-//   - Mainboard must contain exactly 60 cards.
+//   - Mainboard count defaults to 60, with per-deck overrides where needed.
 // Implementation note:
 // - Primer and guide parsing is memoized by file path for this build run so
 //   validation and deck emission share one parse/load result.
@@ -319,8 +319,9 @@ func validatePrintingsUsage(dataDir string, projectPrintings map[string]string, 
 			for _, card := range manifest.Cards {
 				mainboardTotal += card.Qty
 			}
-			if mainboardTotal != 60 {
-				warnings = append(warnings, fmt.Sprintf("%s/%s mainboard count is %d (expected 60)", bbSlug, deckSlug, mainboardTotal))
+			expectedMainboardTotal := expectedMainboardCount(bbSlug, deckSlug)
+			if mainboardTotal != expectedMainboardTotal {
+				warnings = append(warnings, fmt.Sprintf("%s/%s mainboard count is %d (expected %d)", bbSlug, deckSlug, mainboardTotal, expectedMainboardTotal))
 			}
 			for key := range deckCards {
 				battleboxUsedCards[key] = struct{}{}
@@ -416,6 +417,18 @@ func validatePrintingsUsage(dataDir string, projectPrintings map[string]string, 
 
 	sort.Strings(warnings)
 	return warnings
+}
+
+func expectedMainboardCount(battleboxSlug, deckSlug string) int {
+	if battleboxSlug == "shared" {
+		switch deckSlug {
+		case "dandan":
+			return 80
+		case "draft-chaff":
+			return 203
+		}
+	}
+	return 60
 }
 
 func loadManifestSource(path string) (Manifest, error) {
