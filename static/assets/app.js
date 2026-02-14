@@ -1112,32 +1112,6 @@ async function renderDeck(bbSlug, deckSlug, selectedGuide, sortMode, sortDirecti
     deckView = computeDeckView(deck, guideData, currentApplySideboard);
     decklistBody.innerHTML = renderDecklistGrid(deckView);
     syncSampleHandContext();
-    window.requestAnimationFrame(syncCubeColumnWidth);
-  };
-
-  let cubeResizeObserver = null;
-  const disconnectCubeResizeObserver = () => {
-    if (cubeResizeObserver) {
-      cubeResizeObserver.disconnect();
-      cubeResizeObserver = null;
-    }
-  };
-  const syncCubeColumnWidth = () => {
-    if (decklistView !== 'cube' || !decklistBody) return;
-    const grid = decklistBody.querySelector('.decklist-grid-cube');
-    if (!(grid instanceof HTMLElement)) return;
-    const hostWidth = decklistBody.clientWidth || decklistBody.getBoundingClientRect().width;
-    if (!hostWidth) return;
-    grid.style.setProperty('--cube-col-width', `${Math.floor(hostWidth / 2)}px`);
-  };
-  const setupCubeColumnSizing = () => {
-    disconnectCubeResizeObserver();
-    if (decklistView !== 'cube' || !decklistBody || !window.ResizeObserver) return;
-    cubeResizeObserver = new window.ResizeObserver(() => {
-      window.requestAnimationFrame(syncCubeColumnWidth);
-    });
-    cubeResizeObserver.observe(decklistBody);
-    window.requestAnimationFrame(syncCubeColumnWidth);
   };
 
   if (guideKeys.length) {
@@ -1315,7 +1289,6 @@ async function renderDeck(bbSlug, deckSlug, selectedGuide, sortMode, sortDirecti
   }
 
   renderDecklistBody();
-  setupCubeColumnSizing();
   currentCollapsedMask = computeCollapsedMask();
   updateDeckHashFromState();
 }

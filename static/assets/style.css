@@ -1151,11 +1151,8 @@ input[type="reset"] {
 }
 
 .decklist-grid.decklist-grid-cube {
-  --cube-col-width: calc(50% - 1px);
-  grid-auto-flow: column;
-  grid-auto-columns: var(--cube-col-width);
-  grid-template-columns: none;
-  width: max-content;
+  grid-template-columns: repeat(8, minmax(0, 1fr));
+  width: 400%;
 }
 
 .decklist-col {
