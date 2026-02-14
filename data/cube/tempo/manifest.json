@@ -1,10 +1,10 @@
 {
   "name": "Tempo",
   "colors": "",
-  "tags": [
-    "tempo"
-  ],
   "ui_profile": "cube_pack",
+  "difficulty_tags": [
+    "expert"
+  ],
   "cards": [
     {
       "name": "Esper Sentinel",

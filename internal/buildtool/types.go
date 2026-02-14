@@ -109,6 +109,10 @@ type BattleboxManifest struct {
 	Name string `json:"name"`
 	// Optional description shown on the battlebox listing.
 	Description string `json:"description"`
+	// Disable random roll controls in the battlebox deck list view.
+	DisableRandomRoll bool `json:"disable_random_roll,omitempty"`
+	// Disable matrix tab for this battlebox.
+	DisableMatrixTab bool `json:"disable_matrix_tab,omitempty"`
 	// Optional default profile used when a deck omits ui_profile.
 	DefaultUIProfile string `json:"default_ui_profile,omitempty"`
 	// Optional reusable UI profiles referenced by deck manifests.
@@ -123,6 +127,10 @@ type Battlebox struct {
 	Name string `json:"name,omitempty"`
 	// Description shown on the battlebox listing.
 	Description string `json:"description,omitempty"`
+	// Whether random roll controls should be enabled.
+	RandomRollEnabled bool `json:"random_roll_enabled"`
+	// Whether matrix tab should be enabled.
+	MatrixTabEnabled bool `json:"matrix_tab_enabled"`
 	// Decks included in this battlebox.
 	Decks []Deck `json:"decks"`
 	// Optional banned card names for warning indicators.
@@ -163,6 +171,10 @@ type BattleboxIndex struct {
 	Name string `json:"name,omitempty"`
 	// Description shown on the battlebox listing.
 	Description string `json:"description,omitempty"`
+	// Whether random roll controls should be enabled.
+	RandomRollEnabled bool `json:"random_roll_enabled"`
+	// Whether matrix tab should be enabled.
+	MatrixTabEnabled bool `json:"matrix_tab_enabled"`
 	// Deck summaries for this battlebox.
 	Decks []DeckIndex `json:"decks"`
 }

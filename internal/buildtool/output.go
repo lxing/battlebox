@@ -26,10 +26,12 @@ func buildIndexOutput(dataDir string) (IndexOutput, error) {
 		bbPath := filepath.Join(dataDir, bbDir.Name())
 		bbManifest := loadBattleboxManifest(filepath.Join(bbPath, "manifest.json"))
 		indexEntry := BattleboxIndex{
-			Slug:        bbDir.Name(),
-			Name:        bbManifest.Name,
-			Description: bbManifest.Description,
-			Decks:       []DeckIndex{},
+			Slug:              bbDir.Name(),
+			Name:              bbManifest.Name,
+			Description:       bbManifest.Description,
+			RandomRollEnabled: !bbManifest.DisableRandomRoll,
+			MatrixTabEnabled:  !bbManifest.DisableMatrixTab,
+			Decks:             []DeckIndex{},
 		}
 
 		deckDirs, err := os.ReadDir(bbPath)

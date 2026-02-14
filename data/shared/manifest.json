@@ -1,6 +1,8 @@
 {
   "name": "Shared",
   "description": "Shared library variants for ease of pickup and play. No matchup bellyaching allowed.",
+  "disable_random_roll": true,
+  "disable_matrix_tab": true,
   "ui_profiles": {
     "shared_nosideboard_hand": {
       "decklist_view": "nosideboard",

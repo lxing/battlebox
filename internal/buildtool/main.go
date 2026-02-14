@@ -145,11 +145,13 @@ func Main() {
 			bbPath := filepath.Join(dataDir, slug)
 			bbManifest := loadBattleboxManifest(filepath.Join(bbPath, "manifest.json"))
 			battlebox := Battlebox{
-				Slug:        slug,
-				Name:        bbManifest.Name,
-				Description: bbManifest.Description,
-				Decks:       []Deck{},
-				Banned:      loadBanned(filepath.Join(bbPath, "banned.json")),
+				Slug:              slug,
+				Name:              bbManifest.Name,
+				Description:       bbManifest.Description,
+				RandomRollEnabled: !bbManifest.DisableRandomRoll,
+				MatrixTabEnabled:  !bbManifest.DisableMatrixTab,
+				Decks:             []Deck{},
+				Banned:            loadBanned(filepath.Join(bbPath, "banned.json")),
 			}
 
 			bbPrintings := mergePrintings(projectPrintings, loadPrintings(filepath.Join(bbPath, printingsFileName)))

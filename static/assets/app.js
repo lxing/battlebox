@@ -34,8 +34,6 @@ let data = { index: null, battleboxes: {}, matrices: {}, buildId: '' };
 const TAB_BATTLEBOX = 'battlebox';
 const TAB_LIFE = 'life';
 const TAB_MATRIX = 'matrix';
-const MATRIX_DISABLED_BATTLEBOXES = new Set(['bloomburrow', 'shared']);
-const RANDOM_ROLL_DISABLED_BATTLEBOXES = new Set(['shared']);
 const ui = {
   shell: null,
   header: null,
@@ -636,8 +634,10 @@ async function route() {
   } = parseHashRoute(location.hash.slice(1) || '/');
   const currentBattleboxSlug = parts.length > 0 ? normalizeName(parts[0]) : '';
   const currentDeckSlug = parts.length === 2 ? normalizeName(parts[1]) : '';
-  const hasBattleboxContext = parts.length > 0;
-  const matrixTabEnabled = hasBattleboxContext && !MATRIX_DISABLED_BATTLEBOXES.has(currentBattleboxSlug);
+  const currentBattlebox = parts.length > 0
+    ? data.index.battleboxes.find((b) => b.slug === currentBattleboxSlug)
+    : null;
+  const matrixTabEnabled = Boolean(currentBattlebox && currentBattlebox.matrix_tab_enabled !== false);
 
   if (parts.length === 0) {
     renderHome();
@@ -681,7 +681,7 @@ function renderHome() {
           <a href="#/${bb.slug}" class="battlebox-link">
             <div class="battlebox-title">
               <span>${bb.name || capitalize(bb.slug)}</span>
-              <span class="colors">(${bb.decks.length} decks)</span>
+              <span class="colors">${bb.decks.length} decks</span>
             </div>
             ${bb.description ? `<div class="battlebox-desc">${bb.description}</div>` : ''}
           </a>
@@ -764,7 +764,7 @@ function renderBattlebox(bbSlug, initialSortMode, initialSortDirection) {
   );
   const rollButtons = [...ui.battleboxPane.querySelectorAll('.randomizer-roll')];
   const sortButtons = [...ui.battleboxPane.querySelectorAll('.randomizer-sort')];
-  const randomRollEnabled = !RANDOM_ROLL_DISABLED_BATTLEBOXES.has(bb.slug);
+  const randomRollEnabled = bb.random_roll_enabled !== false;
   let sortMode = null;
   let sortDirection = initialDirection;
 
