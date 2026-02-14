@@ -229,13 +229,14 @@ export function renderCardsByType(cards, bannedSet, types, highlightMap, highlig
   return html;
 }
 
-export function renderCardGroup(cards, label, bannedSet, highlightMap, highlightClass) {
+export function renderCardGroup(cards, label, bannedSet, highlightMap, highlightClass, options = {}) {
   if (!cards || cards.length === 0) return '';
   const sorted = [...cards].sort(compareCardsByManaThenName);
   const count = sorted.reduce((sum, c) => sum + c.qty, 0);
+  const showLabel = options.showLabel !== false;
   return `
     <div class="card-group">
-      <div class="card-group-label">${label} (${count})</div>
+      ${showLabel ? `<div class="card-group-label">${label} (${count})</div>` : ''}
       ${sorted.map(c => {
         const key = normalizeName(c.name);
         const rowHighlight = highlightMap && highlightMap[key] ? highlightClass : '';

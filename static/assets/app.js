@@ -1017,7 +1017,14 @@ async function renderDeck(bbSlug, deckSlug, selectedGuide, sortMode, sortDirecti
     });
     if (!groupKeys.length) return '<div class="decklist-cube-empty">None</div>';
     return groupKeys.map((key) => (
-      renderCardGroup(groups.get(key), renderComboLabel(key), bannedSet, nextDeckView.mainboardAdded, 'sb-added')
+      renderCardGroup(
+        groups.get(key),
+        '',
+        bannedSet,
+        nextDeckView.mainboardAdded,
+        'sb-added',
+        { showLabel: false }
+      )
     )).join('');
   };
   const countCards = (cards) => (cards || []).reduce((sum, c) => sum + (Number(c.qty) || 0), 0);
