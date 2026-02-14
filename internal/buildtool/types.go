@@ -21,6 +21,8 @@ type Card struct {
 	ManaValue int `json:"mana_value"`
 	// True when Scryfall layout indicates a card with a back face.
 	DoubleFaced bool `json:"double_faced,omitempty"`
+	// Optional manual land subtype (for example fetch/shock/surveil) from battlebox manifest.
+	LandSubtype string `json:"land_subtype,omitempty"`
 }
 
 // Manifest models a deck's source manifest.json file.
@@ -121,6 +123,8 @@ type BattleboxManifest struct {
 	DefaultUIProfile string `json:"default_ui_profile,omitempty"`
 	// Optional reusable UI profiles referenced by deck manifests.
 	UIProfiles map[string]DeckUIProfile `json:"ui_profiles,omitempty"`
+	// Optional manual land subtype taxonomy keyed by card name.
+	LandSubtypes map[string]string `json:"land_subtypes,omitempty"`
 }
 
 // Battlebox is the fully built battlebox payload written to static data files.

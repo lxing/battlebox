@@ -3,6 +3,7 @@
   "description": "The distilled Magic lootbox experience.",
   "disable_double_random_roll": true,
   "disable_type_sort": true,
+  "disable_matrix_tab": true,
   "default_ui_profile": "cube",
   "ui_profiles": {
     "cube": {
@@ -15,5 +16,37 @@
       "deck_info_badge": "card_count",
       "deck_selection_badge": "card_count"
     }
+  },
+  "land_subtypes": {
+    "Arid Mesa": "fetch",
+    "Bloodstained Mire": "fetch",
+    "Flooded Strand": "fetch",
+    "Marsh Flats": "fetch",
+    "Misty Rainforest": "fetch",
+    "Polluted Delta": "fetch",
+    "Scalding Tarn": "fetch",
+    "Verdant Catacombs": "fetch",
+    "Windswept Heath": "fetch",
+    "Wooded Foothills": "fetch",
+    "Blood Crypt": "shock",
+    "Breeding Pool": "shock",
+    "Godless Shrine": "shock",
+    "Hallowed Fountain": "shock",
+    "Overgrown Tomb": "shock",
+    "Sacred Foundry": "shock",
+    "Steam Vents": "shock",
+    "Stomping Ground": "shock",
+    "Temple Garden": "shock",
+    "Watery Grave": "shock",
+    "Commercial District": "surveil",
+    "Elegant Parlor": "surveil",
+    "Hedge Maze": "surveil",
+    "Lush Portico": "surveil",
+    "Meticulous Archive": "surveil",
+    "Raucous Theater": "surveil",
+    "Shadowy Backstreet": "surveil",
+    "Thundering Falls": "surveil",
+    "Undercity Sewers": "surveil",
+    "Underground Mortuary": "surveil"
   }
 }

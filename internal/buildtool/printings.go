@@ -56,6 +56,18 @@ func loadBattleboxManifest(path string) BattleboxManifest {
 	}
 	manifest.Name = strings.TrimSpace(manifest.Name)
 	manifest.Description = strings.TrimSpace(manifest.Description)
+	if len(manifest.LandSubtypes) > 0 {
+		normalized := make(map[string]string, len(manifest.LandSubtypes))
+		for name, subtype := range manifest.LandSubtypes {
+			key := normalizeName(name)
+			value := normalizeName(subtype)
+			if key == "" || value == "" {
+				continue
+			}
+			normalized[key] = value
+		}
+		manifest.LandSubtypes = normalized
+	}
 	normalizeBattleboxUIProfiles(&manifest)
 	return manifest
 }

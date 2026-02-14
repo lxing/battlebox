@@ -49,6 +49,8 @@ func processDeck(deckPath, slug, battlebox string, printings map[string]string, 
 			manifest.Sideboard[i].DoubleFaced = *meta.DoubleFaced
 		}
 	}
+	applyCubeLandSubtypes(manifest.Cards, battlebox, bbManifest.LandSubtypes)
+	applyCubeLandSubtypes(manifest.Sideboard, battlebox, bbManifest.LandSubtypes)
 
 	deck := &Deck{
 		Slug:           slug,
@@ -109,4 +111,18 @@ func processDeck(deckPath, slug, battlebox string, printings map[string]string, 
 	}
 
 	return deck, nil
+}
+
+func applyCubeLandSubtypes(cards []Card, battlebox string, subtypeByName map[string]string) {
+	if battlebox != "cube" || len(subtypeByName) == 0 {
+		return
+	}
+	for i := range cards {
+		if cards[i].Type != "land" {
+			continue
+		}
+		if subtype, ok := subtypeByName[normalizeName(cards[i].Name)]; ok {
+			cards[i].LandSubtype = subtype
+		}
+	}
 }

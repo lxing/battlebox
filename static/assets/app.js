@@ -1043,6 +1043,68 @@ async function renderDeck(bbSlug, deckSlug, selectedGuide, sortMode, sortDirecti
       )
     )).join('');
   };
+  const CUBE_LAND_SUBTYPE_ORDER = ['fetch', 'shock', 'surveil'];
+  const cubeLandSubtypeOrderIndex = new Map(
+    CUBE_LAND_SUBTYPE_ORDER.map((subtype, idx) => [subtype, idx])
+  );
+  const formatLandSubtypeLabel = (subtype) => {
+    const key = normalizeName(subtype || '');
+    if (!key) return '';
+    return `${key.charAt(0).toUpperCase()}${key.slice(1)} Lands`;
+  };
+  const renderCubeLandGroups = (cards, nextDeckView) => {
+    const untyped = [];
+    const grouped = new Map();
+    cards.forEach((card) => {
+      const subtype = normalizeName(card.land_subtype || '');
+      if (!subtype) {
+        untyped.push(card);
+        return;
+      }
+      const bucket = grouped.get(subtype);
+      if (bucket) {
+        bucket.push(card);
+      } else {
+        grouped.set(subtype, [card]);
+      }
+    });
+
+    const pieces = [];
+    if (untyped.length) {
+      pieces.push(renderCardGroup(
+        untyped,
+        '',
+        bannedSet,
+        nextDeckView.mainboardAdded,
+        'sb-added',
+        { showLabel: false }
+      ));
+    }
+
+    const subtypeKeys = [...grouped.keys()].sort((a, b) => {
+      const aRank = cubeLandSubtypeOrderIndex.get(a);
+      const bRank = cubeLandSubtypeOrderIndex.get(b);
+      if (aRank !== undefined && bRank !== undefined) return aRank - bRank;
+      if (aRank !== undefined) return -1;
+      if (bRank !== undefined) return 1;
+      return a.localeCompare(b);
+    });
+
+    subtypeKeys.forEach((subtype) => {
+      const label = formatLandSubtypeLabel(subtype);
+      pieces.push(renderCardGroup(
+        grouped.get(subtype),
+        label,
+        bannedSet,
+        nextDeckView.mainboardAdded,
+        'sb-added',
+        { showLabel: true }
+      ));
+    });
+
+    if (!pieces.length) return '<div class="decklist-cube-empty">None</div>';
+    return pieces.join('');
+  };
   const countCards = (cards) => (cards || []).reduce((sum, c) => sum + (Number(c.qty) || 0), 0);
   const renderCubeDecklist = (nextDeckView) => {
     const buckets = {
@@ -1075,6 +1137,8 @@ async function renderDeck(bbSlug, deckSlug, selectedGuide, sortMode, sortDirecti
       if (cards.length) {
         if (column.key === 'multicolor') {
           body = renderCubeMulticolorByColor(cards, nextDeckView);
+        } else if (column.key === 'land') {
+          body = renderCubeLandGroups(cards, nextDeckView);
         } else {
           body = renderCardsByType(
             cards,
