@@ -199,7 +199,7 @@ function compareCardsByManaThenName(a, b) {
   return normalizeName(a.name).localeCompare(normalizeName(b.name));
 }
 
-export function renderCardsByType(cards, bannedSet, types, highlightMap, highlightClass) {
+export function renderCardsByType(cards, bannedSet, types, highlightMap, highlightClass, options = {}) {
   const groups = { creature: [], spell: [], artifact: [], land: [] };
   cards.forEach(c => {
     const type = c.type || 'spell';
@@ -207,6 +207,7 @@ export function renderCardsByType(cards, bannedSet, types, highlightMap, highlig
   });
 
   const labels = { creature: 'Creatures', spell: 'Spells', artifact: 'Artifacts', land: 'Lands' };
+  const showGroupLabels = options.showGroupLabels !== false;
   let html = '';
 
   const order = types && types.length ? types : ['creature', 'spell', 'artifact', 'land'];
@@ -215,7 +216,9 @@ export function renderCardsByType(cards, bannedSet, types, highlightMap, highlig
     if (group.length === 0) continue;
     const count = group.reduce((sum, c) => sum + c.qty, 0);
     html += `<div class="card-group">`;
-    html += `<div class="card-group-label">${labels[type]} (${count})</div>`;
+    if (showGroupLabels) {
+      html += `<div class="card-group-label">${labels[type]} (${count})</div>`;
+    }
     html += group.map(c => {
       const key = normalizeName(c.name);
       const rowHighlight = highlightMap && highlightMap[key] ? highlightClass : '';

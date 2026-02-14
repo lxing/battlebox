@@ -879,6 +879,26 @@ async function renderDeck(bbSlug, deckSlug, selectedGuide, sortMode, sortDirecti
     });
     return out;
   };
+  const colorOrder = ['W', 'U', 'B', 'R', 'G'];
+  const CUBE_MULTICOLOR_GROUP_ORDER = [
+    'WU', 'UB', 'BR', 'RG', 'GW',
+    'WB', 'UR', 'BG', 'RW', 'GU',
+    'WUG', 'WUB', 'UBR', 'BRG', 'RGW',
+    'WBG', 'URW', 'BGU', 'RWB', 'GUR',
+    'WUBR', 'UBRG', 'BRGW', 'RGWU', 'GWUB',
+    'WUBRG',
+  ];
+  const colorSetSignature = (colors) => colorOrder.filter((c) => colors.has(c)).join('');
+  const comboSignature = (combo) => {
+    const letters = new Set(String(combo || '').toUpperCase().split(''));
+    return colorOrder.filter((c) => letters.has(c)).join('');
+  };
+  const canonicalComboBySignature = new Map(
+    CUBE_MULTICOLOR_GROUP_ORDER.map((combo) => [comboSignature(combo), combo])
+  );
+  const cubeMulticolorOrderIndex = new Map(
+    CUBE_MULTICOLOR_GROUP_ORDER.map((combo, idx) => [combo, idx])
+  );
   const resolveCubeBucket = (card) => {
     if ((card.type || 'spell') === 'land') return 'land';
     const colors = parseManaColors(card.mana_cost);
@@ -892,6 +912,40 @@ async function renderDeck(bbSlug, deckSlug, selectedGuide, sortMode, sortDirecti
       if (only === 'G') return 'green';
     }
     return 'multicolor';
+  };
+  const renderCubeMulticolorByColor = (cards, nextDeckView) => {
+    const renderComboLabel = (combo) => {
+      const letters = String(combo || '').toUpperCase().match(/[WUBRG]/g) || [];
+      if (!letters.length) return String(combo || '');
+      return letters
+        .map((letter) => `<img class="mana-cost-symbol" src="/assets/mana/${letter.toLowerCase()}.svg" alt="{${letter}}" loading="lazy" decoding="async">`)
+        .join('');
+    };
+    const groups = new Map();
+    cards.forEach((card) => {
+      const signature = colorSetSignature(parseManaColors(card.mana_cost));
+      if (!signature) return;
+      const key = canonicalComboBySignature.get(signature) || signature;
+      const bucket = groups.get(key);
+      if (bucket) {
+        bucket.push(card);
+      } else {
+        groups.set(key, [card]);
+      }
+    });
+    const groupKeys = [...groups.keys()].sort((a, b) => {
+      const aRank = cubeMulticolorOrderIndex.get(a);
+      const bRank = cubeMulticolorOrderIndex.get(b);
+      if (aRank !== undefined && bRank !== undefined) return aRank - bRank;
+      if (aRank !== undefined) return -1;
+      if (bRank !== undefined) return 1;
+      if (a.length !== b.length) return a.length - b.length;
+      return a.localeCompare(b);
+    });
+    if (!groupKeys.length) return '<div class="decklist-cube-empty">None</div>';
+    return groupKeys.map((key) => (
+      renderCardGroup(groups.get(key), renderComboLabel(key), bannedSet, nextDeckView.mainboardAdded, 'sb-added')
+    )).join('');
   };
   const countCards = (cards) => (cards || []).reduce((sum, c) => sum + (Number(c.qty) || 0), 0);
   const renderCubeDecklist = (nextDeckView) => {
@@ -916,14 +970,26 @@ async function renderDeck(bbSlug, deckSlug, selectedGuide, sortMode, sortDirecti
       { key: 'green', label: 'Green', types: ['creature', 'spell', 'artifact'] },
       { key: 'colorless', label: 'Colorless', types: ['creature', 'spell', 'artifact'] },
       { key: 'multicolor', label: 'Multicolor', types: ['creature', 'spell', 'artifact'] },
-      { key: 'land', label: 'Land', types: ['land'] },
+      { key: 'land', label: 'Lands', types: ['land'] },
     ];
 
     const columnHtml = columns.map((column) => {
       const cards = buckets[column.key];
-      const body = cards.length
-        ? renderCardsByType(cards, bannedSet, column.types, nextDeckView.mainboardAdded, 'sb-added')
-        : '<div class="decklist-cube-empty">None</div>';
+      let body = '<div class="decklist-cube-empty">None</div>';
+      if (cards.length) {
+        if (column.key === 'multicolor') {
+          body = renderCubeMulticolorByColor(cards, nextDeckView);
+        } else {
+          body = renderCardsByType(
+            cards,
+            bannedSet,
+            column.types,
+            nextDeckView.mainboardAdded,
+            'sb-added',
+            { showGroupLabels: column.key !== 'land' }
+          );
+        }
+      }
       return `
         <div class="decklist-col decklist-col-cube">
           <div class="card-group-label decklist-cube-title">${column.label} (${countCards(cards)})</div>
