@@ -313,7 +313,7 @@ var cardRefRE = regexp.MustCompile(`\[\[([^\]]+)\]\]`)
 
 const jsonGzipLevel = 5
 const cacheFile = ".card-types.json"
-const cardCacheVersion = 7
+const cardCacheVersion = 8
 const printingsFileName = "printings.json"
 const stampFile = "tmp/build-stamps.json"
 const buildFingerprintVersion = "v1"
