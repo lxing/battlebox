@@ -1,8 +1,10 @@
-function getCardImageUrl(printing) {
+function getCardImageUrl(printing, face = 'front') {
   if (!printing) return '';
   const [set, number] = String(printing).split('/');
   if (!set || !number) return '';
-  return `https://api.scryfall.com/cards/${set}/${number}?format=image&version=normal`;
+  const normalizedFace = String(face || 'front').toLowerCase() === 'back' ? 'back' : 'front';
+  const faceParam = normalizedFace === 'back' ? '&face=back' : '';
+  return `https://api.scryfall.com/cards/${set}/${number}?format=image&version=normal${faceParam}`;
 }
 
 function normalizeQty(value) {
@@ -18,6 +20,8 @@ function expandDeck(cards) {
       copies.push({
         name: card.name || 'Unknown',
         printing: card.printing || '',
+        doubleFaced: card.double_faced === true,
+        showBack: false,
       });
     }
   });
@@ -58,7 +62,11 @@ function drawCards(state, count) {
 }
 
 function resetDeckState(state) {
-  state.deck = shuffle(state.source);
+  // Clone source copies so toggling face state does not mutate source templates.
+  state.deck = shuffle(state.source.map((card) => ({
+    ...card,
+    showBack: false,
+  })));
   state.drawIndex = 0;
   state.hand = [];
   drawCards(state, state.initialDrawCount);
@@ -117,6 +125,16 @@ export function createSampleHandViewer() {
     drawButton = overlay.querySelector('[data-sample-hand-action="draw"]');
     resetButton = overlay.querySelector('[data-sample-hand-action="reset"]');
     const closeButton = overlay.querySelector('[data-sample-hand-action="close"]');
+
+    grid.addEventListener('click', (event) => {
+      const target = event.target instanceof HTMLElement ? event.target : null;
+      const cardEl = target ? target.closest('[data-sample-card-index]') : null;
+      if (!(cardEl instanceof HTMLElement)) return;
+      if (cardEl.dataset.sampleCardDoubleFaced !== '1') return;
+      const index = Number.parseInt(cardEl.dataset.sampleCardIndex || '', 10);
+      if (Number.isNaN(index)) return;
+      toggleCardFace(index);
+    });
 
     backdrop.addEventListener('click', () => {
       hide();
@@ -178,16 +196,28 @@ export function createSampleHandViewer() {
     if (cards.length === 0) {
       grid.innerHTML = '<div class="sample-hand-empty">No cards</div>';
     } else {
-      grid.innerHTML = cards.map((card) => {
-        const imageUrl = getCardImageUrl(card.printing);
+      grid.innerHTML = cards.map((card, index) => {
+        const showingBack = card.doubleFaced === true && card.showBack === true;
+        const imageUrl = getCardImageUrl(card.printing, showingBack ? 'back' : 'front');
+        const toggleAttrs = `data-sample-card-index="${index}" data-sample-card-double-faced="${card.doubleFaced ? '1' : '0'}"`;
+        const toggleBadge = card.doubleFaced
+          ? '<span class="sample-hand-card-flip-indicator" aria-hidden="true">🔄</span>'
+          : '';
         if (imageUrl) {
+          const faceLabel = card.doubleFaced
+            ? (showingBack ? ' (back face)' : ' (front face)')
+            : '';
+          const faceTitle = card.doubleFaced
+            ? (showingBack ? 'Tap to show front face' : 'Tap to show back face')
+            : '';
           return `
-            <div class="sample-hand-card">
-              <img src="${imageUrl}" alt="${card.name}">
+            <div class="sample-hand-card" ${toggleAttrs} title="${faceTitle}">
+              ${toggleBadge}
+              <img src="${imageUrl}" alt="${card.name}${faceLabel}">
             </div>
           `;
         }
-        return `<div class="sample-hand-card sample-hand-card-fallback">${card.name}</div>`;
+        return `<div class="sample-hand-card sample-hand-card-fallback" ${toggleAttrs}>${toggleBadge}${card.name}</div>`;
       }).join('');
     }
 
@@ -238,6 +268,16 @@ export function createSampleHandViewer() {
     if (targetTop >= viewTop && targetBottom <= viewBottom) return;
     const nextTop = Math.max(0, targetBottom - gridWrap.clientHeight);
     gridWrap.scrollTo({ top: nextTop, behavior: 'auto' });
+  }
+
+  function toggleCardFace(cardIndex) {
+    const state = getActiveState(false);
+    if (!state) return;
+    if (!Number.isInteger(cardIndex) || cardIndex < 0 || cardIndex >= state.hand.length) return;
+    const card = state.hand[cardIndex];
+    if (!card || card.doubleFaced !== true) return;
+    card.showBack = !card.showBack;
+    renderState(state);
   }
 
   function setDeckContext(key, cards, sampleConfig) {
