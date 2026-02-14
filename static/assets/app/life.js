@@ -67,7 +67,10 @@ function getLifeInteraction(panel, event) {
   if (!rect.width) return null;
 
   const player = panel.dataset.player === 'p2' ? 'p2' : 'p1';
-  const isAdd = (event.clientX - rect.left) >= (rect.width / 2);
+  const physicalX = event.clientX - rect.left;
+  // The top panel is rotated 180deg, so horizontal hit zones are mirrored.
+  const logicalX = player === 'p2' ? (rect.width - physicalX) : physicalX;
+  const isAdd = logicalX >= (rect.width / 2);
   const step = isAdd ? 1 : -1;
 
   return { player, step };
