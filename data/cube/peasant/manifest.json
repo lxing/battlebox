@@ -4,5 +4,726 @@
   "difficulty_tags": [
     "intermediate"
   ],
-  "cards": []
+  "cards": [
+    {
+      "name": "Aunt May",
+      "qty": 1
+    },
+    {
+      "name": "Novice Inspector",
+      "qty": 1
+    },
+    {
+      "name": "Thraben Inspector",
+      "qty": 1
+    },
+    {
+      "name": "Ambitious Farmhand",
+      "qty": 1
+    },
+    {
+      "name": "Clarion Spirit",
+      "qty": 1
+    },
+    {
+      "name": "Distinguished Conjurer",
+      "qty": 1
+    },
+    {
+      "name": "Wall of Omens",
+      "qty": 1
+    },
+    {
+      "name": "Mentor of the Meek",
+      "qty": 1
+    },
+    {
+      "name": "All-Fates Stalker",
+      "qty": 1
+    },
+    {
+      "name": "Cloudgoat Ranger",
+      "qty": 1
+    },
+    {
+      "name": "Ephemerate",
+      "qty": 1
+    },
+    {
+      "name": "Path to Exile",
+      "qty": 1
+    },
+    {
+      "name": "Swords to Plowshares",
+      "qty": 1
+    },
+    {
+      "name": "Hop to It",
+      "qty": 1
+    },
+    {
+      "name": "Battle Screech",
+      "qty": 1
+    },
+    {
+      "name": "Decree of Justice",
+      "qty": 1
+    },
+    {
+      "name": "Release the Dogs",
+      "qty": 1
+    },
+    {
+      "name": "Kirtar's Wrath",
+      "qty": 1
+    },
+    {
+      "name": "Spectral Procession",
+      "qty": 1
+    },
+    {
+      "name": "Shrine of Loyal Legions",
+      "qty": 1
+    },
+    {
+      "name": "Case of the Gateway Express",
+      "qty": 1
+    },
+    {
+      "name": "Touch the Spirit Realm",
+      "qty": 1
+    },
+    {
+      "name": "Conclave Tribunal",
+      "qty": 1
+    },
+    {
+      "name": "Watcher for Tomorrow",
+      "qty": 1
+    },
+    {
+      "name": "Slickshot Lockpicker",
+      "qty": 1
+    },
+    {
+      "name": "Archaeomancer",
+      "qty": 1
+    },
+    {
+      "name": "Murmuring Mystic",
+      "qty": 1
+    },
+    {
+      "name": "Mulldrifter",
+      "qty": 1
+    },
+    {
+      "name": "Riftwing Cloudskate",
+      "qty": 1
+    },
+    {
+      "name": "Consider",
+      "qty": 1
+    },
+    {
+      "name": "Quicken",
+      "qty": 1
+    },
+    {
+      "name": "Counterspell",
+      "qty": 1
+    },
+    {
+      "name": "Lose Focus",
+      "qty": 1
+    },
+    {
+      "name": "Mana Leak",
+      "qty": 1
+    },
+    {
+      "name": "Miscalculation",
+      "qty": 1
+    },
+    {
+      "name": "Discover the Impossible",
+      "qty": 1
+    },
+    {
+      "name": "Faebloom Trick",
+      "qty": 1
+    },
+    {
+      "name": "Sink into Stupor",
+      "qty": 1
+    },
+    {
+      "name": "Thirst for Discovery",
+      "qty": 1
+    },
+    {
+      "name": "Fact or Fiction",
+      "qty": 1
+    },
+    {
+      "name": "Ponder",
+      "qty": 1
+    },
+    {
+      "name": "Preordain",
+      "qty": 1
+    },
+    {
+      "name": "Callous Dismissal",
+      "qty": 1
+    },
+    {
+      "name": "Chart a Course",
+      "qty": 1
+    },
+    {
+      "name": "Stock Up",
+      "qty": 1
+    },
+    {
+      "name": "Rise from the Tides",
+      "qty": 1
+    },
+    {
+      "name": "Carrion Feeder",
+      "qty": 1
+    },
+    {
+      "name": "Forsaken Miner",
+      "qty": 1
+    },
+    {
+      "name": "Blood Artist",
+      "qty": 1
+    },
+    {
+      "name": "Deep-Cavern Bat",
+      "qty": 1
+    },
+    {
+      "name": "Marionette Apprentice",
+      "qty": 1
+    },
+    {
+      "name": "Umbral Collar Zealot",
+      "qty": 1
+    },
+    {
+      "name": "Vengeful Bloodwitch",
+      "qty": 1
+    },
+    {
+      "name": "Wriggling Grub",
+      "qty": 1
+    },
+    {
+      "name": "Zulaport Cutthroat",
+      "qty": 1
+    },
+    {
+      "name": "Morbid Opportunist",
+      "qty": 1
+    },
+    {
+      "name": "Night Clubber",
+      "qty": 1
+    },
+    {
+      "name": "Popular Egotist",
+      "qty": 1
+    },
+    {
+      "name": "Vampire Nighthawk",
+      "qty": 1
+    },
+    {
+      "name": "Ravenous Chupacabra",
+      "qty": 1
+    },
+    {
+      "name": "Sling-Gang Lieutenant",
+      "qty": 1
+    },
+    {
+      "name": "Shriekmaw",
+      "qty": 1
+    },
+    {
+      "name": "Underworld Hermit",
+      "qty": 1
+    },
+    {
+      "name": "Fatal Push",
+      "qty": 1
+    },
+    {
+      "name": "Go for the Throat",
+      "qty": 1
+    },
+    {
+      "name": "Dismember",
+      "qty": 1
+    },
+    {
+      "name": "Night's Whisper",
+      "qty": 1
+    },
+    {
+      "name": "Drown in Sorrow",
+      "qty": 1
+    },
+    {
+      "name": "The Final Days",
+      "qty": 1
+    },
+    {
+      "name": "Coruscation Mage",
+      "qty": 1
+    },
+    {
+      "name": "Goblin Instigator",
+      "qty": 1
+    },
+    {
+      "name": "Mogg War Marshal",
+      "qty": 1
+    },
+    {
+      "name": "Young Pyromancer",
+      "qty": 1
+    },
+    {
+      "name": "Cunning Sparkmage",
+      "qty": 1
+    },
+    {
+      "name": "Guttersnipe",
+      "qty": 1
+    },
+    {
+      "name": "Spiteful Prankster",
+      "qty": 1
+    },
+    {
+      "name": "Flametongue Kavu",
+      "qty": 1
+    },
+    {
+      "name": "Geological Appraiser",
+      "qty": 1
+    },
+    {
+      "name": "Twinshot Sniper",
+      "qty": 1
+    },
+    {
+      "name": "Charging Monstrosaur",
+      "qty": 1
+    },
+    {
+      "name": "Noise Marine",
+      "qty": 1
+    },
+    {
+      "name": "Amethyst Dragon",
+      "qty": 1
+    },
+    {
+      "name": "Burst Lightning",
+      "qty": 1
+    },
+    {
+      "name": "Lightning Bolt",
+      "qty": 1
+    },
+    {
+      "name": "Seismic Wave",
+      "qty": 1
+    },
+    {
+      "name": "You See a Pair of Goblins",
+      "qty": 1
+    },
+    {
+      "name": "Chain Lightning",
+      "qty": 1
+    },
+    {
+      "name": "Firebolt",
+      "qty": 1
+    },
+    {
+      "name": "Arc Trail",
+      "qty": 1
+    },
+    {
+      "name": "Hordeling Outburst",
+      "qty": 1
+    },
+    {
+      "name": "Goblin Bombardment",
+      "qty": 1
+    },
+    {
+      "name": "Painter's Studio // Defaced Gallery",
+      "qty": 1
+    },
+    {
+      "name": "Overgrown Battlement",
+      "qty": 1
+    },
+    {
+      "name": "Paradise Druid",
+      "qty": 1
+    },
+    {
+      "name": "Sakura-Tribe Elder",
+      "qty": 1
+    },
+    {
+      "name": "Satyr Wayfinder",
+      "qty": 1
+    },
+    {
+      "name": "Sylvan Ranger",
+      "qty": 1
+    },
+    {
+      "name": "Wall of Blossoms",
+      "qty": 1
+    },
+    {
+      "name": "Wall of Roots",
+      "qty": 1
+    },
+    {
+      "name": "Borderland Ranger",
+      "qty": 1
+    },
+    {
+      "name": "Eternal Witness",
+      "qty": 1
+    },
+    {
+      "name": "Llanowar Visionary",
+      "qty": 1
+    },
+    {
+      "name": "Rishkar, Peema Renegade",
+      "qty": 1
+    },
+    {
+      "name": "Obstinate Baloth",
+      "qty": 1
+    },
+    {
+      "name": "Surrak, the Hunt Caller",
+      "qty": 1
+    },
+    {
+      "name": "Timeless Witness",
+      "qty": 1
+    },
+    {
+      "name": "Blossom Prancer",
+      "qty": 1
+    },
+    {
+      "name": "Ridgescale Tusker",
+      "qty": 1
+    },
+    {
+      "name": "Great Oak Guardian",
+      "qty": 1
+    },
+    {
+      "name": "Pelakka Wurm",
+      "qty": 1
+    },
+    {
+      "name": "Sprout Swarm",
+      "qty": 1
+    },
+    {
+      "name": "Winding Way",
+      "qty": 1
+    },
+    {
+      "name": "Rise of the Varmints",
+      "qty": 1
+    },
+    {
+      "name": "Grizzly Fate",
+      "qty": 1
+    },
+    {
+      "name": "The Aesir Escape Valhalla",
+      "qty": 1
+    },
+    {
+      "name": "Circuit Mender",
+      "qty": 1
+    },
+    {
+      "name": "Reflector Mage",
+      "qty": 1
+    },
+    {
+      "name": "Soulherder",
+      "qty": 1
+    },
+    {
+      "name": "Oji, the Exquisite Blade",
+      "qty": 1
+    },
+    {
+      "name": "Cloudblazer",
+      "qty": 1
+    },
+    {
+      "name": "Baleful Strix",
+      "qty": 1
+    },
+    {
+      "name": "Vohar, Vodalian Desecrator",
+      "qty": 1
+    },
+    {
+      "name": "Locke Cole",
+      "qty": 1
+    },
+    {
+      "name": "Ultimecia, Time Sorceress",
+      "qty": 1
+    },
+    {
+      "name": "Garland, Knight of Cornelia",
+      "qty": 1
+    },
+    {
+      "name": "Juri, Master of the Revue",
+      "qty": 1
+    },
+    {
+      "name": "Judith, the Scourge Diva",
+      "qty": 1
+    },
+    {
+      "name": "Stormclaw Rager",
+      "qty": 1
+    },
+    {
+      "name": "Savage Twister",
+      "qty": 1
+    },
+    {
+      "name": "Fires of Yavimaya",
+      "qty": 1
+    },
+    {
+      "name": "Bloodbraid Elf",
+      "qty": 1
+    },
+    {
+      "name": "Ghor-Clan Rampager",
+      "qty": 1
+    },
+    {
+      "name": "Join the Dance",
+      "qty": 1
+    },
+    {
+      "name": "Selesnya Guildmage",
+      "qty": 1
+    },
+    {
+      "name": "Kitchen Finks",
+      "qty": 1
+    },
+    {
+      "name": "Veteran Beastrider",
+      "qty": 1
+    },
+    {
+      "name": "Bartolom\u00e9 del Presidio",
+      "qty": 1
+    },
+    {
+      "name": "Cartel Aristocrat",
+      "qty": 1
+    },
+    {
+      "name": "Lingering Souls",
+      "qty": 1
+    },
+    {
+      "name": "Orzhov Pontiff",
+      "qty": 1
+    },
+    {
+      "name": "Expressive Iteration",
+      "qty": 1
+    },
+    {
+      "name": "Third Path Iconoclast",
+      "qty": 1
+    },
+    {
+      "name": "Electrolyze",
+      "qty": 1
+    },
+    {
+      "name": "Fire // Ice",
+      "qty": 1
+    },
+    {
+      "name": "Broodspinner",
+      "qty": 1
+    },
+    {
+      "name": "Exdeath, Void Warlock",
+      "qty": 1
+    },
+    {
+      "name": "Honest Rutstein",
+      "qty": 1
+    },
+    {
+      "name": "Spider Spawning",
+      "qty": 1
+    },
+    {
+      "name": "Lightning Helix",
+      "qty": 1
+    },
+    {
+      "name": "Sacred Fire",
+      "qty": 1
+    },
+    {
+      "name": "Imodane's Recruiter",
+      "qty": 1
+    },
+    {
+      "name": "Heroic Reinforcements",
+      "qty": 1
+    },
+    {
+      "name": "Growth Spiral",
+      "qty": 1
+    },
+    {
+      "name": "Skyserpent Seeker",
+      "qty": 1
+    },
+    {
+      "name": "Vilespawn Spider",
+      "qty": 1
+    },
+    {
+      "name": "Colossal Skyturtle",
+      "qty": 1
+    },
+    {
+      "name": "Tranquil Cove",
+      "qty": 1
+    },
+    {
+      "name": "Dismal Backwater",
+      "qty": 1
+    },
+    {
+      "name": "Bloodfell Caves",
+      "qty": 1
+    },
+    {
+      "name": "Rugged Highlands",
+      "qty": 1
+    },
+    {
+      "name": "Blossoming Sands",
+      "qty": 1
+    },
+    {
+      "name": "Scoured Barrens",
+      "qty": 1
+    },
+    {
+      "name": "Swiftwater Cliffs",
+      "qty": 1
+    },
+    {
+      "name": "Jungle Hollow",
+      "qty": 1
+    },
+    {
+      "name": "Wind-Scarred Crag",
+      "qty": 1
+    },
+    {
+      "name": "Thornwood Falls",
+      "qty": 1
+    },
+    {
+      "name": "Ash Barrens",
+      "qty": 1
+    },
+    {
+      "name": "Black Dragon Gate",
+      "qty": 1
+    },
+    {
+      "name": "Citadel Gate",
+      "qty": 1
+    },
+    {
+      "name": "Cliffgate",
+      "qty": 1
+    },
+    {
+      "name": "Escape Tunnel",
+      "qty": 1
+    },
+    {
+      "name": "Evolving Wilds",
+      "qty": 1
+    },
+    {
+      "name": "Manor Gate",
+      "qty": 1
+    },
+    {
+      "name": "Sea Gate",
+      "qty": 1
+    },
+    {
+      "name": "Terramorphic Expanse",
+      "qty": 1
+    },
+    {
+      "name": "Thriving Bluff",
+      "qty": 1
+    },
+    {
+      "name": "Thriving Grove",
+      "qty": 1
+    },
+    {
+      "name": "Thriving Heath",
+      "qty": 1
+    },
+    {
+      "name": "Thriving Isle",
+      "qty": 1
+    },
+    {
+      "name": "Thriving Moor",
+      "qty": 1
+    }
+  ]
 }
