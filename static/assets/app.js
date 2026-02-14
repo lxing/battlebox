@@ -912,8 +912,8 @@ async function renderDeck(bbSlug, deckSlug, selectedGuide, sortMode, sortDirecti
       { key: 'black', label: 'Black', types: ['creature', 'spell', 'artifact'] },
       { key: 'red', label: 'Red', types: ['creature', 'spell', 'artifact'] },
       { key: 'green', label: 'Green', types: ['creature', 'spell', 'artifact'] },
-      { key: 'multicolor', label: 'Multicolor', types: ['creature', 'spell', 'artifact'] },
       { key: 'colorless', label: 'Colorless', types: ['creature', 'spell', 'artifact'] },
+      { key: 'multicolor', label: 'Multicolor', types: ['creature', 'spell', 'artifact'] },
       { key: 'land', label: 'Land', types: ['land'] },
     ];
 
