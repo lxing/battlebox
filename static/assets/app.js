@@ -1043,13 +1043,15 @@ async function renderDeck(bbSlug, deckSlug, selectedGuide, sortMode, sortDirecti
       )
     )).join('');
   };
-  const CUBE_LAND_SUBTYPE_ORDER = ['fetch', 'shock', 'surveil'];
+  const CUBE_LAND_SUBTYPE_ORDER = ['fetch', 'shock', 'surveil', 'tapland', 'bounce', 'gates'];
   const cubeLandSubtypeOrderIndex = new Map(
     CUBE_LAND_SUBTYPE_ORDER.map((subtype, idx) => [subtype, idx])
   );
   const formatLandSubtypeLabel = (subtype) => {
     const key = normalizeName(subtype || '');
     if (!key) return '';
+    if (key === 'gates') return 'Gates';
+    if (key === 'tapland') return 'Tap Lands';
     return `${key.charAt(0).toUpperCase()}${key.slice(1)} Lands`;
   };
   const renderCubeLandGroups = (cards, nextDeckView) => {
