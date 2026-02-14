@@ -14,6 +14,8 @@ export function sortArchetypeTags(tags) {
     combo: 4,
     tribal: 5,
     shared: 6,
+    '2p': 7,
+    '4p': 8,
   };
   return [...tags].sort((a, b) => {
     const ak = normalizeName(a);
@@ -25,13 +27,19 @@ export function sortArchetypeTags(tags) {
   });
 }
 
+export function archetypeTagLabel(key) {
+  if (key === '2p') return '2-4 players';
+  if (key === '4p') return '4-8 players';
+  return key;
+}
+
 export function renderDeckTags(tags) {
   const sorted = sortArchetypeTags(tags);
   if (sorted.length === 0) return '';
   return sorted.map(tag => {
     const key = normalizeName(tag).replace(/[^a-z0-9-]/g, '');
     if (!key) return '';
-    return `<span class="deck-tag deck-tag-${key}">${key}</span>`;
+    return `<span class="deck-tag deck-tag-${key}">${archetypeTagLabel(key)}</span>`;
   }).join('');
 }
 
@@ -73,7 +81,7 @@ export function renderDeckSelectionTags(tags, difficultyTags) {
   const archetype = sortArchetypeTags(tags).map(tag => {
     const key = normalizeName(tag).replace(/[^a-z0-9-]/g, '');
     if (!key) return '';
-    return `<span class="deck-tag deck-tag-${key}">${key}</span>`;
+    return `<span class="deck-tag deck-tag-${key}">${archetypeTagLabel(key)}</span>`;
   });
   const difficulty = sortDifficultyTags(difficultyTags).map(tag => {
     const key = normalizeName(tag).replace(/[^a-z0-9-]/g, '');

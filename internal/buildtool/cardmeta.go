@@ -221,6 +221,9 @@ func normalizeDeckTags(tags []string) []string {
 		"control":  3,
 		"combo":    4,
 		"tribal":   5,
+		"2p":       6,
+		"4p":       7,
+		"shared":   8,
 	}
 	seen := map[string]bool{}
 	out := make([]string, 0, len(tags))

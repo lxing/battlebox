@@ -51,6 +51,7 @@ func processDeck(deckPath, slug, battlebox string, printings map[string]string, 
 	}
 	applyCubeLandSubtypes(manifest.Cards, battlebox, bbManifest.LandSubtypes)
 	applyCubeLandSubtypes(manifest.Sideboard, battlebox, bbManifest.LandSubtypes)
+	cardCount := countCards(manifest.Cards)
 
 	deck := &Deck{
 		Slug:           slug,
@@ -62,7 +63,7 @@ func processDeck(deckPath, slug, battlebox string, printings map[string]string, 
 		UI:             uiProfile,
 		View:           uiProfile.DecklistView,
 		SampleHandSize: uiProfile.Sample.Size,
-		CardCount:      countCards(manifest.Cards),
+		CardCount:      cardCount,
 		Printings:      map[string]string{},
 		Cards:          manifest.Cards,
 		Sideboard:      manifest.Sideboard,

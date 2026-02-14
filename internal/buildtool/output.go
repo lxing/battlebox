@@ -60,6 +60,7 @@ func buildIndexOutput(dataDir string) (IndexOutput, error) {
 			if err != nil {
 				return indexOutput, fmt.Errorf("resolving ui profile for %s: %w", manifestPath, err)
 			}
+			cardCount := countCards(manifest.Cards)
 
 			indexEntry.Decks = append(indexEntry.Decks, DeckIndex{
 				Slug:           deckDir.Name(),
@@ -69,7 +70,7 @@ func buildIndexOutput(dataDir string) (IndexOutput, error) {
 				Tags:           normalizeDeckTags(manifest.Tags),
 				DifficultyTags: normalizeDifficultyTags(manifest.DifficultyTags),
 				UI:             uiProfile,
-				CardCount:      countCards(manifest.Cards),
+				CardCount:      cardCount,
 			})
 		}
 
