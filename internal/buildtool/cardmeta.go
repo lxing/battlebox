@@ -153,18 +153,18 @@ func classifyType(typeLine string) string {
 		strings.Contains(tl, "kindred") ||
 		strings.Contains(tl, "tribal")
 
-	// For mixed land/nonland cards, prefer land over artifact.
+	// Precedence: creature -> spell -> land -> artifact.
 	if hasCreature {
 		return "creature"
+	}
+	if hasOtherNonLand {
+		return "spell"
 	}
 	if hasLand {
 		return "land"
 	}
 	if hasArtifact {
 		return "artifact"
-	}
-	if hasOtherNonLand {
-		return "spell"
 	}
 	return "spell"
 }
