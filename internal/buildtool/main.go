@@ -22,7 +22,7 @@ func Main() {
 	loadCardCache()
 
 	projectPrintings := loadPrintings(filepath.Join(dataDir, printingsFileName))
-	battleboxDirs, err := os.ReadDir(dataDir)
+	battleboxDirs, err := orderedBattleboxDirs(dataDir)
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Error reading data dir: %v\n", err)
 		os.Exit(1)
@@ -145,13 +145,15 @@ func Main() {
 			bbPath := filepath.Join(dataDir, slug)
 			bbManifest := loadBattleboxManifest(filepath.Join(bbPath, "manifest.json"))
 			battlebox := Battlebox{
-				Slug:              slug,
-				Name:              bbManifest.Name,
-				Description:       bbManifest.Description,
-				RandomRollEnabled: !bbManifest.DisableRandomRoll,
-				MatrixTabEnabled:  !bbManifest.DisableMatrixTab,
-				Decks:             []Deck{},
-				Banned:            loadBanned(filepath.Join(bbPath, "banned.json")),
+				Slug:                    slug,
+				Name:                    bbManifest.Name,
+				Description:             bbManifest.Description,
+				RandomRollEnabled:       !bbManifest.DisableRandomRoll,
+				DisableDoubleRandomRoll: bbManifest.DisableDoubleRandomRoll,
+				DisableDoubleTypeSort:   bbManifest.DisableDoubleTypeSort,
+				MatrixTabEnabled:        !bbManifest.DisableMatrixTab,
+				Decks:                   []Deck{},
+				Banned:                  loadBanned(filepath.Join(bbPath, "banned.json")),
 			}
 
 			bbPrintings := mergePrintings(projectPrintings, loadPrintings(filepath.Join(bbPath, printingsFileName)))

@@ -64,6 +64,7 @@ func saveBuildStamp(path string, stamp BuildStamp) error {
 func computeGlobalInputHash(dataDir string, fileCache map[string]FileFingerprint) (string, error) {
 	paths := []string{
 		filepath.Join(dataDir, printingsFileName),
+		filepath.Join(dataDir, topLevelBattleboxesManifestFileName),
 	}
 
 	scriptSources, err := collectBuildScriptSources()
