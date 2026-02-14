@@ -883,7 +883,7 @@ async function renderDeck(bbSlug, deckSlug, selectedGuide, sortMode, sortDirecti
   const CUBE_MULTICOLOR_GROUP_ORDER = [
     'WU', 'UB', 'BR', 'RG', 'GW',
     'WB', 'UR', 'BG', 'RW', 'GU',
-    'WUG', 'WUB', 'UBR', 'BRG', 'RGW',
+    'GWU', 'WUB', 'UBR', 'BRG', 'RGW',
     'WBG', 'URW', 'BGU', 'RWB', 'GUR',
     'WUBR', 'UBRG', 'BRGW', 'RGWU', 'GWUB',
     'WUBRG',
