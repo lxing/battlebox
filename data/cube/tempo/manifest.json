@@ -4,7 +4,7 @@
   "tags": [
     "tempo"
   ],
-  "view": "cube",
+  "ui_profile": "cube_pack",
   "cards": [
     {
       "name": "Esper Sentinel",

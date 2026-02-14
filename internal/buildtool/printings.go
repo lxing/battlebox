@@ -56,6 +56,7 @@ func loadBattleboxManifest(path string) BattleboxManifest {
 	}
 	manifest.Name = strings.TrimSpace(manifest.Name)
 	manifest.Description = strings.TrimSpace(manifest.Description)
+	normalizeBattleboxUIProfiles(&manifest)
 	return manifest
 }
 

@@ -69,6 +69,81 @@ function getCardTarget(event) {
 
 const preview = createCardPreview(app, getCardTarget);
 const sampleHand = createSampleHandViewer();
+const DEFAULT_DECK_UI = Object.freeze({
+  decklist_view: 'default',
+  sample: Object.freeze({
+    mode: 'hand',
+    size: 7,
+    allow_draw: true,
+  }),
+  deck_info_badge: 'colors',
+  deck_selection_badge: 'colors',
+});
+
+function normalizeDecklistViewMode(value) {
+  const key = String(value || '').trim().toLowerCase();
+  if (key === 'cube') return 'cube';
+  if (key === 'nosideboard') return 'nosideboard';
+  return 'default';
+}
+
+function normalizeSampleMode(value) {
+  const key = String(value || '').trim().toLowerCase();
+  if (key === 'pack') return 'pack';
+  if (key === 'none') return 'none';
+  return 'hand';
+}
+
+function normalizeBadgeMode(value) {
+  return String(value || '').trim().toLowerCase() === 'card_count' ? 'card_count' : 'colors';
+}
+
+function resolveDeckUI(deck) {
+  const rawUI = deck && deck.ui && typeof deck.ui === 'object' ? deck.ui : {};
+  const rawSample = rawUI.sample && typeof rawUI.sample === 'object' ? rawUI.sample : null;
+  const legacyView = normalizeDecklistViewMode(deck?.view);
+
+  let sampleMode = normalizeSampleMode(rawSample?.mode);
+  if (!rawSample && legacyView === 'cube') {
+    sampleMode = 'none';
+  }
+  const parsedSampleSize = Number.parseInt(String(rawSample?.size), 10);
+  const legacySampleSize = Number.parseInt(String(deck?.sample_hand_size), 10);
+  const defaultSampleSize = sampleMode === 'pack' ? 8 : DEFAULT_DECK_UI.sample.size;
+  const sampleSize = Number.isFinite(parsedSampleSize) && parsedSampleSize > 0
+    ? parsedSampleSize
+    : (Number.isFinite(legacySampleSize) && legacySampleSize > 0 ? legacySampleSize : defaultSampleSize);
+
+  const rawAllowDraw = typeof rawSample?.allow_draw === 'boolean'
+    ? rawSample.allow_draw
+    : DEFAULT_DECK_UI.sample.allow_draw;
+  const sampleAllowDraw = sampleMode === 'hand' ? rawAllowDraw : false;
+
+  return {
+    decklist_view: normalizeDecklistViewMode(rawUI.decklist_view || legacyView),
+    sample: {
+      mode: sampleMode,
+      size: sampleSize,
+      allow_draw: sampleAllowDraw,
+    },
+    deck_info_badge: normalizeBadgeMode(rawUI.deck_info_badge),
+    deck_selection_badge: normalizeBadgeMode(rawUI.deck_selection_badge),
+  };
+}
+
+function getDeckCardCount(deck) {
+  const fromDeck = Number.parseInt(String(deck?.card_count), 10);
+  if (Number.isFinite(fromDeck) && fromDeck > 0) return fromDeck;
+  const cards = Array.isArray(deck?.cards) ? deck.cards : [];
+  return cards.reduce((sum, card) => sum + (Number.parseInt(String(card?.qty), 10) || 0), 0);
+}
+
+function renderDeckBadge(deck, mode) {
+  if (normalizeBadgeMode(mode) === 'card_count') {
+    return `${getDeckCardCount(deck)} cards`;
+  }
+  return formatColors(deck?.colors || '');
+}
 
 function guideToRawMarkdown(guide) {
   if (!guide) return '';
@@ -648,13 +723,16 @@ function renderBattlebox(bbSlug, initialSortMode, initialSortDirection) {
       </div>
     </div>
     <ul class="deck-list">
-      ${bb.decks.map(d => `
-        <li class="deck-item" data-slug="${d.slug}"><a class="deck-link" href="${buildDeckHash(bb.slug, d.slug, initialSort, initialDirection, undefined, 4)}">
-          <span class="deck-link-name">${d.icon ? `<span class="deck-link-icon">${d.icon}</span>` : ''}${d.name}</span>
-          <div class="deck-link-tags">${renderDeckSelectionTags(d.tags, d.difficulty_tags)}</div>
-          <span class="colors">${formatColors(d.colors)}</span>
-        </a></li>
-      `).join('')}
+      ${bb.decks.map(d => {
+        const deckUI = resolveDeckUI(d);
+        return `
+          <li class="deck-item" data-slug="${d.slug}"><a class="deck-link" href="${buildDeckHash(bb.slug, d.slug, initialSort, initialDirection, undefined, 4)}">
+            <span class="deck-link-name">${d.icon ? `<span class="deck-link-icon">${d.icon}</span>` : ''}${d.name}</span>
+            <div class="deck-link-tags">${renderDeckSelectionTags(d.tags, d.difficulty_tags)}</div>
+            <span class="colors">${renderDeckBadge(d, deckUI.deck_selection_badge)}</span>
+          </a></li>
+        `;
+      }).join('')}
     </ul>
   `;
   renderBattleboxPane(headerHtml, bodyHtml);
@@ -837,6 +915,7 @@ async function renderDeck(bbSlug, deckSlug, selectedGuide, sortMode, sortDirecti
 
   const deckPrintings = deck.printings || {};
   const deckDoubleFaced = buildDoubleFacedMap(deck);
+  const deckUI = resolveDeckUI(deck);
   const mdSelf = createMarkdownRenderer([deckPrintings], [deckDoubleFaced]);
   const primerHtml = deck.primer ? mdSelf.render(deck.primer) : '<em>No primer yet</em>';
   const bannedNames = Array.isArray(bb.banned) ? bb.banned : [];
@@ -860,13 +939,7 @@ async function renderDeck(bbSlug, deckSlug, selectedGuide, sortMode, sortDirecti
     return `<option value="${k}">${name}</option>`;
   }).join('');
 
-  const normalizeDecklistView = (rawView) => {
-    const key = String(rawView || '').trim().toLowerCase();
-    if (key === 'cube') return 'cube';
-    if (key === 'nosideboard') return 'nosideboard';
-    return 'default';
-  };
-  const decklistView = normalizeDecklistView(deck.view);
+  const decklistView = deckUI.decklist_view;
   const parseManaColors = (manaCost) => {
     const out = new Set();
     const text = String(manaCost || '').toUpperCase();
@@ -1100,9 +1173,10 @@ async function renderDeck(bbSlug, deckSlug, selectedGuide, sortMode, sortDirecti
       </button>
     </h1>
   `;
+  const sampleButtonLabel = deckUI.sample.mode === 'pack' ? 'Sample Pack' : 'Sample Hand';
   const bodyHtml = `
     <div class="deck-info-pane">
-      <div class="deck-colors">${formatColors(deck.colors)}</div>
+      <div class="deck-colors">${renderDeckBadge(deck, deckUI.deck_info_badge)}</div>
       <div class="deck-tags">${renderDeckTags(deck.tags)}${renderDifficultyTags(deck.difficulty_tags)}</div>
     </div>
 
@@ -1114,9 +1188,9 @@ async function renderDeck(bbSlug, deckSlug, selectedGuide, sortMode, sortDirecti
         <div id="decklist-body">
           ${renderDecklistGrid(deckView)}
         </div>
-        ${decklistView === 'cube' ? '' : `
+        ${deckUI.sample.mode === 'none' ? '' : `
           <div class="decklist-toolbar">
-            <button type="button" class="action-button sample-hand-open-button" id="sample-hand-open-button">Sample Hand</button>
+            <button type="button" class="action-button sample-hand-open-button" id="sample-hand-open-button">${sampleButtonLabel}</button>
           </div>
         `}
       </div>
@@ -1164,12 +1238,15 @@ async function renderDeck(bbSlug, deckSlug, selectedGuide, sortMode, sortDirecti
 
   const buildSampleHandKey = () => {
     const matchupKey = currentApplySideboard ? (currentMatchupSlug || '') : '';
-    return `${bb.slug}/${deck.slug}|sb=${currentApplySideboard ? '1' : '0'}|m=${matchupKey}`;
+    return `${bb.slug}/${deck.slug}|sb=${currentApplySideboard ? '1' : '0'}|m=${matchupKey}|sample=${deckUI.sample.mode}:${deckUI.sample.size}:${deckUI.sample.allow_draw ? '1' : '0'}`;
   };
 
   const syncSampleHandContext = () => {
-    if (decklistView === 'cube') return;
-    sampleHand.setDeckContext(buildSampleHandKey(), deckView.mainCards, deck.sample_hand_size || 7);
+    if (deckUI.sample.mode === 'none') return;
+    sampleHand.setDeckContext(buildSampleHandKey(), deckView.mainCards, {
+      initialDrawCount: deckUI.sample.size,
+      allowDraw: deckUI.sample.allow_draw,
+    });
   };
 
   const renderDecklistBody = () => {

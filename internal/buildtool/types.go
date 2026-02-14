@@ -35,6 +35,8 @@ type Manifest struct {
 	Tags []string `json:"tags,omitempty"`
 	// Optional difficulty tags, e.g. beginner/intermediate/expert.
 	DifficultyTags []string `json:"difficulty_tags,omitempty"`
+	// Optional reference to a top-level battlebox UI profile.
+	UIProfile string `json:"ui_profile,omitempty"`
 	// Optional decklist layout mode for frontend rendering.
 	View string `json:"view,omitempty"`
 	// Optional opening hand size override for Sample Hand viewer.
@@ -43,6 +45,28 @@ type Manifest struct {
 	Cards []Card `json:"cards"`
 	// Optional sideboard entries from manifest.json.
 	Sideboard []Card `json:"sideboard,omitempty"`
+}
+
+// DeckUISample configures sample-viewer behavior for a deck.
+type DeckUISample struct {
+	// Sample viewer mode: hand, pack, or none.
+	Mode string `json:"mode"`
+	// Initial card count shown when opening the sample viewer.
+	Size int `json:"size"`
+	// Whether additional draws are allowed after opening.
+	AllowDraw bool `json:"allow_draw"`
+}
+
+// DeckUIProfile configures decklist, sample-viewer, and summary display behavior.
+type DeckUIProfile struct {
+	// Decklist layout mode for frontend rendering.
+	DecklistView string `json:"decklist_view"`
+	// Sample-viewer behavior.
+	Sample DeckUISample `json:"sample"`
+	// Badge style for the deck info pane: colors or card_count.
+	DeckInfoBadge string `json:"deck_info_badge"`
+	// Badge style for battlebox deck selection rows: colors or card_count.
+	DeckSelectionBadge string `json:"deck_selection_badge"`
 }
 
 // Deck is the fully built deck payload written to static data files.
@@ -59,10 +83,14 @@ type Deck struct {
 	Tags []string `json:"tags,omitempty"`
 	// Optional difficulty tags for UI display.
 	DifficultyTags []string `json:"difficulty_tags,omitempty"`
+	// Resolved deck UI behavior from top-level profile/defaults.
+	UI DeckUIProfile `json:"ui"`
 	// Optional decklist layout mode for frontend rendering.
 	View string `json:"view,omitempty"`
 	// Optional opening hand size override for Sample Hand viewer.
 	SampleHandSize int `json:"sample_hand_size,omitempty"`
+	// Mainboard card count (sum of qty) for compact UI badges.
+	CardCount int `json:"card_count"`
 	// Lookup map from normalized card name to printing key.
 	Printings map[string]string `json:"printings,omitempty"`
 	// Mainboard cards with build-time enrichments.
@@ -81,6 +109,10 @@ type BattleboxManifest struct {
 	Name string `json:"name"`
 	// Optional description shown on the battlebox listing.
 	Description string `json:"description"`
+	// Optional default profile used when a deck omits ui_profile.
+	DefaultUIProfile string `json:"default_ui_profile,omitempty"`
+	// Optional reusable UI profiles referenced by deck manifests.
+	UIProfiles map[string]DeckUIProfile `json:"ui_profiles,omitempty"`
 }
 
 // Battlebox is the fully built battlebox payload written to static data files.
@@ -117,6 +149,10 @@ type DeckIndex struct {
 	Tags []string `json:"tags,omitempty"`
 	// Optional difficulty tags for summary view.
 	DifficultyTags []string `json:"difficulty_tags,omitempty"`
+	// Resolved deck UI behavior from top-level profile/defaults.
+	UI DeckUIProfile `json:"ui"`
+	// Mainboard card count (sum of qty) for compact UI badges.
+	CardCount int `json:"card_count"`
 }
 
 // BattleboxIndex is the lightweight battlebox summary written to index.json.

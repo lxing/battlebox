@@ -1,4 +1,17 @@
 {
   "name": "Cube",
-  "description": "The distilled Magic lootbox experience."
+  "description": "The distilled Magic lootbox experience.",
+  "default_ui_profile": "cube_pack",
+  "ui_profiles": {
+    "cube_pack": {
+      "decklist_view": "cube",
+      "sample": {
+        "mode": "pack",
+        "size": 8,
+        "allow_draw": false
+      },
+      "deck_info_badge": "card_count",
+      "deck_selection_badge": "card_count"
+    }
+  }
 }

@@ -162,7 +162,7 @@ func Main() {
 
 				deckPath := filepath.Join(bbPath, deckDir.Name())
 				deckPrintings := mergePrintings(bbPrintings, loadPrintings(filepath.Join(deckPath, printingsFileName)))
-				deck, err := processDeck(deckPath, deckDir.Name(), slug, deckPrintings)
+				deck, err := processDeck(deckPath, deckDir.Name(), slug, deckPrintings, bbManifest)
 				if err != nil {
 					fmt.Fprintf(os.Stderr, "Error processing deck %s/%s: %v\n", slug, deckDir.Name(), err)
 					os.Exit(1)

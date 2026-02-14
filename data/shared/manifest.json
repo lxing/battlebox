@@ -1,4 +1,26 @@
 {
   "name": "Shared",
-  "description": "Shared library variants for ease of pickup and play. No matchup bellyaching allowed."
+  "description": "Shared library variants for ease of pickup and play. No matchup bellyaching allowed.",
+  "ui_profiles": {
+    "shared_nosideboard_hand": {
+      "decklist_view": "nosideboard",
+      "sample": {
+        "mode": "hand",
+        "size": 7,
+        "allow_draw": true
+      },
+      "deck_info_badge": "card_count",
+      "deck_selection_badge": "card_count"
+    },
+    "shared_cube_hand4": {
+      "decklist_view": "cube",
+      "sample": {
+        "mode": "hand",
+        "size": 4,
+        "allow_draw": true
+      },
+      "deck_info_badge": "card_count",
+      "deck_selection_badge": "card_count"
+    }
+  }
 }

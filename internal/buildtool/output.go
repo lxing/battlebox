@@ -50,6 +50,12 @@ func buildIndexOutput(dataDir string) (IndexOutput, error) {
 				return indexOutput, fmt.Errorf("parsing manifest %s: %w", manifestPath, err)
 			}
 			manifest.Icon = strings.TrimSpace(manifest.Icon)
+			manifest.UIProfile = strings.TrimSpace(manifest.UIProfile)
+
+			uiProfile, err := resolveDeckUIProfile(manifest, bbManifest)
+			if err != nil {
+				return indexOutput, fmt.Errorf("resolving ui profile for %s: %w", manifestPath, err)
+			}
 
 			indexEntry.Decks = append(indexEntry.Decks, DeckIndex{
 				Slug:           deckDir.Name(),
@@ -58,6 +64,8 @@ func buildIndexOutput(dataDir string) (IndexOutput, error) {
 				Colors:         manifest.Colors,
 				Tags:           normalizeDeckTags(manifest.Tags),
 				DifficultyTags: normalizeDifficultyTags(manifest.DifficultyTags),
+				UI:             uiProfile,
+				CardCount:      countCards(manifest.Cards),
 			})
 		}
 

@@ -36,6 +36,10 @@ function normalizeInitialDrawCount(value) {
   return Number.isNaN(parsed) || parsed <= 0 ? 7 : parsed;
 }
 
+function normalizeAllowDraw(value) {
+  return value !== false;
+}
+
 function shuffle(array) {
   const out = array.slice();
   for (let i = out.length - 1; i > 0; i -= 1) {
@@ -83,6 +87,7 @@ export function createSampleHandViewer() {
   let contextKey = '';
   let contextCards = [];
   let contextInitialDrawCount = 7;
+  let contextAllowDraw = true;
   let activeKey = '';
 
   function ensureOverlay() {
@@ -120,6 +125,7 @@ export function createSampleHandViewer() {
       hide();
     });
     drawButton.addEventListener('click', () => {
+      if (!contextAllowDraw) return;
       const state = getActiveState(false);
       if (!state) return;
       const prevRows = Math.ceil(state.hand.length / 3);
@@ -186,7 +192,8 @@ export function createSampleHandViewer() {
     }
 
     const total = state.deck.length;
-    drawButton.disabled = state.drawIndex >= total;
+    drawButton.hidden = !contextAllowDraw;
+    drawButton.disabled = !contextAllowDraw || state.drawIndex >= total;
     resetButton.disabled = total === 0;
     syncGridViewport(cards.length);
   }
@@ -233,10 +240,16 @@ export function createSampleHandViewer() {
     gridWrap.scrollTo({ top: nextTop, behavior: 'auto' });
   }
 
-  function setDeckContext(key, cards, initialDrawCount) {
+  function setDeckContext(key, cards, sampleConfig) {
     contextKey = String(key || '');
     contextCards = Array.isArray(cards) ? cards : [];
-    contextInitialDrawCount = normalizeInitialDrawCount(initialDrawCount);
+    if (sampleConfig && typeof sampleConfig === 'object' && !Array.isArray(sampleConfig)) {
+      contextInitialDrawCount = normalizeInitialDrawCount(sampleConfig.initialDrawCount);
+      contextAllowDraw = normalizeAllowDraw(sampleConfig.allowDraw);
+    } else {
+      contextInitialDrawCount = normalizeInitialDrawCount(sampleConfig);
+      contextAllowDraw = true;
+    }
     if (!overlay || overlay.hidden) return;
     if (!contextKey) return;
     activeKey = contextKey;

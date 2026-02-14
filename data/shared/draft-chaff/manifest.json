@@ -1,8 +1,7 @@
 {
   "name": "Draft Chaff",
   "colors": "",
-  "view": "cube",
-  "sample_hand_size": 4,
+  "ui_profile": "shared_cube_hand4",
   "cards": [
     {
       "name": "Dauntless Bodyguard",

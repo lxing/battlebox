@@ -1,7 +1,7 @@
 {
   "name": "Dandân",
   "colors": "u",
-  "view": "nosideboard",
+  "ui_profile": "shared_nosideboard_hand",
   "cards": [
     {
       "name": "Dandân",

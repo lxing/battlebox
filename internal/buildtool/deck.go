@@ -8,7 +8,7 @@ import (
 	"strings"
 )
 
-func processDeck(deckPath, slug, battlebox string, printings map[string]string) (*Deck, error) {
+func processDeck(deckPath, slug, battlebox string, printings map[string]string, bbManifest BattleboxManifest) (*Deck, error) {
 	manifestPath := filepath.Join(deckPath, "manifest.json")
 	manifestData, err := os.ReadFile(manifestPath)
 	if err != nil {
@@ -20,6 +20,12 @@ func processDeck(deckPath, slug, battlebox string, printings map[string]string) 
 		return nil, fmt.Errorf("parsing manifest: %w", err)
 	}
 	manifest.Icon = strings.TrimSpace(manifest.Icon)
+	manifest.UIProfile = strings.TrimSpace(manifest.UIProfile)
+
+	uiProfile, err := resolveDeckUIProfile(manifest, bbManifest)
+	if err != nil {
+		return nil, err
+	}
 
 	applyPrintings(manifest.Cards, printings, battlebox, slug, nil)
 	applyPrintings(manifest.Sideboard, printings, battlebox, slug, nil)
@@ -51,8 +57,10 @@ func processDeck(deckPath, slug, battlebox string, printings map[string]string) 
 		Colors:         manifest.Colors,
 		Tags:           normalizeDeckTags(manifest.Tags),
 		DifficultyTags: normalizeDifficultyTags(manifest.DifficultyTags),
-		View:           strings.TrimSpace(manifest.View),
-		SampleHandSize: manifest.SampleHandSize,
+		UI:             uiProfile,
+		View:           uiProfile.DecklistView,
+		SampleHandSize: uiProfile.Sample.Size,
+		CardCount:      countCards(manifest.Cards),
 		Printings:      map[string]string{},
 		Cards:          manifest.Cards,
 		Sideboard:      manifest.Sideboard,
