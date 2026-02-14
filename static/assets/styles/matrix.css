@@ -32,14 +32,14 @@
   left: 0;
   top: 0;
   z-index: 4;
-  background: #2a2a46;
+  background: var(--color-matrix-head-bg);
 }
 
 .matrix-col-head {
   position: sticky;
   top: 0;
   z-index: 3;
-  background: #2a2a46;
+  background: var(--color-matrix-head-bg);
   color: #f0f0f8;
   font-weight: 600;
   width: 2.2rem;
@@ -65,7 +65,7 @@
   left: 0;
   z-index: 2;
   text-align: left !important;
-  background: #23233b;
+  background: var(--color-matrix-row-head-bg);
   color: #f0f0f8;
   font-weight: 600;
 }
@@ -124,7 +124,7 @@
 }
 
 .matrix-col-matchup {
-  background: #32445d;
+  background: var(--color-matrix-col-highlight-bg);
 }
 
 .matrix-cell-col-matchup {

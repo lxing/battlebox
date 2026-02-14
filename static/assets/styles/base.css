@@ -9,7 +9,6 @@
   --radius-md: 6px;
   --font-size-sm: 0.85rem;
   --decklist-label-font-size: 0.75rem;
-  --decklist-label-color: #888;
   --decklist-label-padding-left: calc(2ch + 0.05rem);
 
   --color-panel-bg: #1f1f35;
@@ -22,7 +21,6 @@
   --color-text-strong: #fff;
   --color-text-muted: #888;
   --color-text-muted-2: #aaa;
-  --color-text-muted-3: #bbb;
   --color-text-dim: #666;
 
   --color-button-hover-bg: #38385f;
@@ -31,22 +29,20 @@
   --color-button-disabled-bg: #2a2a3f;
   --color-button-disabled-border: #3a3a54;
   --color-button-disabled-text: #b7b7ca;
+  --color-input-border: #353560;
+  --color-accent-success: #63a96a;
 
   --color-card-link: #7eb8ff;
   --border-panel: 1px solid var(--color-panel-border);
 
-  --overlay-backdrop-soft: rgba(0, 0, 0, 0.58);
-  --overlay-backdrop-medium: rgba(0, 0, 0, 0.68);
-  --overlay-backdrop-strong: rgba(0, 0, 0, 0.75);
+  --overlay-backdrop: rgba(0, 0, 0, 0.68);
 
-  --radius-preview: 12px;
   --shadow-preview: 0 4px 20px rgba(0, 0, 0, 0.5);
   --z-preview: 2000;
   --z-qr-overlay: 2300;
   --z-sample-overlay: 2350;
 
   --control-height-md: 2rem;
-  --control-height-sm: 1.9rem;
   --mana-symbol-size-sm: 0.72rem;
 
   --color-matrix-cell-default: #32324e;
@@ -56,6 +52,9 @@
   --color-matrix-band-3: #5b8e53;
   --color-matrix-band-4: #376b48;
   --color-matrix-band-5: #4863a1;
+  --color-matrix-head-bg: #2a2a46;
+  --color-matrix-row-head-bg: #23233b;
+  --color-matrix-col-highlight-bg: #32445d;
 }
 
 body {

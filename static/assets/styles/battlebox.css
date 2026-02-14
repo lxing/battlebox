@@ -32,7 +32,7 @@
   position: fixed;
   inset: 0;
   z-index: var(--z-qr-overlay);
-  background: var(--overlay-backdrop-medium);
+  background: var(--overlay-backdrop);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -62,7 +62,7 @@
 
 .qr-popup-fallback {
   font-size: var(--font-size-sm);
-  color: var(--color-text-muted-3);
+  color: var(--color-text-muted-2);
 }
 
 .sample-hand-overlay {
@@ -82,7 +82,7 @@
 .sample-hand-backdrop {
   position: absolute;
   inset: 0;
-  background: var(--overlay-backdrop-strong);
+  background: var(--overlay-backdrop);
 }
 
 .sample-hand-sheet {
@@ -262,8 +262,8 @@
 
 .randomizer-roll,
 .randomizer-sort {
-  height: var(--control-height-sm);
-  line-height: var(--control-height-sm);
+  height: var(--control-height-md);
+  line-height: var(--control-height-md);
   min-width: 2.2rem;
   padding: 0 0.7rem;
   font-size: 1rem;
@@ -288,7 +288,7 @@
 }
 
 .battlebox-desc {
-  color: var(--color-text-muted-3);
+  color: var(--color-text-muted-2);
   font-size: 0.8rem;
   width: 100%;
   text-align: left;
@@ -392,7 +392,7 @@
 .deck-tag-beginner {
   background: #2e7d32;
   color: #ecffec;
-  border-color: #63a96a;
+  border-color: var(--color-accent-success);
 }
 
 .deck-tag-intermediate {
@@ -412,7 +412,7 @@
 }
 
 .breadcrumbs a {
-  color: var(--color-text-muted-3);
+  color: var(--color-text-muted-2);
   text-decoration: none;
 }
 
@@ -420,7 +420,7 @@
 .breadcrumbs a:focus,
 .breadcrumbs a:focus-visible,
 .breadcrumbs a:active {
-  color: var(--color-text-muted-3);
+  color: var(--color-text-muted-2);
   text-decoration: none;
   outline: none;
 }
@@ -494,7 +494,7 @@
 }
 
 .decklist-cube-title {
-  color: var(--decklist-label-color);
+  color: var(--color-text-muted);
   font-size: var(--decklist-label-font-size);
   text-transform: uppercase;
   margin-bottom: 0.25rem;
@@ -516,7 +516,7 @@
 }
 
 .card-row.sb-added {
-  --card-ref-color: #63a96a;
+  --card-ref-color: var(--color-accent-success);
 }
 
 .card-row.sb-added .card-qty {
@@ -536,7 +536,7 @@
 }
 
 .card-group-label {
-  color: var(--decklist-label-color);
+  color: var(--color-text-muted);
   font-size: var(--decklist-label-font-size);
   text-transform: uppercase;
   margin-bottom: 0.25rem;
@@ -651,7 +651,7 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
-  border-radius: var(--radius-preview);
+  border-radius: var(--radius-md);
   box-shadow: var(--shadow-preview);
 }
 
@@ -668,7 +668,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  border-radius: var(--radius-preview);
+  border-radius: var(--radius-md);
   font-size: 0.8rem;
   box-shadow: var(--shadow-preview);
 }
@@ -751,7 +751,7 @@ details.collapsible[open] summary::after {
 
 .apply-sideboard-button.active {
   background: #4a7d50;
-  border-color: #63a96a;
+  border-color: var(--color-accent-success);
 }
 
 .guide-opponent-link {
@@ -779,7 +779,7 @@ details.collapsible[open] summary::after {
   width: 100%;
   background: var(--color-control-bg);
   color: var(--color-text-primary);
-  border: 1px solid #353560;
+  border: 1px solid var(--color-input-border);
   border-radius: var(--radius-md);
   padding: 0.35rem 0.5rem;
   font-size: var(--font-size-sm);
@@ -807,7 +807,7 @@ details.collapsible[open] summary::after {
 .guide-editor-overlay {
   position: fixed;
   inset: 0;
-  background: rgba(0, 0, 0, 0.7);
+  background: var(--overlay-backdrop);
   z-index: 1200;
   display: flex;
   align-items: center;
@@ -837,7 +837,7 @@ details.collapsible[open] summary::after {
   min-height: 220px;
   resize: vertical;
   border-radius: var(--radius-md);
-  border: 1px solid #353560;
+  border: 1px solid var(--color-input-border);
   background: var(--color-control-bg);
   color: var(--color-text-primary);
   padding: 0.6rem;

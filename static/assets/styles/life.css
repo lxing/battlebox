@@ -141,7 +141,7 @@
 .initiative-overlay-backdrop {
   position: absolute;
   inset: 0;
-  background: var(--overlay-backdrop-soft);
+  background: var(--overlay-backdrop);
 }
 
 .initiative-overlay-sheet {
