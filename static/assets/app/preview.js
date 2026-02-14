@@ -56,8 +56,18 @@ export function createCardPreview(app, getCardTarget) {
       previewEl.style.width = `${Math.floor(desiredWidth)}px`;
     }
 
-    const width = previewEl.offsetWidth || 250;
-    const height = previewEl.offsetHeight || 350;
+    const baseWidth = previewEl.offsetWidth || 250;
+    const baseHeight = previewEl.offsetHeight || 350;
+    const isSplit = previewEl.classList.contains('card-preview-split');
+    if (isSplit) {
+      previewEl.style.transformOrigin = 'top left';
+      previewEl.style.transform = `translateX(${Math.floor(baseHeight)}px) rotate(90deg)`;
+    } else {
+      previewEl.style.transformOrigin = '';
+      previewEl.style.transform = 'none';
+    }
+    const width = isSplit ? baseHeight : baseWidth;
+    const height = isSplit ? baseWidth : baseHeight;
 
     let x = absX;
     let y = absY;
@@ -163,6 +173,8 @@ export function createCardPreview(app, getCardTarget) {
     const printing = cardEl.dataset.printing;
     if (!printing) return;
     const isDoubleFaced = cardEl.dataset.doubleFaced === '1';
+    const cardName = String(cardEl.dataset.name || '');
+    const isSplit = !isDoubleFaced && cardName.includes('/');
     const frontUrl = getImageUrl(printing, 'front');
     if (!frontUrl) return;
     const backUrl = isDoubleFaced ? getImageUrl(printing, 'back') : null;
@@ -174,6 +186,7 @@ export function createCardPreview(app, getCardTarget) {
     previewUrl = urlKey;
     ensurePreviewEl();
     previewEl.classList.toggle('card-preview-double', isDoubleFaced);
+    previewEl.classList.toggle('card-preview-split', isSplit);
     if (previewEl.parentNode !== document.body) {
       document.body.appendChild(previewEl);
     }

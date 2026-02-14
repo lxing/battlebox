@@ -2,7 +2,7 @@
   "name": "Cube",
   "description": "The distilled Magic lootbox experience.",
   "disable_double_random_roll": true,
-  "disable_double_type_sort": true,
+  "disable_type_sort": true,
   "default_ui_profile": "cube_pack",
   "ui_profiles": {
     "cube_pack": {

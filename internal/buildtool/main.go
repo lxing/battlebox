@@ -150,7 +150,7 @@ func Main() {
 				Description:             bbManifest.Description,
 				RandomRollEnabled:       !bbManifest.DisableRandomRoll,
 				DisableDoubleRandomRoll: bbManifest.DisableDoubleRandomRoll,
-				DisableDoubleTypeSort:   bbManifest.DisableDoubleTypeSort,
+				DisableTypeSort:         bbManifest.DisableTypeSort,
 				MatrixTabEnabled:        !bbManifest.DisableMatrixTab,
 				Decks:                   []Deck{},
 				Banned:                  loadBanned(filepath.Join(bbPath, "banned.json")),

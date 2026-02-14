@@ -767,7 +767,7 @@ function renderBattlebox(bbSlug, initialSortMode, initialSortDirection) {
   const typesSortButton = sortButtons.find((btn) => btn.dataset.sort === 'types');
   const randomRollEnabled = bb.random_roll_enabled !== false;
   const doubleRandomRollDisabled = bb.disable_double_random_roll === true;
-  const doubleTypeSortDisabled = bb.disable_double_type_sort === true;
+  const typeSortDisabled = bb.disable_type_sort === true;
   let sortMode = null;
   let sortDirection = initialDirection;
 
@@ -783,7 +783,7 @@ function renderBattlebox(bbSlug, initialSortMode, initialSortDirection) {
       btn.setAttribute('aria-disabled', 'true');
     });
   }
-  if (doubleTypeSortDisabled && typesSortButton) {
+  if (typeSortDisabled && typesSortButton) {
     typesSortButton.disabled = true;
     typesSortButton.setAttribute('aria-disabled', 'true');
   }
@@ -829,7 +829,7 @@ function renderBattlebox(bbSlug, initialSortMode, initialSortDirection) {
 
   const applySort = (mode, isInitial = false) => {
     let nextMode = normalizeSortMode(mode);
-    if (nextMode === 'types' && doubleTypeSortDisabled) {
+    if (nextMode === 'types' && typeSortDisabled) {
       nextMode = 'name';
     }
     if (!isInitial && nextMode === sortMode) {
