@@ -596,6 +596,11 @@
   vertical-align: middle;
 }
 
+.primer .mana-cost-symbol + .mana-cost-symbol,
+.guide-prose .mana-cost-symbol + .mana-cost-symbol {
+  margin-left: 0.08rem;
+}
+
 .mana-cost-token {
   color: var(--color-text-muted);
   font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace;

@@ -4,13 +4,13 @@ Based on Ryan Overturf's [Peasant Twobert](https://cubecobra.com/cube/about/h996
 
 |  |  |
 | --- | --- |
-| `WU` | blink |
-| `UB` | idk |
-| `BR` | sacrifice |
-| `RG` | big meat |
-| `GW` | counters |
-| `WB` | tokens/sacrifice |
-| `UR` | spellslinger |
-| `BG` | recursion |
-| `RW` | tokens |
-| `GU` | ramp/self-mill |
+| {W}{U} | : blink |
+| {U}{B} | : idk |
+| {B}{R} | : sacrifice |
+| {R}{G} | : big meat |
+| {G}{W} | : counters |
+| {W}{B} | : tokens/sacrifice |
+| {U}{R} | : spellslinger |
+| {B}{G} | : recursion |
+| {R}{W} | : tokens |
+| {G}{U} | : ramp/self-mill |

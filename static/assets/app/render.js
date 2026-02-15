@@ -26,38 +26,42 @@ const manaSymbolFiles = (() => {
   return out;
 })();
 
+function renderManaTokenSymbol(token) {
+  if (/^[0-9]$/.test(token)) {
+    return `<img class="mana-cost-symbol" src="/assets/mana/${token}.svg" alt="{${token}}" loading="lazy" decoding="async">`;
+  }
+  if (token === 'X') {
+    return `<img class="mana-cost-symbol" src="/assets/mana/x.svg" alt="{X}" loading="lazy" decoding="async">`;
+  }
+  if (token === 'W' || token === 'U' || token === 'B' || token === 'R' || token === 'G') {
+    return `<img class="mana-cost-symbol" src="/assets/mana/${token.toLowerCase()}.svg" alt="{${token}}" loading="lazy" decoding="async">`;
+  }
+  const symbolFile = manaSymbolFiles[token];
+  if (symbolFile) {
+    return `<img class="mana-cost-symbol" src="/assets/mana/${symbolFile}.svg" alt="{${token}}" loading="lazy" decoding="async">`;
+  }
+  return '';
+}
+
+function renderManaToken(rawToken) {
+  const token = String(rawToken || '').trim().toUpperCase();
+  if (!token) return '';
+  const symbol = renderManaTokenSymbol(token);
+  if (symbol) return symbol;
+  return `<span class="mana-cost-token">{${escapeHtml(token)}}</span>`;
+}
+
 function renderManaCostSymbols(rawCost) {
   const manaCost = (rawCost || '').trim();
   if (!manaCost) return '';
-
-  const renderTokenSymbol = (token) => {
-    if (/^[0-9]$/.test(token)) {
-      return `<img class="mana-cost-symbol" src="/assets/mana/${token}.svg" alt="{${token}}" loading="lazy" decoding="async">`;
-    }
-    if (token === 'X') {
-      return `<img class="mana-cost-symbol" src="/assets/mana/x.svg" alt="{X}" loading="lazy" decoding="async">`;
-    }
-    if (token === 'W' || token === 'U' || token === 'B' || token === 'R' || token === 'G') {
-      return `<img class="mana-cost-symbol" src="/assets/mana/${token.toLowerCase()}.svg" alt="{${token}}" loading="lazy" decoding="async">`;
-    }
-    const symbolFile = manaSymbolFiles[token];
-    if (symbolFile) {
-      return `<img class="mana-cost-symbol" src="/assets/mana/${symbolFile}.svg" alt="{${token}}" loading="lazy" decoding="async">`;
-    }
-    return '';
-  };
 
   const renderSide = (sideCost) => {
     const tokens = (sideCost || '').match(/\{[^}]+\}/g) || [];
     if (tokens.length === 0) return '';
 
     const pieces = tokens.map((tokenRaw) => {
-      const token = tokenRaw.slice(1, -1).trim().toUpperCase();
-      if (!token) return '';
-      const symbol = renderTokenSymbol(token);
-      if (symbol) return symbol;
-
-      return `<span class="mana-cost-token">{${escapeHtml(token)}}</span>`;
+      const token = tokenRaw.slice(1, -1);
+      return renderManaToken(token);
     }).filter(Boolean);
 
     if (pieces.length === 0) return '';
@@ -131,6 +135,25 @@ export function createMarkdownRenderer(printingsList, doubleFacedList) {
     return true;
   });
 
+  md.inline.ruler.after('card_refs', 'mana_token', (state, silent) => {
+    const src = state.src;
+    const start = state.pos;
+    if (src.charCodeAt(start) !== 0x7B) return false; // {
+    const close = src.indexOf('}', start + 1);
+    if (close === -1) return false;
+
+    const tokenText = src.slice(start + 1, close).trim();
+    if (!tokenText) return false;
+
+    if (!silent) {
+      const token = state.push('mana_token', '', 0);
+      token.meta = { token: tokenText };
+    }
+
+    state.pos = close + 1;
+    return true;
+  });
+
   md.renderer.rules.card_ref = (tokens, idx) => {
     const { display, target } = tokens[idx].meta;
     const printing = resolvePrinting(target, printingsList);
@@ -138,6 +161,8 @@ export function createMarkdownRenderer(printingsList, doubleFacedList) {
     const doubleFacedAttr = doubleFaced ? ' data-double-faced="1"' : '';
     return `<span class="card card-ref" data-name="${target}" data-printing="${printing}"${doubleFacedAttr}>${md.utils.escapeHtml(display)}</span>`;
   };
+
+  md.renderer.rules.mana_token = (tokens, idx) => renderManaToken(tokens[idx].meta?.token);
 
   return md;
 }
