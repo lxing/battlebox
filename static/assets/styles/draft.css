@@ -175,25 +175,6 @@
   width: 100%;
 }
 
-.draft-picks-zones {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 0.7rem;
-}
-
-.draft-picks-zone-title {
-  margin: 0 0 0.35rem;
-  font-size: var(--font-size-sm);
-  color: var(--color-text-muted-2);
-}
-
-.draft-picks-list {
-  margin: 0;
-  padding-left: 1rem;
-  max-height: 7rem;
-  overflow-y: auto;
-}
-
 .draft-empty {
   color: var(--color-text-muted-2);
   font-size: var(--font-size-sm);

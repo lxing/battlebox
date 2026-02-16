@@ -1,4 +1,5 @@
 import { cardFaceImageUrl, dfcFlipControlMarkup } from './cardFaces.js';
+import { renderDecklistGrid as renderSharedDecklistGrid } from './decklist.js';
 import { isDoubleFacedCard, normalizeName, scryfallImageUrlByName } from './utils.js';
 
 function escapeHtml(value) {
@@ -31,6 +32,65 @@ function normalizeDraftSlug(value) {
   return raw.replace(/[^a-z0-9-]+/g, '-').replace(/^-+|-+$/g, '');
 }
 
+function buildDraftPickCards(cardNames, cardMetaByName, printings, doubleFaced) {
+  const aggregated = new Map();
+  const addCard = (name) => {
+    const rawName = String(name || '').trim();
+    const key = normalizeName(rawName);
+    if (!key) return;
+    const existing = aggregated.get(key);
+    if (existing) {
+      existing.qty += 1;
+      return;
+    }
+    const meta = cardMetaByName && typeof cardMetaByName === 'object' ? cardMetaByName[key] : null;
+    const rawManaValue = Number(meta?.mana_value);
+    const printing = String(meta?.printing || printings?.[key] || '');
+    aggregated.set(key, {
+      qty: 1,
+      name: String(meta?.name || rawName),
+      type: String(meta?.type || ''),
+      mana_cost: String(meta?.mana_cost || ''),
+      mana_value: Number.isFinite(rawManaValue) ? rawManaValue : 0,
+      printing,
+      double_faced: meta?.double_faced === true || doubleFaced?.[key] === true,
+    });
+  };
+
+  (Array.isArray(cardNames) ? cardNames : []).forEach(addCard);
+  return [...aggregated.values()];
+}
+
+function renderDraftPicksDecklist(picks, cardMetaByName, printings, doubleFaced) {
+  const normalizedPicks = picks && typeof picks === 'object'
+    ? picks
+    : { mainboard: [], sideboard: [] };
+  const mainCards = buildDraftPickCards(
+    normalizedPicks.mainboard,
+    cardMetaByName,
+    printings,
+    doubleFaced,
+  );
+  const sideCards = buildDraftPickCards(
+    normalizedPicks.sideboard,
+    cardMetaByName,
+    printings,
+    doubleFaced,
+  );
+  return renderSharedDecklistGrid({
+    viewMode: 'default',
+    deckView: {
+      mainCards,
+      sideCards,
+      mainboardAdded: {},
+      sideboardFromMain: {},
+    },
+    bannedSet: null,
+    mainboardHighlightMap: {},
+    sideboardHighlightMap: {},
+  });
+}
+
 export function createDraftController({
   ui,
   onLobbyRequested,
@@ -43,6 +103,7 @@ export function createDraftController({
     roomDeckName: '',
     roomDeckPrintings: {},
     roomDeckDoubleFaced: {},
+    roomDeckCardMeta: {},
     seat: 0,
     state: null,
     connected: false,
@@ -76,6 +137,7 @@ export function createDraftController({
     draftUi.roomDeckName = '';
     draftUi.roomDeckPrintings = {};
     draftUi.roomDeckDoubleFaced = {};
+    draftUi.roomDeckCardMeta = {};
     draftUi.seat = 0;
     draftUi.state = null;
     draftUi.pendingPick = false;
@@ -143,6 +205,7 @@ export function createDraftController({
     roomDeckPrintings = {},
     roomDeckName = '',
     roomDeckDoubleFaced = {},
+    roomDeckCardMeta = {},
   ) {
     const normalizedRoomId = String(roomId || '').trim();
     if (!normalizedRoomId) return;
@@ -151,6 +214,7 @@ export function createDraftController({
     draftUi.roomDeckName = String(roomDeckName || '').trim();
     draftUi.roomDeckPrintings = roomDeckPrintings && typeof roomDeckPrintings === 'object' ? roomDeckPrintings : {};
     draftUi.roomDeckDoubleFaced = roomDeckDoubleFaced && typeof roomDeckDoubleFaced === 'object' ? roomDeckDoubleFaced : {};
+    draftUi.roomDeckCardMeta = roomDeckCardMeta && typeof roomDeckCardMeta === 'object' ? roomDeckCardMeta : {};
     draftUi.seat = normalizeSeat(seat);
     draftUi.state = null;
     draftUi.reconnectAttempt = 0;
@@ -221,20 +285,12 @@ export function createDraftController({
     }
 
     if (picksEl) {
-      const mainboardRows = state.picks.mainboard.map((name) => `<li>${escapeHtml(name)}</li>`).join('');
-      const sideboardRows = state.picks.sideboard.map((name) => `<li>${escapeHtml(name)}</li>`).join('');
-      picksEl.innerHTML = `
-        <div class="draft-picks-zones">
-          <section class="draft-picks-zone">
-            <h4 class="draft-picks-zone-title">Mainboard</h4>
-            ${mainboardRows ? `<ul class="draft-picks-list">${mainboardRows}</ul>` : '<div class="draft-empty">No cards yet.</div>'}
-          </section>
-          <section class="draft-picks-zone">
-            <h4 class="draft-picks-zone-title">Sideboard</h4>
-            ${sideboardRows ? `<ul class="draft-picks-list">${sideboardRows}</ul>` : '<div class="draft-empty">No cards yet.</div>'}
-          </section>
-        </div>
-      `;
+      picksEl.innerHTML = renderDraftPicksDecklist(
+        state.picks,
+        draftUi.roomDeckCardMeta,
+        draftUi.roomDeckPrintings,
+        draftUi.roomDeckDoubleFaced,
+      );
     }
 
     if (!packEl) return;

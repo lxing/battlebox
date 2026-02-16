@@ -11,6 +11,28 @@ function buildDraftDeckNames(deck) {
   return names;
 }
 
+function buildDraftCardMetaMap(deck) {
+  const map = {};
+  const addCard = (card) => {
+    const name = String(card?.name || '').trim();
+    const key = normalizeName(name);
+    if (!key || map[key]) return;
+    const manaValue = Number(card?.mana_value);
+    map[key] = {
+      name,
+      type: String(card?.type || ''),
+      mana_cost: String(card?.mana_cost || ''),
+      mana_value: Number.isFinite(manaValue) ? manaValue : 0,
+      printing: String(card?.printing || ''),
+      double_faced: card?.double_faced === true,
+    };
+  };
+
+  (Array.isArray(deck?.cards) ? deck.cards : []).forEach(addCard);
+  (Array.isArray(deck?.sideboard) ? deck.sideboard : []).forEach(addCard);
+  return map;
+}
+
 function escapeHtml(value) {
   return String(value || '')
     .replaceAll('&', '&amp;')
@@ -101,10 +123,19 @@ export function createLobbyController({
           ? roomDeck.printings
           : {};
         const roomDeckDoubleFaced = buildDoubleFacedMap(roomDeck);
+        const roomDeckCardMeta = buildDraftCardMetaMap(roomDeck);
         const seatRaw = Number.parseInt(String(button.dataset.seatId || '0'), 10);
         const seat = Number.isFinite(seatRaw) && seatRaw >= 0 ? seatRaw : 0;
         if (!roomID) return;
-        draftController.openRoom(roomID, seat, roomDeckSlug, roomDeckPrintings, roomDeckName, roomDeckDoubleFaced);
+        draftController.openRoom(
+          roomID,
+          seat,
+          roomDeckSlug,
+          roomDeckPrintings,
+          roomDeckName,
+          roomDeckDoubleFaced,
+          roomDeckCardMeta,
+        );
         void render(state.currentDeckSlug);
       });
     });
