@@ -9,6 +9,8 @@ import (
 	"testing"
 
 	"github.com/gorilla/websocket"
+	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/require"
 )
 
 func TestDraftRoomsListEmpty(t *testing.T) {
@@ -18,17 +20,12 @@ func TestDraftRoomsListEmpty(t *testing.T) {
 	rr := httptest.NewRecorder()
 	hub.handleCreateRoom(rr, req)
 
-	if rr.Code != http.StatusOK {
-		t.Fatalf("status got %d want %d", rr.Code, http.StatusOK)
-	}
+	assert.Equal(t, http.StatusOK, rr.Code, "unexpected status code")
 
 	var payload listDraftRoomsResponse
-	if err := json.Unmarshal(rr.Body.Bytes(), &payload); err != nil {
-		t.Fatalf("decode response: %v", err)
-	}
-	if len(payload.Rooms) != 0 {
-		t.Fatalf("rooms got %d want 0", len(payload.Rooms))
-	}
+	err := json.Unmarshal(rr.Body.Bytes(), &payload)
+	require.NoError(t, err, "decode response")
+	assert.Len(t, payload.Rooms, 0, "rooms length mismatch")
 }
 
 func TestDraftRoomsListAfterCreate(t *testing.T) {
@@ -42,49 +39,31 @@ func TestDraftRoomsListAfterCreate(t *testing.T) {
 		PackSize:  1,
 	}
 	raw, err := json.Marshal(createBody)
-	if err != nil {
-		t.Fatalf("marshal request: %v", err)
-	}
+	require.NoError(t, err, "marshal request")
 
 	createReq := httptest.NewRequest(http.MethodPost, "/api/draft/rooms", bytes.NewReader(raw))
 	createRes := httptest.NewRecorder()
 	hub.handleCreateRoom(createRes, createReq)
-	if createRes.Code != http.StatusOK {
-		t.Fatalf("create status got %d want %d", createRes.Code, http.StatusOK)
-	}
+	assert.Equal(t, http.StatusOK, createRes.Code, "create status mismatch")
 
 	listReq := httptest.NewRequest(http.MethodGet, "/api/draft/rooms", nil)
 	listRes := httptest.NewRecorder()
 	hub.handleCreateRoom(listRes, listReq)
-	if listRes.Code != http.StatusOK {
-		t.Fatalf("list status got %d want %d", listRes.Code, http.StatusOK)
-	}
+	assert.Equal(t, http.StatusOK, listRes.Code, "list status mismatch")
 
 	var payload listDraftRoomsResponse
-	if err := json.Unmarshal(listRes.Body.Bytes(), &payload); err != nil {
-		t.Fatalf("decode list response: %v", err)
-	}
-	if len(payload.Rooms) != 1 {
-		t.Fatalf("rooms got %d want 1", len(payload.Rooms))
-	}
+	err = json.Unmarshal(listRes.Body.Bytes(), &payload)
+	require.NoError(t, err, "decode list response")
+	require.Len(t, payload.Rooms, 1, "rooms length mismatch")
 
 	room := payload.Rooms[0]
-	if room.RoomID == "" {
-		t.Fatalf("expected non-empty room id")
-	}
+	assert.NotEmpty(t, room.RoomID, "expected non-empty room id")
 	roomIDPattern := regexp.MustCompile(`^[a-z]+-[a-z]+$`)
-	if !roomIDPattern.MatchString(room.RoomID) {
-		t.Fatalf("room id got %q want adjective-noun format", room.RoomID)
-	}
-	if room.DeckSlug != "tempo" {
-		t.Fatalf("deck slug got %q want %q", room.DeckSlug, "tempo")
-	}
-	if room.SeatCount != 2 {
-		t.Fatalf("seat count got %d want 2", room.SeatCount)
-	}
-	if room.PackCount != 1 || room.PackSize != 1 {
-		t.Fatalf("pack config got %d/%d want 1/1", room.PackCount, room.PackSize)
-	}
+	assert.True(t, roomIDPattern.MatchString(room.RoomID), "room id should be adjective-noun")
+	assert.Equal(t, "tempo", room.DeckSlug, "deck slug mismatch")
+	assert.Equal(t, 2, room.SeatCount, "seat count mismatch")
+	assert.Equal(t, 1, room.PackCount, "pack count mismatch")
+	assert.Equal(t, 1, room.PackSize, "pack size mismatch")
 }
 
 func TestDraftRoomCreateDefaultsToTwoSeats(t *testing.T) {
@@ -99,31 +78,22 @@ func TestDraftRoomCreateDefaultsToTwoSeats(t *testing.T) {
 		createBody.Deck[i] = "Card"
 	}
 	raw, err := json.Marshal(createBody)
-	if err != nil {
-		t.Fatalf("marshal request: %v", err)
-	}
+	require.NoError(t, err, "marshal request")
 
 	createReq := httptest.NewRequest(http.MethodPost, "/api/draft/rooms", bytes.NewReader(raw))
 	createRes := httptest.NewRecorder()
 	hub.handleCreateRoom(createRes, createReq)
-	if createRes.Code != http.StatusOK {
-		t.Fatalf("create status got %d want %d", createRes.Code, http.StatusOK)
-	}
+	assert.Equal(t, http.StatusOK, createRes.Code, "create status mismatch")
 
 	listReq := httptest.NewRequest(http.MethodGet, "/api/draft/rooms", nil)
 	listRes := httptest.NewRecorder()
 	hub.handleCreateRoom(listRes, listReq)
 
 	var payload listDraftRoomsResponse
-	if err := json.Unmarshal(listRes.Body.Bytes(), &payload); err != nil {
-		t.Fatalf("decode list response: %v", err)
-	}
-	if len(payload.Rooms) != 1 {
-		t.Fatalf("rooms got %d want 1", len(payload.Rooms))
-	}
-	if payload.Rooms[0].SeatCount != 2 {
-		t.Fatalf("seat count got %d want 2", payload.Rooms[0].SeatCount)
-	}
+	err = json.Unmarshal(listRes.Body.Bytes(), &payload)
+	require.NoError(t, err, "decode list response")
+	require.Len(t, payload.Rooms, 1, "rooms length mismatch")
+	assert.Equal(t, 2, payload.Rooms[0].SeatCount, "seat count mismatch")
 }
 
 func TestDraftRoomSeatOccupancySingleConn(t *testing.T) {
@@ -137,21 +107,12 @@ func TestDraftRoomSeatOccupancySingleConn(t *testing.T) {
 	c1 := &websocket.Conn{}
 	c2 := &websocket.Conn{}
 
-	if !room.addConn(0, c1) {
-		t.Fatalf("expected first seat connection to be accepted")
-	}
-	if room.addConn(0, c2) {
-		t.Fatalf("expected second seat connection to be rejected")
-	}
+	assert.True(t, room.addConn(0, c1), "expected first seat connection to be accepted")
+	assert.False(t, room.addConn(0, c2), "expected second seat connection to be rejected")
 
 	summary := room.summary()
-	if summary.ConnectedSeats != 1 {
-		t.Fatalf("connected seats got %d want 1", summary.ConnectedSeats)
-	}
-	if summary.Connections != 1 {
-		t.Fatalf("connections got %d want 1", summary.Connections)
-	}
-	if len(summary.OccupiedSeats) != 1 || summary.OccupiedSeats[0] != 0 {
-		t.Fatalf("occupied seats got %v want [0]", summary.OccupiedSeats)
-	}
+	assert.Equal(t, 1, summary.ConnectedSeats, "connected seats mismatch")
+	assert.Equal(t, 1, summary.Connections, "connections mismatch")
+	require.Len(t, summary.OccupiedSeats, 1, "occupied seats length mismatch")
+	assert.Equal(t, 0, summary.OccupiedSeats[0], "occupied seat mismatch")
 }

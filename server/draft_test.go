@@ -3,6 +3,9 @@ package main
 import (
 	"fmt"
 	"testing"
+
+	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/require"
 )
 
 func makeDraft(t *testing.T, packCount, packSize, seatCount int) *Draft {
@@ -28,9 +31,7 @@ func makeDraft(t *testing.T, packCount, packSize, seatCount int) *Draft {
 		deck,
 		names,
 	)
-	if err != nil {
-		t.Fatalf("NewDraft error: %v", err)
-	}
+	require.NoError(t, err, "NewDraft error")
 	return d
 }
 
@@ -42,48 +43,32 @@ func TestDraftTwoPlayerHappyPath(t *testing.T) {
 	for d.State() != "done" {
 		for seat := 0; seat < d.Config.SeatCount; seat++ {
 			st, err := d.PlayerState(seat)
-			if err != nil {
-				t.Fatalf("PlayerState seat %d error: %v", seat, err)
-			}
-			if !st.CanPick {
-				t.Fatalf("seat %d cannot pick at pack=%d pick=%d", seat, st.PackNo, st.PickNo)
-			}
-			if st.Active == nil || len(st.Active.Cards) == 0 {
-				t.Fatalf("seat %d missing active cards", seat)
-			}
+			require.NoErrorf(t, err, "PlayerState seat %d error", seat)
+			assert.Truef(t, st.CanPick, "seat %d cannot pick at pack=%d pick=%d", seat, st.PackNo, st.PickNo)
+			require.NotNilf(t, st.Active, "seat %d missing active pack", seat)
+			assert.NotEmptyf(t, st.Active.Cards, "seat %d missing active cards", seat)
 
 			chosen := st.Active.Cards[0]
-			if _, err := d.Pick(seat, seatSeq[seat], st.Active.PackID, chosen); err != nil {
-				t.Fatalf("Pick seat %d error: %v", seat, err)
-			}
+			_, err = d.Pick(seat, seatSeq[seat], st.Active.PackID, chosen)
+			require.NoErrorf(t, err, "Pick seat %d error", seat)
 			seatSeq[seat]++
 		}
 	}
 
-	if len(d.Seats[0].Pool) != expectedPoolSize {
-		t.Fatalf("seat 0 pool size got %d want %d", len(d.Seats[0].Pool), expectedPoolSize)
-	}
-	if len(d.Seats[1].Pool) != expectedPoolSize {
-		t.Fatalf("seat 1 pool size got %d want %d", len(d.Seats[1].Pool), expectedPoolSize)
-	}
-	if d.Progress.PackNumber != d.Config.PackCount {
-		t.Fatalf("pack number got %d want %d", d.Progress.PackNumber, d.Config.PackCount)
-	}
+	assert.Equal(t, expectedPoolSize, len(d.Seats[0].Pool), "seat 0 pool size mismatch")
+	assert.Equal(t, expectedPoolSize, len(d.Seats[1].Pool), "seat 1 pool size mismatch")
+	assert.Equal(t, d.Config.PackCount, d.Progress.PackNumber, "pack number mismatch")
 }
 
 func TestDraftDoublePickRejected(t *testing.T) {
 	d := makeDraft(t, 1, 2, 2)
 
 	st, err := d.PlayerState(0)
-	if err != nil {
-		t.Fatalf("PlayerState error: %v", err)
-	}
-	if _, err := d.Pick(0, 1, st.Active.PackID, st.Active.Cards[0]); err != nil {
-		t.Fatalf("first Pick error: %v", err)
-	}
-	if _, err := d.Pick(0, 2, st.Active.PackID, st.Active.Cards[1]); err == nil {
-		t.Fatalf("expected second pick in same round to fail")
-	}
+	require.NoError(t, err, "PlayerState error")
+	_, err = d.Pick(0, 1, st.Active.PackID, st.Active.Cards[0])
+	require.NoError(t, err, "first Pick error")
+	_, err = d.Pick(0, 2, st.Active.PackID, st.Active.Cards[1])
+	require.Error(t, err, "expected second pick in same round to fail")
 }
 
 func TestDraftPickAfterDoneRejected(t *testing.T) {
@@ -92,18 +77,13 @@ func TestDraftPickAfterDoneRejected(t *testing.T) {
 	s0, _ := d.PlayerState(0)
 	s1, _ := d.PlayerState(1)
 
-	if _, err := d.Pick(0, 1, s0.Active.PackID, s0.Active.Cards[0]); err != nil {
-		t.Fatalf("seat0 pick error: %v", err)
-	}
-	if _, err := d.Pick(1, 1, s1.Active.PackID, s1.Active.Cards[0]); err != nil {
-		t.Fatalf("seat1 pick error: %v", err)
-	}
-	if d.State() != "done" {
-		t.Fatalf("expected draft done, got %s", d.State())
-	}
-	if _, err := d.Pick(0, 2, s0.Active.PackID, s0.Active.Cards[0]); err == nil {
-		t.Fatalf("expected pick after done to fail")
-	}
+	_, err := d.Pick(0, 1, s0.Active.PackID, s0.Active.Cards[0])
+	require.NoError(t, err, "seat0 pick error")
+	_, err = d.Pick(1, 1, s1.Active.PackID, s1.Active.Cards[0])
+	require.NoError(t, err, "seat1 pick error")
+	assert.Equal(t, "done", d.State(), "expected draft done")
+	_, err = d.Pick(0, 2, s0.Active.PackID, s0.Active.Cards[0])
+	require.Error(t, err, "expected pick after done to fail")
 }
 
 func TestDraftFixedPackSizeEnforced(t *testing.T) {
@@ -112,111 +92,78 @@ func TestDraftFixedPackSizeEnforced(t *testing.T) {
 	// Corrupt the pack to verify pack-size invariant enforcement.
 	d.Packs[0][0].Cards = d.Packs[0][0].Cards[:1]
 
-	if _, err := d.PlayerState(0); err == nil {
-		t.Fatalf("expected PlayerState to fail when pack size invariant is broken")
-	}
+	_, err := d.PlayerState(0)
+	require.Error(t, err, "expected PlayerState to fail when pack size invariant is broken")
 }
 
 func TestDraftInvalidSeatRejected(t *testing.T) {
 	d := makeDraft(t, 1, 2, 2)
 
-	if _, err := d.PlayerState(-1); err == nil {
-		t.Fatalf("expected negative seat to fail")
-	}
-	if _, err := d.PlayerState(99); err == nil {
-		t.Fatalf("expected out-of-range seat to fail")
-	}
-	if _, err := d.Pick(99, 1, "p0_s0", "C000"); err == nil {
-		t.Fatalf("expected Pick with out-of-range seat to fail")
-	}
+	_, err := d.PlayerState(-1)
+	require.Error(t, err, "expected negative seat to fail")
+	_, err = d.PlayerState(99)
+	require.Error(t, err, "expected out-of-range seat to fail")
+	_, err = d.Pick(99, 1, "p0_s0", "C000")
+	require.Error(t, err, "expected Pick with out-of-range seat to fail")
 }
 
 func TestDraftPackMismatchRejected(t *testing.T) {
 	d := makeDraft(t, 1, 2, 2)
 
 	st, err := d.PlayerState(0)
-	if err != nil {
-		t.Fatalf("PlayerState error: %v", err)
-	}
-	if _, err := d.Pick(0, 1, "wrong_pack_id", st.Active.Cards[0]); err == nil {
-		t.Fatalf("expected pack mismatch to fail")
-	}
+	require.NoError(t, err, "PlayerState error")
+	_, err = d.Pick(0, 1, "wrong_pack_id", st.Active.Cards[0])
+	require.Error(t, err, "expected pack mismatch to fail")
 }
 
 func TestDraftCardNotAvailableRejected(t *testing.T) {
 	d := makeDraft(t, 1, 2, 2)
 
 	seat0Start, err := d.PlayerState(0)
-	if err != nil {
-		t.Fatalf("seat0 PlayerState error: %v", err)
-	}
+	require.NoError(t, err, "seat0 PlayerState error")
 	pickedBySeat0 := seat0Start.Active.Cards[0]
-	if _, err := d.Pick(0, 1, seat0Start.Active.PackID, pickedBySeat0); err != nil {
-		t.Fatalf("seat0 pick error: %v", err)
-	}
+	_, err = d.Pick(0, 1, seat0Start.Active.PackID, pickedBySeat0)
+	require.NoError(t, err, "seat0 pick error")
 
 	seat1Start, err := d.PlayerState(1)
-	if err != nil {
-		t.Fatalf("seat1 PlayerState error: %v", err)
-	}
-	if _, err := d.Pick(1, 1, seat1Start.Active.PackID, seat1Start.Active.Cards[0]); err != nil {
-		t.Fatalf("seat1 pick error: %v", err)
-	}
+	require.NoError(t, err, "seat1 PlayerState error")
+	_, err = d.Pick(1, 1, seat1Start.Active.PackID, seat1Start.Active.Cards[0])
+	require.NoError(t, err, "seat1 pick error")
 
 	// Round advanced; seat1 now sees seat0's original pack. Re-picking seat0's card must fail.
 	seat1Next, err := d.PlayerState(1)
-	if err != nil {
-		t.Fatalf("seat1 next PlayerState error: %v", err)
-	}
-	if _, err := d.Pick(1, 2, seat1Next.Active.PackID, pickedBySeat0); err == nil {
-		t.Fatalf("expected picked/unavailable card to fail")
-	}
+	require.NoError(t, err, "seat1 next PlayerState error")
+	_, err = d.Pick(1, 2, seat1Next.Active.PackID, pickedBySeat0)
+	require.Error(t, err, "expected picked/unavailable card to fail")
 }
 
 func TestDraftPickIdempotentSeq(t *testing.T) {
 	d := makeDraft(t, 1, 2, 2)
 
 	st, err := d.PlayerState(0)
-	if err != nil {
-		t.Fatalf("PlayerState error: %v", err)
-	}
+	require.NoError(t, err, "PlayerState error")
 	card := st.Active.Cards[0]
 
 	first, err := d.Pick(0, 1, st.Active.PackID, card)
-	if err != nil {
-		t.Fatalf("first Pick error: %v", err)
-	}
-	if first.Duplicate {
-		t.Fatalf("first pick must not be duplicate")
-	}
+	require.NoError(t, err, "first Pick error")
+	assert.False(t, first.Duplicate, "first pick must not be duplicate")
 
 	second, err := d.Pick(0, 1, st.Active.PackID, card)
-	if err != nil {
-		t.Fatalf("duplicate Pick should be idempotent, got error: %v", err)
-	}
-	if !second.Duplicate {
-		t.Fatalf("expected duplicate pick result")
-	}
-	if len(d.Seats[0].Pool) != 1 {
-		t.Fatalf("pool mutated on duplicate pick; got size %d", len(d.Seats[0].Pool))
-	}
+	require.NoError(t, err, "duplicate Pick should be idempotent")
+	assert.True(t, second.Duplicate, "expected duplicate pick result")
+	assert.Equal(t, 1, len(d.Seats[0].Pool), "pool mutated on duplicate pick")
 }
 
 func TestDraftPickSeqValidation(t *testing.T) {
 	d := makeDraft(t, 1, 2, 2)
 	st, err := d.PlayerState(0)
-	if err != nil {
-		t.Fatalf("PlayerState error: %v", err)
-	}
+	require.NoError(t, err, "PlayerState error")
 	card := st.Active.Cards[0]
 
-	if _, err := d.Pick(0, 3, st.Active.PackID, card); err == nil {
-		t.Fatalf("expected seq gap rejection")
-	}
-	if _, err := d.Pick(0, 1, st.Active.PackID, card); err != nil {
-		t.Fatalf("pick error: %v", err)
-	}
-	if _, err := d.Pick(0, 0, st.Active.PackID, card); err == nil {
-		t.Fatalf("expected invalid/stale seq rejection")
-	}
+	_, err = d.Pick(0, 3, st.Active.PackID, card)
+	require.Error(t, err, "expected seq gap rejection")
+	_, err = d.Pick(0, 1, st.Active.PackID, card)
+	require.NoError(t, err, "pick error")
+	_, err = d.Pick(0, 0, st.Active.PackID, card)
+	require.Error(t, err, "expected invalid/stale seq rejection")
 }
