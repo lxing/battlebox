@@ -6,7 +6,9 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
+	"sort"
 	"strconv"
+	"strings"
 	"sync"
 	"time"
 
@@ -19,7 +21,8 @@ type draftHub struct {
 }
 
 type draftRoom struct {
-	id string
+	id    string
+	label string
 
 	mu      sync.Mutex
 	draft   *Draft
@@ -31,11 +34,29 @@ type createDraftRoomRequest struct {
 	SeatNames []string `json:"seat_names"`
 	PackCount int      `json:"pack_count"`
 	PackSize  int      `json:"pack_size"`
+	Label     string   `json:"label"`
 }
 
 type createDraftRoomResponse struct {
 	RoomID  string `json:"room_id"`
 	Created bool   `json:"created"`
+}
+
+type draftRoomSummary struct {
+	RoomID         string `json:"room_id"`
+	Label          string `json:"label,omitempty"`
+	SeatCount      int    `json:"seat_count"`
+	PackCount      int    `json:"pack_count"`
+	PackSize       int    `json:"pack_size"`
+	State          string `json:"state"`
+	PackNo         int    `json:"pack_no"`
+	PickNo         int    `json:"pick_no"`
+	ConnectedSeats int    `json:"connected_seats"`
+	Connections    int    `json:"connections"`
+}
+
+type listDraftRoomsResponse struct {
+	Rooms []draftRoomSummary `json:"rooms"`
 }
 
 type draftWSMessage struct {
@@ -68,8 +89,12 @@ func newDraftHub() *draftHub {
 }
 
 func (h *draftHub) handleCreateRoom(w http.ResponseWriter, r *http.Request) {
+	if r.Method == http.MethodGet {
+		h.handleListRooms(w)
+		return
+	}
 	if r.Method != http.MethodPost {
-		w.Header().Set("Allow", "POST")
+		w.Header().Set("Allow", "GET, POST")
 		http.Error(w, "method not allowed", http.StatusMethodNotAllowed)
 		return
 	}
@@ -105,6 +130,7 @@ func (h *draftHub) handleCreateRoom(w http.ResponseWriter, r *http.Request) {
 
 	room := &draftRoom{
 		id:      randomRoomID(),
+		label:   strings.TrimSpace(req.Label),
 		draft:   draft,
 		clients: make(map[int]map[*websocket.Conn]struct{}),
 	}
@@ -115,6 +141,22 @@ func (h *draftHub) handleCreateRoom(w http.ResponseWriter, r *http.Request) {
 
 	w.Header().Set("Content-Type", "application/json")
 	_ = json.NewEncoder(w).Encode(createDraftRoomResponse{RoomID: room.id, Created: true})
+}
+
+func (h *draftHub) handleListRooms(w http.ResponseWriter) {
+	h.mu.RLock()
+	rooms := make([]draftRoomSummary, 0, len(h.rooms))
+	for _, room := range h.rooms {
+		rooms = append(rooms, room.summary())
+	}
+	h.mu.RUnlock()
+
+	sort.Slice(rooms, func(i, j int) bool {
+		return rooms[i].RoomID < rooms[j].RoomID
+	})
+
+	w.Header().Set("Content-Type", "application/json")
+	_ = json.NewEncoder(w).Encode(listDraftRoomsResponse{Rooms: rooms})
 }
 
 func (h *draftHub) handleStartOrJoinSharedRoom(w http.ResponseWriter, r *http.Request) {
@@ -166,6 +208,7 @@ func (h *draftHub) handleStartOrJoinSharedRoom(w http.ResponseWriter, r *http.Re
 
 	room := &draftRoom{
 		id:      sharedRoomID,
+		label:   strings.TrimSpace(req.Label),
 		draft:   draft,
 		clients: make(map[int]map[*websocket.Conn]struct{}),
 	}
@@ -340,6 +383,33 @@ func (r *draftRoom) broadcast(msg draftWSMessage) {
 func (r *draftRoom) writeToConn(conn *websocket.Conn, msg draftWSMessage) {
 	if err := conn.WriteJSON(msg); err != nil {
 		_ = conn.Close()
+	}
+}
+
+func (r *draftRoom) summary() draftRoomSummary {
+	r.mu.Lock()
+	defer r.mu.Unlock()
+
+	connectedSeats := 0
+	connections := 0
+	for _, seatConns := range r.clients {
+		if len(seatConns) > 0 {
+			connectedSeats++
+		}
+		connections += len(seatConns)
+	}
+
+	return draftRoomSummary{
+		RoomID:         r.id,
+		Label:          r.label,
+		SeatCount:      r.draft.Config.SeatCount,
+		PackCount:      r.draft.Config.PackCount,
+		PackSize:       r.draft.Config.PackSize,
+		State:          r.draft.State(),
+		PackNo:         r.draft.Progress.PackNumber,
+		PickNo:         r.draft.Progress.PickNumber,
+		ConnectedSeats: connectedSeats,
+		Connections:    connections,
 	}
 }
 

@@ -35,6 +35,8 @@ let data = { index: null, battleboxes: {}, matrices: {}, buildId: '' };
 const TAB_BATTLEBOX = 'battlebox';
 const TAB_LIFE = 'life';
 const TAB_MATRIX = 'matrix';
+const AUX_TAB_MODE_MATRIX = 'matrix';
+const AUX_TAB_MODE_LOBBY = 'lobby';
 const ui = {
   shell: null,
   header: null,
@@ -330,6 +332,21 @@ function setMatrixTabEnabled(enabled) {
   }
 }
 
+function setAuxTabMode(mode) {
+  if (!ui.footer) return;
+  const matrixButton = ui.footer.querySelector('.tabbar-button[data-tab="matrix"]');
+  if (!matrixButton) return;
+  if (mode === AUX_TAB_MODE_LOBBY) {
+    matrixButton.textContent = '🏟️';
+    matrixButton.setAttribute('aria-label', 'Draft lobby tab');
+    matrixButton.setAttribute('title', 'Draft lobby');
+    return;
+  }
+  matrixButton.textContent = '📊';
+  matrixButton.setAttribute('aria-label', 'Winrate matrix tab');
+  matrixButton.setAttribute('title', 'Winrate matrix');
+}
+
 function ensureShell() {
   if (ui.shell) return;
   const shell = document.createElement('div');
@@ -439,6 +456,203 @@ async function loadWinrateMatrix(bbSlug) {
   const matrix = await fetchJsonData(withCacheBust(`/data/${bbSlug}/mtgdecks-winrate-matrix.json`));
   data.matrices[bbSlug] = matrix || null;
   return data.matrices[bbSlug];
+}
+
+function buildDraftDeckNames(deck) {
+  const names = [];
+  (Array.isArray(deck?.cards) ? deck.cards : []).forEach((card) => {
+    const qty = Number.parseInt(String(card?.qty), 10) || 0;
+    const name = String(card?.name || '').trim();
+    if (!name || qty <= 0) return;
+    for (let i = 0; i < qty; i += 1) names.push(name);
+  });
+  return names;
+}
+
+function escapeHtml(value) {
+  return String(value || '')
+    .replaceAll('&', '&amp;')
+    .replaceAll('<', '&lt;')
+    .replaceAll('>', '&gt;')
+    .replaceAll('"', '&quot;')
+    .replaceAll("'", '&#39;');
+}
+
+async function fetchDraftRooms() {
+  const res = await fetch('/api/draft/rooms', {
+    method: 'GET',
+    cache: 'no-store',
+  });
+  if (!res.ok) {
+    const text = (await res.text()).trim();
+    throw new Error(text || `Failed to load rooms (${res.status})`);
+  }
+  const payload = await res.json();
+  if (!payload || !Array.isArray(payload.rooms)) return [];
+  return payload.rooms;
+}
+
+async function createDraftRoom(deck, seat) {
+  const deckNames = buildDraftDeckNames(deck);
+  const res = await fetch('/api/draft/rooms', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      deck: deckNames,
+      label: deck?.name || '',
+      pack_count: 7,
+      pack_size: 8,
+    }),
+  });
+  if (!res.ok) {
+    const text = (await res.text()).trim();
+    throw new Error(text || `Failed to create room (${res.status})`);
+  }
+  const payload = await res.json();
+  if (!payload || !payload.room_id) throw new Error('Missing room id');
+  location.hash = draftController.buildHash(payload.room_id, seat);
+}
+
+function bindLobbySeatButtons(scope) {
+  if (!scope) return;
+  scope.querySelectorAll('[data-room-id][data-seat-id]').forEach((button) => {
+    button.addEventListener('click', () => {
+      const roomID = String(button.dataset.roomId || '').trim();
+      const seatRaw = Number.parseInt(String(button.dataset.seatId || '0'), 10);
+      const seat = Number.isFinite(seatRaw) && seatRaw >= 0 ? seatRaw : 0;
+      if (!roomID) return;
+      location.hash = draftController.buildHash(roomID, seat);
+    });
+  });
+}
+
+async function renderLobbyPane(currentDeckSlug) {
+  if (!ui.matrixPane) return;
+
+  const cube = await loadBattlebox('cube');
+  const decks = Array.isArray(cube?.decks) ? cube.decks : [];
+  const deckOptions = decks.map((deck) => {
+    const selected = normalizeName(deck.slug) === normalizeName(currentDeckSlug) ? ' selected' : '';
+    return `<option value="${escapeHtml(deck.slug)}"${selected}>${escapeHtml(deck.name || deck.slug)}</option>`;
+  }).join('');
+  const noDecks = decks.length === 0;
+  const selectedDeck = decks.find((deck) => normalizeName(deck.slug) === normalizeName(currentDeckSlug)) || decks[0] || null;
+  const selectedDeckSlug = selectedDeck ? selectedDeck.slug : '';
+
+  ui.matrixPane.innerHTML = `
+    <div class="lobby-panel">
+      <div class="lobby-start-row">
+        <select id="lobby-deck-select" class="lobby-deck-select" ${noDecks ? 'disabled' : ''}>
+          ${deckOptions}
+        </select>
+        <button type="button" class="action-button" id="lobby-start-p1" ${noDecks ? 'disabled' : ''}>Start P1</button>
+        <button type="button" class="action-button" id="lobby-start-p2" ${noDecks ? 'disabled' : ''}>Start P2</button>
+        <button type="button" class="action-button" id="lobby-refresh-rooms">Refresh</button>
+      </div>
+      <div id="lobby-rooms-list" class="lobby-rooms-list"></div>
+    </div>
+  `;
+
+  const deckSelect = ui.matrixPane.querySelector('#lobby-deck-select');
+  const startP1Button = ui.matrixPane.querySelector('#lobby-start-p1');
+  const startP2Button = ui.matrixPane.querySelector('#lobby-start-p2');
+  const refreshButton = ui.matrixPane.querySelector('#lobby-refresh-rooms');
+  const roomsList = ui.matrixPane.querySelector('#lobby-rooms-list');
+
+  const resolveDeck = () => {
+    if (!deckSelect) return selectedDeck;
+    const slug = normalizeName(deckSelect.value || selectedDeckSlug);
+    return decks.find((deck) => normalizeName(deck.slug) === slug) || selectedDeck;
+  };
+
+  const setStartButtonsDisabled = (disabled) => {
+    if (startP1Button) startP1Button.disabled = disabled;
+    if (startP2Button) startP2Button.disabled = disabled;
+  };
+
+  const renderRooms = (rooms) => {
+    if (!roomsList) return;
+    if (!Array.isArray(rooms) || rooms.length === 0) {
+      roomsList.innerHTML = '<div class="matrix-empty">No draft rooms yet.</div>';
+      return;
+    }
+
+    roomsList.innerHTML = `
+      <ul class="lobby-room-list">
+        ${rooms.map((room) => {
+    const seatCount = Math.max(0, Number.parseInt(String(room.seat_count || 0), 10) || 0);
+    const seatButtons = Array.from({ length: seatCount }, (_, idx) => (
+      `<button type="button" class="action-button lobby-join-button" data-room-id="${escapeHtml(room.room_id)}" data-seat-id="${idx}">P${idx + 1}</button>`
+    )).join('');
+    const title = room.label ? `${escapeHtml(room.label)} (${escapeHtml(room.room_id)})` : escapeHtml(room.room_id);
+    const packNo = (Number.parseInt(String(room.pack_no || 0), 10) || 0) + 1;
+    const pickNo = (Number.parseInt(String(room.pick_no || 0), 10) || 0) + 1;
+    const connectedSeats = Number.parseInt(String(room.connected_seats || 0), 10) || 0;
+    return `
+            <li class="lobby-room-item">
+              <div class="lobby-room-title">${title}</div>
+              <div class="lobby-room-meta">Pack ${packNo} · Pick ${pickNo} · ${connectedSeats}/${seatCount} connected</div>
+              <div class="lobby-room-actions">${seatButtons}</div>
+            </li>
+          `;
+  }).join('')}
+      </ul>
+    `;
+    bindLobbySeatButtons(roomsList);
+  };
+
+  const refreshRooms = async () => {
+    if (!roomsList) return;
+    if (refreshButton) refreshButton.disabled = true;
+    roomsList.innerHTML = '<div class="matrix-empty">Loading rooms...</div>';
+    try {
+      const rooms = await fetchDraftRooms();
+      renderRooms(rooms);
+    } catch (err) {
+      const message = err && err.message ? err.message : 'Failed to load rooms.';
+      roomsList.innerHTML = `<div class="matrix-empty">${escapeHtml(message)}</div>`;
+    } finally {
+      if (refreshButton) refreshButton.disabled = false;
+    }
+  };
+
+  if (refreshButton) {
+    refreshButton.addEventListener('click', () => {
+      void refreshRooms();
+    });
+  }
+
+  if (startP1Button) {
+    startP1Button.addEventListener('click', async () => {
+      const deck = resolveDeck();
+      if (!deck) return;
+      setStartButtonsDisabled(true);
+      try {
+        await createDraftRoom(deck, 0);
+      } catch (err) {
+        window.alert(err && err.message ? err.message : 'Failed to create room.');
+      } finally {
+        setStartButtonsDisabled(false);
+      }
+    });
+  }
+
+  if (startP2Button) {
+    startP2Button.addEventListener('click', async () => {
+      const deck = resolveDeck();
+      if (!deck) return;
+      setStartButtonsDisabled(true);
+      try {
+        await createDraftRoom(deck, 1);
+      } catch (err) {
+        window.alert(err && err.message ? err.message : 'Failed to create room.');
+      } finally {
+        setStartButtonsDisabled(false);
+      }
+    });
+  }
+
+  await refreshRooms();
 }
 
 function fitMatrixHeaderHeight(scope) {
@@ -647,6 +861,7 @@ async function route() {
   const currentBattlebox = parts.length > 0
     ? data.index.battleboxes.find((b) => b.slug === currentBattleboxSlug)
     : null;
+  const isCubeContext = !draftRoute && currentBattleboxSlug === 'cube';
   const matrixTabEnabled = !draftRoute && Boolean(currentBattlebox && currentBattlebox.matrix_tab_enabled !== false);
 
   if (draftRoute) {
@@ -669,8 +884,15 @@ async function route() {
     renderNotFound();
   }
 
-  await renderMatrixPane(currentBattleboxSlug, currentDeckSlug, matchupSlug);
-  setMatrixTabEnabled(matrixTabEnabled);
+  if (isCubeContext) {
+    setAuxTabMode(AUX_TAB_MODE_LOBBY);
+    await renderLobbyPane(currentDeckSlug);
+    setMatrixTabEnabled(true);
+  } else {
+    setAuxTabMode(AUX_TAB_MODE_MATRIX);
+    await renderMatrixPane(currentBattleboxSlug, currentDeckSlug, matchupSlug);
+    setMatrixTabEnabled(matrixTabEnabled);
+  }
 
   if (ui.battleboxPane) {
     ui.battleboxPane.scrollTo({ top: 0, left: 0, behavior: 'auto' });
@@ -1293,9 +1515,8 @@ async function renderDeck(bbSlug, deckSlug, selectedGuide, sortMode, sortDirecti
     </h1>
   `;
   const sampleButtonLabel = deckUI.sample.mode === 'pack' ? 'Sample Pack' : 'Sample Hand';
-  const showDraftButton = bb.slug === 'cube';
   const showSampleButton = deckUI.sample.mode !== 'none';
-  const showDeckToolbar = showSampleButton || showDraftButton;
+  const showDeckToolbar = showSampleButton;
   const bodyHtml = `
     <div class="deck-info-pane">
       <div class="deck-colors">${renderDeckBadge(deck, deckUI.deck_info_badge)}</div>
@@ -1313,8 +1534,6 @@ async function renderDeck(bbSlug, deckSlug, selectedGuide, sortMode, sortDirecti
         ${showDeckToolbar ? `
           <div class="decklist-toolbar">
             ${showSampleButton ? `<button type="button" class="action-button sample-hand-open-button" id="sample-hand-open-button">${sampleButtonLabel}</button>` : ''}
-            ${showDraftButton ? '<button type="button" class="action-button draft-open-button" id="draft-open-p1-button">Draft P1</button>' : ''}
-            ${showDraftButton ? '<button type="button" class="action-button draft-open-button" id="draft-open-p2-button">Draft P2</button>' : ''}
           </div>
         ` : ''}
       </div>
@@ -1554,11 +1773,6 @@ async function renderDeck(bbSlug, deckSlug, selectedGuide, sortMode, sortDirecti
       sampleHand.open();
     });
   }
-
-  const draftP1Button = ui.battleboxPane.querySelector('#draft-open-p1-button');
-  const draftP2Button = ui.battleboxPane.querySelector('#draft-open-p2-button');
-  draftController.bindSharedDraftButton(draftP1Button, deck, 0);
-  draftController.bindSharedDraftButton(draftP2Button, deck, 1);
 
   renderDecklistBody();
   currentCollapsedMask = computeCollapsedMask();
