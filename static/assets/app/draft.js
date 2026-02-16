@@ -300,7 +300,7 @@ export function createDraftController({
         if (!canPick) return;
         const i = Number.parseInt(btn.dataset.index || '-1', 10);
         if (i < 0 || i >= active.cards.length) return;
-        draftUi.selectedPackIndex = i;
+        draftUi.selectedPackIndex = draftUi.selectedPackIndex === i ? -1 : i;
         syncPackSelectionUi(cardButtons, pickButton, canPick);
       });
     });
