@@ -19,8 +19,9 @@ type draftHub struct {
 }
 
 type draftRoom struct {
-	id    string
-	label string
+	id       string
+	label    string
+	deckSlug string
 
 	mu      sync.Mutex
 	draft   *Draft
@@ -30,6 +31,7 @@ type draftRoom struct {
 type draftRoomSummary struct {
 	RoomID         string `json:"room_id"`
 	Label          string `json:"label,omitempty"`
+	DeckSlug       string `json:"deck_slug,omitempty"`
 	SeatCount      int    `json:"seat_count"`
 	PackCount      int    `json:"pack_count"`
 	PackSize       int    `json:"pack_size"`
@@ -281,6 +283,7 @@ func (r *draftRoom) summary() draftRoomSummary {
 	return draftRoomSummary{
 		RoomID:         r.id,
 		Label:          r.label,
+		DeckSlug:       r.deckSlug,
 		SeatCount:      r.draft.Config.SeatCount,
 		PackCount:      r.draft.Config.PackCount,
 		PackSize:       r.draft.Config.PackSize,

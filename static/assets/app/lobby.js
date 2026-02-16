@@ -41,6 +41,7 @@ async function createDraftRoom(deck) {
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({
       deck: deckNames,
+      deck_slug: deck?.slug || '',
       label: deck?.name || '',
       pack_count: 7,
       pack_size: 8,
@@ -94,10 +95,11 @@ export function createLobbyController({
       button.addEventListener('click', () => {
         const roomID = String(button.dataset.roomId || '').trim();
         const roomLabel = String(button.dataset.roomLabel || '').trim();
+        const roomDeckSlug = String(button.dataset.roomDeckSlug || '').trim();
         const seatRaw = Number.parseInt(String(button.dataset.seatId || '0'), 10);
         const seat = Number.isFinite(seatRaw) && seatRaw >= 0 ? seatRaw : 0;
         if (!roomID) return;
-        draftController.openRoom(roomID, seat, roomLabel);
+        draftController.openRoom(roomID, seat, roomLabel, roomDeckSlug);
         void render(state.currentDeckSlug);
       });
     });
@@ -127,6 +129,7 @@ export function createLobbyController({
             class="action-button button-standard lobby-join-button"
             data-room-id="${escapeHtml(room.room_id)}"
             data-room-label="${escapeHtml(room.label || '')}"
+            data-room-deck-slug="${escapeHtml(room.deck_slug || '')}"
             data-seat-id="${idx}"
           ${occupied ? 'disabled aria-disabled="true"' : ''}
         >

@@ -18,14 +18,22 @@ function normalizeSeat(value) {
   return Number.isFinite(parsed) && parsed >= 0 ? parsed : 0;
 }
 
+function normalizeDraftSlug(value) {
+  const raw = String(value || '').trim().toLowerCase();
+  if (!raw) return '';
+  return raw.replace(/[^a-z0-9-]+/g, '-').replace(/^-+|-+$/g, '');
+}
+
 export function createDraftController({
   ui,
   onLobbyRequested,
+  onCubeRequested,
 }) {
   const draftUi = {
     socket: null,
     roomId: '',
     roomLabel: '',
+    roomDeckSlug: '',
     seat: 0,
     state: null,
     connected: false,
@@ -55,6 +63,7 @@ export function createDraftController({
   function clearRoomSelection() {
     draftUi.roomId = '';
     draftUi.roomLabel = '';
+    draftUi.roomDeckSlug = '';
     draftUi.seat = 0;
     draftUi.state = null;
     draftUi.pendingPick = false;
@@ -114,11 +123,12 @@ export function createDraftController({
     }
   }
 
-  function openRoom(roomId, seat, roomLabel = '') {
+  function openRoom(roomId, seat, roomLabel = '', roomDeckSlug = '') {
     const normalizedRoomId = String(roomId || '').trim();
     if (!normalizedRoomId) return;
     draftUi.roomId = normalizedRoomId;
     draftUi.roomLabel = String(roomLabel || '').trim();
+    draftUi.roomDeckSlug = normalizeDraftSlug(roomDeckSlug);
     draftUi.seat = normalizeSeat(seat);
     draftUi.state = null;
     draftUi.reconnectAttempt = 0;
@@ -139,7 +149,8 @@ export function createDraftController({
 
   function updateUIFromState() {
     if (!ui.draftPane || !hasActiveRoom()) return;
-    const packInfoEl = ui.draftPane.querySelector('#draft-pack-pick');
+    const packInfoEl = ui.draftPane.querySelector('#draft-pack-label');
+    const pickInfoEl = ui.draftPane.querySelector('#draft-pick-label');
     const packEl = ui.draftPane.querySelector('#draft-pack-cards');
     const poolEl = ui.draftPane.querySelector('#draft-pool-cards');
 
@@ -149,14 +160,18 @@ export function createDraftController({
     if (!state) {
       draftUi.selectedPackID = '';
       draftUi.selectedPackIndex = -1;
-      if (packInfoEl) packInfoEl.textContent = '· Pack - · Pick -';
+      if (packInfoEl) packInfoEl.textContent = 'Pack -';
+      if (pickInfoEl) pickInfoEl.textContent = 'Pick -';
       if (packEl) packEl.innerHTML = '<div class="draft-empty">Waiting for state...</div>';
       if (poolEl) poolEl.innerHTML = '';
       return;
     }
 
     if (packInfoEl) {
-      packInfoEl.textContent = `· Pack ${state.pack_no + 1} · Pick ${state.pick_no + 1}`;
+      packInfoEl.textContent = `Pack ${state.pack_no + 1}`;
+    }
+    if (pickInfoEl) {
+      pickInfoEl.textContent = `Pick ${state.pick_no + 1}`;
     }
 
     if (poolEl) {
@@ -353,9 +368,13 @@ export function createDraftController({
         <div class="draft-panel draft-status-panel">
           <div class="draft-status-row">
             <button type="button" class="draft-lobby-button" id="draft-back-lobby" aria-label="Back to lobby">⬅️</button>
+            <button type="button" class="draft-lobby-button" id="draft-open-cube" aria-label="Open cube battlebox">📚</button>
             <div class="draft-status-name">${escapeHtml(draftUi.roomLabel || draftUi.roomId)}</div>
             <div class="draft-status-seat">Seat ${draftUi.seat + 1}</div>
-            <div id="draft-pack-pick" class="draft-pack-pick">· Pack - · Pick -</div>
+            <span class="draft-status-divider" aria-hidden="true">·</span>
+            <div id="draft-pack-label" class="draft-pack-pick">Pack -</div>
+            <span class="draft-status-divider" aria-hidden="true">·</span>
+            <div id="draft-pick-label" class="draft-pack-pick">Pick -</div>
             <span class="draft-status-divider" aria-hidden="true">·</span>
             <span id="draft-connection-dot" class="draft-connection-dot is-offline" role="status" aria-label="Disconnected" title="Disconnected"></span>
           </div>
@@ -377,6 +396,15 @@ export function createDraftController({
     if (backButton) {
       backButton.addEventListener('click', () => {
         leaveRoom();
+      });
+    }
+    const cubeButton = ui.draftPane.querySelector('#draft-open-cube');
+    if (cubeButton) {
+      cubeButton.addEventListener('click', () => {
+        const cubeDeckSlug = draftUi.roomDeckSlug || normalizeDraftSlug(draftUi.roomLabel);
+        if (typeof onCubeRequested === 'function') {
+          onCubeRequested(cubeDeckSlug);
+        }
       });
     }
 

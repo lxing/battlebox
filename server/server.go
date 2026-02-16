@@ -15,6 +15,7 @@ import (
 
 type createDraftRoomRequest struct {
 	Deck      []string `json:"deck"`
+	DeckSlug  string   `json:"deck_slug,omitempty"`
 	SeatNames []string `json:"seat_names"`
 	PackCount int      `json:"pack_count"`
 	PackSize  int      `json:"pack_size"`
@@ -93,9 +94,10 @@ func (h *draftHub) handleCreateRoom(w http.ResponseWriter, r *http.Request) {
 	}
 
 	room := &draftRoom{
-		label:   strings.TrimSpace(req.Label),
-		draft:   draft,
-		clients: make(map[int]map[*websocket.Conn]struct{}),
+		label:    strings.TrimSpace(req.Label),
+		deckSlug: normalizeSlug(req.DeckSlug),
+		draft:    draft,
+		clients:  make(map[int]map[*websocket.Conn]struct{}),
 	}
 
 	h.mu.Lock()
@@ -156,10 +158,11 @@ func (h *draftHub) handleStartOrJoinSharedRoom(w http.ResponseWriter, r *http.Re
 	}
 
 	room := &draftRoom{
-		id:      sharedRoomID,
-		label:   strings.TrimSpace(req.Label),
-		draft:   draft,
-		clients: make(map[int]map[*websocket.Conn]struct{}),
+		id:       sharedRoomID,
+		label:    strings.TrimSpace(req.Label),
+		deckSlug: normalizeSlug(req.DeckSlug),
+		draft:    draft,
+		clients:  make(map[int]map[*websocket.Conn]struct{}),
 	}
 
 	h.mu.Lock()

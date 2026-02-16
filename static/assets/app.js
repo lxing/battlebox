@@ -84,6 +84,14 @@ const draftController = createDraftController({
   onLobbyRequested: () => {
     setActiveTab(TAB_DRAFT);
   },
+  onCubeRequested: (deckSlug) => {
+    setActiveTab(TAB_BATTLEBOX);
+    const normalizedDeckSlug = normalizeName(deckSlug || '');
+    const nextHash = normalizedDeckSlug ? `#/cube/${normalizedDeckSlug}` : '#/cube';
+    if (location.hash !== nextHash) {
+      location.hash = nextHash;
+    }
+  },
 });
 lobbyController = createLobbyController({
   ui,
