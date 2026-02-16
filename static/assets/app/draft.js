@@ -1,5 +1,3 @@
-import { normalizeName } from './utils.js';
-
 function escapeHtml(value) {
   return String(value || '')
     .replaceAll('&', '&amp;')
@@ -15,11 +13,14 @@ function getNamedCardImageUrl(cardName) {
   return `https://api.scryfall.com/cards/named?exact=${encodeURIComponent(name)}&format=image&version=normal`;
 }
 
+function normalizeSeat(value) {
+  const parsed = Number.parseInt(String(value), 10);
+  return Number.isFinite(parsed) && parsed >= 0 ? parsed : 0;
+}
+
 export function createDraftController({
   ui,
-  renderBattleboxPane,
-  hidePreview,
-  openLobby,
+  onLobbyRequested,
 }) {
   const draftUi = {
     socket: null,
@@ -47,6 +48,19 @@ export function createDraftController({
     return Math.min(500 * (2 ** attempt), 10000);
   }
 
+  function hasActiveRoom() {
+    return Boolean(draftUi.roomId);
+  }
+
+  function clearRoomSelection() {
+    draftUi.roomId = '';
+    draftUi.seat = 0;
+    draftUi.state = null;
+    draftUi.pendingPick = false;
+    draftUi.selectedPackID = '';
+    draftUi.selectedPackIndex = -1;
+  }
+
   function scheduleReconnect() {
     if (!draftUi.shouldReconnect || !draftUi.roomId) return;
     clearReconnectTimer();
@@ -60,27 +74,6 @@ export function createDraftController({
       if (!draftUi.shouldReconnect || !draftUi.roomId) return;
       void connectSocket(draftUi.roomId, draftUi.seat, true);
     }, delay);
-  }
-
-  function parseRoute(rawHash) {
-    const hash = typeof rawHash === 'string' ? rawHash : (location.hash.slice(1) || '/');
-    const [pathPart, queryPart = ''] = hash.split('?');
-    const parts = pathPart.split('/').filter(Boolean);
-    if (parts.length !== 1 || normalizeName(parts[0]) !== 'draft') return null;
-
-    const params = new URLSearchParams(queryPart);
-    const roomId = (params.get('room') || '').trim();
-    const seatRaw = Number.parseInt(params.get('seat') || '0', 10);
-    const seat = Number.isFinite(seatRaw) && seatRaw >= 0 ? seatRaw : 0;
-    if (!roomId) return null;
-    return { roomId, seat };
-  }
-
-  function buildHash(roomId, seat = 0) {
-    const params = new URLSearchParams();
-    params.set('room', roomId);
-    params.set('seat', String(Math.max(0, Number.parseInt(String(seat), 10) || 0)));
-    return `#/draft?${params.toString()}`;
   }
 
   function teardownSocket() {
@@ -100,6 +93,29 @@ export function createDraftController({
     draftUi.selectedPackIndex = -1;
   }
 
+  function teardown() {
+    teardownSocket();
+    clearRoomSelection();
+  }
+
+  function leaveRoom() {
+    teardown();
+    if (typeof onLobbyRequested === 'function') {
+      onLobbyRequested();
+    }
+  }
+
+  function openRoom(roomId, seat) {
+    const normalizedRoomId = String(roomId || '').trim();
+    if (!normalizedRoomId) return;
+    draftUi.roomId = normalizedRoomId;
+    draftUi.seat = normalizeSeat(seat);
+    draftUi.state = null;
+    draftUi.reconnectAttempt = 0;
+    draftUi.selectedPackID = '';
+    draftUi.selectedPackIndex = -1;
+  }
+
   function syncPackSelectionUi(cardButtons, pickButton, canPick) {
     const selectedIndex = draftUi.selectedPackIndex;
     cardButtons.forEach((btn) => {
@@ -112,11 +128,11 @@ export function createDraftController({
   }
 
   function updateUIFromState() {
-    if (!ui.battleboxPane) return;
-    const statusEl = ui.battleboxPane.querySelector('#draft-status');
-    const packInfoEl = ui.battleboxPane.querySelector('#draft-pack-info');
-    const packEl = ui.battleboxPane.querySelector('#draft-pack-cards');
-    const poolEl = ui.battleboxPane.querySelector('#draft-pool-cards');
+    if (!ui.draftPane || !hasActiveRoom()) return;
+    const statusEl = ui.draftPane.querySelector('#draft-status');
+    const packInfoEl = ui.draftPane.querySelector('#draft-pack-info');
+    const packEl = ui.draftPane.querySelector('#draft-pack-cards');
+    const poolEl = ui.draftPane.querySelector('#draft-pool-cards');
 
     if (statusEl) {
       statusEl.textContent = draftUi.status || (draftUi.connected ? 'Connected' : 'Disconnected');
@@ -234,9 +250,9 @@ export function createDraftController({
   }
 
   function syncPackGridViewport(cardCount) {
-    if (!ui.battleboxPane) return;
-    const gridWrap = ui.battleboxPane.querySelector('#draft-pack-grid-wrap');
-    const grid = ui.battleboxPane.querySelector('#draft-pack-grid');
+    if (!ui.draftPane) return;
+    const gridWrap = ui.draftPane.querySelector('#draft-pack-grid-wrap');
+    const grid = ui.draftPane.querySelector('#draft-pack-grid');
     if (!(gridWrap instanceof HTMLElement) || !(grid instanceof HTMLElement)) return;
 
     if (cardCount <= 9) {
@@ -351,11 +367,11 @@ export function createDraftController({
         draftUi.status = msg.error || (msg.type === 'room_missing' ? 'Room not found' : 'Seat occupied');
         updateUIFromState();
         teardownSocket();
-        if (typeof openLobby === 'function') {
-          openLobby(msg.redirect || '#/cube');
-        } else {
-          location.hash = msg.redirect || '#/cube';
+        clearRoomSelection();
+        if (typeof onLobbyRequested === 'function') {
+          onLobbyRequested();
         }
+        return;
       } else if (msg.type === 'error') {
         draftUi.status = msg.error || 'Draft error';
         draftUi.pendingPick = false;
@@ -364,24 +380,15 @@ export function createDraftController({
     });
   }
 
-  function render(roomId, seat) {
-    const headerHtml = `
-      <h1 class="breadcrumbs">
-        <span class="breadcrumbs-trail">
-          <a href="#/">Battlebox</a>
-          <span class="crumb-sep">/</span>
-          <span>Draft</span>
-        </span>
-        <button type="button" class="qr-breadcrumb-button" title="Show QR code" aria-label="Show QR code for this page">
-          <img class="qr-breadcrumb-icon" src="/assets/qrcode.svg" alt="">
-        </button>
-      </h1>
-    `;
-    const bodyHtml = `
+  function render() {
+    if (!ui.draftPane || !hasActiveRoom()) return false;
+
+    ui.draftPane.innerHTML = `
       <div class="draft-room">
         <div class="draft-meta">
-          <div><strong>Room:</strong> ${roomId}</div>
-          <div><strong>Seat:</strong> ${seat}</div>
+          <div><strong>Room:</strong> ${escapeHtml(draftUi.roomId)}</div>
+          <div><strong>Seat:</strong> ${draftUi.seat + 1}</div>
+          <button type="button" class="action-button" id="draft-back-lobby">Lobby</button>
           <div id="draft-status" class="draft-status">Connecting...</div>
         </div>
         <div id="draft-pack-info" class="draft-pack-info"></div>
@@ -397,57 +404,24 @@ export function createDraftController({
         </div>
       </div>
     `;
-    renderBattleboxPane(headerHtml, bodyHtml);
-    void connectSocket(roomId, seat);
-    updateUIFromState();
-  }
 
-  function bindSharedDraftButton(button, deck, seat = 0) {
-    if (!button) return;
-    button.addEventListener('click', async () => {
-      if (typeof hidePreview === 'function') {
-        hidePreview();
-      }
-      const original = button.textContent;
-      button.disabled = true;
-      button.textContent = 'Starting...';
-      try {
-        const deckNames = [];
-        (Array.isArray(deck.cards) ? deck.cards : []).forEach((card) => {
-          const qty = Number.parseInt(String(card?.qty), 10) || 0;
-          const name = String(card?.name || '').trim();
-          if (!name || qty <= 0) return;
-          for (let i = 0; i < qty; i += 1) deckNames.push(name);
-        });
-        const res = await fetch('/api/draft/shared', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            deck: deckNames,
-            pack_count: 7,
-            pack_size: 8,
-          }),
-        });
-        if (!res.ok) {
-          const message = (await res.text()).trim();
-          throw new Error(message || `Failed to start draft (${res.status})`);
-        }
-        const payload = await res.json();
-        if (!payload || !payload.room_id) throw new Error('Missing room id');
-        location.hash = buildHash(payload.room_id, seat);
-      } catch (err) {
-        button.disabled = false;
-        button.textContent = original;
-        window.alert(err && err.message ? err.message : 'Failed to start draft.');
-      }
-    });
+    const backButton = ui.draftPane.querySelector('#draft-back-lobby');
+    if (backButton) {
+      backButton.addEventListener('click', () => {
+        leaveRoom();
+      });
+    }
+
+    void connectSocket(draftUi.roomId, draftUi.seat);
+    updateUIFromState();
+    return true;
   }
 
   return {
-    parseRoute,
-    buildHash,
-    teardownSocket,
+    hasActiveRoom,
+    openRoom,
     render,
-    bindSharedDraftButton,
+    leaveRoom,
+    teardown,
   };
 }

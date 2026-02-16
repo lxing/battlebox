@@ -35,9 +35,8 @@ const app = document.getElementById('app');
 let data = { index: null, battleboxes: {}, matrices: {}, buildId: '' };
 const TAB_BATTLEBOX = 'battlebox';
 const TAB_LIFE = 'life';
+const TAB_DRAFT = 'draft';
 const TAB_MATRIX = 'matrix';
-const AUX_TAB_MODE_MATRIX = 'matrix';
-const AUX_TAB_MODE_LOBBY = 'lobby';
 const ui = {
   shell: null,
   header: null,
@@ -45,6 +44,7 @@ const ui = {
   footer: null,
   battleboxPane: null,
   lifePane: null,
+  draftPane: null,
   matrixPane: null,
   activeTab: TAB_BATTLEBOX,
 };
@@ -58,6 +58,7 @@ const matrixUi = {
 };
 const guideEditorDrafts = new Map();
 const runtimeCacheBust = Date.now().toString(36);
+let currentCubeDeckSlug = '';
 
 function getCardTarget(event) {
   if (!event.target || !event.target.closest) return null;
@@ -81,18 +82,17 @@ const DEFAULT_DECK_UI = Object.freeze({
   deck_info_badge: 'colors',
   deck_selection_badge: 'colors',
 });
+let lobbyController = null;
 const draftController = createDraftController({
   ui,
-  renderBattleboxPane,
-  hidePreview: () => preview.hidePreview(),
-  openLobby: (targetHash = '#/cube') => {
-    location.hash = targetHash;
-    setTimeout(() => {
-      setActiveTab(TAB_MATRIX);
-    }, 0);
+  onLobbyRequested: () => {
+    if (lobbyController) {
+      void lobbyController.render(currentCubeDeckSlug);
+    }
+    setActiveTab(TAB_DRAFT);
   },
 });
-const lobbyController = createLobbyController({
+lobbyController = createLobbyController({
   ui,
   loadBattlebox,
   draftController,
@@ -301,7 +301,7 @@ function bindBreadcrumbQrButton(container) {
 }
 
 function normalizeTab(tab) {
-  return [TAB_BATTLEBOX, TAB_LIFE, TAB_MATRIX].includes(tab) ? tab : TAB_BATTLEBOX;
+  return [TAB_BATTLEBOX, TAB_LIFE, TAB_DRAFT, TAB_MATRIX].includes(tab) ? tab : TAB_BATTLEBOX;
 }
 
 function tabFromSearch() {
@@ -338,11 +338,12 @@ function replaceHashPreserveSearch(nextHash) {
 }
 
 function applyActiveTab(tab) {
-  if (!ui.battleboxPane || !ui.lifePane || !ui.matrixPane || !ui.footer) return;
+  if (!ui.battleboxPane || !ui.lifePane || !ui.draftPane || !ui.matrixPane || !ui.footer) return;
   const nextTab = normalizeTab(tab);
   ui.activeTab = nextTab;
   ui.battleboxPane.hidden = nextTab !== TAB_BATTLEBOX;
   ui.lifePane.hidden = nextTab !== TAB_LIFE;
+  ui.draftPane.hidden = nextTab !== TAB_DRAFT;
   ui.matrixPane.hidden = nextTab !== TAB_MATRIX;
   if (nextTab !== TAB_BATTLEBOX) {
     preview.hidePreview();
@@ -357,7 +358,14 @@ function applyActiveTab(tab) {
 }
 
 function setActiveTab(tab) {
-  const nextTab = normalizeTab(tab);
+  const requestedTab = normalizeTab(tab);
+  let nextTab = requestedTab;
+  if (ui.footer) {
+    const button = ui.footer.querySelector(`.tabbar-button[data-tab="${requestedTab}"]`);
+    if (button && button.disabled) {
+      nextTab = TAB_BATTLEBOX;
+    }
+  }
   applyActiveTab(nextTab);
   persistActiveTab(nextTab);
 }
@@ -371,21 +379,6 @@ function setMatrixTabEnabled(enabled) {
   if (!enabled && ui.activeTab === TAB_MATRIX) {
     setActiveTab(TAB_BATTLEBOX);
   }
-}
-
-function setAuxTabMode(mode) {
-  if (!ui.footer) return;
-  const matrixButton = ui.footer.querySelector('.tabbar-button[data-tab="matrix"]');
-  if (!matrixButton) return;
-  if (mode === AUX_TAB_MODE_LOBBY) {
-    matrixButton.textContent = '🏟️';
-    matrixButton.setAttribute('aria-label', 'Draft lobby tab');
-    matrixButton.setAttribute('title', 'Draft lobby');
-    return;
-  }
-  matrixButton.textContent = '📊';
-  matrixButton.setAttribute('aria-label', 'Winrate matrix tab');
-  matrixButton.setAttribute('title', 'Winrate matrix');
 }
 
 function ensureShell() {
@@ -404,6 +397,9 @@ function ensureShell() {
   lifePane.className = 'tab-pane tab-pane-life';
   lifePane.id = 'tab-life';
   createLifeCounter(lifePane);
+  const draftPane = document.createElement('div');
+  draftPane.className = 'tab-pane tab-pane-draft';
+  draftPane.id = 'tab-draft';
   const matrixPane = document.createElement('div');
   matrixPane.className = 'tab-pane tab-pane-matrix';
   matrixPane.id = 'tab-matrix';
@@ -413,6 +409,7 @@ function ensureShell() {
     <div class="tabbar">
       <button type="button" class="action-button tabbar-button" data-tab="life" aria-label="Life tab">❤️‍🩹</button>
       <button type="button" class="action-button tabbar-button" data-tab="battlebox" aria-label="Battlebox tab">📚</button>
+      <button type="button" class="action-button tabbar-button" data-tab="draft" aria-label="Draft tab">🏟️</button>
       <button type="button" class="action-button tabbar-button" data-tab="matrix" aria-label="Winrate matrix tab">📊</button>
     </div>
   `;
@@ -425,6 +422,7 @@ function ensureShell() {
 
   body.appendChild(battleboxPane);
   body.appendChild(lifePane);
+  body.appendChild(draftPane);
   body.appendChild(matrixPane);
   shell.appendChild(header);
   shell.appendChild(body);
@@ -437,6 +435,7 @@ function ensureShell() {
   ui.footer = footer;
   ui.battleboxPane = battleboxPane;
   ui.lifePane = lifePane;
+  ui.draftPane = draftPane;
   ui.matrixPane = matrixPane;
   preview.setScrollContainer(battleboxPane);
 }
@@ -688,10 +687,6 @@ async function renderMatrixPane(bbSlug, selectedDeckSlug = '', selectedMatchupSl
 async function route() {
   preview.hidePreview();
   sampleHand.hide();
-  const draftRoute = draftController.parseRoute(location.hash.slice(1) || '/');
-  if (!draftRoute) {
-    draftController.teardownSocket();
-  }
   const {
     parts,
     sortMode,
@@ -700,17 +695,15 @@ async function route() {
     collapsedMask,
     applySideboard,
   } = parseHashRoute(location.hash.slice(1) || '/');
-  const currentBattleboxSlug = (!draftRoute && parts.length > 0) ? normalizeName(parts[0]) : '';
+  const currentBattleboxSlug = parts.length > 0 ? normalizeName(parts[0]) : '';
   const currentDeckSlug = parts.length === 2 ? normalizeName(parts[1]) : '';
   const currentBattlebox = parts.length > 0
     ? data.index.battleboxes.find((b) => b.slug === currentBattleboxSlug)
     : null;
-  const isCubeContext = !draftRoute && currentBattleboxSlug === 'cube';
-  const matrixTabEnabled = !draftRoute && Boolean(currentBattlebox && currentBattlebox.matrix_tab_enabled !== false);
+  const isCubeContext = currentBattleboxSlug === 'cube';
+  const matrixTabEnabled = Boolean(currentBattlebox && currentBattlebox.matrix_tab_enabled !== false);
 
-  if (draftRoute) {
-    draftController.render(draftRoute.roomId, draftRoute.seat);
-  } else if (parts.length === 0) {
+  if (parts.length === 0) {
     renderHome();
   } else if (parts.length === 1) {
     renderBattlebox(parts[0], sortMode, sortDirection);
@@ -729,12 +722,12 @@ async function route() {
   }
 
   if (isCubeContext) {
-    setAuxTabMode(AUX_TAB_MODE_LOBBY);
+    currentCubeDeckSlug = currentDeckSlug;
     await lobbyController.render(currentDeckSlug);
-    setMatrixTabEnabled(true);
+    setMatrixTabEnabled(false);
   } else {
-    lobbyController.teardown();
-    setAuxTabMode(AUX_TAB_MODE_MATRIX);
+    currentCubeDeckSlug = '';
+    await lobbyController.render('');
     await renderMatrixPane(currentBattleboxSlug, currentDeckSlug, matchupSlug);
     setMatrixTabEnabled(matrixTabEnabled);
   }

@@ -63,6 +63,7 @@ export function createLobbyController({
     eventSource: null,
     roomsList: null,
     refreshButton: null,
+    currentDeckSlug: '',
   };
 
   function stopStream() {
@@ -90,7 +91,8 @@ export function createLobbyController({
         const seatRaw = Number.parseInt(String(button.dataset.seatId || '0'), 10);
         const seat = Number.isFinite(seatRaw) && seatRaw >= 0 ? seatRaw : 0;
         if (!roomID) return;
-        location.hash = draftController.buildHash(roomID, seat);
+        draftController.openRoom(roomID, seat);
+        void render(state.currentDeckSlug);
       });
     });
   }
@@ -177,7 +179,16 @@ export function createLobbyController({
   }
 
   async function render(currentDeckSlug) {
-    if (!ui.matrixPane) return;
+    if (!ui.draftPane) return;
+    state.currentDeckSlug = normalizeName(currentDeckSlug || '');
+
+    if (draftController.hasActiveRoom()) {
+      stopStream();
+      state.roomsList = null;
+      state.refreshButton = null;
+      draftController.render();
+      return;
+    }
 
     const cube = await loadBattlebox('cube');
     const decks = Array.isArray(cube?.decks) ? cube.decks : [];
@@ -189,7 +200,7 @@ export function createLobbyController({
     const selectedDeck = decks.find((deck) => normalizeName(deck.slug) === normalizeName(currentDeckSlug)) || decks[0] || null;
     const selectedDeckSlug = selectedDeck ? selectedDeck.slug : '';
 
-    ui.matrixPane.innerHTML = `
+    ui.draftPane.innerHTML = `
       <div class="lobby-panel">
         <div class="lobby-start-row">
           <select id="lobby-deck-select" class="lobby-deck-select" ${noDecks ? 'disabled' : ''}>
@@ -202,10 +213,10 @@ export function createLobbyController({
       </div>
     `;
 
-    const deckSelect = ui.matrixPane.querySelector('#lobby-deck-select');
-    const createRoomButton = ui.matrixPane.querySelector('#lobby-create-room');
-    const refreshButton = ui.matrixPane.querySelector('#lobby-refresh-rooms');
-    const roomsList = ui.matrixPane.querySelector('#lobby-rooms-list');
+    const deckSelect = ui.draftPane.querySelector('#lobby-deck-select');
+    const createRoomButton = ui.draftPane.querySelector('#lobby-create-room');
+    const refreshButton = ui.draftPane.querySelector('#lobby-refresh-rooms');
+    const roomsList = ui.draftPane.querySelector('#lobby-rooms-list');
 
     state.roomsList = roomsList;
     state.refreshButton = refreshButton;
@@ -229,7 +240,7 @@ export function createLobbyController({
         createRoomButton.disabled = true;
         try {
           await createDraftRoom(deck);
-          window.location.reload();
+          await refreshRooms();
         } catch (err) {
           window.alert(err && err.message ? err.message : 'Failed to create room.');
         } finally {
