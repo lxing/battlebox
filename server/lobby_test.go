@@ -36,7 +36,7 @@ func TestDraftRoomsListAfterCreate(t *testing.T) {
 	createBody := createDraftRoomRequest{
 		Deck:      []string{"A", "B"},
 		DeckSlug:  "tempo",
-		SeatNames: []string{"Seat 1", "Seat 2"},
+		SeatCount: 2,
 		PackCount: 1,
 		PackSize:  1,
 	}
@@ -84,12 +84,12 @@ func TestDraftRoomCreateRequiresExplicitConfig(t *testing.T) {
 		},
 		{
 			Deck:      deck,
-			SeatNames: []string{"Seat 1", "Seat 2"},
+			SeatCount: 2,
 			PackSize:  8,
 		},
 		{
 			Deck:      deck,
-			SeatNames: []string{"Seat 1", "Seat 2"},
+			SeatCount: 2,
 			PackCount: 1,
 		},
 	}
@@ -147,7 +147,7 @@ func TestDraftRoomDeleteRemovesSnapshotAndMemory(t *testing.T) {
 	createBody := createDraftRoomRequest{
 		Deck:      []string{"A", "B"},
 		DeckSlug:  "tempo",
-		SeatNames: []string{"Seat 1", "Seat 2"},
+		SeatCount: 2,
 		PackCount: 1,
 		PackSize:  1,
 	}

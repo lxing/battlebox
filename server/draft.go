@@ -106,12 +106,9 @@ type Draft struct {
 
 // NewDraft constructs and immediately starts a draft from a deck list.
 // The deck is shuffled internally so callers don't need to pre-shuffle.
-func NewDraft(cfg DraftConfig, deckList []string, seatNames []string) (*Draft, error) {
+func NewDraft(cfg DraftConfig, deckList []string) (*Draft, error) {
 	if cfg.PackCount <= 0 || cfg.PackSize <= 0 || cfg.SeatCount <= 0 {
 		return nil, errors.New("invalid draft config")
-	}
-	if len(seatNames) != cfg.SeatCount {
-		return nil, errors.New("seatNames must match seat count")
 	}
 
 	requiredCards := cfg.PackCount * cfg.PackSize * cfg.SeatCount
@@ -138,10 +135,10 @@ func NewDraft(cfg DraftConfig, deckList []string, seatNames []string) (*Draft, e
 	}
 
 	seats := make([]SeatState, cfg.SeatCount)
-	for i := range seatNames {
+	for i := 0; i < cfg.SeatCount; i++ {
 		seats[i] = SeatState{
 			SeatNumber: i,
-			Name:       seatNames[i],
+			Name:       fmt.Sprintf("Seat %d", i+1),
 			Picks: SeatPicks{
 				Mainboard: []string{},
 				Sideboard: []string{},

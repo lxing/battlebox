@@ -11,15 +11,6 @@ function buildDraftDeckNames(deck) {
   return names;
 }
 
-function buildSeatNames(seatCount) {
-  const names = [];
-  const total = Number.parseInt(String(seatCount), 10) || 0;
-  for (let i = 0; i < total; i += 1) {
-    names.push(`Seat ${i + 1}`);
-  }
-  return names;
-}
-
 function buildDraftCardMetaMap(deck) {
   const map = {};
   const addCard = (card) => {
@@ -79,7 +70,7 @@ async function createDraftRoom(deck, preset) {
     body: JSON.stringify({
       deck: deckNames,
       deck_slug: deck?.slug || '',
-      seat_names: buildSeatNames(seatCount),
+      seat_count: seatCount,
       pack_count: packCount,
       pack_size: packSize,
     }),

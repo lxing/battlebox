@@ -17,11 +17,6 @@ func makeDraft(t *testing.T, packCount, packSize, seatCount int) *Draft {
 		deck[i] = fmt.Sprintf("C%03d", i)
 	}
 
-	names := make([]string, seatCount)
-	for i := 0; i < seatCount; i++ {
-		names[i] = fmt.Sprintf("P%d", i)
-	}
-
 	d, err := NewDraft(
 		DraftConfig{
 			PackCount: packCount,
@@ -29,7 +24,6 @@ func makeDraft(t *testing.T, packCount, packSize, seatCount int) *Draft {
 			SeatCount: seatCount,
 		},
 		deck,
-		names,
 	)
 	require.NoError(t, err, "NewDraft error")
 	return d

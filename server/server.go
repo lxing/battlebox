@@ -16,7 +16,7 @@ import (
 type createDraftRoomRequest struct {
 	Deck      []string `json:"deck"`
 	DeckSlug  string   `json:"deck_slug,omitempty"`
-	SeatNames []string `json:"seat_names"`
+	SeatCount int      `json:"seat_count"`
 	PackCount int      `json:"pack_count"`
 	PackSize  int      `json:"pack_size"`
 }
@@ -51,8 +51,8 @@ var wsUpgrader = websocket.Upgrader{
 }
 
 func draftConfigFromRequest(req createDraftRoomRequest) (DraftConfig, error) {
-	if len(req.SeatNames) == 0 {
-		return DraftConfig{}, errors.New("seat_names required")
+	if req.SeatCount <= 0 {
+		return DraftConfig{}, errors.New("seat_count must be > 0")
 	}
 	if req.PackCount <= 0 {
 		return DraftConfig{}, errors.New("pack_count must be > 0")
@@ -63,7 +63,7 @@ func draftConfigFromRequest(req createDraftRoomRequest) (DraftConfig, error) {
 	return DraftConfig{
 		PackCount: req.PackCount,
 		PackSize:  req.PackSize,
-		SeatCount: len(req.SeatNames),
+		SeatCount: req.SeatCount,
 	}, nil
 }
 
@@ -95,7 +95,7 @@ func (h *draftHub) handleCreateRoom(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	draft, err := NewDraft(cfg, req.Deck, req.SeatNames)
+	draft, err := NewDraft(cfg, req.Deck)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusBadRequest)
 		return
@@ -168,7 +168,7 @@ func (h *draftHub) handleStartOrJoinSharedRoom(w http.ResponseWriter, r *http.Re
 		return
 	}
 
-	draft, err := NewDraft(cfg, req.Deck, req.SeatNames)
+	draft, err := NewDraft(cfg, req.Deck)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusBadRequest)
 		return
