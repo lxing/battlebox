@@ -1,6 +1,26 @@
 import { normalizeName } from './utils.js';
 
-export function createDraftController({ ui, renderBattleboxPane, hidePreview }) {
+function escapeHtml(value) {
+  return String(value || '')
+    .replaceAll('&', '&amp;')
+    .replaceAll('<', '&lt;')
+    .replaceAll('>', '&gt;')
+    .replaceAll('"', '&quot;')
+    .replaceAll("'", '&#39;');
+}
+
+function getNamedCardImageUrl(cardName) {
+  const name = String(cardName || '').trim();
+  if (!name) return '';
+  return `https://api.scryfall.com/cards/named?exact=${encodeURIComponent(name)}&format=image&version=normal`;
+}
+
+export function createDraftController({
+  ui,
+  renderBattleboxPane,
+  hidePreview,
+  openLobby,
+}) {
   const draftUi = {
     socket: null,
     roomId: '',
@@ -114,14 +134,34 @@ export function createDraftController({ ui, renderBattleboxPane, hidePreview }) 
     }
 
     const canPick = Boolean(state.can_pick) && !draftUi.pendingPick;
-    packEl.innerHTML = active.cards.map((name, idx) => `
-      <button type="button" class="action-button draft-pick-button" data-index="${idx}" ${canPick ? '' : 'disabled'}>
-        ${name}
-      </button>
-    `).join('');
+    packEl.innerHTML = `
+      <div id="draft-pack-grid-wrap" class="draft-pack-grid-wrap">
+        <div id="draft-pack-grid" class="draft-pack-grid">
+          ${active.cards.map((name, idx) => {
+    const safeName = escapeHtml(name);
+    const imageUrl = getNamedCardImageUrl(name);
+    return `
+            <button
+              type="button"
+              class="action-button draft-pack-card"
+              data-index="${idx}"
+              ${canPick ? '' : 'disabled'}
+              title="${safeName}"
+              aria-label="${safeName}"
+            >
+              <span class="draft-pack-card-frame">
+                ${imageUrl ? `<img src="${imageUrl}" alt="${safeName}" loading="lazy">` : `<span class="draft-pack-card-fallback">${safeName}</span>`}
+              </span>
+            </button>
+          `;
+  }).join('')}
+        </div>
+      </div>
+    `;
+    syncPackGridViewport(active.cards.length);
 
     if (canPick) {
-      [...packEl.querySelectorAll('.draft-pick-button')].forEach((btn) => {
+      [...packEl.querySelectorAll('.draft-pack-card')].forEach((btn) => {
         btn.addEventListener('click', () => {
           const i = Number.parseInt(btn.dataset.index || '-1', 10);
           const chosen = active.cards[i];
@@ -138,6 +178,36 @@ export function createDraftController({ ui, renderBattleboxPane, hidePreview }) 
         });
       });
     }
+  }
+
+  function syncPackGridViewport(cardCount) {
+    if (!ui.battleboxPane) return;
+    const gridWrap = ui.battleboxPane.querySelector('#draft-pack-grid-wrap');
+    const grid = ui.battleboxPane.querySelector('#draft-pack-grid');
+    if (!(gridWrap instanceof HTMLElement) || !(grid instanceof HTMLElement)) return;
+
+    if (cardCount <= 9) {
+      gridWrap.style.maxHeight = 'none';
+      gridWrap.style.overflowY = 'visible';
+      gridWrap.scrollTop = 0;
+      return;
+    }
+
+    const firstCard = grid.querySelector('.draft-pack-card');
+    if (!(firstCard instanceof HTMLElement)) return;
+    const cardHeight = firstCard.getBoundingClientRect().height;
+    if (!cardHeight) {
+      window.requestAnimationFrame(() => {
+        syncPackGridViewport(cardCount);
+      });
+      return;
+    }
+
+    const gridStyles = window.getComputedStyle(grid);
+    const rowGap = Number.parseFloat(gridStyles.rowGap || gridStyles.gap || '0') || 0;
+    const maxHeight = (cardHeight * 3) + (rowGap * 2);
+    gridWrap.style.maxHeight = `${maxHeight}px`;
+    gridWrap.style.overflowY = 'auto';
   }
 
   function connectSocket(roomId, seat, isReconnect = false) {
@@ -219,6 +289,18 @@ export function createDraftController({ ui, renderBattleboxPane, hidePreview }) 
       } else if (msg.type === 'draft_completed') {
         draftUi.status = 'Draft complete';
         draftUi.pendingPick = false;
+      } else if (msg.type === 'seat_occupied') {
+        draftUi.pendingPick = false;
+        draftUi.shouldReconnect = false;
+        clearReconnectTimer();
+        draftUi.status = msg.error || 'Seat occupied';
+        updateUIFromState();
+        teardownSocket();
+        if (typeof openLobby === 'function') {
+          openLobby(msg.redirect || '#/cube');
+        } else if (msg.redirect) {
+          location.hash = msg.redirect;
+        }
       } else if (msg.type === 'error') {
         draftUi.status = msg.error || 'Draft error';
         draftUi.pendingPick = false;

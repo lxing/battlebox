@@ -6,6 +6,8 @@ import (
 	"net/http"
 	"net/http/httptest"
 	"testing"
+
+	"github.com/gorilla/websocket"
 )
 
 func TestDraftRoomsListEmpty(t *testing.T) {
@@ -116,5 +118,35 @@ func TestDraftRoomCreateDefaultsToTwoSeats(t *testing.T) {
 	}
 	if payload.Rooms[0].SeatCount != 2 {
 		t.Fatalf("seat count got %d want 2", payload.Rooms[0].SeatCount)
+	}
+}
+
+func TestDraftRoomSeatOccupancySingleConn(t *testing.T) {
+	draft := makeDraft(t, 1, 1, 2)
+	room := &draftRoom{
+		id:      "room1",
+		draft:   draft,
+		clients: make(map[int]map[*websocket.Conn]struct{}),
+	}
+
+	c1 := &websocket.Conn{}
+	c2 := &websocket.Conn{}
+
+	if !room.addConn(0, c1) {
+		t.Fatalf("expected first seat connection to be accepted")
+	}
+	if room.addConn(0, c2) {
+		t.Fatalf("expected second seat connection to be rejected")
+	}
+
+	summary := room.summary()
+	if summary.ConnectedSeats != 1 {
+		t.Fatalf("connected seats got %d want 1", summary.ConnectedSeats)
+	}
+	if summary.Connections != 1 {
+		t.Fatalf("connections got %d want 1", summary.Connections)
+	}
+	if len(summary.OccupiedSeats) != 1 || summary.OccupiedSeats[0] != 0 {
+		t.Fatalf("occupied seats got %v want [0]", summary.OccupiedSeats)
 	}
 }

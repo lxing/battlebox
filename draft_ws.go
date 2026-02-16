@@ -53,6 +53,7 @@ type draftRoomSummary struct {
 	PickNo         int    `json:"pick_no"`
 	ConnectedSeats int    `json:"connected_seats"`
 	Connections    int    `json:"connections"`
+	OccupiedSeats  []int  `json:"occupied_seats"`
 }
 
 type listDraftRoomsResponse struct {
@@ -65,6 +66,7 @@ type draftWSMessage struct {
 	PackID   string `json:"pack_id,omitempty"`
 	CardName string `json:"card_name,omitempty"`
 	Error    string `json:"error,omitempty"`
+	Redirect string `json:"redirect,omitempty"`
 
 	State     *PlayerState `json:"state,omitempty"`
 	Duplicate bool         `json:"duplicate,omitempty"`
@@ -256,7 +258,14 @@ func (h *draftHub) handleWS(w http.ResponseWriter, r *http.Request) {
 	}
 	defer conn.Close()
 
-	room.addConn(seat, conn)
+	if !room.addConn(seat, conn) {
+		room.writeToConn(conn, draftWSMessage{
+			Type:     "seat_occupied",
+			Error:    "Seat already occupied",
+			Redirect: "#/cube",
+		})
+		return
+	}
 	defer room.removeConn(seat, conn)
 
 	room.sendSeatState(seat, conn)
@@ -279,13 +288,18 @@ func (h *draftHub) handleWS(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-func (r *draftRoom) addConn(seat int, conn *websocket.Conn) {
+func (r *draftRoom) addConn(seat int, conn *websocket.Conn) bool {
 	r.mu.Lock()
 	defer r.mu.Unlock()
+
+	if seatConns, ok := r.clients[seat]; ok && len(seatConns) > 0 {
+		return false
+	}
 	if _, ok := r.clients[seat]; !ok {
 		r.clients[seat] = make(map[*websocket.Conn]struct{})
 	}
 	r.clients[seat][conn] = struct{}{}
+	return true
 }
 
 func (r *draftRoom) removeConn(seat int, conn *websocket.Conn) {
@@ -392,12 +406,19 @@ func (r *draftRoom) summary() draftRoomSummary {
 
 	connectedSeats := 0
 	connections := 0
+	occupiedSeats := make([]int, 0, len(r.clients))
 	for _, seatConns := range r.clients {
 		if len(seatConns) > 0 {
 			connectedSeats++
 		}
 		connections += len(seatConns)
 	}
+	for seat, seatConns := range r.clients {
+		if len(seatConns) > 0 {
+			occupiedSeats = append(occupiedSeats, seat)
+		}
+	}
+	sort.Ints(occupiedSeats)
 
 	return draftRoomSummary{
 		RoomID:         r.id,
@@ -410,6 +431,7 @@ func (r *draftRoom) summary() draftRoomSummary {
 		PickNo:         r.draft.Progress.PickNumber,
 		ConnectedSeats: connectedSeats,
 		Connections:    connections,
+		OccupiedSeats:  occupiedSeats,
 	}
 }
 

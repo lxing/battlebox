@@ -84,6 +84,12 @@ const draftController = createDraftController({
   ui,
   renderBattleboxPane,
   hidePreview: () => preview.hidePreview(),
+  openLobby: (targetHash = '#/cube') => {
+    location.hash = targetHash;
+    setTimeout(() => {
+      setActiveTab(TAB_MATRIX);
+    }, 0);
+  },
 });
 
 function normalizeDecklistViewMode(value) {
@@ -581,9 +587,25 @@ async function renderLobbyPane(currentDeckSlug) {
       <ul class="lobby-room-list">
         ${rooms.map((room) => {
     const seatCount = Math.max(0, Number.parseInt(String(room.seat_count || 0), 10) || 0);
-    const seatButtons = Array.from({ length: seatCount }, (_, idx) => (
-      `<button type="button" class="action-button lobby-join-button" data-room-id="${escapeHtml(room.room_id)}" data-seat-id="${idx}">P${idx + 1}</button>`
-    )).join('');
+    const occupiedSeatSet = new Set(
+      (Array.isArray(room.occupied_seats) ? room.occupied_seats : [])
+        .map((value) => Number.parseInt(String(value), 10))
+        .filter((value) => Number.isFinite(value) && value >= 0),
+    );
+    const seatButtons = Array.from({ length: seatCount }, (_, idx) => {
+      const occupied = occupiedSeatSet.has(idx);
+      return `
+        <button
+          type="button"
+          class="action-button lobby-join-button"
+          data-room-id="${escapeHtml(room.room_id)}"
+          data-seat-id="${idx}"
+          ${occupied ? 'disabled aria-disabled="true"' : ''}
+        >
+          P${idx + 1}
+        </button>
+      `;
+    }).join('');
     const title = room.label ? `${escapeHtml(room.label)} (${escapeHtml(room.room_id)})` : escapeHtml(room.room_id);
     const packNo = (Number.parseInt(String(room.pack_no || 0), 10) || 0) + 1;
     const pickNo = (Number.parseInt(String(room.pick_no || 0), 10) || 0) + 1;
