@@ -204,10 +204,24 @@
   gap: 0.45rem;
 }
 
-.lobby-room-title {
-  font-size: 0.85rem;
-  font-weight: 600;
+.lobby-room-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.6rem;
+}
+
+.lobby-room-id {
+  font-size: 0.8rem;
   color: var(--color-text-strong);
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace;
+}
+
+.lobby-room-cube {
+  font-size: 0.8rem;
+  color: var(--color-text-primary);
+  font-weight: 600;
+  text-align: right;
 }
 
 .lobby-room-meta {

@@ -128,17 +128,21 @@ export function createLobbyController({
           data-seat-id="${idx}"
           ${occupied ? 'disabled aria-disabled="true"' : ''}
         >
-          P${idx + 1}
+          ${idx + 1}
         </button>
       `;
     }).join('');
-    const title = room.label ? `${escapeHtml(room.label)} (${escapeHtml(room.room_id)})` : escapeHtml(room.room_id);
+    const roomID = escapeHtml(room.room_id);
+    const cubeLabel = escapeHtml(room.label || 'Unknown');
     const packNo = (Number.parseInt(String(room.pack_no || 0), 10) || 0) + 1;
     const pickNo = (Number.parseInt(String(room.pick_no || 0), 10) || 0) + 1;
     const connectedSeats = Number.parseInt(String(room.connected_seats || 0), 10) || 0;
     return `
             <li class="lobby-room-item">
-              <div class="lobby-room-title">${title}</div>
+              <div class="lobby-room-head">
+                <div class="lobby-room-id">${roomID}</div>
+                <div class="lobby-room-cube">${cubeLabel}</div>
+              </div>
               <div class="lobby-room-meta">Pack ${packNo} · Pick ${pickNo} · ${connectedSeats}/${seatCount} connected</div>
               <div class="lobby-room-actions">${seatButtons}</div>
             </li>

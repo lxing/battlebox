@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"net/http"
 	"net/http/httptest"
+	"regexp"
 	"testing"
 
 	"github.com/gorilla/websocket"
@@ -70,6 +71,10 @@ func TestDraftRoomsListAfterCreate(t *testing.T) {
 	room := payload.Rooms[0]
 	if room.RoomID == "" {
 		t.Fatalf("expected non-empty room id")
+	}
+	roomIDPattern := regexp.MustCompile(`^[a-z]+-[a-z]+$`)
+	if !roomIDPattern.MatchString(room.RoomID) {
+		t.Fatalf("room id got %q want adjective-noun format", room.RoomID)
 	}
 	if room.Label != "Tempo" {
 		t.Fatalf("label got %q want %q", room.Label, "Tempo")

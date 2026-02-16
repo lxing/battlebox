@@ -2,7 +2,7 @@ package main
 
 import (
 	"crypto/rand"
-	"encoding/hex"
+	"encoding/binary"
 	"encoding/json"
 	"fmt"
 	"net/http"
@@ -93,13 +93,13 @@ func (h *draftHub) handleCreateRoom(w http.ResponseWriter, r *http.Request) {
 	}
 
 	room := &draftRoom{
-		id:      randomRoomID(),
 		label:   strings.TrimSpace(req.Label),
 		draft:   draft,
 		clients: make(map[int]map[*websocket.Conn]struct{}),
 	}
 
 	h.mu.Lock()
+	room.id = h.nextRoomIDLocked()
 	h.rooms[room.id] = room
 	h.mu.Unlock()
 	h.notifyLobbySubscribers()
@@ -253,9 +253,40 @@ func (h *draftHub) handleWS(w http.ResponseWriter, r *http.Request) {
 }
 
 func randomRoomID() string {
-	buf := make([]byte, 8)
-	if _, err := rand.Read(buf); err != nil {
-		return fmt.Sprintf("%x", time.Now().UnixNano())
+	left := roomIDAdjectives[randomInt(len(roomIDAdjectives))]
+	right := roomIDNouns[randomInt(len(roomIDNouns))]
+	return left + "-" + right
+}
+
+func (h *draftHub) nextRoomIDLocked() string {
+	for attempt := 0; attempt < 32; attempt++ {
+		candidate := randomRoomID()
+		if _, exists := h.rooms[candidate]; !exists {
+			return candidate
+		}
 	}
-	return hex.EncodeToString(buf)
+	return fmt.Sprintf("room-%d", time.Now().UnixNano())
+}
+
+func randomInt(max int) int {
+	if max <= 1 {
+		return 0
+	}
+	var raw [2]byte
+	if _, err := rand.Read(raw[:]); err != nil {
+		return int(time.Now().UnixNano() % int64(max))
+	}
+	return int(binary.BigEndian.Uint16(raw[:])) % max
+}
+
+var roomIDAdjectives = []string{
+	"amber", "brave", "brisk", "calm", "clever", "cozy", "crisp", "dapper",
+	"eager", "fancy", "fuzzy", "gentle", "glossy", "happy", "jolly", "keen",
+	"lively", "lucky", "mellow", "mighty", "nimble", "peppy", "plucky", "quiet",
+	"rapid", "rustic", "sandy", "shiny", "snappy", "sunny", "swift", "witty",
+}
+
+var roomIDNouns = []string{
+	"bat", "bird", "frog", "lizard", "mouse",
+	"otter", "rabbit", "raccoon", "rat", "squirrel",
 }
