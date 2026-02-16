@@ -1,8 +1,11 @@
 package main
 
 import (
+	"crypto/rand"
+	"encoding/binary"
 	"errors"
 	"fmt"
+	"time"
 )
 
 // DraftConfig holds the tunables for a single draft instance.
@@ -90,8 +93,9 @@ type Draft struct {
 	lastSeqBySeat []uint64 // monotonic command sequence per seat for idempotency
 }
 
-// NewDraft constructs and immediately starts a draft from a shuffled deck list.
-func NewDraft(cfg DraftConfig, shuffledDeck []string, seatNames []string) (*Draft, error) {
+// NewDraft constructs and immediately starts a draft from a deck list.
+// The deck is shuffled internally so callers don't need to pre-shuffle.
+func NewDraft(cfg DraftConfig, deckList []string, seatNames []string) (*Draft, error) {
 	if cfg.PackCount <= 0 || cfg.PackSize <= 0 || cfg.SeatCount <= 0 {
 		return nil, errors.New("invalid draft config")
 	}
@@ -100,9 +104,10 @@ func NewDraft(cfg DraftConfig, shuffledDeck []string, seatNames []string) (*Draf
 	}
 
 	requiredCards := cfg.PackCount * cfg.PackSize * cfg.SeatCount
-	if len(shuffledDeck) < requiredCards {
+	if len(deckList) < requiredCards {
 		return nil, errors.New("deck too small for requested draft config")
 	}
+	shuffledDeck := shuffleStrings(deckList)
 
 	packs := make([][]*Pack, cfg.PackCount)
 	deckIdx := 0
@@ -138,6 +143,27 @@ func NewDraft(cfg DraftConfig, shuffledDeck []string, seatNames []string) (*Draf
 		seatPicked:    make([]bool, cfg.SeatCount),
 		lastSeqBySeat: make([]uint64, cfg.SeatCount),
 	}, nil
+}
+
+func shuffleStrings(values []string) []string {
+	shuffled := make([]string, len(values))
+	copy(shuffled, values)
+	for i := len(shuffled) - 1; i > 0; i-- {
+		j := randomIndex(i + 1)
+		shuffled[i], shuffled[j] = shuffled[j], shuffled[i]
+	}
+	return shuffled
+}
+
+func randomIndex(max int) int {
+	if max <= 1 {
+		return 0
+	}
+	var raw [8]byte
+	if _, err := rand.Read(raw[:]); err != nil {
+		return int(time.Now().UnixNano() % int64(max))
+	}
+	return int(binary.BigEndian.Uint64(raw[:]) % uint64(max))
 }
 
 // State reports "drafting" until all packs are consumed, then "done".
