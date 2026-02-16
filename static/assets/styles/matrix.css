@@ -142,7 +142,8 @@
     inset 0 -1px 0 rgba(255, 255, 255, 0.3);
 }
 
-.matrix-empty {
+.matrix-empty,
+.aux-empty {
   color: #b8b8cf;
   font-size: 0.9rem;
   padding: 0.5rem 0.1rem;

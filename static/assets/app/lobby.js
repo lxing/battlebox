@@ -52,6 +52,7 @@ async function createDraftRoom(deck) {
   }
   const payload = await res.json();
   if (!payload || !payload.room_id) throw new Error('Missing room id');
+  return payload;
 }
 
 export function createLobbyController({
@@ -83,6 +84,10 @@ export function createLobbyController({
     state.refreshButton = null;
   }
 
+  function setPreferredDeckSlug(deckSlug) {
+    state.currentDeckSlug = normalizeName(deckSlug || '');
+  }
+
   function bindLobbySeatButtons(scope) {
     if (!scope) return;
     scope.querySelectorAll('[data-room-id][data-seat-id]').forEach((button) => {
@@ -100,7 +105,7 @@ export function createLobbyController({
   function renderRooms(rooms) {
     if (!state.roomsList) return;
     if (!Array.isArray(rooms) || rooms.length === 0) {
-      state.roomsList.innerHTML = '<div class="matrix-empty">No draft rooms yet.</div>';
+      state.roomsList.innerHTML = '<div class="aux-empty">No draft rooms yet.</div>';
       return;
     }
 
@@ -147,13 +152,13 @@ export function createLobbyController({
   async function refreshRooms() {
     if (!state.roomsList) return;
     if (state.refreshButton) state.refreshButton.disabled = true;
-    state.roomsList.innerHTML = '<div class="matrix-empty">Loading rooms...</div>';
+    state.roomsList.innerHTML = '<div class="aux-empty">Loading rooms...</div>';
     try {
       const rooms = await fetchDraftRooms();
       renderRooms(rooms);
     } catch (err) {
       const message = err && err.message ? err.message : 'Failed to load rooms.';
-      state.roomsList.innerHTML = `<div class="matrix-empty">${escapeHtml(message)}</div>`;
+      state.roomsList.innerHTML = `<div class="aux-empty">${escapeHtml(message)}</div>`;
     } finally {
       if (state.refreshButton) state.refreshButton.disabled = false;
     }
@@ -180,7 +185,9 @@ export function createLobbyController({
 
   async function render(currentDeckSlug) {
     if (!ui.draftPane) return;
-    state.currentDeckSlug = normalizeName(currentDeckSlug || '');
+    if (currentDeckSlug !== undefined) {
+      setPreferredDeckSlug(currentDeckSlug);
+    }
 
     if (draftController.hasActiveRoom()) {
       stopStream();
@@ -192,12 +199,13 @@ export function createLobbyController({
 
     const cube = await loadBattlebox('cube');
     const decks = Array.isArray(cube?.decks) ? cube.decks : [];
+    const activeDeckSlug = state.currentDeckSlug;
     const deckOptions = decks.map((deck) => {
-      const selected = normalizeName(deck.slug) === normalizeName(currentDeckSlug) ? ' selected' : '';
+      const selected = normalizeName(deck.slug) === activeDeckSlug ? ' selected' : '';
       return `<option value="${escapeHtml(deck.slug)}"${selected}>${escapeHtml(deck.name || deck.slug)}</option>`;
     }).join('');
     const noDecks = decks.length === 0;
-    const selectedDeck = decks.find((deck) => normalizeName(deck.slug) === normalizeName(currentDeckSlug)) || decks[0] || null;
+    const selectedDeck = decks.find((deck) => normalizeName(deck.slug) === activeDeckSlug) || decks[0] || null;
     const selectedDeckSlug = selectedDeck ? selectedDeck.slug : '';
 
     ui.draftPane.innerHTML = `
@@ -256,5 +264,6 @@ export function createLobbyController({
   return {
     render,
     teardown,
+    setPreferredDeckSlug,
   };
 }
