@@ -8,7 +8,7 @@ RUN go mod download
 
 COPY . .
 RUN sh ./build.sh
-RUN CGO_ENABLED=0 GOOS=linux go build -o /app/battlebox .
+RUN CGO_ENABLED=0 GOOS=linux go build -o /app/battlebox ./server
 
 FROM gcr.io/distroless/base-debian12
 WORKDIR /app

@@ -2,10 +2,8 @@ package main
 
 import (
 	"crypto/tls"
-	"embed"
 	"encoding/json"
 	"flag"
-	"io/fs"
 	"log"
 	"net/http"
 	"os"
@@ -17,14 +15,10 @@ import (
 	"github.com/lxing/battlebox/internal/buildtool"
 )
 
-//go:embed static/*
-var staticFiles embed.FS
-
-//go:embed all:data
-var dataFiles embed.FS
-
 var useTailscale = flag.Bool("ts", false, "serve over Tailscale")
 var slugRE = regexp.MustCompile(`^[a-z0-9-]+$`)
+var staticRoot = "static"
+var dataRoot = "data"
 
 type sourceGuideRequest struct {
 	Raw string `json:"raw"`
@@ -50,13 +44,7 @@ func main() {
 	mux.HandleFunc("/api/draft/ws", draftHub.handleWS)
 
 	// Serve static files (SPA shell)
-	var fileServer http.Handler
-	if dev {
-		fileServer = http.FileServer(http.Dir("static"))
-	} else {
-		staticFS, _ := fs.Sub(staticFiles, "static")
-		fileServer = http.FileServer(http.FS(staticFS))
-	}
+	fileServer := http.FileServer(http.Dir(staticRoot))
 	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 		if dev {
 			w.Header().Set("Cache-Control", "no-store")
@@ -199,7 +187,7 @@ func handleDecks(w http.ResponseWriter, r *http.Request) {
 }
 
 func listBattleboxes(w http.ResponseWriter) {
-	entries, err := dataFiles.ReadDir("data")
+	entries, err := os.ReadDir(dataRoot)
 	if err != nil {
 		json.NewEncoder(w).Encode([]string{})
 		return
@@ -214,7 +202,7 @@ func listBattleboxes(w http.ResponseWriter) {
 }
 
 func listDecks(w http.ResponseWriter, battlebox string) {
-	entries, err := dataFiles.ReadDir("data/" + battlebox)
+	entries, err := os.ReadDir(filepath.Join(dataRoot, battlebox))
 	if err != nil {
 		http.Error(w, "battlebox not found", http.StatusNotFound)
 		return
@@ -230,7 +218,7 @@ func listDecks(w http.ResponseWriter, battlebox string) {
 }
 
 func getDeck(w http.ResponseWriter, battlebox, deck string) {
-	data, err := dataFiles.ReadFile("data/" + battlebox + "/" + deck + ".json")
+	data, err := os.ReadFile(filepath.Join(dataRoot, battlebox, deck+".json"))
 	if err != nil {
 		http.Error(w, "deck not found", http.StatusNotFound)
 		return
