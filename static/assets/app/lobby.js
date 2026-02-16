@@ -93,10 +93,11 @@ export function createLobbyController({
     scope.querySelectorAll('[data-room-id][data-seat-id]').forEach((button) => {
       button.addEventListener('click', () => {
         const roomID = String(button.dataset.roomId || '').trim();
+        const roomLabel = String(button.dataset.roomLabel || '').trim();
         const seatRaw = Number.parseInt(String(button.dataset.seatId || '0'), 10);
         const seat = Number.isFinite(seatRaw) && seatRaw >= 0 ? seatRaw : 0;
         if (!roomID) return;
-        draftController.openRoom(roomID, seat);
+        draftController.openRoom(roomID, seat, roomLabel);
         void render(state.currentDeckSlug);
       });
     });
@@ -125,6 +126,7 @@ export function createLobbyController({
           type="button"
           class="action-button lobby-join-button"
           data-room-id="${escapeHtml(room.room_id)}"
+          data-room-label="${escapeHtml(room.label || '')}"
           data-seat-id="${idx}"
           ${occupied ? 'disabled aria-disabled="true"' : ''}
         >

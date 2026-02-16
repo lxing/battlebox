@@ -25,10 +25,10 @@ export function createDraftController({
   const draftUi = {
     socket: null,
     roomId: '',
+    roomLabel: '',
     seat: 0,
     state: null,
     connected: false,
-    status: '',
     pendingPick: false,
     reconnectAttempt: 0,
     reconnectTimer: null,
@@ -54,6 +54,7 @@ export function createDraftController({
 
   function clearRoomSelection() {
     draftUi.roomId = '';
+    draftUi.roomLabel = '';
     draftUi.seat = 0;
     draftUi.state = null;
     draftUi.pendingPick = false;
@@ -61,14 +62,22 @@ export function createDraftController({
     draftUi.selectedPackIndex = -1;
   }
 
+  function updateConnectionIndicator() {
+    if (!ui.draftPane || !hasActiveRoom()) return;
+    const connectionDot = ui.draftPane.querySelector('#draft-connection-dot');
+    if (!connectionDot) return;
+    connectionDot.classList.toggle('is-online', draftUi.connected);
+    connectionDot.classList.toggle('is-offline', !draftUi.connected);
+    connectionDot.setAttribute('title', draftUi.connected ? 'Connected' : 'Disconnected');
+    connectionDot.setAttribute('aria-label', draftUi.connected ? 'Connected' : 'Disconnected');
+  }
+
   function scheduleReconnect() {
     if (!draftUi.shouldReconnect || !draftUi.roomId) return;
     clearReconnectTimer();
     const delay = reconnectDelayMs(draftUi.reconnectAttempt);
     draftUi.reconnectAttempt += 1;
-    const label = delay >= 1000 ? `${Math.round(delay / 1000)}s` : `${delay}ms`;
-    draftUi.status = `Disconnected. Reconnecting in ${label}...`;
-    updateUIFromState();
+    updateConnectionIndicator();
     draftUi.reconnectTimer = setTimeout(() => {
       draftUi.reconnectTimer = null;
       if (!draftUi.shouldReconnect || !draftUi.roomId) return;
@@ -105,10 +114,11 @@ export function createDraftController({
     }
   }
 
-  function openRoom(roomId, seat) {
+  function openRoom(roomId, seat, roomLabel = '') {
     const normalizedRoomId = String(roomId || '').trim();
     if (!normalizedRoomId) return;
     draftUi.roomId = normalizedRoomId;
+    draftUi.roomLabel = String(roomLabel || '').trim();
     draftUi.seat = normalizeSeat(seat);
     draftUi.state = null;
     draftUi.reconnectAttempt = 0;
@@ -129,27 +139,24 @@ export function createDraftController({
 
   function updateUIFromState() {
     if (!ui.draftPane || !hasActiveRoom()) return;
-    const statusEl = ui.draftPane.querySelector('#draft-status');
-    const packInfoEl = ui.draftPane.querySelector('#draft-pack-info');
+    const packInfoEl = ui.draftPane.querySelector('#draft-pack-pick');
     const packEl = ui.draftPane.querySelector('#draft-pack-cards');
     const poolEl = ui.draftPane.querySelector('#draft-pool-cards');
 
-    if (statusEl) {
-      statusEl.textContent = draftUi.status || (draftUi.connected ? 'Connected' : 'Disconnected');
-    }
+    updateConnectionIndicator();
 
     const state = draftUi.state;
     if (!state) {
       draftUi.selectedPackID = '';
       draftUi.selectedPackIndex = -1;
-      if (packInfoEl) packInfoEl.textContent = '';
+      if (packInfoEl) packInfoEl.textContent = '· Pack - · Pick -';
       if (packEl) packEl.innerHTML = '<div class="draft-empty">Waiting for state...</div>';
       if (poolEl) poolEl.innerHTML = '';
       return;
     }
 
     if (packInfoEl) {
-      packInfoEl.textContent = `Pack ${state.pack_no + 1} · Pick ${state.pick_no + 1}`;
+      packInfoEl.textContent = `· Pack ${state.pack_no + 1} · Pick ${state.pick_no + 1}`;
     }
 
     if (poolEl) {
@@ -179,27 +186,25 @@ export function createDraftController({
 
     const canPick = Boolean(state.can_pick) && !draftUi.pendingPick;
     packEl.innerHTML = `
-      <div id="draft-pack-grid-wrap" class="draft-pack-grid-wrap">
-        <div id="draft-pack-grid" class="draft-pack-grid">
-          ${active.cards.map((name, idx) => {
+      <div id="draft-pack-grid" class="draft-pack-grid">
+        ${active.cards.map((name, idx) => {
     const safeName = escapeHtml(name);
     const imageUrl = getNamedCardImageUrl(name);
     return `
-            <button
-              type="button"
-              class="action-button draft-pack-card${idx === draftUi.selectedPackIndex ? ' is-selected' : ''}"
-              data-index="${idx}"
-              ${canPick ? '' : 'disabled'}
-              title="${safeName}"
-              aria-label="${safeName}"
-            >
-              <span class="draft-pack-card-frame">
-                ${imageUrl ? `<img src="${imageUrl}" alt="${safeName}" loading="lazy">` : `<span class="draft-pack-card-fallback">${safeName}</span>`}
-              </span>
-            </button>
-          `;
+          <button
+            type="button"
+            class="action-button draft-pack-card${idx === draftUi.selectedPackIndex ? ' is-selected' : ''}"
+            data-index="${idx}"
+            ${canPick ? '' : 'disabled'}
+            title="${safeName}"
+            aria-label="${safeName}"
+          >
+            <span class="draft-pack-card-frame">
+              ${imageUrl ? `<img src="${imageUrl}" alt="${safeName}" loading="lazy">` : `<span class="draft-pack-card-fallback">${safeName}</span>`}
+            </span>
+          </button>
+        `;
   }).join('')}
-        </div>
       </div>
       <div class="draft-pack-actions">
         <button type="button" class="action-button draft-pick-confirm-button" id="draft-pick-selected" ${canPick && draftUi.selectedPackIndex >= 0 ? '' : 'disabled'}>
@@ -207,7 +212,6 @@ export function createDraftController({
         </button>
       </div>
     `;
-    syncPackGridViewport(active.cards.length);
 
     const cardButtons = [...packEl.querySelectorAll('.draft-pack-card')];
     const pickButton = packEl.querySelector('#draft-pick-selected');
@@ -249,36 +253,6 @@ export function createDraftController({
     }
   }
 
-  function syncPackGridViewport(cardCount) {
-    if (!ui.draftPane) return;
-    const gridWrap = ui.draftPane.querySelector('#draft-pack-grid-wrap');
-    const grid = ui.draftPane.querySelector('#draft-pack-grid');
-    if (!(gridWrap instanceof HTMLElement) || !(grid instanceof HTMLElement)) return;
-
-    if (cardCount <= 9) {
-      gridWrap.style.maxHeight = 'none';
-      gridWrap.style.overflowY = 'visible';
-      gridWrap.scrollTop = 0;
-      return;
-    }
-
-    const firstCard = grid.querySelector('.draft-pack-card');
-    if (!(firstCard instanceof HTMLElement)) return;
-    const cardHeight = firstCard.getBoundingClientRect().height;
-    if (!cardHeight) {
-      window.requestAnimationFrame(() => {
-        syncPackGridViewport(cardCount);
-      });
-      return;
-    }
-
-    const gridStyles = window.getComputedStyle(grid);
-    const rowGap = Number.parseFloat(gridStyles.rowGap || gridStyles.gap || '0') || 0;
-    const maxHeight = (cardHeight * 3) + (rowGap * 2);
-    gridWrap.style.maxHeight = `${maxHeight}px`;
-    gridWrap.style.overflowY = 'auto';
-  }
-
   async function connectSocket(roomId, seat, isReconnect = false) {
     clearReconnectTimer();
     draftUi.shouldReconnect = true;
@@ -311,7 +285,6 @@ export function createDraftController({
       draftUi.selectedPackIndex = -1;
     }
     draftUi.pendingPick = false;
-    draftUi.status = isReconnect ? 'Reconnecting...' : 'Connecting...';
     draftUi.connected = false;
     updateUIFromState();
 
@@ -323,7 +296,6 @@ export function createDraftController({
     socket.addEventListener('open', () => {
       draftUi.connected = true;
       draftUi.reconnectAttempt = 0;
-      draftUi.status = 'Connected';
       updateUIFromState();
     });
 
@@ -332,9 +304,8 @@ export function createDraftController({
       draftUi.connected = false;
       draftUi.pendingPick = false;
       draftUi.socket = null;
+      updateUIFromState();
       if (!draftUi.shouldReconnect) {
-        draftUi.status = 'Disconnected';
-        updateUIFromState();
         return;
       }
       scheduleReconnect();
@@ -355,17 +326,12 @@ export function createDraftController({
           draftUi.state = msg.state;
         }
         draftUi.pendingPick = false;
-      } else if (msg.type === 'round_advanced') {
-        draftUi.status = `Round advanced: pack ${Number(msg.pack_no || 0) + 1}, pick ${Number(msg.pick_no || 0) + 1}`;
       } else if (msg.type === 'draft_completed') {
-        draftUi.status = 'Draft complete';
         draftUi.pendingPick = false;
       } else if (msg.type === 'seat_occupied' || msg.type === 'room_missing') {
         draftUi.pendingPick = false;
         draftUi.shouldReconnect = false;
         clearReconnectTimer();
-        draftUi.status = msg.error || (msg.type === 'room_missing' ? 'Room not found' : 'Seat occupied');
-        updateUIFromState();
         teardownSocket();
         clearRoomSelection();
         if (typeof onLobbyRequested === 'function') {
@@ -373,7 +339,6 @@ export function createDraftController({
         }
         return;
       } else if (msg.type === 'error') {
-        draftUi.status = msg.error || 'Draft error';
         draftUi.pendingPick = false;
       }
       updateUIFromState();
@@ -385,22 +350,24 @@ export function createDraftController({
 
     ui.draftPane.innerHTML = `
       <div class="draft-room">
-        <div class="draft-meta">
-          <div><strong>Room:</strong> ${escapeHtml(draftUi.roomId)}</div>
-          <div><strong>Seat:</strong> ${draftUi.seat + 1}</div>
-          <button type="button" class="action-button" id="draft-back-lobby">Lobby</button>
-          <div id="draft-status" class="draft-status">Connecting...</div>
+        <div class="draft-panel draft-status-panel">
+          <div class="draft-status-row">
+            <button type="button" class="action-button draft-lobby-button" id="draft-back-lobby" aria-label="Back to lobby">⬅️</button>
+            <div class="draft-status-name">${escapeHtml(draftUi.roomLabel || draftUi.roomId)}</div>
+            <div class="draft-status-seat">Seat ${draftUi.seat + 1}</div>
+            <div id="draft-pack-pick" class="draft-pack-pick">· Pack - · Pick -</div>
+            <span id="draft-connection-dot" class="draft-connection-dot is-offline" role="status" aria-label="Disconnected" title="Disconnected"></span>
+          </div>
         </div>
-        <div id="draft-pack-info" class="draft-pack-info"></div>
-        <div class="draft-grid">
-          <div class="draft-col">
-            <h3>Pack</h3>
-            <div id="draft-pack-cards"></div>
-          </div>
-          <div class="draft-col">
-            <h3>Pool</h3>
-            <div id="draft-pool-cards"></div>
-          </div>
+
+        <div class="draft-panel">
+          <h3 class="draft-panel-title">Pack</h3>
+          <div id="draft-pack-cards"></div>
+        </div>
+
+        <div class="draft-panel">
+          <h3 class="draft-panel-title">Pool</h3>
+          <div id="draft-pool-cards"></div>
         </div>
       </div>
     `;

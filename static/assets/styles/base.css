@@ -133,6 +133,12 @@ body {
   position: relative;
 }
 
+.tab-pane-draft {
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding-bottom: var(--pane-gap);
+}
+
 .tab-pane-matrix {
   overflow-y: auto;
   overflow-x: auto;
