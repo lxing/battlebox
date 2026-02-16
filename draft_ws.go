@@ -231,18 +231,28 @@ func (h *draftHub) handleStartOrJoinSharedRoom(w http.ResponseWriter, r *http.Re
 
 func (h *draftHub) handleWS(w http.ResponseWriter, r *http.Request) {
 	roomID := r.URL.Query().Get("room")
-	seatRaw := r.URL.Query().Get("seat")
-	seat, err := strconv.Atoi(seatRaw)
-	if err != nil {
-		http.Error(w, "invalid seat", http.StatusBadRequest)
-		return
-	}
 
 	h.mu.RLock()
 	room := h.rooms[roomID]
 	h.mu.RUnlock()
 	if room == nil {
-		http.Error(w, "room not found", http.StatusNotFound)
+		conn, err := wsUpgrader.Upgrade(w, r, nil)
+		if err != nil {
+			return
+		}
+		defer conn.Close()
+		_ = conn.WriteJSON(draftWSMessage{
+			Type:     "room_missing",
+			Error:    "Room not found",
+			Redirect: "#/cube",
+		})
+		return
+	}
+
+	seatRaw := r.URL.Query().Get("seat")
+	seat, err := strconv.Atoi(seatRaw)
+	if err != nil {
+		http.Error(w, "invalid seat", http.StatusBadRequest)
 		return
 	}
 	// TODO(remote-draft): add seat-scoped auth (token/session) so clients cannot

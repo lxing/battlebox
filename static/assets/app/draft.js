@@ -58,7 +58,7 @@ export function createDraftController({
     draftUi.reconnectTimer = setTimeout(() => {
       draftUi.reconnectTimer = null;
       if (!draftUi.shouldReconnect || !draftUi.roomId) return;
-      connectSocket(draftUi.roomId, draftUi.seat, true);
+      void connectSocket(draftUi.roomId, draftUi.seat, true);
     }, delay);
   }
 
@@ -263,7 +263,7 @@ export function createDraftController({
     gridWrap.style.overflowY = 'auto';
   }
 
-  function connectSocket(roomId, seat, isReconnect = false) {
+  async function connectSocket(roomId, seat, isReconnect = false) {
     clearReconnectTimer();
     draftUi.shouldReconnect = true;
 
@@ -344,17 +344,17 @@ export function createDraftController({
       } else if (msg.type === 'draft_completed') {
         draftUi.status = 'Draft complete';
         draftUi.pendingPick = false;
-      } else if (msg.type === 'seat_occupied') {
+      } else if (msg.type === 'seat_occupied' || msg.type === 'room_missing') {
         draftUi.pendingPick = false;
         draftUi.shouldReconnect = false;
         clearReconnectTimer();
-        draftUi.status = msg.error || 'Seat occupied';
+        draftUi.status = msg.error || (msg.type === 'room_missing' ? 'Room not found' : 'Seat occupied');
         updateUIFromState();
         teardownSocket();
         if (typeof openLobby === 'function') {
           openLobby(msg.redirect || '#/cube');
-        } else if (msg.redirect) {
-          location.hash = msg.redirect;
+        } else {
+          location.hash = msg.redirect || '#/cube';
         }
       } else if (msg.type === 'error') {
         draftUi.status = msg.error || 'Draft error';
@@ -398,7 +398,7 @@ export function createDraftController({
       </div>
     `;
     renderBattleboxPane(headerHtml, bodyHtml);
-    connectSocket(roomId, seat);
+    void connectSocket(roomId, seat);
     updateUIFromState();
   }
 
