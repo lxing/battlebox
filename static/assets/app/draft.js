@@ -32,6 +32,8 @@ export function createDraftController({
     reconnectAttempt: 0,
     reconnectTimer: null,
     shouldReconnect: false,
+    selectedPackID: '',
+    selectedPackIndex: -1,
   };
 
   function clearReconnectTimer() {
@@ -94,6 +96,19 @@ export function createDraftController({
     draftUi.socket = null;
     draftUi.connected = false;
     draftUi.pendingPick = false;
+    draftUi.selectedPackID = '';
+    draftUi.selectedPackIndex = -1;
+  }
+
+  function syncPackSelectionUi(cardButtons, pickButton, canPick) {
+    const selectedIndex = draftUi.selectedPackIndex;
+    cardButtons.forEach((btn) => {
+      const idx = Number.parseInt(btn.dataset.index || '-1', 10);
+      btn.classList.toggle('is-selected', idx === selectedIndex);
+    });
+    if (pickButton) {
+      pickButton.disabled = !canPick || selectedIndex < 0;
+    }
   }
 
   function updateUIFromState() {
@@ -109,6 +124,8 @@ export function createDraftController({
 
     const state = draftUi.state;
     if (!state) {
+      draftUi.selectedPackID = '';
+      draftUi.selectedPackIndex = -1;
       if (packInfoEl) packInfoEl.textContent = '';
       if (packEl) packEl.innerHTML = '<div class="draft-empty">Waiting for state...</div>';
       if (poolEl) poolEl.innerHTML = '';
@@ -127,10 +144,21 @@ export function createDraftController({
     if (!packEl) return;
     const active = state.active_pack;
     if (!active || !Array.isArray(active.cards) || active.cards.length === 0) {
+      draftUi.selectedPackID = '';
+      draftUi.selectedPackIndex = -1;
       packEl.innerHTML = state.state === 'done'
         ? '<div class="draft-empty">Draft complete.</div>'
         : '<div class="draft-empty">Waiting for next pack...</div>';
       return;
+    }
+
+    const activePackID = String(active.pack_id || '');
+    if (draftUi.selectedPackID !== activePackID) {
+      draftUi.selectedPackID = activePackID;
+      draftUi.selectedPackIndex = -1;
+    }
+    if (draftUi.selectedPackIndex >= active.cards.length) {
+      draftUi.selectedPackIndex = -1;
     }
 
     const canPick = Boolean(state.can_pick) && !draftUi.pendingPick;
@@ -143,7 +171,7 @@ export function createDraftController({
     return `
             <button
               type="button"
-              class="action-button draft-pack-card"
+              class="action-button draft-pack-card${idx === draftUi.selectedPackIndex ? ' is-selected' : ''}"
               data-index="${idx}"
               ${canPick ? '' : 'disabled'}
               title="${safeName}"
@@ -157,26 +185,51 @@ export function createDraftController({
   }).join('')}
         </div>
       </div>
+      <div class="draft-pack-actions">
+        <button type="button" class="action-button draft-pick-confirm-button" id="draft-pick-selected" ${canPick && draftUi.selectedPackIndex >= 0 ? '' : 'disabled'}>
+          Pick selected card
+        </button>
+      </div>
     `;
     syncPackGridViewport(active.cards.length);
 
+    const cardButtons = [...packEl.querySelectorAll('.draft-pack-card')];
+    const pickButton = packEl.querySelector('#draft-pick-selected');
+
     if (canPick) {
-      [...packEl.querySelectorAll('.draft-pack-card')].forEach((btn) => {
+      cardButtons.forEach((btn) => {
         btn.addEventListener('click', () => {
           const i = Number.parseInt(btn.dataset.index || '-1', 10);
-          const chosen = active.cards[i];
-          if (!chosen || !draftUi.socket || draftUi.socket.readyState !== WebSocket.OPEN) return;
-          const nextSeq = Number.parseInt(String(state.next_seq || 1), 10) || 1;
-          draftUi.pendingPick = true;
-          updateUIFromState();
-          draftUi.socket.send(JSON.stringify({
-            type: 'pick',
-            seq: nextSeq,
-            pack_id: active.pack_id,
-            card_name: chosen,
-          }));
+          if (i < 0 || i >= active.cards.length) return;
+          draftUi.selectedPackIndex = i;
+          syncPackSelectionUi(cardButtons, pickButton, canPick);
         });
       });
+    }
+
+    if (pickButton) {
+      pickButton.addEventListener('click', () => {
+        const i = draftUi.selectedPackIndex;
+        const chosen = active.cards[i];
+        if (!canPick || !chosen || !draftUi.socket || draftUi.socket.readyState !== WebSocket.OPEN) return;
+        const nextSeq = Number.parseInt(String(state.next_seq || 1), 10) || 1;
+        draftUi.pendingPick = true;
+        draftUi.selectedPackIndex = -1;
+        syncPackSelectionUi(cardButtons, pickButton, false);
+        updateUIFromState();
+        draftUi.socket.send(JSON.stringify({
+          type: 'pick',
+          seq: nextSeq,
+          pack_id: active.pack_id,
+          card_name: chosen,
+        }));
+      });
+    }
+
+    if (!canPick) {
+      syncPackSelectionUi(cardButtons, pickButton, false);
+    } else {
+      syncPackSelectionUi(cardButtons, pickButton, true);
     }
   }
 
@@ -238,6 +291,8 @@ export function createDraftController({
     if (!isReconnect) {
       draftUi.state = null;
       draftUi.reconnectAttempt = 0;
+      draftUi.selectedPackID = '';
+      draftUi.selectedPackIndex = -1;
     }
     draftUi.pendingPick = false;
     draftUi.status = isReconnect ? 'Reconnecting...' : 'Connecting...';
