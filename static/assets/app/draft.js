@@ -352,21 +352,22 @@ export function createDraftController({
       <div class="draft-room">
         <div class="draft-panel draft-status-panel">
           <div class="draft-status-row">
-            <button type="button" class="action-button draft-lobby-button" id="draft-back-lobby" aria-label="Back to lobby">⬅️</button>
+            <button type="button" class="draft-lobby-button" id="draft-back-lobby" aria-label="Back to lobby">⬅️</button>
             <div class="draft-status-name">${escapeHtml(draftUi.roomLabel || draftUi.roomId)}</div>
             <div class="draft-status-seat">Seat ${draftUi.seat + 1}</div>
             <div id="draft-pack-pick" class="draft-pack-pick">· Pack - · Pick -</div>
+            <span class="draft-status-divider" aria-hidden="true">·</span>
             <span id="draft-connection-dot" class="draft-connection-dot is-offline" role="status" aria-label="Disconnected" title="Disconnected"></span>
           </div>
         </div>
 
         <div class="draft-panel">
-          <h3 class="draft-panel-title">Pack</h3>
+          <h3 class="panel-title draft-panel-title">Pack</h3>
           <div id="draft-pack-cards"></div>
         </div>
 
         <div class="draft-panel">
-          <h3 class="draft-panel-title">Pool</h3>
+          <h3 class="panel-title draft-panel-title">Pool</h3>
           <div id="draft-pool-cards"></div>
         </div>
       </div>

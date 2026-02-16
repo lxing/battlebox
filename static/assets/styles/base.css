@@ -278,6 +278,12 @@ h2 {
   color: var(--color-text-muted-2);
 }
 
+.panel-title {
+  font-size: 1rem;
+  line-height: 1.25;
+  font-weight: 600;
+}
+
 .loading {
   color: var(--color-text-dim);
   text-align: center;

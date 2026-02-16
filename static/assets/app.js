@@ -421,7 +421,9 @@ function ensureShell() {
   footer.addEventListener('click', (event) => {
     const button = event.target.closest('.tabbar-button');
     if (!button) return;
-    setActiveTab(button.dataset.tab);
+    const requestedTab = normalizeTab(button.dataset.tab);
+    if (requestedTab === ui.activeTab) return;
+    setActiveTab(requestedTab);
   });
 
   body.appendChild(battleboxPane);
@@ -1135,7 +1137,7 @@ async function renderDeck(bbSlug, deckSlug, selectedGuide, sortMode, sortDirecti
   const matchupOpenAttr = (currentCollapsedMask & 4) === 0 ? ' open' : '';
   const matchupGuidesHtml = guideKeys.length ? `
     <details id="matchup-details" class="collapsible matchup-guides"${matchupOpenAttr}>
-      <summary>Matchup Guides</summary>
+      <summary class="panel-title">Matchup Guides</summary>
       <div class="collapsible-body guide-panel">
         <div class="guide-select">
           <select id="guide-select" aria-label="Matchup guide">
@@ -1180,7 +1182,7 @@ async function renderDeck(bbSlug, deckSlug, selectedGuide, sortMode, sortDirecti
     ${matchupGuidesHtml}
 
     <details id="decklist-details" class="collapsible"${decklistOpenAttr}>
-      <summary>Decklist</summary>
+      <summary class="panel-title">Decklist</summary>
       <div class="collapsible-body">
         <div id="decklist-body">
           ${renderDecklistGrid(deckView)}
@@ -1194,7 +1196,7 @@ async function renderDeck(bbSlug, deckSlug, selectedGuide, sortMode, sortDirecti
     </details>
 
     <details id="primer-details" class="collapsible"${primerOpenAttr}>
-      <summary>Primer</summary>
+      <summary class="panel-title">Primer</summary>
       <div class="collapsible-body">
         <div class="primer">${primerHtml}</div>
       </div>

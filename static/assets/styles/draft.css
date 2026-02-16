@@ -11,9 +11,12 @@
   padding: 0.6rem;
 }
 
+.draft-status-panel {
+  padding: 0.35rem 0.5rem;
+}
+
 .draft-panel-title {
   margin: 0 0 0.5rem;
-  font-size: var(--font-size-sm);
 }
 
 .draft-status-row {
@@ -41,16 +44,38 @@
   flex: 0 0 auto;
 }
 
+.draft-status-divider {
+  color: var(--color-text-muted-2);
+  font-size: var(--font-size-sm);
+  line-height: 1;
+  flex: 0 0 auto;
+}
+
 .draft-pack-pick {
   white-space: nowrap;
 }
 
 .draft-lobby-button {
-  width: var(--control-height-md);
-  min-width: var(--control-height-md);
-  min-height: var(--control-height-md);
+  appearance: none;
+  -webkit-appearance: none;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  font-size: 1rem;
+  line-height: 1;
   padding: 0;
+  margin: 0;
+  width: auto;
+  min-width: 0;
+  min-height: 0;
+  cursor: pointer;
   flex: 0 0 auto;
+}
+
+.draft-lobby-button:focus,
+.draft-lobby-button:focus-visible,
+.draft-lobby-button:active {
+  outline: none;
 }
 
 .draft-connection-dot {
