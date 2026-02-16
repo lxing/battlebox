@@ -1,3 +1,5 @@
+import { normalizeName, scryfallImageUrlByName, scryfallImageUrlByPrinting } from './utils.js';
+
 function escapeHtml(value) {
   return String(value || '')
     .replaceAll('&', '&amp;')
@@ -7,10 +9,14 @@ function escapeHtml(value) {
     .replaceAll("'", '&#39;');
 }
 
-function getNamedCardImageUrl(cardName) {
-  const name = String(cardName || '').trim();
-  if (!name) return '';
-  return `https://api.scryfall.com/cards/named?exact=${encodeURIComponent(name)}&format=image&version=normal`;
+function getDraftCardImageUrl(cardName, printings) {
+  const key = normalizeName(cardName);
+  if (key && printings && typeof printings === 'object') {
+    const printing = printings[key];
+    const printingUrl = scryfallImageUrlByPrinting(printing);
+    if (printingUrl) return printingUrl;
+  }
+  return scryfallImageUrlByName(cardName);
 }
 
 function normalizeSeat(value) {
@@ -34,6 +40,7 @@ export function createDraftController({
     roomId: '',
     roomLabel: '',
     roomDeckSlug: '',
+    roomDeckPrintings: {},
     seat: 0,
     state: null,
     connected: false,
@@ -64,6 +71,7 @@ export function createDraftController({
     draftUi.roomId = '';
     draftUi.roomLabel = '';
     draftUi.roomDeckSlug = '';
+    draftUi.roomDeckPrintings = {};
     draftUi.seat = 0;
     draftUi.state = null;
     draftUi.pendingPick = false;
@@ -123,12 +131,13 @@ export function createDraftController({
     }
   }
 
-  function openRoom(roomId, seat, roomLabel = '', roomDeckSlug = '') {
+  function openRoom(roomId, seat, roomLabel = '', roomDeckSlug = '', roomDeckPrintings = {}) {
     const normalizedRoomId = String(roomId || '').trim();
     if (!normalizedRoomId) return;
     draftUi.roomId = normalizedRoomId;
     draftUi.roomLabel = String(roomLabel || '').trim();
     draftUi.roomDeckSlug = normalizeDraftSlug(roomDeckSlug);
+    draftUi.roomDeckPrintings = roomDeckPrintings && typeof roomDeckPrintings === 'object' ? roomDeckPrintings : {};
     draftUi.seat = normalizeSeat(seat);
     draftUi.state = null;
     draftUi.reconnectAttempt = 0;
@@ -218,7 +227,7 @@ export function createDraftController({
         <div id="draft-pack-grid" class="draft-pack-grid">
           ${active.cards.map((name, idx) => {
     const safeName = escapeHtml(name);
-    const imageUrl = getNamedCardImageUrl(name);
+    const imageUrl = getDraftCardImageUrl(name, draftUi.roomDeckPrintings);
     return `
           <button
             type="button"

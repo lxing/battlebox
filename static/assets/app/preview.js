@@ -1,3 +1,5 @@
+import { scryfallImageUrlByPrinting } from './utils.js';
+
 export function createCardPreview(app, getCardTarget) {
   // Preview behavior spec:
   // 1) Open: hover (fine pointer) or tap/click on card links.
@@ -23,10 +25,7 @@ export function createCardPreview(app, getCardTarget) {
   let scrollContainer = null;
 
   function getImageUrl(printing, face) {
-    if (!printing) return null;
-    const [set, num] = printing.split('/');
-    const faceParam = face === 'back' ? '&face=back' : '';
-    return `https://api.scryfall.com/cards/${set}/${num}?format=image&version=normal${faceParam}`;
+    return scryfallImageUrlByPrinting(printing, face) || null;
   }
 
   function positionPreviewAtPoint(absX, absY) {

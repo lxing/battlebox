@@ -66,6 +66,7 @@ export function createLobbyController({
     roomsList: null,
     refreshButton: null,
     currentDeckSlug: '',
+    cubeDeckBySlug: new Map(),
   };
 
   function stopStream() {
@@ -96,10 +97,14 @@ export function createLobbyController({
         const roomID = String(button.dataset.roomId || '').trim();
         const roomLabel = String(button.dataset.roomLabel || '').trim();
         const roomDeckSlug = String(button.dataset.roomDeckSlug || '').trim();
+        const roomDeck = state.cubeDeckBySlug.get(normalizeName(roomDeckSlug));
+        const roomDeckPrintings = roomDeck && roomDeck.printings && typeof roomDeck.printings === 'object'
+          ? roomDeck.printings
+          : {};
         const seatRaw = Number.parseInt(String(button.dataset.seatId || '0'), 10);
         const seat = Number.isFinite(seatRaw) && seatRaw >= 0 ? seatRaw : 0;
         if (!roomID) return;
-        draftController.openRoom(roomID, seat, roomLabel, roomDeckSlug);
+        draftController.openRoom(roomID, seat, roomLabel, roomDeckSlug, roomDeckPrintings);
         void render(state.currentDeckSlug);
       });
     });
@@ -208,6 +213,7 @@ export function createLobbyController({
 
     const cube = await loadBattlebox('cube');
     const decks = Array.isArray(cube?.decks) ? cube.decks : [];
+    state.cubeDeckBySlug = new Map(decks.map((deck) => [normalizeName(deck.slug), deck]));
     const activeDeckSlug = state.currentDeckSlug;
     const deckOptions = decks.map((deck) => {
       const selected = normalizeName(deck.slug) === activeDeckSlug ? ' selected' : '';

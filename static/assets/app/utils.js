@@ -98,3 +98,22 @@ export function capitalize(str) {
 export function normalizeName(name) {
   return String(name || '').toLowerCase().trim();
 }
+
+export function scryfallImageUrlByName(cardName) {
+  const name = String(cardName || '').trim();
+  if (!name) return '';
+  return `https://api.scryfall.com/cards/named?exact=${encodeURIComponent(name)}&format=image&version=normal`;
+}
+
+export function scryfallImageUrlByPrinting(printing, face = 'front') {
+  const raw = String(printing || '').trim();
+  if (!raw) return '';
+  const slashIdx = raw.indexOf('/');
+  if (slashIdx <= 0 || slashIdx >= raw.length - 1) return '';
+  const setCode = raw.slice(0, slashIdx).trim();
+  const collector = raw.slice(slashIdx + 1).trim();
+  if (!setCode || !collector) return '';
+  const normalizedFace = String(face || 'front').toLowerCase() === 'back' ? 'back' : 'front';
+  const faceParam = normalizedFace === 'back' ? '&face=back' : '';
+  return `https://api.scryfall.com/cards/${encodeURIComponent(setCode)}/${encodeURIComponent(collector)}?format=image&version=normal${faceParam}`;
+}

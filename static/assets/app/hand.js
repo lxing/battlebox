@@ -1,10 +1,7 @@
+import { scryfallImageUrlByPrinting } from './utils.js';
+
 function getCardImageUrl(printing, face = 'front') {
-  if (!printing) return '';
-  const [set, number] = String(printing).split('/');
-  if (!set || !number) return '';
-  const normalizedFace = String(face || 'front').toLowerCase() === 'back' ? 'back' : 'front';
-  const faceParam = normalizedFace === 'back' ? '&face=back' : '';
-  return `https://api.scryfall.com/cards/${set}/${number}?format=image&version=normal${faceParam}`;
+  return scryfallImageUrlByPrinting(printing, face);
 }
 
 function normalizeQty(value) {
