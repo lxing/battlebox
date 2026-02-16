@@ -45,6 +45,7 @@ func main() {
 	mux.HandleFunc("/api/decks/", handleDecks)
 	mux.HandleFunc("/api/source-guide", handleSourceGuide)
 	mux.HandleFunc("/api/draft/rooms", draftHub.handleCreateRoom)
+	mux.HandleFunc("/api/draft/lobby/events", draftHub.handleLobbyEvents)
 	mux.HandleFunc("/api/draft/shared", draftHub.handleStartOrJoinSharedRoom)
 	mux.HandleFunc("/api/draft/ws", draftHub.handleWS)
 

@@ -5,6 +5,7 @@ import (
 	"encoding/hex"
 	"encoding/json"
 	"fmt"
+	"io"
 	"net/http"
 	"sort"
 	"strconv"
@@ -16,8 +17,9 @@ import (
 )
 
 type draftHub struct {
-	mu    sync.RWMutex
-	rooms map[string]*draftRoom
+	mu        sync.RWMutex
+	rooms     map[string]*draftRoom
+	lobbySubs map[chan struct{}]struct{}
 }
 
 type draftRoom struct {
@@ -87,7 +89,10 @@ func defaultSeatNames(seatCount int) []string {
 }
 
 func newDraftHub() *draftHub {
-	return &draftHub{rooms: make(map[string]*draftRoom)}
+	return &draftHub{
+		rooms:     make(map[string]*draftRoom),
+		lobbySubs: make(map[chan struct{}]struct{}),
+	}
 }
 
 func (h *draftHub) handleCreateRoom(w http.ResponseWriter, r *http.Request) {
@@ -140,12 +145,13 @@ func (h *draftHub) handleCreateRoom(w http.ResponseWriter, r *http.Request) {
 	h.mu.Lock()
 	h.rooms[room.id] = room
 	h.mu.Unlock()
+	h.notifyLobbySubscribers()
 
 	w.Header().Set("Content-Type", "application/json")
 	_ = json.NewEncoder(w).Encode(createDraftRoomResponse{RoomID: room.id, Created: true})
 }
 
-func (h *draftHub) handleListRooms(w http.ResponseWriter) {
+func (h *draftHub) listRoomSummaries() []draftRoomSummary {
 	h.mu.RLock()
 	rooms := make([]draftRoomSummary, 0, len(h.rooms))
 	for _, room := range h.rooms {
@@ -156,9 +162,86 @@ func (h *draftHub) handleListRooms(w http.ResponseWriter) {
 	sort.Slice(rooms, func(i, j int) bool {
 		return rooms[i].RoomID < rooms[j].RoomID
 	})
+	return rooms
+}
 
+func (h *draftHub) handleListRooms(w http.ResponseWriter) {
 	w.Header().Set("Content-Type", "application/json")
-	_ = json.NewEncoder(w).Encode(listDraftRoomsResponse{Rooms: rooms})
+	_ = json.NewEncoder(w).Encode(listDraftRoomsResponse{Rooms: h.listRoomSummaries()})
+}
+
+func (h *draftHub) handleLobbyEvents(w http.ResponseWriter, r *http.Request) {
+	if r.Method != http.MethodGet {
+		w.Header().Set("Allow", "GET")
+		http.Error(w, "method not allowed", http.StatusMethodNotAllowed)
+		return
+	}
+
+	flusher, ok := w.(http.Flusher)
+	if !ok {
+		http.Error(w, "streaming unsupported", http.StatusInternalServerError)
+		return
+	}
+
+	w.Header().Set("Content-Type", "text/event-stream")
+	w.Header().Set("Cache-Control", "no-cache")
+	w.Header().Set("Connection", "keep-alive")
+
+	sub := make(chan struct{}, 1)
+	h.mu.Lock()
+	h.lobbySubs[sub] = struct{}{}
+	h.mu.Unlock()
+	defer func() {
+		h.mu.Lock()
+		delete(h.lobbySubs, sub)
+		h.mu.Unlock()
+	}()
+
+	writeRooms := func() bool {
+		payload, err := json.Marshal(listDraftRoomsResponse{Rooms: h.listRoomSummaries()})
+		if err != nil {
+			return false
+		}
+		if _, err := fmt.Fprintf(w, "data: %s\n\n", payload); err != nil {
+			return false
+		}
+		flusher.Flush()
+		return true
+	}
+
+	if !writeRooms() {
+		return
+	}
+
+	ticker := time.NewTicker(20 * time.Second)
+	defer ticker.Stop()
+
+	for {
+		select {
+		case <-r.Context().Done():
+			return
+		case <-ticker.C:
+			if _, err := io.WriteString(w, ": ping\n\n"); err != nil {
+				return
+			}
+			flusher.Flush()
+		case <-sub:
+			if !writeRooms() {
+				return
+			}
+		}
+	}
+}
+
+func (h *draftHub) notifyLobbySubscribers() {
+	h.mu.RLock()
+	defer h.mu.RUnlock()
+	for ch := range h.lobbySubs {
+		select {
+		case ch <- struct{}{}:
+		default:
+		}
+	}
 }
 
 func (h *draftHub) handleStartOrJoinSharedRoom(w http.ResponseWriter, r *http.Request) {
@@ -219,6 +302,7 @@ func (h *draftHub) handleStartOrJoinSharedRoom(w http.ResponseWriter, r *http.Re
 	if h.rooms[sharedRoomID] == nil {
 		h.rooms[sharedRoomID] = room
 		h.mu.Unlock()
+		h.notifyLobbySubscribers()
 		w.Header().Set("Content-Type", "application/json")
 		_ = json.NewEncoder(w).Encode(createDraftRoomResponse{RoomID: sharedRoomID, Created: true})
 		return
@@ -276,7 +360,11 @@ func (h *draftHub) handleWS(w http.ResponseWriter, r *http.Request) {
 		})
 		return
 	}
-	defer room.removeConn(seat, conn)
+	h.notifyLobbySubscribers()
+	defer func() {
+		room.removeConn(seat, conn)
+		h.notifyLobbySubscribers()
+	}()
 
 	room.sendSeatState(seat, conn)
 
@@ -289,7 +377,9 @@ func (h *draftHub) handleWS(w http.ResponseWriter, r *http.Request) {
 		case "state":
 			room.sendSeatState(seat, conn)
 		case "pick":
-			room.handlePick(seat, conn, msg)
+			if room.handlePick(seat, conn, msg) {
+				h.notifyLobbySubscribers()
+			}
 		default:
 			// Ignore unknown client messages to keep write paths serialized through room handlers.
 			// This avoids concurrent writes to the same websocket connection.
@@ -335,7 +425,7 @@ func (r *draftRoom) sendSeatState(seat int, conn *websocket.Conn) {
 	r.writeToConn(conn, draftWSMessage{Type: "state", State: &state})
 }
 
-func (r *draftRoom) handlePick(seat int, conn *websocket.Conn, msg draftWSMessage) {
+func (r *draftRoom) handlePick(seat int, conn *websocket.Conn, msg draftWSMessage) bool {
 	// TODO(remote-draft): avoid holding room mutex while writing to sockets.
 	// Move to per-connection outbound queues so slow clients cannot stall picks.
 	r.mu.Lock()
@@ -343,13 +433,13 @@ func (r *draftRoom) handlePick(seat int, conn *websocket.Conn, msg draftWSMessag
 
 	if msg.Seq == 0 || msg.PackID == "" || msg.CardName == "" {
 		r.writeToConn(conn, draftWSMessage{Type: "error", Error: "missing pick fields"})
-		return
+		return false
 	}
 
 	result, err := r.draft.Pick(seat, msg.Seq, msg.PackID, msg.CardName)
 	if err != nil {
 		r.writeToConn(conn, draftWSMessage{Type: "error", Error: err.Error()})
-		return
+		return false
 	}
 
 	r.writeToConn(conn, draftWSMessage{
@@ -358,7 +448,7 @@ func (r *draftRoom) handlePick(seat int, conn *websocket.Conn, msg draftWSMessag
 		Duplicate: result.Duplicate,
 	})
 	if result.Duplicate {
-		return
+		return false
 	}
 
 	roundAdvanced := false
@@ -378,6 +468,7 @@ func (r *draftRoom) handlePick(seat int, conn *websocket.Conn, msg draftWSMessag
 	if roundAdvanced {
 		r.broadcastSeatStates()
 	}
+	return true
 }
 
 func (r *draftRoom) broadcastSeatStates() {
