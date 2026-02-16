@@ -39,10 +39,13 @@ func main() {
 	dev := os.Getenv("DEV") != ""
 
 	mux := http.NewServeMux()
+	draftHub := newDraftHub()
 
 	// Serve deck JSON data
 	mux.HandleFunc("/api/decks/", handleDecks)
 	mux.HandleFunc("/api/source-guide", handleSourceGuide)
+	mux.HandleFunc("/api/draft/rooms", draftHub.handleCreateRoom)
+	mux.HandleFunc("/api/draft/ws", draftHub.handleWS)
 
 	// Serve static files (SPA shell)
 	var fileServer http.Handler

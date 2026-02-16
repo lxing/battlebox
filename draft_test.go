@@ -36,6 +36,7 @@ func makeDraft(t *testing.T, packCount, packSize, seatCount int) *Draft {
 
 func TestDraftTwoPlayerHappyPath(t *testing.T) {
 	d := makeDraft(t, 5, 4, 2)
+	seatSeq := []uint64{1, 1}
 
 	expectedPoolSize := d.Config.PackCount * d.Config.PackSize
 	for d.State() != "done" {
@@ -52,9 +53,10 @@ func TestDraftTwoPlayerHappyPath(t *testing.T) {
 			}
 
 			chosen := st.Active.Cards[0]
-			if _, _, err := d.Pick(seat, st.Active.PackID, chosen); err != nil {
+			if _, err := d.Pick(seat, seatSeq[seat], st.Active.PackID, chosen); err != nil {
 				t.Fatalf("Pick seat %d error: %v", seat, err)
 			}
+			seatSeq[seat]++
 		}
 	}
 
@@ -76,10 +78,10 @@ func TestDraftDoublePickRejected(t *testing.T) {
 	if err != nil {
 		t.Fatalf("PlayerState error: %v", err)
 	}
-	if _, _, err := d.Pick(0, st.Active.PackID, st.Active.Cards[0]); err != nil {
+	if _, err := d.Pick(0, 1, st.Active.PackID, st.Active.Cards[0]); err != nil {
 		t.Fatalf("first Pick error: %v", err)
 	}
-	if _, _, err := d.Pick(0, st.Active.PackID, st.Active.Cards[1]); err == nil {
+	if _, err := d.Pick(0, 2, st.Active.PackID, st.Active.Cards[1]); err == nil {
 		t.Fatalf("expected second pick in same round to fail")
 	}
 }
@@ -90,16 +92,16 @@ func TestDraftPickAfterDoneRejected(t *testing.T) {
 	s0, _ := d.PlayerState(0)
 	s1, _ := d.PlayerState(1)
 
-	if _, _, err := d.Pick(0, s0.Active.PackID, s0.Active.Cards[0]); err != nil {
+	if _, err := d.Pick(0, 1, s0.Active.PackID, s0.Active.Cards[0]); err != nil {
 		t.Fatalf("seat0 pick error: %v", err)
 	}
-	if _, _, err := d.Pick(1, s1.Active.PackID, s1.Active.Cards[0]); err != nil {
+	if _, err := d.Pick(1, 1, s1.Active.PackID, s1.Active.Cards[0]); err != nil {
 		t.Fatalf("seat1 pick error: %v", err)
 	}
 	if d.State() != "done" {
 		t.Fatalf("expected draft done, got %s", d.State())
 	}
-	if _, _, err := d.Pick(0, s0.Active.PackID, s0.Active.Cards[0]); err == nil {
+	if _, err := d.Pick(0, 2, s0.Active.PackID, s0.Active.Cards[0]); err == nil {
 		t.Fatalf("expected pick after done to fail")
 	}
 }
@@ -124,7 +126,7 @@ func TestDraftInvalidSeatRejected(t *testing.T) {
 	if _, err := d.PlayerState(99); err == nil {
 		t.Fatalf("expected out-of-range seat to fail")
 	}
-	if _, _, err := d.Pick(99, "p0_s0", "C000"); err == nil {
+	if _, err := d.Pick(99, 1, "p0_s0", "C000"); err == nil {
 		t.Fatalf("expected Pick with out-of-range seat to fail")
 	}
 }
@@ -136,7 +138,7 @@ func TestDraftPackMismatchRejected(t *testing.T) {
 	if err != nil {
 		t.Fatalf("PlayerState error: %v", err)
 	}
-	if _, _, err := d.Pick(0, "wrong_pack_id", st.Active.Cards[0]); err == nil {
+	if _, err := d.Pick(0, 1, "wrong_pack_id", st.Active.Cards[0]); err == nil {
 		t.Fatalf("expected pack mismatch to fail")
 	}
 }
@@ -149,7 +151,7 @@ func TestDraftCardNotAvailableRejected(t *testing.T) {
 		t.Fatalf("seat0 PlayerState error: %v", err)
 	}
 	pickedBySeat0 := seat0Start.Active.Cards[0]
-	if _, _, err := d.Pick(0, seat0Start.Active.PackID, pickedBySeat0); err != nil {
+	if _, err := d.Pick(0, 1, seat0Start.Active.PackID, pickedBySeat0); err != nil {
 		t.Fatalf("seat0 pick error: %v", err)
 	}
 
@@ -157,7 +159,7 @@ func TestDraftCardNotAvailableRejected(t *testing.T) {
 	if err != nil {
 		t.Fatalf("seat1 PlayerState error: %v", err)
 	}
-	if _, _, err := d.Pick(1, seat1Start.Active.PackID, seat1Start.Active.Cards[0]); err != nil {
+	if _, err := d.Pick(1, 1, seat1Start.Active.PackID, seat1Start.Active.Cards[0]); err != nil {
 		t.Fatalf("seat1 pick error: %v", err)
 	}
 
@@ -166,7 +168,55 @@ func TestDraftCardNotAvailableRejected(t *testing.T) {
 	if err != nil {
 		t.Fatalf("seat1 next PlayerState error: %v", err)
 	}
-	if _, _, err := d.Pick(1, seat1Next.Active.PackID, pickedBySeat0); err == nil {
+	if _, err := d.Pick(1, 2, seat1Next.Active.PackID, pickedBySeat0); err == nil {
 		t.Fatalf("expected picked/unavailable card to fail")
+	}
+}
+
+func TestDraftPickIdempotentSeq(t *testing.T) {
+	d := makeDraft(t, 1, 2, 2)
+
+	st, err := d.PlayerState(0)
+	if err != nil {
+		t.Fatalf("PlayerState error: %v", err)
+	}
+	card := st.Active.Cards[0]
+
+	first, err := d.Pick(0, 1, st.Active.PackID, card)
+	if err != nil {
+		t.Fatalf("first Pick error: %v", err)
+	}
+	if first.Duplicate {
+		t.Fatalf("first pick must not be duplicate")
+	}
+
+	second, err := d.Pick(0, 1, st.Active.PackID, card)
+	if err != nil {
+		t.Fatalf("duplicate Pick should be idempotent, got error: %v", err)
+	}
+	if !second.Duplicate {
+		t.Fatalf("expected duplicate pick result")
+	}
+	if len(d.Seats[0].Pool) != 1 {
+		t.Fatalf("pool mutated on duplicate pick; got size %d", len(d.Seats[0].Pool))
+	}
+}
+
+func TestDraftPickSeqValidation(t *testing.T) {
+	d := makeDraft(t, 1, 2, 2)
+	st, err := d.PlayerState(0)
+	if err != nil {
+		t.Fatalf("PlayerState error: %v", err)
+	}
+	card := st.Active.Cards[0]
+
+	if _, err := d.Pick(0, 3, st.Active.PackID, card); err == nil {
+		t.Fatalf("expected seq gap rejection")
+	}
+	if _, err := d.Pick(0, 1, st.Active.PackID, card); err != nil {
+		t.Fatalf("pick error: %v", err)
+	}
+	if _, err := d.Pick(0, 0, st.Active.PackID, card); err == nil {
+		t.Fatalf("expected invalid/stale seq rejection")
 	}
 }

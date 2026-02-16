@@ -53,6 +53,13 @@ type PlayerState struct {
 	CanPick bool
 }
 
+// PickResult is the outcome of a pick command.
+type PickResult struct {
+	State     PlayerState
+	Events    []Event
+	Duplicate bool
+}
+
 // Event is a game-domain event emitted by picks.
 type Event interface{ isEvent() }
 
@@ -78,7 +85,8 @@ type Draft struct {
 	Progress DraftProgress
 	Seats    []SeatState
 
-	seatPicked []bool // seatPicked[seat] is true after seat picks in current round
+	seatPicked    []bool   // seatPicked[seat] is true after seat picks in current round
+	lastSeqBySeat []uint64 // monotonic command sequence per seat for idempotency
 }
 
 // NewDraft constructs and immediately starts a draft from a shuffled deck list.
@@ -122,11 +130,12 @@ func NewDraft(cfg DraftConfig, shuffledDeck []string, seatNames []string) (*Draf
 	}
 
 	return &Draft{
-		Config:     cfg,
-		Packs:      packs,
-		Progress:   DraftProgress{PackNumber: 0, PickNumber: 0},
-		Seats:      seats,
-		seatPicked: make([]bool, cfg.SeatCount),
+		Config:        cfg,
+		Packs:         packs,
+		Progress:      DraftProgress{PackNumber: 0, PickNumber: 0},
+		Seats:         seats,
+		seatPicked:    make([]bool, cfg.SeatCount),
+		lastSeqBySeat: make([]uint64, cfg.SeatCount),
 	}, nil
 }
 
@@ -197,23 +206,41 @@ func (d *Draft) PlayerState(seat int) (PlayerState, error) {
 }
 
 // Pick applies a seat pick and advances the round when all seats have picked.
-func (d *Draft) Pick(seat int, packID, cardName string) (PlayerState, []Event, error) {
+// Sequence numbers are per-seat and strictly monotonic to make pick retries idempotent.
+func (d *Draft) Pick(seat int, seq uint64, packID, cardName string) (PickResult, error) {
 	if seat < 0 || seat >= d.Config.SeatCount {
-		return PlayerState{}, nil, errors.New("invalid seat")
+		return PickResult{}, errors.New("invalid seat")
 	}
 	if d.State() == "done" {
-		return PlayerState{}, nil, errors.New("draft already complete")
+		return PickResult{}, errors.New("draft already complete")
+	}
+	lastSeq := d.lastSeqBySeat[seat]
+	if seq == 0 {
+		return PickResult{}, errors.New("invalid seq")
+	}
+	if seq == lastSeq {
+		state, err := d.PlayerState(seat)
+		if err != nil {
+			return PickResult{}, err
+		}
+		return PickResult{State: state, Events: nil, Duplicate: true}, nil
+	}
+	if seq < lastSeq {
+		return PickResult{}, errors.New("stale seq")
+	}
+	if seq != lastSeq+1 {
+		return PickResult{}, errors.New("seq gap")
 	}
 	if d.seatPicked[seat] {
-		return PlayerState{}, nil, errors.New("seat already picked this round")
+		return PickResult{}, errors.New("seat already picked this round")
 	}
 
 	pack, err := d.currentPackForSeat(seat)
 	if err != nil {
-		return PlayerState{}, nil, err
+		return PickResult{}, err
 	}
 	if pack.ID != packID {
-		return PlayerState{}, nil, errors.New("pack mismatch")
+		return PickResult{}, errors.New("pack mismatch")
 	}
 
 	cardIdx := -1
@@ -224,11 +251,12 @@ func (d *Draft) Pick(seat int, packID, cardName string) (PlayerState, []Event, e
 		}
 	}
 	if cardIdx == -1 {
-		return PlayerState{}, nil, errors.New("card not available in pack")
+		return PickResult{}, errors.New("card not available in pack")
 	}
 
 	pack.Picked[cardIdx] = true
 	d.seatPicked[seat] = true
+	d.lastSeqBySeat[seat] = seq
 	d.Seats[seat].Pool = append(d.Seats[seat].Pool, cardName)
 
 	events := []Event{}
@@ -262,7 +290,7 @@ func (d *Draft) Pick(seat int, packID, cardName string) (PlayerState, []Event, e
 
 	ack, err := d.PlayerState(seat)
 	if err != nil {
-		return PlayerState{}, nil, err
+		return PickResult{}, err
 	}
-	return ack, events, nil
+	return PickResult{State: ack, Events: events, Duplicate: false}, nil
 }
