@@ -30,6 +30,7 @@ type draftWSMessage struct {
 	Seq      uint64 `json:"seq,omitempty"`
 	PackID   string `json:"pack_id,omitempty"`
 	CardName string `json:"card_name,omitempty"`
+	Zone     string `json:"zone,omitempty"`
 	Error    string `json:"error,omitempty"`
 	Redirect string `json:"redirect,omitempty"`
 

@@ -49,14 +49,14 @@ func TestDraftTwoPlayerHappyPath(t *testing.T) {
 			assert.NotEmptyf(t, st.Active.Cards, "seat %d missing active cards", seat)
 
 			chosen := st.Active.Cards[0]
-			_, err = d.Pick(seat, seatSeq[seat], st.Active.PackID, chosen)
+			_, err = d.Pick(seat, seatSeq[seat], st.Active.PackID, chosen, PickZoneMainboard)
 			require.NoErrorf(t, err, "Pick seat %d error", seat)
 			seatSeq[seat]++
 		}
 	}
 
-	assert.Equal(t, expectedPoolSize, len(d.Seats[0].Pool), "seat 0 pool size mismatch")
-	assert.Equal(t, expectedPoolSize, len(d.Seats[1].Pool), "seat 1 pool size mismatch")
+	assert.Equal(t, expectedPoolSize, len(d.Seats[0].Picks.Mainboard), "seat 0 mainboard size mismatch")
+	assert.Equal(t, expectedPoolSize, len(d.Seats[1].Picks.Mainboard), "seat 1 mainboard size mismatch")
 	assert.Equal(t, d.Config.PackCount, d.Progress.PackNumber, "pack number mismatch")
 }
 
@@ -65,9 +65,9 @@ func TestDraftDoublePickRejected(t *testing.T) {
 
 	st, err := d.PlayerState(0)
 	require.NoError(t, err, "PlayerState error")
-	_, err = d.Pick(0, 1, st.Active.PackID, st.Active.Cards[0])
+	_, err = d.Pick(0, 1, st.Active.PackID, st.Active.Cards[0], PickZoneMainboard)
 	require.NoError(t, err, "first Pick error")
-	_, err = d.Pick(0, 2, st.Active.PackID, st.Active.Cards[1])
+	_, err = d.Pick(0, 2, st.Active.PackID, st.Active.Cards[1], PickZoneMainboard)
 	require.Error(t, err, "expected second pick in same round to fail")
 }
 
@@ -77,12 +77,12 @@ func TestDraftPickAfterDoneRejected(t *testing.T) {
 	s0, _ := d.PlayerState(0)
 	s1, _ := d.PlayerState(1)
 
-	_, err := d.Pick(0, 1, s0.Active.PackID, s0.Active.Cards[0])
+	_, err := d.Pick(0, 1, s0.Active.PackID, s0.Active.Cards[0], PickZoneMainboard)
 	require.NoError(t, err, "seat0 pick error")
-	_, err = d.Pick(1, 1, s1.Active.PackID, s1.Active.Cards[0])
+	_, err = d.Pick(1, 1, s1.Active.PackID, s1.Active.Cards[0], PickZoneMainboard)
 	require.NoError(t, err, "seat1 pick error")
 	assert.Equal(t, "done", d.State(), "expected draft done")
-	_, err = d.Pick(0, 2, s0.Active.PackID, s0.Active.Cards[0])
+	_, err = d.Pick(0, 2, s0.Active.PackID, s0.Active.Cards[0], PickZoneMainboard)
 	require.Error(t, err, "expected pick after done to fail")
 }
 
@@ -103,7 +103,7 @@ func TestDraftInvalidSeatRejected(t *testing.T) {
 	require.Error(t, err, "expected negative seat to fail")
 	_, err = d.PlayerState(99)
 	require.Error(t, err, "expected out-of-range seat to fail")
-	_, err = d.Pick(99, 1, "p0_s0", "C000")
+	_, err = d.Pick(99, 1, "p0_s0", "C000", PickZoneMainboard)
 	require.Error(t, err, "expected Pick with out-of-range seat to fail")
 }
 
@@ -112,7 +112,7 @@ func TestDraftPackMismatchRejected(t *testing.T) {
 
 	st, err := d.PlayerState(0)
 	require.NoError(t, err, "PlayerState error")
-	_, err = d.Pick(0, 1, "wrong_pack_id", st.Active.Cards[0])
+	_, err = d.Pick(0, 1, "wrong_pack_id", st.Active.Cards[0], PickZoneMainboard)
 	require.Error(t, err, "expected pack mismatch to fail")
 }
 
@@ -122,18 +122,18 @@ func TestDraftCardNotAvailableRejected(t *testing.T) {
 	seat0Start, err := d.PlayerState(0)
 	require.NoError(t, err, "seat0 PlayerState error")
 	pickedBySeat0 := seat0Start.Active.Cards[0]
-	_, err = d.Pick(0, 1, seat0Start.Active.PackID, pickedBySeat0)
+	_, err = d.Pick(0, 1, seat0Start.Active.PackID, pickedBySeat0, PickZoneMainboard)
 	require.NoError(t, err, "seat0 pick error")
 
 	seat1Start, err := d.PlayerState(1)
 	require.NoError(t, err, "seat1 PlayerState error")
-	_, err = d.Pick(1, 1, seat1Start.Active.PackID, seat1Start.Active.Cards[0])
+	_, err = d.Pick(1, 1, seat1Start.Active.PackID, seat1Start.Active.Cards[0], PickZoneMainboard)
 	require.NoError(t, err, "seat1 pick error")
 
 	// Round advanced; seat1 now sees seat0's original pack. Re-picking seat0's card must fail.
 	seat1Next, err := d.PlayerState(1)
 	require.NoError(t, err, "seat1 next PlayerState error")
-	_, err = d.Pick(1, 2, seat1Next.Active.PackID, pickedBySeat0)
+	_, err = d.Pick(1, 2, seat1Next.Active.PackID, pickedBySeat0, PickZoneMainboard)
 	require.Error(t, err, "expected picked/unavailable card to fail")
 }
 
@@ -144,14 +144,14 @@ func TestDraftPickIdempotentSeq(t *testing.T) {
 	require.NoError(t, err, "PlayerState error")
 	card := st.Active.Cards[0]
 
-	first, err := d.Pick(0, 1, st.Active.PackID, card)
+	first, err := d.Pick(0, 1, st.Active.PackID, card, PickZoneMainboard)
 	require.NoError(t, err, "first Pick error")
 	assert.False(t, first.Duplicate, "first pick must not be duplicate")
 
-	second, err := d.Pick(0, 1, st.Active.PackID, card)
+	second, err := d.Pick(0, 1, st.Active.PackID, card, PickZoneMainboard)
 	require.NoError(t, err, "duplicate Pick should be idempotent")
 	assert.True(t, second.Duplicate, "expected duplicate pick result")
-	assert.Equal(t, 1, len(d.Seats[0].Pool), "pool mutated on duplicate pick")
+	assert.Equal(t, 1, len(d.Seats[0].Picks.Mainboard), "mainboard mutated on duplicate pick")
 }
 
 func TestDraftPickSeqValidation(t *testing.T) {
@@ -160,10 +160,19 @@ func TestDraftPickSeqValidation(t *testing.T) {
 	require.NoError(t, err, "PlayerState error")
 	card := st.Active.Cards[0]
 
-	_, err = d.Pick(0, 3, st.Active.PackID, card)
+	_, err = d.Pick(0, 3, st.Active.PackID, card, PickZoneMainboard)
 	require.Error(t, err, "expected seq gap rejection")
-	_, err = d.Pick(0, 1, st.Active.PackID, card)
+	_, err = d.Pick(0, 1, st.Active.PackID, card, PickZoneMainboard)
 	require.NoError(t, err, "pick error")
-	_, err = d.Pick(0, 0, st.Active.PackID, card)
+	_, err = d.Pick(0, 0, st.Active.PackID, card, PickZoneMainboard)
 	require.Error(t, err, "expected invalid/stale seq rejection")
+}
+
+func TestDraftPickInvalidZoneRejected(t *testing.T) {
+	d := makeDraft(t, 1, 2, 2)
+	st, err := d.PlayerState(0)
+	require.NoError(t, err, "PlayerState error")
+
+	_, err = d.Pick(0, 1, st.Active.PackID, st.Active.Cards[0], "graveyard")
+	require.Error(t, err, "expected invalid zone rejection")
 }

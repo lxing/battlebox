@@ -166,17 +166,31 @@
 }
 
 .draft-pack-actions {
-  display: flex;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.4rem;
 }
 
 .draft-pick-confirm-button {
   width: 100%;
 }
 
-.draft-pool-list {
+.draft-picks-zones {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0.7rem;
+}
+
+.draft-picks-zone-title {
+  margin: 0 0 0.35rem;
+  font-size: var(--font-size-sm);
+  color: var(--color-text-muted-2);
+}
+
+.draft-picks-list {
   margin: 0;
   padding-left: 1rem;
-  max-height: 15rem;
+  max-height: 7rem;
   overflow-y: auto;
 }
 

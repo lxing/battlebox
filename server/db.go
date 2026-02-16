@@ -14,7 +14,10 @@ import (
 	_ "modernc.org/sqlite"
 )
 
+const draftSnapshotSchemaVersion = 1
+
 type draftRoomSnapshot struct {
+	SchemaVersion int              `json:"schema_version"`
 	Config        DraftConfig      `json:"config"`
 	Packs         [][]packSnapshot `json:"packs"`
 	Progress      DraftProgress    `json:"progress"`
@@ -75,10 +78,6 @@ CREATE TABLE IF NOT EXISTS draft_rooms (
 		_ = db.Close()
 		return nil, fmt.Errorf("create draft_rooms table: %w", err)
 	}
-	if err := ensureDraftRoomsGlobalSeqColumn(db); err != nil {
-		_ = db.Close()
-		return nil, fmt.Errorf("ensure draft_rooms global_seq column: %w", err)
-	}
 	if _, err := db.Exec(`CREATE INDEX IF NOT EXISTS draft_rooms_updated_at_idx ON draft_rooms(updated_at);`); err != nil {
 		_ = db.Close()
 		return nil, fmt.Errorf("create draft_rooms index: %w", err)
@@ -92,39 +91,6 @@ func (s *draftRoomStore) Close() error {
 		return nil
 	}
 	return s.db.Close()
-}
-
-func ensureDraftRoomsGlobalSeqColumn(db *sql.DB) error {
-	rows, err := db.Query(`PRAGMA table_info(draft_rooms);`)
-	if err != nil {
-		return err
-	}
-	defer rows.Close()
-
-	hasGlobalSeq := false
-	for rows.Next() {
-		var cid int
-		var name string
-		var columnType string
-		var notNull int
-		var defaultValue sql.NullString
-		var pk int
-		if err := rows.Scan(&cid, &name, &columnType, &notNull, &defaultValue, &pk); err != nil {
-			return err
-		}
-		if name == "global_seq" {
-			hasGlobalSeq = true
-			break
-		}
-	}
-	if err := rows.Err(); err != nil {
-		return err
-	}
-	if hasGlobalSeq {
-		return nil
-	}
-	_, err = db.Exec(`ALTER TABLE draft_rooms ADD COLUMN global_seq INTEGER NOT NULL DEFAULT 0;`)
-	return err
 }
 
 func (s *draftRoomStore) SaveRooms(ctx context.Context, records []draftRoomRecord) (int, error) {
@@ -313,11 +279,15 @@ func snapshotFromDraft(d *Draft) draftRoomSnapshot {
 		seats[i] = SeatState{
 			SeatNumber: seat.SeatNumber,
 			Name:       seat.Name,
-			Pool:       append([]string(nil), seat.Pool...),
+			Picks: SeatPicks{
+				Mainboard: append([]string(nil), seat.Picks.Mainboard...),
+				Sideboard: append([]string(nil), seat.Picks.Sideboard...),
+			},
 		}
 	}
 
 	return draftRoomSnapshot{
+		SchemaVersion: draftSnapshotSchemaVersion,
 		Config:        d.Config,
 		Packs:         packs,
 		Progress:      d.Progress,
@@ -329,6 +299,10 @@ func snapshotFromDraft(d *Draft) draftRoomSnapshot {
 }
 
 func draftFromSnapshot(snapshot draftRoomSnapshot) (*Draft, error) {
+	if snapshot.SchemaVersion != draftSnapshotSchemaVersion {
+		return nil, fmt.Errorf("unsupported snapshot schema version: %d", snapshot.SchemaVersion)
+	}
+
 	cfg := snapshot.Config
 	if cfg.PackCount <= 0 || cfg.PackSize <= 0 || cfg.SeatCount <= 0 {
 		return nil, errors.New("invalid draft config in snapshot")
@@ -366,7 +340,10 @@ func draftFromSnapshot(snapshot draftRoomSnapshot) (*Draft, error) {
 		seats[i] = SeatState{
 			SeatNumber: seat.SeatNumber,
 			Name:       seat.Name,
-			Pool:       append([]string(nil), seat.Pool...),
+			Picks: SeatPicks{
+				Mainboard: append([]string(nil), seat.Picks.Mainboard...),
+				Sideboard: append([]string(nil), seat.Picks.Sideboard...),
+			},
 		}
 	}
 
@@ -381,14 +358,17 @@ func draftFromSnapshot(snapshot draftRoomSnapshot) (*Draft, error) {
 		progress.PickNumber = 0
 	}
 
+	if len(snapshot.SeatPicked) != cfg.SeatCount {
+		return nil, fmt.Errorf("seat picked count mismatch: got %d want %d", len(snapshot.SeatPicked), cfg.SeatCount)
+	}
 	seatPicked := make([]bool, cfg.SeatCount)
-	if len(snapshot.SeatPicked) == cfg.SeatCount {
-		copy(seatPicked, snapshot.SeatPicked)
+	copy(seatPicked, snapshot.SeatPicked)
+
+	if len(snapshot.LastSeqBySeat) != cfg.SeatCount {
+		return nil, fmt.Errorf("last seq count mismatch: got %d want %d", len(snapshot.LastSeqBySeat), cfg.SeatCount)
 	}
 	lastSeqBySeat := make([]uint64, cfg.SeatCount)
-	if len(snapshot.LastSeqBySeat) == cfg.SeatCount {
-		copy(lastSeqBySeat, snapshot.LastSeqBySeat)
-	}
+	copy(lastSeqBySeat, snapshot.LastSeqBySeat)
 
 	if progress.PackNumber >= cfg.PackCount {
 		for i := range seatPicked {

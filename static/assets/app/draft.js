@@ -169,15 +169,15 @@ export function createDraftController({
     return draftUi.roomId;
   }
 
-  function syncPackSelectionUi(cardButtons, pickButton, canPick) {
+  function syncPackSelectionUi(cardButtons, pickButtons, canPick) {
     const selectedIndex = draftUi.selectedPackIndex;
     cardButtons.forEach((btn) => {
       const idx = Number.parseInt(btn.dataset.index || '-1', 10);
       btn.classList.toggle('is-selected', idx === selectedIndex);
     });
-    if (pickButton) {
-      pickButton.disabled = !canPick || selectedIndex < 0;
-    }
+    pickButtons.forEach((button) => {
+      button.disabled = !canPick || selectedIndex < 0;
+    });
   }
 
   function syncPackColumnWidth(packEl) {
@@ -198,7 +198,7 @@ export function createDraftController({
     const packInfoEl = ui.draftPane.querySelector('#draft-pack-label');
     const pickInfoEl = ui.draftPane.querySelector('#draft-pick-label');
     const packEl = ui.draftPane.querySelector('#draft-pack-cards');
-    const poolEl = ui.draftPane.querySelector('#draft-pool-cards');
+    const picksEl = ui.draftPane.querySelector('#draft-picks-cards');
 
     updateConnectionIndicator();
 
@@ -209,7 +209,7 @@ export function createDraftController({
       if (packInfoEl) packInfoEl.textContent = 'Pack -';
       if (pickInfoEl) pickInfoEl.textContent = 'Pick -';
       if (packEl) packEl.innerHTML = '<div class="draft-empty">Waiting for state...</div>';
-      if (poolEl) poolEl.innerHTML = '';
+      if (picksEl) picksEl.innerHTML = '';
       return;
     }
 
@@ -220,9 +220,21 @@ export function createDraftController({
       pickInfoEl.textContent = `Pick ${state.pick_no + 1}`;
     }
 
-    if (poolEl) {
-      const rows = (state.pool || []).map((name) => `<li>${name}</li>`).join('');
-      poolEl.innerHTML = rows ? `<ul class="draft-pool-list">${rows}</ul>` : '<div class="draft-empty">No picks yet.</div>';
+    if (picksEl) {
+      const mainboardRows = state.picks.mainboard.map((name) => `<li>${escapeHtml(name)}</li>`).join('');
+      const sideboardRows = state.picks.sideboard.map((name) => `<li>${escapeHtml(name)}</li>`).join('');
+      picksEl.innerHTML = `
+        <div class="draft-picks-zones">
+          <section class="draft-picks-zone">
+            <h4 class="draft-picks-zone-title">Mainboard</h4>
+            ${mainboardRows ? `<ul class="draft-picks-list">${mainboardRows}</ul>` : '<div class="draft-empty">No cards yet.</div>'}
+          </section>
+          <section class="draft-picks-zone">
+            <h4 class="draft-picks-zone-title">Sideboard</h4>
+            ${sideboardRows ? `<ul class="draft-picks-list">${sideboardRows}</ul>` : '<div class="draft-empty">No cards yet.</div>'}
+          </section>
+        </div>
+      `;
     }
 
     if (!packEl) return;
@@ -284,8 +296,11 @@ export function createDraftController({
         </div>
       </div>
       <div class="draft-pack-actions">
-        <button type="button" class="action-button button-standard draft-pick-confirm-button" id="draft-pick-selected" ${canPick && draftUi.selectedPackIndex >= 0 ? '' : 'disabled'}>
-          Pick selected card
+        <button type="button" class="action-button button-standard draft-pick-confirm-button" id="draft-pick-mainboard" ${canPick && draftUi.selectedPackIndex >= 0 ? '' : 'disabled'}>
+          Mainboard
+        </button>
+        <button type="button" class="action-button button-standard draft-pick-confirm-button" id="draft-pick-sideboard" ${canPick && draftUi.selectedPackIndex >= 0 ? '' : 'disabled'}>
+          Sideboard
         </button>
       </div>
     `;
@@ -293,7 +308,9 @@ export function createDraftController({
 
     const cardButtons = [...packEl.querySelectorAll('.draft-pack-card')];
     const cardFlipControls = [...packEl.querySelectorAll('[data-draft-card-flip="1"]')];
-    const pickButton = packEl.querySelector('#draft-pick-selected');
+    const mainboardButton = packEl.querySelector('#draft-pick-mainboard');
+    const sideboardButton = packEl.querySelector('#draft-pick-sideboard');
+    const pickButtons = [mainboardButton, sideboardButton].filter(Boolean);
 
     cardButtons.forEach((btn) => {
       btn.addEventListener('click', () => {
@@ -301,7 +318,7 @@ export function createDraftController({
         const i = Number.parseInt(btn.dataset.index || '-1', 10);
         if (i < 0 || i >= active.cards.length) return;
         draftUi.selectedPackIndex = draftUi.selectedPackIndex === i ? -1 : i;
-        syncPackSelectionUi(cardButtons, pickButton, canPick);
+        syncPackSelectionUi(cardButtons, pickButtons, canPick);
       });
     });
 
@@ -320,29 +337,37 @@ export function createDraftController({
       });
     });
 
-    if (pickButton) {
-      pickButton.addEventListener('click', () => {
+    function sendPick(zone) {
+      return () => {
         const i = draftUi.selectedPackIndex;
         const chosen = active.cards[i];
         if (!canPick || !chosen || !draftUi.socket || draftUi.socket.readyState !== WebSocket.OPEN) return;
         const nextSeq = Number.parseInt(String(state.next_seq || 1), 10) || 1;
         draftUi.pendingPick = true;
         draftUi.selectedPackIndex = -1;
-        syncPackSelectionUi(cardButtons, pickButton, false);
+        syncPackSelectionUi(cardButtons, pickButtons, false);
         updateUIFromState();
         draftUi.socket.send(JSON.stringify({
           type: 'pick',
           seq: nextSeq,
           pack_id: active.pack_id,
           card_name: chosen,
+          zone,
         }));
-      });
+      };
+    }
+
+    if (mainboardButton) {
+      mainboardButton.addEventListener('click', sendPick('mainboard'));
+    }
+    if (sideboardButton) {
+      sideboardButton.addEventListener('click', sendPick('sideboard'));
     }
 
     if (!canPick) {
-      syncPackSelectionUi(cardButtons, pickButton, false);
+      syncPackSelectionUi(cardButtons, pickButtons, false);
     } else {
-      syncPackSelectionUi(cardButtons, pickButton, true);
+      syncPackSelectionUi(cardButtons, pickButtons, true);
     }
   }
 
@@ -472,8 +497,8 @@ export function createDraftController({
         </div>
 
         <div class="draft-panel">
-          <h3 class="panel-title draft-panel-title">Pool</h3>
-          <div id="draft-pool-cards"></div>
+          <h3 class="panel-title draft-panel-title">Picks</h3>
+          <div id="draft-picks-cards"></div>
         </div>
       </div>
     `;

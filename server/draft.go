@@ -25,11 +25,16 @@ type Pack struct {
 	Picked []bool // picked[i] = true when card i has been taken
 }
 
+type SeatPicks struct {
+	Mainboard []string `json:"mainboard"`
+	Sideboard []string `json:"sideboard"`
+}
+
 // SeatState records everything the server knows about a drafter.
 type SeatState struct {
 	SeatNumber int
 	Name       string
-	Pool       []string // cards the drafter has picked so far
+	Picks      SeatPicks // cards the drafter has picked so far, split by destination
 }
 
 // DraftProgress captures where the table currently is.
@@ -49,13 +54,18 @@ type PackView struct {
 type PlayerState struct {
 	SeatID  int       `json:"seat_id"`
 	State   string    `json:"state"`
-	Pool    []string  `json:"pool"`
+	Picks   SeatPicks `json:"picks"`
 	Active  *PackView `json:"active_pack,omitempty"`
 	PackNo  int       `json:"pack_no"`
 	PickNo  int       `json:"pick_no"`
 	CanPick bool      `json:"can_pick"`
 	NextSeq uint64    `json:"next_seq"`
 }
+
+const (
+	PickZoneMainboard = "mainboard"
+	PickZoneSideboard = "sideboard"
+)
 
 // PickResult is the outcome of a pick command.
 type PickResult struct {
@@ -81,7 +91,7 @@ type DraftCompleted struct{}
 func (DraftCompleted) isEvent() {}
 
 // Draft is the authoritative state for one draft. Once started, it is immutable
-// in structure; only progress, packs, and pools advance.
+// in structure; only progress, packs, and picks advance.
 type Draft struct {
 	Config DraftConfig
 	Packs  [][]*Pack // [packNumber][originSeat]
@@ -132,7 +142,10 @@ func NewDraft(cfg DraftConfig, deckList []string, seatNames []string) (*Draft, e
 		seats[i] = SeatState{
 			SeatNumber: i,
 			Name:       seatNames[i],
-			Pool:       []string{},
+			Picks: SeatPicks{
+				Mainboard: []string{},
+				Sideboard: []string{},
+			},
 		}
 	}
 
@@ -205,14 +218,20 @@ func (d *Draft) PlayerState(seat int) (PlayerState, error) {
 	state := PlayerState{
 		SeatID:  seat,
 		State:   d.State(),
+		Picks:   SeatPicks{Mainboard: []string{}, Sideboard: []string{}},
 		PackNo:  d.Progress.PackNumber,
 		PickNo:  d.Progress.PickNumber,
 		NextSeq: d.lastSeqBySeat[seat] + 1,
 	}
 
-	poolCopy := make([]string, len(d.Seats[seat].Pool))
-	copy(poolCopy, d.Seats[seat].Pool)
-	state.Pool = poolCopy
+	mainboardCopy := make([]string, len(d.Seats[seat].Picks.Mainboard))
+	copy(mainboardCopy, d.Seats[seat].Picks.Mainboard)
+	sideboardCopy := make([]string, len(d.Seats[seat].Picks.Sideboard))
+	copy(sideboardCopy, d.Seats[seat].Picks.Sideboard)
+	state.Picks = SeatPicks{
+		Mainboard: mainboardCopy,
+		Sideboard: sideboardCopy,
+	}
 
 	if state.State == "done" {
 		return state, nil
@@ -236,7 +255,7 @@ func (d *Draft) PlayerState(seat int) (PlayerState, error) {
 
 // Pick applies a seat pick and advances the round when all seats have picked.
 // Sequence numbers are per-seat and strictly monotonic to make pick retries idempotent.
-func (d *Draft) Pick(seat int, seq uint64, packID, cardName string) (PickResult, error) {
+func (d *Draft) Pick(seat int, seq uint64, packID, cardName, zone string) (PickResult, error) {
 	if seat < 0 || seat >= d.Config.SeatCount {
 		return PickResult{}, errors.New("invalid seat")
 	}
@@ -259,6 +278,9 @@ func (d *Draft) Pick(seat int, seq uint64, packID, cardName string) (PickResult,
 	}
 	if seq != lastSeq+1 {
 		return PickResult{}, errors.New("seq gap")
+	}
+	if zone != PickZoneMainboard && zone != PickZoneSideboard {
+		return PickResult{}, errors.New("invalid pick zone")
 	}
 	if d.seatPicked[seat] {
 		return PickResult{}, errors.New("seat already picked this round")
@@ -286,7 +308,11 @@ func (d *Draft) Pick(seat int, seq uint64, packID, cardName string) (PickResult,
 	pack.Picked[cardIdx] = true
 	d.seatPicked[seat] = true
 	d.lastSeqBySeat[seat] = seq
-	d.Seats[seat].Pool = append(d.Seats[seat].Pool, cardName)
+	if zone == PickZoneMainboard {
+		d.Seats[seat].Picks.Mainboard = append(d.Seats[seat].Picks.Mainboard, cardName)
+	} else {
+		d.Seats[seat].Picks.Sideboard = append(d.Seats[seat].Picks.Sideboard, cardName)
+	}
 	d.globalSeq++
 
 	events := []Event{}

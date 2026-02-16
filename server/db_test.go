@@ -13,7 +13,7 @@ func TestDraftSnapshotRoundTrip(t *testing.T) {
 	draft := makeDraft(t, 1, 2, 2)
 	seat0State, err := draft.PlayerState(0)
 	require.NoError(t, err, "seat 0 PlayerState")
-	_, err = draft.Pick(0, 1, seat0State.Active.PackID, seat0State.Active.Cards[0])
+	_, err = draft.Pick(0, 1, seat0State.Active.PackID, seat0State.Active.Cards[0], PickZoneMainboard)
 	require.NoError(t, err, "seat 0 pick")
 
 	snapshot := snapshotFromDraft(draft)
@@ -67,7 +67,7 @@ func TestDraftRoomStoreSaveLoad(t *testing.T) {
 
 	state, err := draft.PlayerState(0)
 	require.NoError(t, err, "PlayerState before mutation")
-	_, err = draft.Pick(0, 1, state.Active.PackID, state.Active.Cards[0])
+	_, err = draft.Pick(0, 1, state.Active.PackID, state.Active.Cards[0], PickZoneMainboard)
 	require.NoError(t, err, "Pick mutation")
 	updatedSnapshot := snapshotFromDraft(draft)
 

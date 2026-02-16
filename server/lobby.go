@@ -188,12 +188,12 @@ func (r *draftRoom) handlePick(seat int, conn *websocket.Conn, msg draftWSMessag
 	r.mu.Lock()
 	defer r.mu.Unlock()
 
-	if msg.Seq == 0 || msg.PackID == "" || msg.CardName == "" {
+	if msg.Seq == 0 || msg.PackID == "" || msg.CardName == "" || msg.Zone == "" {
 		r.writeToConn(conn, draftWSMessage{Type: "error", Error: "missing pick fields"})
 		return false
 	}
 
-	result, err := r.draft.Pick(seat, msg.Seq, msg.PackID, msg.CardName)
+	result, err := r.draft.Pick(seat, msg.Seq, msg.PackID, msg.CardName, msg.Zone)
 	if err != nil {
 		r.writeToConn(conn, draftWSMessage{Type: "error", Error: err.Error()})
 		return false
