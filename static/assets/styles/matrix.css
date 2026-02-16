@@ -236,7 +236,6 @@
 }
 
 .lobby-join-button {
-  min-height: var(--control-height-md);
   padding: 0 0.7rem;
 }
 

@@ -130,7 +130,6 @@
 
 .draft-pick-confirm-button {
   width: 100%;
-  min-height: var(--control-height-md);
 }
 
 .draft-pool-list {

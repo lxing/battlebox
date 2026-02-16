@@ -113,7 +113,7 @@
 }
 
 .sample-hand-control {
-  min-height: 1.95rem;
+  min-height: var(--control-height-md);
 }
 
 .sample-hand-footer {
@@ -739,11 +739,6 @@ details.collapsible[open] summary::after {
   margin-top: 0.5rem;
 }
 
-.sample-hand-open-button {
-  min-height: var(--control-height-md);
-  padding: 0 0.8rem;
-}
-
 .primer {
   white-space: pre-wrap;
   font-size: var(--font-size-sm);
@@ -766,7 +761,6 @@ details.collapsible[open] summary::after {
 
 .apply-sideboard-button {
   width: 100%;
-  padding: 0 0.8rem;
 }
 
 .apply-sideboard-button.active {
@@ -776,7 +770,6 @@ details.collapsible[open] summary::after {
 
 .guide-opponent-link {
   width: 100%;
-  padding: 0 0.8rem;
 }
 
 .guide-opponent-link:hover,
@@ -787,12 +780,6 @@ details.collapsible[open] summary::after {
   border-color: var(--color-button-border);
   color: var(--color-text-strong);
   outline: none;
-}
-
-.guide-opponent-link,
-.apply-sideboard-button,
-.guide-edit-button {
-  min-height: var(--control-height-md);
 }
 
 .guide-select select {

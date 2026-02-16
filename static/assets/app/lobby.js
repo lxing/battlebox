@@ -122,12 +122,12 @@ export function createLobbyController({
     const seatButtons = Array.from({ length: seatCount }, (_, idx) => {
       const occupied = occupiedSeatSet.has(idx);
       return `
-        <button
-          type="button"
-          class="action-button lobby-join-button"
-          data-room-id="${escapeHtml(room.room_id)}"
-          data-room-label="${escapeHtml(room.label || '')}"
-          data-seat-id="${idx}"
+          <button
+            type="button"
+            class="action-button button-standard lobby-join-button"
+            data-room-id="${escapeHtml(room.room_id)}"
+            data-room-label="${escapeHtml(room.label || '')}"
+            data-seat-id="${idx}"
           ${occupied ? 'disabled aria-disabled="true"' : ''}
         >
           ${idx + 1}
@@ -220,8 +220,8 @@ export function createLobbyController({
           <select id="lobby-deck-select" class="lobby-deck-select" ${noDecks ? 'disabled' : ''}>
             ${deckOptions}
           </select>
-          <button type="button" class="action-button" id="lobby-create-room" ${noDecks ? 'disabled' : ''}>Create Room</button>
-          <button type="button" class="action-button" id="lobby-refresh-rooms">Refresh</button>
+          <button type="button" class="action-button button-standard" id="lobby-create-room" ${noDecks ? 'disabled' : ''}>Create Room</button>
+          <button type="button" class="action-button button-standard" id="lobby-refresh-rooms">Refresh</button>
         </div>
         <div id="lobby-rooms-list" class="lobby-rooms-list"></div>
       </div>

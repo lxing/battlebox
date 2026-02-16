@@ -1141,11 +1141,11 @@ async function renderDeck(bbSlug, deckSlug, selectedGuide, sortMode, sortDirecti
           <select id="guide-select" aria-label="Matchup guide">
             ${guideOptions}
           </select>
-          <a class="guide-opponent-link action-button" id="guide-opponent-link" href="#">Go to</a>
-          <button type="button" class="action-button apply-sideboard-button${currentApplySideboard ? ' active' : ''}" id="apply-sideboard-button">
+          <a class="guide-opponent-link action-button button-standard" id="guide-opponent-link" href="#">Go to</a>
+          <button type="button" class="action-button button-standard apply-sideboard-button${currentApplySideboard ? ' active' : ''}" id="apply-sideboard-button">
             Sideboard
           </button>
-          <button type="button" class="action-button guide-edit-button" id="guide-edit-button">
+          <button type="button" class="action-button button-standard guide-edit-button" id="guide-edit-button">
             Edit
           </button>
         </div>
@@ -1187,7 +1187,7 @@ async function renderDeck(bbSlug, deckSlug, selectedGuide, sortMode, sortDirecti
         </div>
         ${showDeckToolbar ? `
           <div class="decklist-toolbar">
-            ${showSampleButton ? `<button type="button" class="action-button sample-hand-open-button" id="sample-hand-open-button">${sampleButtonLabel}</button>` : ''}
+            ${showSampleButton ? `<button type="button" class="action-button button-standard sample-hand-open-button" id="sample-hand-open-button">${sampleButtonLabel}</button>` : ''}
           </div>
         ` : ''}
       </div>
@@ -1318,8 +1318,8 @@ async function renderDeck(bbSlug, deckSlug, selectedGuide, sortMode, sortDirecti
           <div class="guide-editor-head">Edit guide: ${deck.name} -> ${key}</div>
           <textarea class="guide-editor-textarea" spellcheck="false"></textarea>
           <div class="guide-editor-actions">
-            <button type="button" class="action-button guide-editor-cancel">Cancel</button>
-            <button type="button" class="action-button guide-editor-save">Save</button>
+            <button type="button" class="action-button button-standard guide-editor-cancel">Cancel</button>
+            <button type="button" class="action-button button-standard guide-editor-save">Save</button>
           </div>
           <div class="guide-editor-status" aria-live="polite"></div>
         </div>

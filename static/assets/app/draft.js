@@ -207,7 +207,7 @@ export function createDraftController({
   }).join('')}
       </div>
       <div class="draft-pack-actions">
-        <button type="button" class="action-button draft-pick-confirm-button" id="draft-pick-selected" ${canPick && draftUi.selectedPackIndex >= 0 ? '' : 'disabled'}>
+        <button type="button" class="action-button button-standard draft-pick-confirm-button" id="draft-pick-selected" ${canPick && draftUi.selectedPackIndex >= 0 ? '' : 'disabled'}>
           Pick selected card
         </button>
       </div>

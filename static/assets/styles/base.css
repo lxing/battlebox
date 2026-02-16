@@ -234,6 +234,11 @@ input[type='reset'] {
   border-color: var(--color-button-active-border);
 }
 
+.button-standard {
+  min-height: var(--control-height-md);
+  padding: 0 0.8rem;
+}
+
 .static-button:hover,
 .static-button:active,
 .static-button:focus,
