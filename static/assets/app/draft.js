@@ -147,6 +147,19 @@ export function createDraftController({
     }
   }
 
+  function syncPackColumnWidth(packEl) {
+    if (!packEl) return;
+    const packScroll = packEl.querySelector('.draft-pack-scroll');
+    const packGrid = packEl.querySelector('#draft-pack-grid');
+    if (!packScroll || !packGrid) return;
+    const gridStyle = window.getComputedStyle(packGrid);
+    const gap = Number.parseFloat(gridStyle.columnGap || gridStyle.gap || '0') || 0;
+    const viewportWidth = packScroll.clientWidth;
+    if (viewportWidth <= 0) return;
+    const columnWidth = Math.max(0, (viewportWidth - gap) / 2);
+    packScroll.style.setProperty('--draft-pack-col-width', `${columnWidth}px`);
+  }
+
   function updateUIFromState() {
     if (!ui.draftPane || !hasActiveRoom()) return;
     const packInfoEl = ui.draftPane.querySelector('#draft-pack-label');
@@ -201,8 +214,9 @@ export function createDraftController({
 
     const canPick = Boolean(state.can_pick) && !draftUi.pendingPick;
     packEl.innerHTML = `
-      <div id="draft-pack-grid" class="draft-pack-grid">
-        ${active.cards.map((name, idx) => {
+      <div class="draft-pack-scroll">
+        <div id="draft-pack-grid" class="draft-pack-grid">
+          ${active.cards.map((name, idx) => {
     const safeName = escapeHtml(name);
     const imageUrl = getNamedCardImageUrl(name);
     return `
@@ -220,6 +234,7 @@ export function createDraftController({
           </button>
         `;
   }).join('')}
+        </div>
       </div>
       <div class="draft-pack-actions">
         <button type="button" class="action-button button-standard draft-pick-confirm-button" id="draft-pick-selected" ${canPick && draftUi.selectedPackIndex >= 0 ? '' : 'disabled'}>
@@ -227,6 +242,7 @@ export function createDraftController({
         </button>
       </div>
     `;
+    syncPackColumnWidth(packEl);
 
     const cardButtons = [...packEl.querySelectorAll('.draft-pack-card')];
     const pickButton = packEl.querySelector('#draft-pick-selected');
