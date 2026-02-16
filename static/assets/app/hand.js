@@ -1,8 +1,4 @@
-import { scryfallImageUrlByPrinting } from './utils.js';
-
-function getCardImageUrl(printing, face = 'front') {
-  return scryfallImageUrlByPrinting(printing, face);
-}
+import { cardFaceImageUrl, dfcFlipControlMarkup } from './cardFaces.js';
 
 function normalizeQty(value) {
   const parsed = Number.parseInt(String(value), 10);
@@ -123,16 +119,6 @@ export function createSampleHandViewer() {
     resetButton = overlay.querySelector('[data-sample-hand-action="reset"]');
     const closeButton = overlay.querySelector('[data-sample-hand-action="close"]');
 
-    grid.addEventListener('click', (event) => {
-      const target = event.target instanceof HTMLElement ? event.target : null;
-      const cardEl = target ? target.closest('[data-sample-card-index]') : null;
-      if (!(cardEl instanceof HTMLElement)) return;
-      if (cardEl.dataset.sampleCardDoubleFaced !== '1') return;
-      const index = Number.parseInt(cardEl.dataset.sampleCardIndex || '', 10);
-      if (Number.isNaN(index)) return;
-      toggleCardFace(index);
-    });
-
     backdrop.addEventListener('click', () => {
       hide();
     });
@@ -195,28 +181,40 @@ export function createSampleHandViewer() {
     } else {
       grid.innerHTML = cards.map((card, index) => {
         const showingBack = card.doubleFaced === true && card.showBack === true;
-        const imageUrl = getCardImageUrl(card.printing, showingBack ? 'back' : 'front');
+        const imageUrl = cardFaceImageUrl(card.printing, showingBack);
         const toggleAttrs = `data-sample-card-index="${index}" data-sample-card-double-faced="${card.doubleFaced ? '1' : '0'}"`;
-        const toggleBadge = card.doubleFaced
-          ? '<span class="sample-hand-card-flip-indicator" aria-hidden="true">🔄</span>'
+        const flipControl = card.doubleFaced
+          ? dfcFlipControlMarkup(
+            `data-sample-card-flip="1" data-sample-card-index="${index}"`,
+            showingBack ? 'Show front face' : 'Show back face',
+            'button',
+          )
           : '';
         if (imageUrl) {
           const faceLabel = card.doubleFaced
             ? (showingBack ? ' (back face)' : ' (front face)')
             : '';
-          const faceTitle = card.doubleFaced
-            ? (showingBack ? 'Tap to show front face' : 'Tap to show back face')
-            : '';
           return `
-            <div class="sample-hand-card" ${toggleAttrs} title="${faceTitle}">
-              ${toggleBadge}
+            <div class="sample-hand-card" ${toggleAttrs}>
+              ${flipControl}
               <img src="${imageUrl}" alt="${card.name}${faceLabel}">
             </div>
           `;
         }
-        return `<div class="sample-hand-card sample-hand-card-fallback" ${toggleAttrs}>${toggleBadge}${card.name}</div>`;
+        return `<div class="sample-hand-card sample-hand-card-fallback" ${toggleAttrs}>${flipControl}${card.name}</div>`;
       }).join('');
     }
+
+    const flipControls = [...grid.querySelectorAll('button[data-sample-card-flip="1"]')];
+    flipControls.forEach((control) => {
+      control.addEventListener('click', (event) => {
+        event.preventDefault();
+        event.stopPropagation();
+        const index = Number.parseInt(control.dataset.sampleCardIndex || '', 10);
+        if (Number.isNaN(index)) return;
+        toggleCardFace(index);
+      });
+    });
 
     const total = state.deck.length;
     drawButton.hidden = !contextAllowDraw;

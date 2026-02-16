@@ -139,8 +139,10 @@
 
 .draft-pack-card-frame {
   display: block;
+  position: relative;
   width: 100%;
   aspect-ratio: 63 / 88;
+  overflow: hidden;
 }
 
 .draft-pack-card img {

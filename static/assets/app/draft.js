@@ -1,4 +1,5 @@
-import { normalizeName, scryfallImageUrlByName, scryfallImageUrlByPrinting } from './utils.js';
+import { cardFaceImageUrl, dfcFlipControlMarkup } from './cardFaces.js';
+import { isDoubleFacedCard, normalizeName, scryfallImageUrlByName } from './utils.js';
 
 function escapeHtml(value) {
   return String(value || '')
@@ -9,11 +10,11 @@ function escapeHtml(value) {
     .replaceAll("'", '&#39;');
 }
 
-function getDraftCardImageUrl(cardName, printings) {
+function getDraftCardImageUrl(cardName, printings, showBack = false) {
   const key = normalizeName(cardName);
   if (key && printings && typeof printings === 'object') {
     const printing = printings[key];
-    const printingUrl = scryfallImageUrlByPrinting(printing);
+    const printingUrl = cardFaceImageUrl(printing, showBack);
     if (printingUrl) return printingUrl;
   }
   return scryfallImageUrlByName(cardName);
@@ -41,6 +42,7 @@ export function createDraftController({
     roomDeckSlug: '',
     roomDeckName: '',
     roomDeckPrintings: {},
+    roomDeckDoubleFaced: {},
     seat: 0,
     state: null,
     connected: false,
@@ -50,6 +52,7 @@ export function createDraftController({
     shouldReconnect: false,
     selectedPackID: '',
     selectedPackIndex: -1,
+    packCardBackFaces: new Map(),
   };
 
   function clearReconnectTimer() {
@@ -72,11 +75,13 @@ export function createDraftController({
     draftUi.roomDeckSlug = '';
     draftUi.roomDeckName = '';
     draftUi.roomDeckPrintings = {};
+    draftUi.roomDeckDoubleFaced = {};
     draftUi.seat = 0;
     draftUi.state = null;
     draftUi.pendingPick = false;
     draftUi.selectedPackID = '';
     draftUi.selectedPackIndex = -1;
+    draftUi.packCardBackFaces.clear();
   }
 
   function updateConnectionIndicator() {
@@ -131,18 +136,31 @@ export function createDraftController({
     }
   }
 
-  function openRoom(roomId, seat, roomDeckSlug = '', roomDeckPrintings = {}, roomDeckName = '') {
+  function openRoom(
+    roomId,
+    seat,
+    roomDeckSlug = '',
+    roomDeckPrintings = {},
+    roomDeckName = '',
+    roomDeckDoubleFaced = {},
+  ) {
     const normalizedRoomId = String(roomId || '').trim();
     if (!normalizedRoomId) return;
     draftUi.roomId = normalizedRoomId;
     draftUi.roomDeckSlug = normalizeDraftSlug(roomDeckSlug);
     draftUi.roomDeckName = String(roomDeckName || '').trim();
     draftUi.roomDeckPrintings = roomDeckPrintings && typeof roomDeckPrintings === 'object' ? roomDeckPrintings : {};
+    draftUi.roomDeckDoubleFaced = roomDeckDoubleFaced && typeof roomDeckDoubleFaced === 'object' ? roomDeckDoubleFaced : {};
     draftUi.seat = normalizeSeat(seat);
     draftUi.state = null;
     draftUi.reconnectAttempt = 0;
     draftUi.selectedPackID = '';
     draftUi.selectedPackIndex = -1;
+    draftUi.packCardBackFaces.clear();
+  }
+
+  function packCardFaceKey(packID, cardIndex) {
+    return `${String(packID || '')}:${Number(cardIndex)}`;
   }
 
   function roomDisplayName() {
@@ -222,29 +240,43 @@ export function createDraftController({
     if (draftUi.selectedPackID !== activePackID) {
       draftUi.selectedPackID = activePackID;
       draftUi.selectedPackIndex = -1;
+      draftUi.packCardBackFaces.clear();
     }
     if (draftUi.selectedPackIndex >= active.cards.length) {
       draftUi.selectedPackIndex = -1;
     }
-
     const canPick = Boolean(state.can_pick) && !draftUi.pendingPick;
+    if (!canPick) {
+      draftUi.selectedPackIndex = -1;
+    }
     packEl.innerHTML = `
       <div class="draft-pack-scroll">
         <div id="draft-pack-grid" class="draft-pack-grid">
           ${active.cards.map((name, idx) => {
     const safeName = escapeHtml(name);
-    const imageUrl = getDraftCardImageUrl(name, draftUi.roomDeckPrintings);
+    const doubleFaced = isDoubleFacedCard(name, draftUi.roomDeckDoubleFaced);
+    const faceKey = packCardFaceKey(activePackID, idx);
+    const showingBack = doubleFaced && draftUi.packCardBackFaces.get(faceKey) === true;
+    const imageUrl = getDraftCardImageUrl(name, draftUi.roomDeckPrintings, showingBack);
+    const faceLabel = doubleFaced ? (showingBack ? ' (back face)' : ' (front face)') : '';
+    const flipControl = doubleFaced
+      ? dfcFlipControlMarkup(
+        `data-draft-card-flip="1" data-draft-card-index="${idx}"`,
+        showingBack ? 'Show front face' : 'Show back face',
+      )
+      : '';
     return `
           <button
             type="button"
             class="action-button draft-pack-card${idx === draftUi.selectedPackIndex ? ' is-selected' : ''}"
             data-index="${idx}"
-            ${canPick ? '' : 'disabled'}
+            ${canPick ? '' : 'aria-disabled="true"'}
             title="${safeName}"
-            aria-label="${safeName}"
+            aria-label="${safeName}${faceLabel}"
           >
             <span class="draft-pack-card-frame">
-              ${imageUrl ? `<img src="${imageUrl}" alt="${safeName}" loading="lazy">` : `<span class="draft-pack-card-fallback">${safeName}</span>`}
+              ${flipControl}
+              ${imageUrl ? `<img src="${imageUrl}" alt="${safeName}${faceLabel}" loading="lazy">` : `<span class="draft-pack-card-fallback">${safeName}${faceLabel}</span>`}
             </span>
           </button>
         `;
@@ -260,18 +292,33 @@ export function createDraftController({
     syncPackColumnWidth(packEl);
 
     const cardButtons = [...packEl.querySelectorAll('.draft-pack-card')];
+    const cardFlipControls = [...packEl.querySelectorAll('[data-draft-card-flip="1"]')];
     const pickButton = packEl.querySelector('#draft-pick-selected');
 
-    if (canPick) {
-      cardButtons.forEach((btn) => {
-        btn.addEventListener('click', () => {
-          const i = Number.parseInt(btn.dataset.index || '-1', 10);
-          if (i < 0 || i >= active.cards.length) return;
-          draftUi.selectedPackIndex = i;
-          syncPackSelectionUi(cardButtons, pickButton, canPick);
-        });
+    cardButtons.forEach((btn) => {
+      btn.addEventListener('click', () => {
+        if (!canPick) return;
+        const i = Number.parseInt(btn.dataset.index || '-1', 10);
+        if (i < 0 || i >= active.cards.length) return;
+        draftUi.selectedPackIndex = i;
+        syncPackSelectionUi(cardButtons, pickButton, canPick);
       });
-    }
+    });
+
+    cardFlipControls.forEach((control) => {
+      control.addEventListener('click', (event) => {
+        event.preventDefault();
+        event.stopPropagation();
+        const i = Number.parseInt(control.dataset.draftCardIndex || '-1', 10);
+        if (i < 0 || i >= active.cards.length) return;
+        const cardName = active.cards[i];
+        if (!isDoubleFacedCard(cardName, draftUi.roomDeckDoubleFaced)) return;
+        const key = packCardFaceKey(activePackID, i);
+        const next = !(draftUi.packCardBackFaces.get(key) === true);
+        draftUi.packCardBackFaces.set(key, next);
+        updateUIFromState();
+      });
+    });
 
     if (pickButton) {
       pickButton.addEventListener('click', () => {

@@ -1,4 +1,4 @@
-import { normalizeName } from './utils.js';
+import { normalizeName, buildDoubleFacedMap as buildDoubleFacedLookup } from './utils.js';
 
 function escapeHtml(text) {
   return String(text)
@@ -203,18 +203,7 @@ export function renderGuideContent(mdPlan, mdProse, guide) {
 }
 
 export function buildDoubleFacedMap(deck) {
-  const out = {};
-  const addCards = (cards) => {
-    if (!cards) return;
-    cards.forEach(c => {
-      if (c.double_faced) {
-        out[normalizeName(c.name)] = true;
-      }
-    });
-  };
-  addCards(deck.cards);
-  addCards(deck.sideboard);
-  return out;
+  return buildDoubleFacedLookup(deck);
 }
 
 function renderCardRow(card, bannedSet, highlightClass) {

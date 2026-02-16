@@ -99,6 +99,28 @@ export function normalizeName(name) {
   return String(name || '').toLowerCase().trim();
 }
 
+export function buildDoubleFacedMap(deck) {
+  const out = {};
+  const addCards = (cards) => {
+    if (!Array.isArray(cards)) return;
+    cards.forEach((card) => {
+      if (!card || card.double_faced !== true) return;
+      const key = normalizeName(card.name);
+      if (!key) return;
+      out[key] = true;
+    });
+  };
+  addCards(deck?.cards);
+  addCards(deck?.sideboard);
+  return out;
+}
+
+export function isDoubleFacedCard(name, doubleFacedMap) {
+  const key = normalizeName(name);
+  if (!key) return false;
+  return Boolean(doubleFacedMap && doubleFacedMap[key] === true);
+}
+
 export function scryfallImageUrlByName(cardName) {
   const name = String(cardName || '').trim();
   if (!name) return '';

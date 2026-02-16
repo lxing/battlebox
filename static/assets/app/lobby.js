@@ -1,4 +1,4 @@
-import { normalizeName } from './utils.js';
+import { buildDoubleFacedMap, normalizeName } from './utils.js';
 
 function buildDraftDeckNames(deck) {
   const names = [];
@@ -100,10 +100,11 @@ export function createLobbyController({
         const roomDeckPrintings = roomDeck && roomDeck.printings && typeof roomDeck.printings === 'object'
           ? roomDeck.printings
           : {};
+        const roomDeckDoubleFaced = buildDoubleFacedMap(roomDeck);
         const seatRaw = Number.parseInt(String(button.dataset.seatId || '0'), 10);
         const seat = Number.isFinite(seatRaw) && seatRaw >= 0 ? seatRaw : 0;
         if (!roomID) return;
-        draftController.openRoom(roomID, seat, roomDeckSlug, roomDeckPrintings, roomDeckName);
+        draftController.openRoom(roomID, seat, roomDeckSlug, roomDeckPrintings, roomDeckName, roomDeckDoubleFaced);
         void render(state.currentDeckSlug);
       });
     });
