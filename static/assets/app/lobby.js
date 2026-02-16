@@ -262,7 +262,6 @@ export function createLobbyController({
     const cubeLabel = escapeHtml(String(roomDeck?.name || roomDeckSlug || 'Unknown').trim());
     const packNo = (Number.parseInt(String(room.pack_no || 0), 10) || 0) + 1;
     const pickNo = (Number.parseInt(String(room.pick_no || 0), 10) || 0) + 1;
-    const connectedSeats = Number.parseInt(String(room.connected_seats || 0), 10) || 0;
     return `
             <li class="lobby-room-item">
               <div class="lobby-room-head">
@@ -278,7 +277,7 @@ export function createLobbyController({
                   >🗑️</button>
                 </div>
               </div>
-              <div class="lobby-room-meta">Pack ${packNo} · Pick ${pickNo} · ${connectedSeats}/${seatCount} connected</div>
+              <div class="lobby-room-meta">Pack ${packNo} · Pick ${pickNo}</div>
               <div class="lobby-room-actions">${seatButtons}</div>
             </li>
           `;
@@ -344,14 +343,15 @@ export function createLobbyController({
     const noDecks = decks.length === 0;
     const selectedDeck = decks.find((deck) => normalizeName(deck.slug) === activeDeckSlug) || decks[0] || null;
     const selectedDeckSlug = selectedDeck ? selectedDeck.slug : '';
-    const presetEntries = parseDraftPresets(cube?.presets);
+    const allowedPresetIDs = new Set(Array.isArray(selectedDeck?.draft_presets) ? selectedDeck.draft_presets : []);
+    const presetEntries = parseDraftPresets(cube?.presets).filter((preset) => allowedPresetIDs.has(preset.id));
     const noPresets = presetEntries.length === 0;
     if (!presetEntries.some((preset) => preset.id === state.currentPresetID)) {
       state.currentPresetID = presetEntries[0]?.id || '';
     }
     const presetOptions = presetEntries.map((preset) => {
       const selected = preset.id === state.currentPresetID ? ' selected' : '';
-      const label = `${preset.label} (${preset.seat_count}p · ${preset.pack_count}x${preset.pack_size})`;
+      const label = `${preset.seat_count}p · ${preset.pack_count}x${preset.pack_size}`;
       return `<option value="${escapeHtml(preset.id)}"${selected}>${escapeHtml(label)}</option>`;
     }).join('');
 
@@ -389,6 +389,7 @@ export function createLobbyController({
     if (deckSelect) {
       deckSelect.addEventListener('change', () => {
         state.currentDeckSlug = normalizeName(deckSelect.value || '');
+        void render(state.currentDeckSlug);
       });
     }
     if (presetSelect) {

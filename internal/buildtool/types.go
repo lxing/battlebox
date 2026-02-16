@@ -39,6 +39,8 @@ type Manifest struct {
 	DifficultyTags []string `json:"difficulty_tags,omitempty"`
 	// Optional reference to a top-level battlebox UI profile.
 	UIProfile string `json:"ui_profile,omitempty"`
+	// Optional draft preset ids enabled for this deck.
+	DraftPresets []string `json:"draft_presets,omitempty"`
 	// Optional decklist layout mode for frontend rendering.
 	View string `json:"view,omitempty"`
 	// Optional opening hand size override for Sample Hand viewer.
@@ -99,6 +101,8 @@ type Deck struct {
 	DifficultyTags []string `json:"difficulty_tags,omitempty"`
 	// Resolved deck UI behavior from top-level profile/defaults.
 	UI DeckUIProfile `json:"ui"`
+	// Draft preset ids enabled for this deck.
+	DraftPresets []string `json:"draft_presets,omitempty"`
 	// Optional decklist layout mode for frontend rendering.
 	View string `json:"view,omitempty"`
 	// Optional opening hand size override for Sample Hand viewer.

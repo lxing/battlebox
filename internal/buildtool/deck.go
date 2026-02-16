@@ -21,6 +21,12 @@ func processDeck(deckPath, slug, battlebox string, printings map[string]string, 
 	}
 	manifest.Icon = strings.TrimSpace(manifest.Icon)
 	manifest.UIProfile = strings.TrimSpace(manifest.UIProfile)
+	draftPresetRefs := append([]string(nil), manifest.DraftPresets...)
+	for _, presetID := range draftPresetRefs {
+		if _, ok := bbManifest.Presets[presetID]; !ok {
+			return nil, fmt.Errorf("unknown draft preset reference %q", presetID)
+		}
+	}
 
 	uiProfile, err := resolveDeckUIProfile(manifest, bbManifest)
 	if err != nil {
@@ -61,6 +67,7 @@ func processDeck(deckPath, slug, battlebox string, printings map[string]string, 
 		Tags:           normalizeDeckTags(manifest.Tags),
 		DifficultyTags: normalizeDifficultyTags(manifest.DifficultyTags),
 		UI:             uiProfile,
+		DraftPresets:   draftPresetRefs,
 		View:           uiProfile.DecklistView,
 		SampleHandSize: uiProfile.Sample.Size,
 		CardCount:      cardCount,

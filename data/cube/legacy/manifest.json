@@ -7,6 +7,10 @@
   "tags": [
     "4p"
   ],
+  "draft_presets": [
+    "2p",
+    "8p"
+  ],
   "cards": [
     {
       "name": "Cheeky House-Mouse",

@@ -23,6 +23,12 @@
       "pack_count": 8,
       "pack_size": 7,
       "pass_pattern": [1, 2, 2]
+    },
+    "8p": {
+      "seat_count": 8,
+      "pack_count": 3,
+      "pack_size": 15,
+      "pass_pattern": [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
     }
   },
   "land_subtypes": {

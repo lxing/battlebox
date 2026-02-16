@@ -7,6 +7,9 @@
   "tags": [
     "2p"
   ],
+  "draft_presets": [
+    "2p"
+  ],
   "cards": [
     {
       "name": "Arcbound Javelineer",
