@@ -1,6 +1,7 @@
 package buildtool
 
 import (
+	"errors"
 	"fmt"
 	"strings"
 )
@@ -122,13 +123,55 @@ func normalizeBattleboxDraftPresets(manifest *BattleboxManifest) {
 		if preset.SeatCount <= 0 || preset.PackCount <= 0 || preset.PackSize <= 0 {
 			continue
 		}
+		passPattern := normalizeDraftPassPattern(preset.PackSize, preset.PassPattern)
+		if len(passPattern) == 0 {
+			continue
+		}
 		normalized[name] = DraftPreset{
-			SeatCount: preset.SeatCount,
-			PackCount: preset.PackCount,
-			PackSize:  preset.PackSize,
+			SeatCount:   preset.SeatCount,
+			PackCount:   preset.PackCount,
+			PackSize:    preset.PackSize,
+			PassPattern: passPattern,
 		}
 	}
 	manifest.Presets = normalized
+}
+
+func normalizeDraftPassPattern(packSize int, raw []int) []int {
+	pattern, err := NormalizeDraftPassPattern(packSize, raw)
+	if err != nil {
+		return nil
+	}
+	return pattern
+}
+
+func NormalizeDraftPassPattern(packSize int, raw []int) ([]int, error) {
+	if packSize <= 0 {
+		return nil, errors.New("pack size must be > 0")
+	}
+	if len(raw) == 0 {
+		out := make([]int, packSize)
+		for i := range out {
+			out[i] = 1
+		}
+		return out, nil
+	}
+	out := make([]int, 0, len(raw))
+	total := 0
+	for _, picks := range raw {
+		if picks <= 0 {
+			return nil, errors.New("pass pattern entries must be > 0")
+		}
+		total += picks
+		if total > packSize {
+			return nil, errors.New("pass pattern picks exceed pack size")
+		}
+		out = append(out, picks)
+	}
+	if len(out) == 0 {
+		return nil, errors.New("pass pattern required")
+	}
+	return out, nil
 }
 
 func resolveDeckUIProfile(manifest Manifest, bbManifest BattleboxManifest) (DeckUIProfile, error) {

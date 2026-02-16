@@ -11,6 +11,7 @@ import (
 	"sort"
 
 	"github.com/gorilla/websocket"
+	"github.com/lxing/battlebox/internal/buildtool"
 	_ "modernc.org/sqlite"
 )
 
@@ -320,6 +321,11 @@ func draftFromSnapshot(snapshot draftRoomSnapshot) (*Draft, error) {
 	if cfg.PackCount <= 0 || cfg.PackSize <= 0 || cfg.SeatCount <= 0 {
 		return nil, errors.New("invalid draft config in snapshot")
 	}
+	passPattern, err := buildtool.NormalizeDraftPassPattern(cfg.PackSize, cfg.PassPattern)
+	if err != nil {
+		return nil, fmt.Errorf("invalid pass pattern in snapshot: %w", err)
+	}
+	cfg.PassPattern = passPattern
 
 	if len(snapshot.Packs) != cfg.PackCount {
 		return nil, fmt.Errorf("pack count mismatch: got %d want %d", len(snapshot.Packs), cfg.PackCount)
@@ -364,7 +370,7 @@ func draftFromSnapshot(snapshot draftRoomSnapshot) (*Draft, error) {
 	if progress.PackNumber < 0 || progress.PackNumber > cfg.PackCount {
 		return nil, fmt.Errorf("pack number out of range: %d", progress.PackNumber)
 	}
-	if progress.PackNumber < cfg.PackCount && (progress.PickNumber < 0 || progress.PickNumber >= cfg.PackSize) {
+	if progress.PackNumber < cfg.PackCount && (progress.PickNumber < 0 || progress.PickNumber >= len(cfg.PassPattern)) {
 		return nil, fmt.Errorf("pick number out of range: %d", progress.PickNumber)
 	}
 	if progress.PackNumber >= cfg.PackCount {

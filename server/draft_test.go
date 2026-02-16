@@ -8,25 +8,27 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func makeDraft(t *testing.T, packCount, packSize, seatCount int) *Draft {
+func makeDraftWithConfig(t *testing.T, cfg DraftConfig) *Draft {
 	t.Helper()
 
-	total := packCount * packSize * seatCount
+	total := cfg.PackCount * cfg.PackSize * cfg.SeatCount
 	deck := make([]string, total)
 	for i := 0; i < total; i++ {
 		deck[i] = fmt.Sprintf("C%03d", i)
 	}
 
-	d, err := NewDraft(
-		DraftConfig{
-			PackCount: packCount,
-			PackSize:  packSize,
-			SeatCount: seatCount,
-		},
-		deck,
-	)
+	d, err := NewDraft(cfg, deck)
 	require.NoError(t, err, "NewDraft error")
 	return d
+}
+
+func makeDraft(t *testing.T, packCount, packSize, seatCount int) *Draft {
+	t.Helper()
+	return makeDraftWithConfig(t, DraftConfig{
+		PackCount: packCount,
+		PackSize:  packSize,
+		SeatCount: seatCount,
+	})
 }
 
 func TestDraftTwoPlayerHappyPath(t *testing.T) {
@@ -169,6 +171,129 @@ func TestDraftPickInvalidZoneRejected(t *testing.T) {
 
 	_, err = d.Pick(0, 1, st.Active.PackID, st.Active.Cards[0], "graveyard")
 	require.Error(t, err, "expected invalid zone rejection")
+}
+
+func TestDraftPassPatternBatchAndImplicitBurn(t *testing.T) {
+	d := makeDraftWithConfig(t, DraftConfig{
+		PackCount:   1,
+		PackSize:    7,
+		SeatCount:   2,
+		PassPattern: []int{1, 2, 2},
+	})
+	seatSeq := []uint64{1, 1}
+
+	seat0Start, err := d.PlayerState(0)
+	require.NoError(t, err, "seat0 PlayerState start")
+	seat1Start, err := d.PlayerState(1)
+	require.NoError(t, err, "seat1 PlayerState start")
+	assert.Equal(t, 1, seat0Start.ExpectedPicks, "seat0 expected picks at start mismatch")
+	assert.Equal(t, 1, seat1Start.ExpectedPicks, "seat1 expected picks at start mismatch")
+	assert.Equal(t, 0, seat0Start.PickNo, "seat0 pick number at start mismatch")
+	assert.Equal(t, 0, seat1Start.PickNo, "seat1 pick number at start mismatch")
+
+	_, err = d.PickBatch(0, seatSeq[0], seat0Start.Active.PackID, []PickSelection{
+		{CardName: seat0Start.Active.Cards[0], Zone: PickZoneMainboard},
+	})
+	require.NoError(t, err, "seat0 first pass pick")
+	seatSeq[0]++
+	_, err = d.PickBatch(1, seatSeq[1], seat1Start.Active.PackID, []PickSelection{
+		{CardName: seat1Start.Active.Cards[0], Zone: PickZoneMainboard},
+	})
+	require.NoError(t, err, "seat1 first pass pick")
+	seatSeq[1]++
+
+	seat0Round2, err := d.PlayerState(0)
+	require.NoError(t, err, "seat0 round2 PlayerState")
+	seat1Round2, err := d.PlayerState(1)
+	require.NoError(t, err, "seat1 round2 PlayerState")
+	assert.Equal(t, 2, seat0Round2.ExpectedPicks, "seat0 expected picks in round2 mismatch")
+	assert.Equal(t, 2, seat1Round2.ExpectedPicks, "seat1 expected picks in round2 mismatch")
+	assert.Equal(t, 1, seat0Round2.PickNo, "seat0 pick number in round2 mismatch")
+	assert.Equal(t, 1, seat1Round2.PickNo, "seat1 pick number in round2 mismatch")
+
+	_, err = d.PickBatch(0, seatSeq[0], seat0Round2.Active.PackID, []PickSelection{
+		{CardName: seat0Round2.Active.Cards[0], Zone: PickZoneMainboard},
+		{CardName: seat0Round2.Active.Cards[1], Zone: PickZoneMainboard},
+	})
+	require.NoError(t, err, "seat0 second pass batch pick")
+	seatSeq[0]++
+	_, err = d.PickBatch(1, seatSeq[1], seat1Round2.Active.PackID, []PickSelection{
+		{CardName: seat1Round2.Active.Cards[0], Zone: PickZoneMainboard},
+		{CardName: seat1Round2.Active.Cards[1], Zone: PickZoneMainboard},
+	})
+	require.NoError(t, err, "seat1 second pass batch pick")
+	seatSeq[1]++
+
+	seat0Round3, err := d.PlayerState(0)
+	require.NoError(t, err, "seat0 round3 PlayerState")
+	seat1Round3, err := d.PlayerState(1)
+	require.NoError(t, err, "seat1 round3 PlayerState")
+	assert.Equal(t, 2, seat0Round3.ExpectedPicks, "seat0 expected picks in round3 mismatch")
+	assert.Equal(t, 2, seat1Round3.ExpectedPicks, "seat1 expected picks in round3 mismatch")
+	assert.Equal(t, 3, seat0Round3.PickNo, "seat0 pick number in round3 mismatch")
+	assert.Equal(t, 3, seat1Round3.PickNo, "seat1 pick number in round3 mismatch")
+
+	_, err = d.PickBatch(0, seatSeq[0], seat0Round3.Active.PackID, []PickSelection{
+		{CardName: seat0Round3.Active.Cards[0], Zone: PickZoneMainboard},
+		{CardName: seat0Round3.Active.Cards[1], Zone: PickZoneMainboard},
+	})
+	require.NoError(t, err, "seat0 third pass batch pick")
+	seatSeq[0]++
+	_, err = d.PickBatch(1, seatSeq[1], seat1Round3.Active.PackID, []PickSelection{
+		{CardName: seat1Round3.Active.Cards[0], Zone: PickZoneMainboard},
+		{CardName: seat1Round3.Active.Cards[1], Zone: PickZoneMainboard},
+	})
+	require.NoError(t, err, "seat1 third pass batch pick")
+	seatSeq[1]++
+
+	assert.Equal(t, "done", d.State(), "draft should be complete after implicit burn")
+	assert.Len(t, d.Seats[0].Picks.Mainboard, 5, "seat0 picked cards mismatch")
+	assert.Len(t, d.Seats[1].Picks.Mainboard, 5, "seat1 picked cards mismatch")
+	for originSeat := 0; originSeat < d.Config.SeatCount; originSeat++ {
+		pack := d.Packs[0][originSeat]
+		for i := range pack.Picked {
+			assert.Truef(t, pack.Picked[i], "pack p0_s%d card %d should be consumed (picked or burned)", originSeat, i)
+		}
+	}
+}
+
+func TestDraftPassPatternEnforcesBatchSize(t *testing.T) {
+	d := makeDraftWithConfig(t, DraftConfig{
+		PackCount:   1,
+		PackSize:    7,
+		SeatCount:   2,
+		PassPattern: []int{1, 2, 2},
+	})
+
+	seat0Start, err := d.PlayerState(0)
+	require.NoError(t, err, "seat0 start PlayerState")
+	seat1Start, err := d.PlayerState(1)
+	require.NoError(t, err, "seat1 start PlayerState")
+	_, err = d.PickBatch(0, 1, seat0Start.Active.PackID, []PickSelection{
+		{CardName: seat0Start.Active.Cards[0], Zone: PickZoneMainboard},
+	})
+	require.NoError(t, err, "seat0 first pass pick")
+	_, err = d.PickBatch(1, 1, seat1Start.Active.PackID, []PickSelection{
+		{CardName: seat1Start.Active.Cards[0], Zone: PickZoneMainboard},
+	})
+	require.NoError(t, err, "seat1 first pass pick")
+
+	seat0Round2, err := d.PlayerState(0)
+	require.NoError(t, err, "seat0 round2 PlayerState")
+	_, err = d.PickBatch(0, 2, seat0Round2.Active.PackID, []PickSelection{
+		{CardName: seat0Round2.Active.Cards[0], Zone: PickZoneMainboard},
+	})
+	require.Error(t, err, "expected batch size mismatch rejection")
+}
+
+func TestDraftInvalidPassPatternRejected(t *testing.T) {
+	_, err := NewDraft(DraftConfig{
+		PackCount:   1,
+		PackSize:    7,
+		SeatCount:   2,
+		PassPattern: []int{3, 3, 3},
+	}, make([]string, 14))
+	require.Error(t, err, "expected invalid pass pattern rejection")
 }
 
 func TestDraftPassDirectionAlternatesByPack(t *testing.T) {

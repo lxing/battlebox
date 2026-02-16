@@ -113,6 +113,25 @@ func TestDraftRoomCreateRequiresExplicitConfig(t *testing.T) {
 	assert.Empty(t, payload.Rooms, "expected no rooms when required config fields are missing")
 }
 
+func TestDraftRoomCreateRejectsInvalidPassPattern(t *testing.T) {
+	hub := newDraftHub()
+	createBody := createDraftRoomRequest{
+		Deck:        []string{"A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N"},
+		DeckSlug:    "tempo",
+		SeatCount:   2,
+		PackCount:   1,
+		PackSize:    7,
+		PassPattern: []int{3, 3, 3},
+	}
+	raw, err := json.Marshal(createBody)
+	require.NoError(t, err, "marshal request")
+
+	createReq := httptest.NewRequest(http.MethodPost, "/api/draft/rooms", bytes.NewReader(raw))
+	createRes := httptest.NewRecorder()
+	hub.handleCreateRoom(createRes, createReq)
+	assert.Equal(t, http.StatusBadRequest, createRes.Code, "create status mismatch")
+}
+
 func TestDraftRoomSeatOccupancySingleConn(t *testing.T) {
 	draft := makeDraft(t, 1, 1, 2)
 	room := &draftRoom{
@@ -136,7 +155,7 @@ func TestDraftRoomSeatOccupancySingleConn(t *testing.T) {
 
 func TestDraftRoomDeleteRemovesSnapshotAndMemory(t *testing.T) {
 	hub := newDraftHub()
-	dbPath := filepath.Join(t.TempDir(), "db", "draft_rooms.sqlite")
+	dbPath := filepath.Join(t.TempDir(), "db", "db.sqlite")
 	store, err := openDraftRoomStore(dbPath)
 	require.NoError(t, err, "openDraftRoomStore")
 	defer func() {

@@ -112,7 +112,7 @@ export function createDraftController({
     reconnectTimer: null,
     shouldReconnect: false,
     selectedPackID: '',
-    selectedPackIndex: -1,
+    selectedPackIndexes: new Set(),
     packCardBackFaces: new Map(),
   };
 
@@ -142,7 +142,7 @@ export function createDraftController({
     draftUi.state = null;
     draftUi.pendingPick = false;
     draftUi.selectedPackID = '';
-    draftUi.selectedPackIndex = -1;
+    draftUi.selectedPackIndexes.clear();
     draftUi.packCardBackFaces.clear();
   }
 
@@ -183,7 +183,7 @@ export function createDraftController({
     draftUi.connected = false;
     draftUi.pendingPick = false;
     draftUi.selectedPackID = '';
-    draftUi.selectedPackIndex = -1;
+    draftUi.selectedPackIndexes.clear();
   }
 
   function teardown() {
@@ -219,7 +219,7 @@ export function createDraftController({
     draftUi.state = null;
     draftUi.reconnectAttempt = 0;
     draftUi.selectedPackID = '';
-    draftUi.selectedPackIndex = -1;
+    draftUi.selectedPackIndexes.clear();
     draftUi.packCardBackFaces.clear();
   }
 
@@ -233,14 +233,15 @@ export function createDraftController({
     return draftUi.roomId;
   }
 
-  function syncPackSelectionUi(cardButtons, pickButtons, canPick) {
-    const selectedIndex = draftUi.selectedPackIndex;
+  function syncPackSelectionUi(cardButtons, pickButtons, canPick, expectedPicks) {
+    const required = Number.isFinite(expectedPicks) && expectedPicks > 0 ? expectedPicks : 1;
+    const selectedCount = draftUi.selectedPackIndexes.size;
     cardButtons.forEach((btn) => {
       const idx = Number.parseInt(btn.dataset.index || '-1', 10);
-      btn.classList.toggle('is-selected', idx === selectedIndex);
+      btn.classList.toggle('is-selected', draftUi.selectedPackIndexes.has(idx));
     });
     pickButtons.forEach((button) => {
-      button.disabled = !canPick || selectedIndex < 0;
+      button.disabled = !canPick || selectedCount !== required;
     });
   }
 
@@ -269,7 +270,7 @@ export function createDraftController({
     const state = draftUi.state;
     if (!state) {
       draftUi.selectedPackID = '';
-      draftUi.selectedPackIndex = -1;
+      draftUi.selectedPackIndexes.clear();
       if (packInfoEl) packInfoEl.textContent = 'Pack -';
       if (pickInfoEl) pickInfoEl.textContent = 'Pick -';
       if (packEl) packEl.innerHTML = '<div class="draft-empty">Waiting for state...</div>';
@@ -297,7 +298,7 @@ export function createDraftController({
     const active = state.active_pack;
     if (!active || !Array.isArray(active.cards) || active.cards.length === 0) {
       draftUi.selectedPackID = '';
-      draftUi.selectedPackIndex = -1;
+      draftUi.selectedPackIndexes.clear();
       packEl.innerHTML = state.state === 'done'
         ? '<div class="draft-empty">Draft complete.</div>'
         : '<div class="draft-empty">Waiting for next pack...</div>';
@@ -307,15 +308,18 @@ export function createDraftController({
     const activePackID = String(active.pack_id || '');
     if (draftUi.selectedPackID !== activePackID) {
       draftUi.selectedPackID = activePackID;
-      draftUi.selectedPackIndex = -1;
+      draftUi.selectedPackIndexes.clear();
       draftUi.packCardBackFaces.clear();
     }
-    if (draftUi.selectedPackIndex >= active.cards.length) {
-      draftUi.selectedPackIndex = -1;
-    }
+    [...draftUi.selectedPackIndexes].forEach((idx) => {
+      if (idx < 0 || idx >= active.cards.length) {
+        draftUi.selectedPackIndexes.delete(idx);
+      }
+    });
     const canPick = Boolean(state.can_pick) && !draftUi.pendingPick;
+    const expectedPicks = Math.max(1, Number.parseInt(String(state.expected_picks || 1), 10) || 1);
     if (!canPick) {
-      draftUi.selectedPackIndex = -1;
+      draftUi.selectedPackIndexes.clear();
     }
     packEl.innerHTML = `
       <div class="draft-pack-scroll">
@@ -336,7 +340,7 @@ export function createDraftController({
     return `
           <button
             type="button"
-            class="action-button draft-pack-card${idx === draftUi.selectedPackIndex ? ' is-selected' : ''}"
+            class="action-button draft-pack-card${draftUi.selectedPackIndexes.has(idx) ? ' is-selected' : ''}"
             data-index="${idx}"
             ${canPick ? '' : 'aria-disabled="true"'}
             title="${safeName}"
@@ -352,11 +356,11 @@ export function createDraftController({
         </div>
       </div>
       <div class="draft-pack-actions">
-        <button type="button" class="action-button button-standard draft-pick-confirm-button" id="draft-pick-mainboard" ${canPick && draftUi.selectedPackIndex >= 0 ? '' : 'disabled'}>
-          Mainboard
+        <button type="button" class="action-button button-standard draft-pick-confirm-button" id="draft-pick-mainboard" ${canPick && draftUi.selectedPackIndexes.size === expectedPicks ? '' : 'disabled'}>
+          Mainboard (${expectedPicks})
         </button>
-        <button type="button" class="action-button button-standard draft-pick-confirm-button" id="draft-pick-sideboard" ${canPick && draftUi.selectedPackIndex >= 0 ? '' : 'disabled'}>
-          Sideboard
+        <button type="button" class="action-button button-standard draft-pick-confirm-button" id="draft-pick-sideboard" ${canPick && draftUi.selectedPackIndexes.size === expectedPicks ? '' : 'disabled'}>
+          Sideboard (${expectedPicks})
         </button>
       </div>
     `;
@@ -373,8 +377,12 @@ export function createDraftController({
         if (!canPick) return;
         const i = Number.parseInt(btn.dataset.index || '-1', 10);
         if (i < 0 || i >= active.cards.length) return;
-        draftUi.selectedPackIndex = draftUi.selectedPackIndex === i ? -1 : i;
-        syncPackSelectionUi(cardButtons, pickButtons, canPick);
+        if (draftUi.selectedPackIndexes.has(i)) {
+          draftUi.selectedPackIndexes.delete(i);
+        } else {
+          draftUi.selectedPackIndexes.add(i);
+        }
+        syncPackSelectionUi(cardButtons, pickButtons, canPick, expectedPicks);
       });
     });
 
@@ -395,20 +403,24 @@ export function createDraftController({
 
     function sendPick(zone) {
       return () => {
-        const i = draftUi.selectedPackIndex;
-        const chosen = active.cards[i];
-        if (!canPick || !chosen || !draftUi.socket || draftUi.socket.readyState !== WebSocket.OPEN) return;
+        const selectedIndexes = [...draftUi.selectedPackIndexes].sort((a, b) => a - b);
+        if (!canPick || selectedIndexes.length !== expectedPicks) return;
+        const picks = selectedIndexes.map((idx) => ({
+          card_name: active.cards[idx],
+          zone,
+        }));
+        if (!picks.every((pick) => pick && pick.card_name)) return;
+        if (!draftUi.socket || draftUi.socket.readyState !== WebSocket.OPEN) return;
         const nextSeq = Number.parseInt(String(state.next_seq || 1), 10) || 1;
         draftUi.pendingPick = true;
-        draftUi.selectedPackIndex = -1;
-        syncPackSelectionUi(cardButtons, pickButtons, false);
+        draftUi.selectedPackIndexes.clear();
+        syncPackSelectionUi(cardButtons, pickButtons, false, expectedPicks);
         updateUIFromState();
         draftUi.socket.send(JSON.stringify({
           type: 'pick',
           seq: nextSeq,
           pack_id: active.pack_id,
-          card_name: chosen,
-          zone,
+          picks,
         }));
       };
     }
@@ -421,9 +433,9 @@ export function createDraftController({
     }
 
     if (!canPick) {
-      syncPackSelectionUi(cardButtons, pickButtons, false);
+      syncPackSelectionUi(cardButtons, pickButtons, false, expectedPicks);
     } else {
-      syncPackSelectionUi(cardButtons, pickButtons, true);
+      syncPackSelectionUi(cardButtons, pickButtons, true, expectedPicks);
     }
   }
 
@@ -456,7 +468,7 @@ export function createDraftController({
       draftUi.state = null;
       draftUi.reconnectAttempt = 0;
       draftUi.selectedPackID = '';
-      draftUi.selectedPackIndex = -1;
+      draftUi.selectedPackIndexes.clear();
     }
     draftUi.pendingPick = false;
     draftUi.connected = false;

@@ -42,6 +42,12 @@ function escapeHtml(value) {
     .replaceAll("'", '&#39;');
 }
 
+function buildDefaultPassPattern(packSize) {
+  const size = Number.parseInt(String(packSize), 10) || 0;
+  if (size <= 0) return [];
+  return Array.from({ length: size }, () => 1);
+}
+
 async function fetchDraftRooms() {
   const res = await fetch('/api/draft/rooms', {
     method: 'GET',
@@ -61,7 +67,18 @@ async function createDraftRoom(deck, preset) {
   const seatCount = Number.parseInt(String(preset?.seat_count), 10) || 0;
   const packCount = Number.parseInt(String(preset?.pack_count), 10) || 0;
   const packSize = Number.parseInt(String(preset?.pack_size), 10) || 0;
+  let passPattern = buildDefaultPassPattern(packSize);
+  if (Array.isArray(preset?.pass_pattern)) {
+    const parsed = preset.pass_pattern.map((value) => Number.parseInt(String(value), 10));
+    if (!parsed.every((value) => Number.isFinite(value) && value > 0)) {
+      throw new Error('Invalid draft preset');
+    }
+    passPattern = parsed;
+  }
   if (seatCount <= 0 || packCount <= 0 || packSize <= 0) {
+    throw new Error('Invalid draft preset');
+  }
+  if (passPattern.length === 0) {
     throw new Error('Invalid draft preset');
   }
   const res = await fetch('/api/draft/rooms', {
@@ -73,6 +90,7 @@ async function createDraftRoom(deck, preset) {
       seat_count: seatCount,
       pack_count: packCount,
       pack_size: packSize,
+      pass_pattern: passPattern,
     }),
   });
   if (!res.ok) {
@@ -93,15 +111,21 @@ function parseDraftPresets(rawPresets) {
       const seatCount = Number.parseInt(String(value.seat_count), 10);
       const packCount = Number.parseInt(String(value.pack_count), 10);
       const packSize = Number.parseInt(String(value.pack_size), 10);
+      const passPatternRaw = Array.isArray(value.pass_pattern) ? value.pass_pattern : buildDefaultPassPattern(packSize);
+      const passPattern = passPatternRaw.map((entry) => Number.parseInt(String(entry), 10));
+      const passTotal = passPattern.reduce((sum, entry) => sum + entry, 0);
       if (!Number.isFinite(seatCount) || seatCount <= 0) return null;
       if (!Number.isFinite(packCount) || packCount <= 0) return null;
       if (!Number.isFinite(packSize) || packSize <= 0) return null;
+      if (!passPattern.every((entry) => Number.isFinite(entry) && entry > 0)) return null;
+      if (passPattern.length === 0 || passTotal > packSize) return null;
       return {
         id: key,
         label: key,
         seat_count: seatCount,
         pack_count: packCount,
         pack_size: packSize,
+        pass_pattern: passPattern,
       };
     })
     .filter(Boolean)

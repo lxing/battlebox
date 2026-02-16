@@ -247,7 +247,9 @@ func cloneDraftPresets(raw map[string]DraftPreset) map[string]DraftPreset {
 	}
 	out := make(map[string]DraftPreset, len(raw))
 	for key, value := range raw {
-		out[key] = value
+		copyValue := value
+		copyValue.PassPattern = append([]int(nil), value.PassPattern...)
+		out[key] = copyValue
 	}
 	return out
 }

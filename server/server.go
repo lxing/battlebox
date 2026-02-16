@@ -14,11 +14,12 @@ import (
 )
 
 type createDraftRoomRequest struct {
-	Deck      []string `json:"deck"`
-	DeckSlug  string   `json:"deck_slug,omitempty"`
-	SeatCount int      `json:"seat_count"`
-	PackCount int      `json:"pack_count"`
-	PackSize  int      `json:"pack_size"`
+	Deck        []string `json:"deck"`
+	DeckSlug    string   `json:"deck_slug,omitempty"`
+	SeatCount   int      `json:"seat_count"`
+	PackCount   int      `json:"pack_count"`
+	PackSize    int      `json:"pack_size"`
+	PassPattern []int    `json:"pass_pattern,omitempty"`
 }
 
 type createDraftRoomResponse struct {
@@ -32,13 +33,14 @@ type deleteDraftRoomResponse struct {
 }
 
 type draftWSMessage struct {
-	Type     string `json:"type"`
-	Seq      uint64 `json:"seq,omitempty"`
-	PackID   string `json:"pack_id,omitempty"`
-	CardName string `json:"card_name,omitempty"`
-	Zone     string `json:"zone,omitempty"`
-	Error    string `json:"error,omitempty"`
-	Redirect string `json:"redirect,omitempty"`
+	Type     string          `json:"type"`
+	Seq      uint64          `json:"seq,omitempty"`
+	PackID   string          `json:"pack_id,omitempty"`
+	CardName string          `json:"card_name,omitempty"`
+	Zone     string          `json:"zone,omitempty"`
+	Picks    []PickSelection `json:"picks,omitempty"`
+	Error    string          `json:"error,omitempty"`
+	Redirect string          `json:"redirect,omitempty"`
 
 	State     *PlayerState `json:"state,omitempty"`
 	Duplicate bool         `json:"duplicate,omitempty"`
@@ -61,9 +63,10 @@ func draftConfigFromRequest(req createDraftRoomRequest) (DraftConfig, error) {
 		return DraftConfig{}, errors.New("pack_size must be > 0")
 	}
 	return DraftConfig{
-		PackCount: req.PackCount,
-		PackSize:  req.PackSize,
-		SeatCount: req.SeatCount,
+		PackCount:   req.PackCount,
+		PackSize:    req.PackSize,
+		SeatCount:   req.SeatCount,
+		PassPattern: append([]int(nil), req.PassPattern...),
 	}, nil
 }
 

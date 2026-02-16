@@ -236,12 +236,20 @@ func (r *draftRoom) handlePick(seat int, conn *websocket.Conn, msg draftWSMessag
 	r.mu.Lock()
 	defer r.mu.Unlock()
 
-	if msg.Seq == 0 || msg.PackID == "" || msg.CardName == "" || msg.Zone == "" {
+	if msg.Seq == 0 || msg.PackID == "" {
 		r.writeToConn(conn, draftWSMessage{Type: "error", Error: "missing pick fields"})
 		return false
 	}
+	picks := append([]PickSelection(nil), msg.Picks...)
+	if len(picks) == 0 {
+		if msg.CardName == "" || msg.Zone == "" {
+			r.writeToConn(conn, draftWSMessage{Type: "error", Error: "missing pick fields"})
+			return false
+		}
+		picks = []PickSelection{{CardName: msg.CardName, Zone: msg.Zone}}
+	}
 
-	result, err := r.draft.Pick(seat, msg.Seq, msg.PackID, msg.CardName, msg.Zone)
+	result, err := r.draft.PickBatch(seat, msg.Seq, msg.PackID, picks)
 	if err != nil {
 		r.writeToConn(conn, draftWSMessage{Type: "error", Error: err.Error()})
 		return false
@@ -334,7 +342,7 @@ func (r *draftRoom) summary() draftRoomSummary {
 		PackSize:       r.draft.Config.PackSize,
 		State:          r.draft.State(),
 		PackNo:         r.draft.Progress.PackNumber,
-		PickNo:         r.draft.Progress.PickNumber,
+		PickNo:         r.draft.currentPickNo(),
 		ConnectedSeats: connectedSeats,
 		Connections:    connections,
 		OccupiedSeats:  occupiedSeats,

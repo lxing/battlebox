@@ -22,6 +22,11 @@ var slugRE = regexp.MustCompile(`^[a-z0-9-]+$`)
 var staticRoot = "static"
 var dataRoot = "data"
 
+const (
+	draftStorePath       = "db/db.sqlite"
+	legacyDraftStorePath = "db/draft_rooms.sqlite"
+)
+
 type sourceGuideRequest struct {
 	Raw string `json:"raw"`
 }
@@ -36,7 +41,8 @@ func main() {
 
 	mux := http.NewServeMux()
 	draftHub := newDraftHub()
-	draftStore, err := openDraftRoomStore(filepath.Join("db", "draft_rooms.sqlite"))
+	removeLegacyDraftStoreFiles(legacyDraftStorePath)
+	draftStore, err := openDraftRoomStore(draftStorePath)
 	if err != nil {
 		log.Fatalf("Failed to open draft store: %v", err)
 	}
@@ -54,7 +60,7 @@ func main() {
 	if err := draftHub.restoreRooms(records); err != nil {
 		log.Fatalf("Failed to restore draft rooms: %v", err)
 	}
-	log.Printf("Loaded %d draft room(s) from db/draft_rooms.sqlite", len(records))
+	log.Printf("Loaded %d draft room(s) from %s", len(records), draftStorePath)
 
 	go func() {
 		ticker := time.NewTicker(10 * time.Second)
@@ -136,6 +142,15 @@ func main() {
 		}
 		log.Printf("Starting server on :%s", port)
 		log.Fatal(http.ListenAndServe(":"+port, mux))
+	}
+}
+
+func removeLegacyDraftStoreFiles(path string) {
+	files := []string{path, path + "-shm", path + "-wal"}
+	for _, file := range files {
+		if err := os.Remove(file); err != nil && !os.IsNotExist(err) {
+			log.Printf("Failed to remove legacy draft db file %s: %v", file, err)
+		}
 	}
 }
 

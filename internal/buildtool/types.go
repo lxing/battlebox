@@ -79,6 +79,8 @@ type DraftPreset struct {
 	PackCount int `json:"pack_count"`
 	// Number of cards in each pack.
 	PackSize int `json:"pack_size"`
+	// Per-pass picks for each seat within a pack. Remaining cards are burned.
+	PassPattern []int `json:"pass_pattern,omitempty"`
 }
 
 // Deck is the fully built deck payload written to static data files.

@@ -6,6 +6,8 @@ import (
 	"errors"
 	"fmt"
 	"time"
+
+	"github.com/lxing/battlebox/internal/buildtool"
 )
 
 // DraftConfig holds the tunables for a single draft instance.
@@ -13,9 +15,10 @@ import (
 // packSize: number of cards in each pack
 // seatCount: number of seats in the room
 type DraftConfig struct {
-	PackCount int
-	PackSize  int
-	SeatCount int
+	PackCount   int
+	PackSize    int
+	SeatCount   int
+	PassPattern []int
 }
 
 // Pack tracks the cards in a single booster plus which indices have been taken.
@@ -38,7 +41,7 @@ type SeatState struct {
 }
 
 // DraftProgress captures where the table currently is.
-// packNumber and pickNumber are 0-based for easier math.
+// packNumber and pickNumber (pass index) are 0-based for easier math.
 type DraftProgress struct {
 	PackNumber int
 	PickNumber int
@@ -52,14 +55,15 @@ type PackView struct {
 
 // PlayerState is a seat-local snapshot.
 type PlayerState struct {
-	SeatID  int       `json:"seat_id"`
-	State   string    `json:"state"`
-	Picks   SeatPicks `json:"picks"`
-	Active  *PackView `json:"active_pack,omitempty"`
-	PackNo  int       `json:"pack_no"`
-	PickNo  int       `json:"pick_no"`
-	CanPick bool      `json:"can_pick"`
-	NextSeq uint64    `json:"next_seq"`
+	SeatID        int       `json:"seat_id"`
+	State         string    `json:"state"`
+	Picks         SeatPicks `json:"picks"`
+	Active        *PackView `json:"active_pack,omitempty"`
+	PackNo        int       `json:"pack_no"`
+	PickNo        int       `json:"pick_no"`
+	ExpectedPicks int       `json:"expected_picks"`
+	CanPick       bool      `json:"can_pick"`
+	NextSeq       uint64    `json:"next_seq"`
 }
 
 const (
@@ -74,10 +78,15 @@ type PickResult struct {
 	Duplicate bool
 }
 
+type PickSelection struct {
+	CardName string `json:"card_name"`
+	Zone     string `json:"zone"`
+}
+
 // Event is a game-domain event emitted by picks.
 type Event interface{ isEvent() }
 
-// RoundAdvanced fires after all seats finish a pick for the current round.
+// RoundAdvanced fires after all seats finish the current pass.
 type RoundAdvanced struct {
 	PackNumber int
 	PickNumber int
@@ -110,6 +119,11 @@ func NewDraft(cfg DraftConfig, deckList []string) (*Draft, error) {
 	if cfg.PackCount <= 0 || cfg.PackSize <= 0 || cfg.SeatCount <= 0 {
 		return nil, errors.New("invalid draft config")
 	}
+	passPattern, err := buildtool.NormalizeDraftPassPattern(cfg.PackSize, cfg.PassPattern)
+	if err != nil {
+		return nil, err
+	}
+	cfg.PassPattern = passPattern
 
 	requiredCards := cfg.PackCount * cfg.PackSize * cfg.SeatCount
 	if len(deckList) < requiredCards {
@@ -185,6 +199,57 @@ func (d *Draft) State() string {
 	return "drafting"
 }
 
+func (d *Draft) picksThisPass() int {
+	if d.Progress.PackNumber >= d.Config.PackCount {
+		return 0
+	}
+	if d.Progress.PickNumber < 0 || d.Progress.PickNumber >= len(d.Config.PassPattern) {
+		return 0
+	}
+	return d.Config.PassPattern[d.Progress.PickNumber]
+}
+
+func (d *Draft) currentPickNo() int {
+	if d.Progress.PackNumber >= d.Config.PackCount {
+		return 0
+	}
+	total := 0
+	for i := 0; i < d.Progress.PickNumber && i < len(d.Config.PassPattern); i++ {
+		total += d.Config.PassPattern[i]
+	}
+	return total
+}
+
+func countUnpicked(pack *Pack) int {
+	if pack == nil {
+		return 0
+	}
+	count := 0
+	for i := range pack.Picked {
+		if !pack.Picked[i] {
+			count++
+		}
+	}
+	return count
+}
+
+func (d *Draft) burnRemainingCurrentPack() bool {
+	if d.Progress.PackNumber < 0 || d.Progress.PackNumber >= len(d.Packs) {
+		return false
+	}
+	changed := false
+	for _, pack := range d.Packs[d.Progress.PackNumber] {
+		for i := range pack.Picked {
+			if pack.Picked[i] {
+				continue
+			}
+			pack.Picked[i] = true
+			changed = true
+		}
+	}
+	return changed
+}
+
 func (d *Draft) currentPackForSeat(seat int) (*Pack, error) {
 	if seat < 0 || seat >= d.Config.SeatCount {
 		return nil, errors.New("invalid seat")
@@ -193,11 +258,12 @@ func (d *Draft) currentPackForSeat(seat int) (*Pack, error) {
 		return nil, errors.New("draft complete")
 	}
 
+	passNo := d.Progress.PickNumber
 	originSeat := seat
 	if d.Progress.PackNumber%2 == 0 {
-		originSeat -= d.Progress.PickNumber
+		originSeat -= passNo
 	} else {
-		originSeat += d.Progress.PickNumber
+		originSeat += passNo
 	}
 	originSeat = ((originSeat % d.Config.SeatCount) + d.Config.SeatCount) % d.Config.SeatCount
 
@@ -215,12 +281,13 @@ func (d *Draft) PlayerState(seat int) (PlayerState, error) {
 	}
 
 	state := PlayerState{
-		SeatID:  seat,
-		State:   d.State(),
-		Picks:   SeatPicks{Mainboard: []string{}, Sideboard: []string{}},
-		PackNo:  d.Progress.PackNumber,
-		PickNo:  d.Progress.PickNumber,
-		NextSeq: d.lastSeqBySeat[seat] + 1,
+		SeatID:        seat,
+		State:         d.State(),
+		Picks:         SeatPicks{Mainboard: []string{}, Sideboard: []string{}},
+		PackNo:        d.Progress.PackNumber,
+		PickNo:        d.currentPickNo(),
+		ExpectedPicks: d.picksThisPass(),
+		NextSeq:       d.lastSeqBySeat[seat] + 1,
 	}
 
 	mainboardCopy := make([]string, len(d.Seats[seat].Picks.Mainboard))
@@ -248,13 +315,18 @@ func (d *Draft) PlayerState(seat int) (PlayerState, error) {
 		}
 	}
 	state.Active = &PackView{PackID: pack.ID, Cards: visible}
-	state.CanPick = !d.seatPicked[seat] && len(visible) > 0
+	state.CanPick = !d.seatPicked[seat] && len(visible) >= state.ExpectedPicks && state.ExpectedPicks > 0
 	return state, nil
 }
 
 // Pick applies a seat pick and advances the round when all seats have picked.
 // Sequence numbers are per-seat and strictly monotonic to make pick retries idempotent.
 func (d *Draft) Pick(seat int, seq uint64, packID, cardName, zone string) (PickResult, error) {
+	return d.PickBatch(seat, seq, packID, []PickSelection{{CardName: cardName, Zone: zone}})
+}
+
+// PickBatch applies all picks for a seat in the current pass as a single atomic operation.
+func (d *Draft) PickBatch(seat int, seq uint64, packID string, picks []PickSelection) (PickResult, error) {
 	if seat < 0 || seat >= d.Config.SeatCount {
 		return PickResult{}, errors.New("invalid seat")
 	}
@@ -278,9 +350,6 @@ func (d *Draft) Pick(seat int, seq uint64, packID, cardName, zone string) (PickR
 	if seq != lastSeq+1 {
 		return PickResult{}, errors.New("seq gap")
 	}
-	if zone != PickZoneMainboard && zone != PickZoneSideboard {
-		return PickResult{}, errors.New("invalid pick zone")
-	}
 	if d.seatPicked[seat] {
 		return PickResult{}, errors.New("seat already picked this round")
 	}
@@ -293,25 +362,56 @@ func (d *Draft) Pick(seat int, seq uint64, packID, cardName, zone string) (PickR
 		return PickResult{}, errors.New("pack mismatch")
 	}
 
-	cardIdx := -1
-	for i := range pack.Cards {
-		if pack.Cards[i] == cardName && !pack.Picked[i] {
-			cardIdx = i
-			break
-		}
+	expectedPicks := d.picksThisPass()
+	if expectedPicks <= 0 {
+		return PickResult{}, errors.New("no picks available for current pass")
 	}
-	if cardIdx == -1 {
-		return PickResult{}, errors.New("card not available in pack")
+	if len(picks) != expectedPicks {
+		return PickResult{}, fmt.Errorf("expected %d picks for this pass", expectedPicks)
 	}
 
-	pack.Picked[cardIdx] = true
+	available := countUnpicked(pack)
+	if available < expectedPicks {
+		return PickResult{}, errors.New("not enough cards in pack for this pass")
+	}
+
+	tentativePicked := append([]bool(nil), pack.Picked...)
+	chosenIndices := make([]int, len(picks))
+	for i, pick := range picks {
+		cardName := pick.CardName
+		zone := pick.Zone
+		if zone != PickZoneMainboard && zone != PickZoneSideboard {
+			return PickResult{}, errors.New("invalid pick zone")
+		}
+		if cardName == "" {
+			return PickResult{}, errors.New("card name required")
+		}
+		cardIdx := -1
+		for j := range pack.Cards {
+			if pack.Cards[j] == cardName && !tentativePicked[j] {
+				cardIdx = j
+				break
+			}
+		}
+		if cardIdx == -1 {
+			return PickResult{}, errors.New("card not available in pack")
+		}
+		tentativePicked[cardIdx] = true
+		chosenIndices[i] = cardIdx
+	}
+
+	for i, pick := range picks {
+		cardName := pick.CardName
+		pack.Picked[chosenIndices[i]] = true
+		if pick.Zone == PickZoneMainboard {
+			d.Seats[seat].Picks.Mainboard = append(d.Seats[seat].Picks.Mainboard, cardName)
+		} else {
+			d.Seats[seat].Picks.Sideboard = append(d.Seats[seat].Picks.Sideboard, cardName)
+		}
+	}
+
 	d.seatPicked[seat] = true
 	d.lastSeqBySeat[seat] = seq
-	if zone == PickZoneMainboard {
-		d.Seats[seat].Picks.Mainboard = append(d.Seats[seat].Picks.Mainboard, cardName)
-	} else {
-		d.Seats[seat].Picks.Sideboard = append(d.Seats[seat].Picks.Sideboard, cardName)
-	}
 	d.globalSeq++
 
 	events := []Event{}
@@ -329,14 +429,17 @@ func (d *Draft) Pick(seat int, seq uint64, packID, cardName, zone string) (PickR
 		}
 
 		d.Progress.PickNumber++
-		if d.Progress.PickNumber >= d.Config.PackSize {
+		if d.Progress.PickNumber >= len(d.Config.PassPattern) {
+			if d.burnRemainingCurrentPack() {
+				d.globalSeq++
+			}
 			d.Progress.PickNumber = 0
 			d.Progress.PackNumber++
 		}
 
 		events = append(events, RoundAdvanced{
 			PackNumber: d.Progress.PackNumber,
-			PickNumber: d.Progress.PickNumber,
+			PickNumber: d.currentPickNo(),
 		})
 		if d.State() == "done" {
 			events = append(events, DraftCompleted{})

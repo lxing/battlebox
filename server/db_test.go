@@ -25,7 +25,7 @@ func TestDraftSnapshotRoundTrip(t *testing.T) {
 }
 
 func TestDraftRoomStoreSaveLoad(t *testing.T) {
-	dbPath := filepath.Join(t.TempDir(), "db", "draft_rooms.sqlite")
+	dbPath := filepath.Join(t.TempDir(), "db", "db.sqlite")
 	store, err := openDraftRoomStore(dbPath)
 	require.NoError(t, err, "openDraftRoomStore")
 	defer func() {
@@ -83,7 +83,7 @@ func TestDraftRoomStoreSaveLoad(t *testing.T) {
 }
 
 func TestDraftRoomStoreDeleteRoom(t *testing.T) {
-	dbPath := filepath.Join(t.TempDir(), "db", "draft_rooms.sqlite")
+	dbPath := filepath.Join(t.TempDir(), "db", "db.sqlite")
 	store, err := openDraftRoomStore(dbPath)
 	require.NoError(t, err, "openDraftRoomStore")
 	defer func() {
