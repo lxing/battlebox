@@ -193,11 +193,13 @@ func (d *Draft) currentPackForSeat(seat int) (*Pack, error) {
 		return nil, errors.New("draft complete")
 	}
 
-	originSeat := seat - d.Progress.PickNumber
-	for originSeat < 0 {
-		originSeat += d.Config.SeatCount
+	originSeat := seat
+	if d.Progress.PackNumber%2 == 0 {
+		originSeat -= d.Progress.PickNumber
+	} else {
+		originSeat += d.Progress.PickNumber
 	}
-	originSeat = originSeat % d.Config.SeatCount
+	originSeat = ((originSeat % d.Config.SeatCount) + d.Config.SeatCount) % d.Config.SeatCount
 
 	pack := d.Packs[d.Progress.PackNumber][originSeat]
 	if len(pack.Cards) != d.Config.PackSize || len(pack.Picked) != d.Config.PackSize {

@@ -170,3 +170,49 @@ func TestDraftPickInvalidZoneRejected(t *testing.T) {
 	_, err = d.Pick(0, 1, st.Active.PackID, st.Active.Cards[0], "graveyard")
 	require.Error(t, err, "expected invalid zone rejection")
 }
+
+func TestDraftPassDirectionAlternatesByPack(t *testing.T) {
+	d := makeDraft(t, 2, 2, 4)
+	seatSeq := []uint64{1, 1, 1, 1}
+
+	pickRound := func() {
+		for seat := 0; seat < d.Config.SeatCount; seat++ {
+			st, err := d.PlayerState(seat)
+			require.NoErrorf(t, err, "PlayerState seat %d error", seat)
+			require.NotNilf(t, st.Active, "seat %d missing active pack", seat)
+			require.NotEmptyf(t, st.Active.Cards, "seat %d missing active cards", seat)
+			_, err = d.Pick(seat, seatSeq[seat], st.Active.PackID, st.Active.Cards[0], PickZoneMainboard)
+			require.NoErrorf(t, err, "Pick seat %d error", seat)
+			seatSeq[seat]++
+		}
+	}
+
+	// After first round of pack 0, packs should pass clockwise.
+	pickRound()
+	assert.Equal(t, 0, d.Progress.PackNumber, "pack number mismatch after round 1")
+	assert.Equal(t, 1, d.Progress.PickNumber, "pick number mismatch after round 1")
+	for seat := 0; seat < d.Config.SeatCount; seat++ {
+		st, err := d.PlayerState(seat)
+		require.NoErrorf(t, err, "PlayerState seat %d error", seat)
+		require.NotNilf(t, st.Active, "seat %d missing active pack", seat)
+		expectedOrigin := (seat - 1 + d.Config.SeatCount) % d.Config.SeatCount
+		assert.Equal(t, fmt.Sprintf("p0_s%d", expectedOrigin), st.Active.PackID, "pack routing mismatch for seat %d in pack 0", seat)
+	}
+
+	// Finish pack 0, then do first round of pack 1.
+	pickRound()
+	assert.Equal(t, 1, d.Progress.PackNumber, "pack number mismatch after finishing pack 0")
+	assert.Equal(t, 0, d.Progress.PickNumber, "pick number mismatch after finishing pack 0")
+	pickRound()
+	assert.Equal(t, 1, d.Progress.PackNumber, "pack number mismatch after pack 1 round 1")
+	assert.Equal(t, 1, d.Progress.PickNumber, "pick number mismatch after pack 1 round 1")
+
+	// In pack 1, direction should reverse and pass counterclockwise.
+	for seat := 0; seat < d.Config.SeatCount; seat++ {
+		st, err := d.PlayerState(seat)
+		require.NoErrorf(t, err, "PlayerState seat %d error", seat)
+		require.NotNilf(t, st.Active, "seat %d missing active pack", seat)
+		expectedOrigin := (seat + 1) % d.Config.SeatCount
+		assert.Equal(t, fmt.Sprintf("p1_s%d", expectedOrigin), st.Active.PackID, "pack routing mismatch for seat %d in pack 1", seat)
+	}
+}
