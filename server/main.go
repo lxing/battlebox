@@ -1,6 +1,7 @@
 package main
 
 import (
+	"context"
 	"crypto/tls"
 	"encoding/json"
 	"flag"
@@ -11,6 +12,7 @@ import (
 	"path/filepath"
 	"regexp"
 	"strings"
+	"time"
 
 	"github.com/lxing/battlebox/internal/buildtool"
 )
@@ -34,6 +36,37 @@ func main() {
 
 	mux := http.NewServeMux()
 	draftHub := newDraftHub()
+	draftStore, err := openDraftRoomStore(filepath.Join("db", "draft_rooms.sqlite"))
+	if err != nil {
+		log.Fatalf("Failed to open draft store: %v", err)
+	}
+	defer func() {
+		if err := draftStore.Close(); err != nil {
+			log.Printf("Failed to close draft store: %v", err)
+		}
+	}()
+
+	records, err := draftStore.LoadRooms(context.Background())
+	if err != nil {
+		log.Fatalf("Failed to load draft rooms: %v", err)
+	}
+	if err := draftHub.restoreRooms(records); err != nil {
+		log.Fatalf("Failed to restore draft rooms: %v", err)
+	}
+	log.Printf("Loaded %d draft room(s) from db/draft_rooms.sqlite", len(records))
+
+	go func() {
+		ticker := time.NewTicker(10 * time.Second)
+		defer ticker.Stop()
+		for range ticker.C {
+			snapshots := draftHub.snapshotRecords()
+			if err := draftStore.SaveRooms(context.Background(), snapshots); err != nil {
+				log.Printf("Failed to snapshot draft rooms: %v", err)
+			} else {
+				log.Printf("snapshotted %d rooms", len(snapshots))
+			}
+		}
+	}()
 
 	// Serve deck JSON data
 	mux.HandleFunc("/api/decks/", handleDecks)
