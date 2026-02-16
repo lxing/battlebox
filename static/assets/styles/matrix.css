@@ -156,12 +156,13 @@
 
 .lobby-start-row {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) repeat(2, auto);
+  grid-template-columns: minmax(0, 2fr) minmax(0, 1fr) minmax(0, 1fr);
   gap: 0.5rem;
 }
 
 .lobby-deck-select {
   width: 100%;
+  min-width: 0;
   min-height: var(--control-height-md);
   background: var(--color-control-bg);
   color: var(--color-text-primary);
@@ -169,6 +170,12 @@
   border-radius: var(--radius-md);
   padding: 0 0.55rem;
   font-size: var(--font-size-sm);
+}
+
+.lobby-start-row .action-button {
+  width: 100%;
+  min-width: 0;
+  white-space: nowrap;
 }
 
 .lobby-rooms-list {
@@ -220,10 +227,6 @@
 
 @media (max-width: 760px) {
   .lobby-start-row {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-
-  .lobby-deck-select {
-    grid-column: 1 / -1;
+    grid-template-columns: minmax(0, 2fr) minmax(0, 1fr) minmax(0, 1fr);
   }
 }
