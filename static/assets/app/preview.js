@@ -40,13 +40,18 @@ export function createCardPreview(app, getCardTarget) {
     let boundsRight = viewportW - margin;
     let boundsBottom = viewportH - margin;
 
-    if (scrollContainer && scrollContainer !== app) {
-      const rect = scrollContainer.getBoundingClientRect();
+    // Hard clamp preview bounds to the configured scroll pane to keep it out of
+    // header/breadcrumb regions.
+    const applyContainerBounds = (container) => {
+      if (!container) return;
+      const rect = container.getBoundingClientRect();
       boundsLeft = Math.max(boundsLeft, rect.left + margin);
       boundsTop = Math.max(boundsTop, rect.top + margin);
       boundsRight = Math.min(boundsRight, rect.right - margin);
       boundsBottom = Math.min(boundsBottom, rect.bottom - margin);
-    }
+    };
+
+    applyContainerBounds(document.getElementById('tab-battlebox'));
 
     const boundsWidth = Math.max(0, boundsRight - boundsLeft);
     if (boundsWidth > 0) {
@@ -309,13 +314,15 @@ export function createCardPreview(app, getCardTarget) {
     if (scrollContainer === next) return;
 
     if (scrollContainer) {
-      scrollContainer.removeEventListener('scroll', handleScroll);
-      scrollContainer.removeEventListener('scrollend', handleScrollEnd);
+      scrollContainer.removeEventListener('scroll', handleScroll, true);
+      scrollContainer.removeEventListener('scrollend', handleScrollEnd, true);
     }
 
     scrollContainer = next;
-    scrollContainer.addEventListener('scroll', handleScroll, { passive: true });
-    scrollContainer.addEventListener('scrollend', handleScrollEnd);
+    // Capture descendant scrolls so nested horizontal scrollers (cube decklist)
+    // drive preview anchor updates without parallel listeners.
+    scrollContainer.addEventListener('scroll', handleScroll, { passive: true, capture: true });
+    scrollContainer.addEventListener('scrollend', handleScrollEnd, { capture: true });
   }
 
   function hidePreview() {
