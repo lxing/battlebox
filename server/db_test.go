@@ -37,7 +37,7 @@ func TestDraftRoomStoreSaveLoad(t *testing.T) {
 	roomID := "plucky-rabbit"
 	deckSlug := "tempo"
 
-	err = store.SaveRooms(context.Background(), []draftRoomRecord{
+	snapshottedCount, err := store.SaveRooms(context.Background(), []draftRoomRecord{
 		{
 			RoomID:   roomID,
 			DeckSlug: deckSlug,
@@ -45,6 +45,17 @@ func TestDraftRoomStoreSaveLoad(t *testing.T) {
 		},
 	})
 	require.NoError(t, err, "SaveRooms")
+	assert.Equal(t, 1, snapshottedCount, "first save should snapshot room")
+
+	snapshottedCount, err = store.SaveRooms(context.Background(), []draftRoomRecord{
+		{
+			RoomID:   roomID,
+			DeckSlug: deckSlug,
+			Snapshot: snapshot,
+		},
+	})
+	require.NoError(t, err, "second SaveRooms")
+	assert.Equal(t, 0, snapshottedCount, "second save should skip unchanged global seq")
 
 	records, err := store.LoadRooms(context.Background())
 	require.NoError(t, err, "LoadRooms")
@@ -53,4 +64,20 @@ func TestDraftRoomStoreSaveLoad(t *testing.T) {
 	assert.Equal(t, roomID, record.RoomID, "room id mismatch")
 	assert.Equal(t, deckSlug, record.DeckSlug, "deck slug mismatch")
 	assert.Equal(t, snapshot, record.Snapshot, "snapshot mismatch")
+
+	state, err := draft.PlayerState(0)
+	require.NoError(t, err, "PlayerState before mutation")
+	_, err = draft.Pick(0, 1, state.Active.PackID, state.Active.Cards[0])
+	require.NoError(t, err, "Pick mutation")
+	updatedSnapshot := snapshotFromDraft(draft)
+
+	snapshottedCount, err = store.SaveRooms(context.Background(), []draftRoomRecord{
+		{
+			RoomID:   roomID,
+			DeckSlug: deckSlug,
+			Snapshot: updatedSnapshot,
+		},
+	})
+	require.NoError(t, err, "third SaveRooms")
+	assert.Equal(t, 1, snapshottedCount, "mutated draft should snapshot")
 }

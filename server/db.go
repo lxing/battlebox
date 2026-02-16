@@ -21,6 +21,7 @@ type draftRoomSnapshot struct {
 	Seats         []SeatState      `json:"seats"`
 	SeatPicked    []bool           `json:"seat_picked"`
 	LastSeqBySeat []uint64         `json:"last_seq_by_seat"`
+	GlobalSeq     uint64           `json:"global_seq"`
 }
 
 type packSnapshot struct {
@@ -66,12 +67,17 @@ func openDraftRoomStore(dbPath string) (*draftRoomStore, error) {
 CREATE TABLE IF NOT EXISTS draft_rooms (
   room_id TEXT PRIMARY KEY,
   deck_slug TEXT NOT NULL DEFAULT '',
+  global_seq INTEGER NOT NULL DEFAULT 0,
   snapshot_json TEXT NOT NULL,
   created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
   updated_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
 );`); err != nil {
 		_ = db.Close()
 		return nil, fmt.Errorf("create draft_rooms table: %w", err)
+	}
+	if err := ensureDraftRoomsGlobalSeqColumn(db); err != nil {
+		_ = db.Close()
+		return nil, fmt.Errorf("ensure draft_rooms global_seq column: %w", err)
 	}
 	if _, err := db.Exec(`CREATE INDEX IF NOT EXISTS draft_rooms_updated_at_idx ON draft_rooms(updated_at);`); err != nil {
 		_ = db.Close()
@@ -88,49 +94,108 @@ func (s *draftRoomStore) Close() error {
 	return s.db.Close()
 }
 
-func (s *draftRoomStore) SaveRooms(ctx context.Context, records []draftRoomRecord) error {
+func ensureDraftRoomsGlobalSeqColumn(db *sql.DB) error {
+	rows, err := db.Query(`PRAGMA table_info(draft_rooms);`)
+	if err != nil {
+		return err
+	}
+	defer rows.Close()
+
+	hasGlobalSeq := false
+	for rows.Next() {
+		var cid int
+		var name string
+		var columnType string
+		var notNull int
+		var defaultValue sql.NullString
+		var pk int
+		if err := rows.Scan(&cid, &name, &columnType, &notNull, &defaultValue, &pk); err != nil {
+			return err
+		}
+		if name == "global_seq" {
+			hasGlobalSeq = true
+			break
+		}
+	}
+	if err := rows.Err(); err != nil {
+		return err
+	}
+	if hasGlobalSeq {
+		return nil
+	}
+	_, err = db.Exec(`ALTER TABLE draft_rooms ADD COLUMN global_seq INTEGER NOT NULL DEFAULT 0;`)
+	return err
+}
+
+func (s *draftRoomStore) SaveRooms(ctx context.Context, records []draftRoomRecord) (int, error) {
 	if s == nil || s.db == nil {
-		return errors.New("draft room store not initialized")
+		return 0, errors.New("draft room store not initialized")
 	}
 
 	tx, err := s.db.BeginTx(ctx, nil)
 	if err != nil {
-		return fmt.Errorf("begin save tx: %w", err)
+		return 0, fmt.Errorf("begin save tx: %w", err)
 	}
 	defer func() {
 		_ = tx.Rollback()
 	}()
 
-	stmt, err := tx.PrepareContext(ctx, `
-INSERT INTO draft_rooms (room_id, deck_slug, snapshot_json)
-VALUES (?, ?, ?)
+	selectStmt, err := tx.PrepareContext(ctx, `SELECT global_seq FROM draft_rooms WHERE room_id = ?;`)
+	if err != nil {
+		return 0, fmt.Errorf("prepare select global seq: %w", err)
+	}
+	defer selectStmt.Close()
+
+	upsertStmt, err := tx.PrepareContext(ctx, `
+INSERT INTO draft_rooms (room_id, deck_slug, global_seq, snapshot_json)
+VALUES (?, ?, ?, ?)
 ON CONFLICT(room_id) DO UPDATE SET
   deck_slug = excluded.deck_slug,
+  global_seq = excluded.global_seq,
   snapshot_json = excluded.snapshot_json,
   updated_at = CURRENT_TIMESTAMP;
 `)
 	if err != nil {
-		return fmt.Errorf("prepare upsert: %w", err)
+		return 0, fmt.Errorf("prepare upsert: %w", err)
 	}
-	defer stmt.Close()
+	defer upsertStmt.Close()
+
+	snapshotted := 0
 
 	for _, record := range records {
 		if record.RoomID == "" {
 			continue
 		}
+
+		var existingGlobalSeq uint64
+		scanErr := selectStmt.QueryRowContext(ctx, record.RoomID).Scan(&existingGlobalSeq)
+		if scanErr == nil && existingGlobalSeq == record.Snapshot.GlobalSeq {
+			continue
+		}
+		if scanErr != nil && !errors.Is(scanErr, sql.ErrNoRows) {
+			return 0, fmt.Errorf("select global seq for room %q: %w", record.RoomID, scanErr)
+		}
+
 		raw, err := json.Marshal(record.Snapshot)
 		if err != nil {
-			return fmt.Errorf("marshal snapshot for room %q: %w", record.RoomID, err)
+			return 0, fmt.Errorf("marshal snapshot for room %q: %w", record.RoomID, err)
 		}
-		if _, err := stmt.ExecContext(ctx, record.RoomID, record.DeckSlug, string(raw)); err != nil {
-			return fmt.Errorf("upsert room %q: %w", record.RoomID, err)
+		if _, err := upsertStmt.ExecContext(
+			ctx,
+			record.RoomID,
+			record.DeckSlug,
+			record.Snapshot.GlobalSeq,
+			string(raw),
+		); err != nil {
+			return 0, fmt.Errorf("upsert room %q: %w", record.RoomID, err)
 		}
+		snapshotted++
 	}
 
 	if err := tx.Commit(); err != nil {
-		return fmt.Errorf("commit save tx: %w", err)
+		return 0, fmt.Errorf("commit save tx: %w", err)
 	}
-	return nil
+	return snapshotted, nil
 }
 
 func (s *draftRoomStore) LoadRooms(ctx context.Context) ([]draftRoomRecord, error) {
@@ -139,7 +204,7 @@ func (s *draftRoomStore) LoadRooms(ctx context.Context) ([]draftRoomRecord, erro
 	}
 
 	rows, err := s.db.QueryContext(ctx, `
-SELECT room_id, deck_slug, snapshot_json
+SELECT room_id, deck_slug, global_seq, snapshot_json
 FROM draft_rooms
 ORDER BY room_id ASC;
 `)
@@ -152,8 +217,9 @@ ORDER BY room_id ASC;
 	for rows.Next() {
 		var roomID string
 		var deckSlug string
+		var globalSeq uint64
 		var raw string
-		if err := rows.Scan(&roomID, &deckSlug, &raw); err != nil {
+		if err := rows.Scan(&roomID, &deckSlug, &globalSeq, &raw); err != nil {
 			return nil, fmt.Errorf("scan draft room row: %w", err)
 		}
 
@@ -161,6 +227,7 @@ ORDER BY room_id ASC;
 		if err := json.Unmarshal([]byte(raw), &snapshot); err != nil {
 			return nil, fmt.Errorf("decode snapshot for room %q: %w", roomID, err)
 		}
+		snapshot.GlobalSeq = globalSeq
 		records = append(records, draftRoomRecord{
 			RoomID:   roomID,
 			DeckSlug: deckSlug,
@@ -257,6 +324,7 @@ func snapshotFromDraft(d *Draft) draftRoomSnapshot {
 		Seats:         seats,
 		SeatPicked:    append([]bool(nil), d.seatPicked...),
 		LastSeqBySeat: append([]uint64(nil), d.lastSeqBySeat...),
+		GlobalSeq:     d.globalSeq,
 	}
 }
 
@@ -335,5 +403,6 @@ func draftFromSnapshot(snapshot draftRoomSnapshot) (*Draft, error) {
 		Seats:         seats,
 		seatPicked:    seatPicked,
 		lastSeqBySeat: lastSeqBySeat,
+		globalSeq:     snapshot.GlobalSeq,
 	}, nil
 }

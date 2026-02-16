@@ -91,6 +91,7 @@ type Draft struct {
 
 	seatPicked    []bool   // seatPicked[seat] is true after seat picks in current round
 	lastSeqBySeat []uint64 // monotonic command sequence per seat for idempotency
+	globalSeq     uint64   // global monotonically increasing mutation sequence for snapshot/version checks
 }
 
 // NewDraft constructs and immediately starts a draft from a deck list.
@@ -286,6 +287,7 @@ func (d *Draft) Pick(seat int, seq uint64, packID, cardName string) (PickResult,
 	d.seatPicked[seat] = true
 	d.lastSeqBySeat[seat] = seq
 	d.Seats[seat].Pool = append(d.Seats[seat].Pool, cardName)
+	d.globalSeq++
 
 	events := []Event{}
 	allPicked := true
