@@ -69,6 +69,7 @@ func loadBattleboxManifest(path string) BattleboxManifest {
 		manifest.LandSubtypes = normalized
 	}
 	normalizeBattleboxUIProfiles(&manifest)
+	normalizeBattleboxDraftPresets(&manifest)
 	return manifest
 }
 

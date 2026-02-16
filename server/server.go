@@ -50,12 +50,21 @@ var wsUpgrader = websocket.Upgrader{
 	CheckOrigin: func(r *http.Request) bool { return true },
 }
 
-func defaultSeatNames(seatCount int) []string {
-	seatNames := make([]string, seatCount)
-	for i := 0; i < seatCount; i++ {
-		seatNames[i] = fmt.Sprintf("Seat %d", i+1)
+func draftConfigFromRequest(req createDraftRoomRequest) (DraftConfig, error) {
+	if len(req.SeatNames) == 0 {
+		return DraftConfig{}, errors.New("seat_names required")
 	}
-	return seatNames
+	if req.PackCount <= 0 {
+		return DraftConfig{}, errors.New("pack_count must be > 0")
+	}
+	if req.PackSize <= 0 {
+		return DraftConfig{}, errors.New("pack_size must be > 0")
+	}
+	return DraftConfig{
+		PackCount: req.PackCount,
+		PackSize:  req.PackSize,
+		SeatCount: len(req.SeatNames),
+	}, nil
 }
 
 func (h *draftHub) handleCreateRoom(w http.ResponseWriter, r *http.Request) {
@@ -80,20 +89,10 @@ func (h *draftHub) handleCreateRoom(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	if len(req.SeatNames) == 0 {
-		req.SeatNames = defaultSeatNames(2)
-	}
-
-	cfg := DraftConfig{
-		PackCount: req.PackCount,
-		PackSize:  req.PackSize,
-		SeatCount: len(req.SeatNames),
-	}
-	if cfg.PackCount == 0 {
-		cfg.PackCount = 7
-	}
-	if cfg.PackSize == 0 {
-		cfg.PackSize = 8
+	cfg, err := draftConfigFromRequest(req)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusBadRequest)
+		return
 	}
 
 	draft, err := NewDraft(cfg, req.Deck, req.SeatNames)
@@ -163,20 +162,10 @@ func (h *draftHub) handleStartOrJoinSharedRoom(w http.ResponseWriter, r *http.Re
 		return
 	}
 
-	if len(req.SeatNames) == 0 {
-		req.SeatNames = defaultSeatNames(2)
-	}
-
-	cfg := DraftConfig{
-		PackCount: req.PackCount,
-		PackSize:  req.PackSize,
-		SeatCount: len(req.SeatNames),
-	}
-	if cfg.PackCount == 0 {
-		cfg.PackCount = 7
-	}
-	if cfg.PackSize == 0 {
-		cfg.PackSize = 8
+	cfg, err := draftConfigFromRequest(req)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusBadRequest)
+		return
 	}
 
 	draft, err := NewDraft(cfg, req.Deck, req.SeatNames)

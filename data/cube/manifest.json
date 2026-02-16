@@ -17,6 +17,13 @@
       "deck_selection_badge": "card_count"
     }
   },
+  "presets": {
+    "2p": {
+      "seat_count": 2,
+      "pack_count": 8,
+      "pack_size": 7
+    }
+  },
   "land_subtypes": {
     "Arid Mesa": "fetch",
     "Bloodstained Mire": "fetch",

@@ -11,6 +11,15 @@ function buildDraftDeckNames(deck) {
   return names;
 }
 
+function buildSeatNames(seatCount) {
+  const names = [];
+  const total = Number.parseInt(String(seatCount), 10) || 0;
+  for (let i = 0; i < total; i += 1) {
+    names.push(`Seat ${i + 1}`);
+  }
+  return names;
+}
+
 function buildDraftCardMetaMap(deck) {
   const map = {};
   const addCard = (card) => {
@@ -56,16 +65,23 @@ async function fetchDraftRooms() {
   return payload.rooms;
 }
 
-async function createDraftRoom(deck) {
+async function createDraftRoom(deck, preset) {
   const deckNames = buildDraftDeckNames(deck);
+  const seatCount = Number.parseInt(String(preset?.seat_count), 10) || 0;
+  const packCount = Number.parseInt(String(preset?.pack_count), 10) || 0;
+  const packSize = Number.parseInt(String(preset?.pack_size), 10) || 0;
+  if (seatCount <= 0 || packCount <= 0 || packSize <= 0) {
+    throw new Error('Invalid draft preset');
+  }
   const res = await fetch('/api/draft/rooms', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({
       deck: deckNames,
       deck_slug: deck?.slug || '',
-      pack_count: 7,
-      pack_size: 8,
+      seat_names: buildSeatNames(seatCount),
+      pack_count: packCount,
+      pack_size: packSize,
     }),
   });
   if (!res.ok) {
@@ -75,6 +91,30 @@ async function createDraftRoom(deck) {
   const payload = await res.json();
   if (!payload || !payload.room_id) throw new Error('Missing room id');
   return payload;
+}
+
+function parseDraftPresets(rawPresets) {
+  if (!rawPresets || typeof rawPresets !== 'object' || Array.isArray(rawPresets)) return [];
+  return Object.entries(rawPresets)
+    .map(([id, value]) => {
+      const key = String(id || '').trim();
+      if (!key || !value || typeof value !== 'object') return null;
+      const seatCount = Number.parseInt(String(value.seat_count), 10);
+      const packCount = Number.parseInt(String(value.pack_count), 10);
+      const packSize = Number.parseInt(String(value.pack_size), 10);
+      if (!Number.isFinite(seatCount) || seatCount <= 0) return null;
+      if (!Number.isFinite(packCount) || packCount <= 0) return null;
+      if (!Number.isFinite(packSize) || packSize <= 0) return null;
+      return {
+        id: key,
+        label: key,
+        seat_count: seatCount,
+        pack_count: packCount,
+        pack_size: packSize,
+      };
+    })
+    .filter(Boolean)
+    .sort((a, b) => a.id.localeCompare(b.id));
 }
 
 async function deleteDraftRoom(roomID) {
@@ -97,8 +137,8 @@ export function createLobbyController({
   const state = {
     eventSource: null,
     roomsList: null,
-    refreshButton: null,
     currentDeckSlug: '',
+    currentPresetID: '',
     cubeDeckBySlug: new Map(),
   };
 
@@ -116,7 +156,6 @@ export function createLobbyController({
   function teardown() {
     stopStream();
     state.roomsList = null;
-    state.refreshButton = null;
   }
 
   function setPreferredDeckSlug(deckSlug) {
@@ -237,7 +276,6 @@ export function createLobbyController({
 
   async function refreshRooms() {
     if (!state.roomsList) return;
-    if (state.refreshButton) state.refreshButton.disabled = true;
     state.roomsList.innerHTML = '<div class="aux-empty">Loading rooms...</div>';
     try {
       const rooms = await fetchDraftRooms();
@@ -245,8 +283,6 @@ export function createLobbyController({
     } catch (err) {
       const message = err && err.message ? err.message : 'Failed to load rooms.';
       state.roomsList.innerHTML = `<div class="aux-empty">${escapeHtml(message)}</div>`;
-    } finally {
-      if (state.refreshButton) state.refreshButton.disabled = false;
     }
   }
 
@@ -278,7 +314,6 @@ export function createLobbyController({
     if (draftController.hasActiveRoom()) {
       stopStream();
       state.roomsList = null;
-      state.refreshButton = null;
       draftController.render();
       return;
     }
@@ -294,6 +329,16 @@ export function createLobbyController({
     const noDecks = decks.length === 0;
     const selectedDeck = decks.find((deck) => normalizeName(deck.slug) === activeDeckSlug) || decks[0] || null;
     const selectedDeckSlug = selectedDeck ? selectedDeck.slug : '';
+    const presetEntries = parseDraftPresets(cube?.presets);
+    const noPresets = presetEntries.length === 0;
+    if (!presetEntries.some((preset) => preset.id === state.currentPresetID)) {
+      state.currentPresetID = presetEntries[0]?.id || '';
+    }
+    const presetOptions = presetEntries.map((preset) => {
+      const selected = preset.id === state.currentPresetID ? ' selected' : '';
+      const label = `${preset.label} (${preset.seat_count}p · ${preset.pack_count}x${preset.pack_size})`;
+      return `<option value="${escapeHtml(preset.id)}"${selected}>${escapeHtml(label)}</option>`;
+    }).join('');
 
     ui.draftPane.innerHTML = `
       <div class="lobby-panel">
@@ -301,40 +346,50 @@ export function createLobbyController({
           <select id="lobby-deck-select" class="lobby-deck-select" ${noDecks ? 'disabled' : ''}>
             ${deckOptions}
           </select>
-          <button type="button" class="action-button button-standard" id="lobby-create-room" ${noDecks ? 'disabled' : ''}>Create Room</button>
-          <button type="button" class="action-button button-standard" id="lobby-refresh-rooms">Refresh</button>
+          <select id="lobby-preset-select" class="lobby-deck-select" ${noPresets ? 'disabled' : ''}>
+            ${presetOptions}
+          </select>
+          <button type="button" class="action-button button-standard" id="lobby-create-room" ${noDecks || noPresets ? 'disabled' : ''}>Create Room</button>
         </div>
         <div id="lobby-rooms-list" class="lobby-rooms-list"></div>
       </div>
     `;
 
     const deckSelect = ui.draftPane.querySelector('#lobby-deck-select');
+    const presetSelect = ui.draftPane.querySelector('#lobby-preset-select');
     const createRoomButton = ui.draftPane.querySelector('#lobby-create-room');
-    const refreshButton = ui.draftPane.querySelector('#lobby-refresh-rooms');
     const roomsList = ui.draftPane.querySelector('#lobby-rooms-list');
 
     state.roomsList = roomsList;
-    state.refreshButton = refreshButton;
 
     const resolveDeck = () => {
       if (!deckSelect) return selectedDeck;
       const slug = normalizeName(deckSelect.value || selectedDeckSlug);
       return decks.find((deck) => normalizeName(deck.slug) === slug) || selectedDeck;
     };
-
-    if (refreshButton) {
-      refreshButton.addEventListener('click', () => {
-        void refreshRooms();
+    const resolvePreset = () => {
+      const selectedID = String(presetSelect?.value || state.currentPresetID || '').trim();
+      return presetEntries.find((preset) => preset.id === selectedID) || null;
+    };
+    if (deckSelect) {
+      deckSelect.addEventListener('change', () => {
+        state.currentDeckSlug = normalizeName(deckSelect.value || '');
+      });
+    }
+    if (presetSelect) {
+      presetSelect.addEventListener('change', () => {
+        state.currentPresetID = String(presetSelect.value || '').trim();
       });
     }
 
     if (createRoomButton) {
       createRoomButton.addEventListener('click', async () => {
         const deck = resolveDeck();
-        if (!deck) return;
+        const preset = resolvePreset();
+        if (!deck || !preset) return;
         createRoomButton.disabled = true;
         try {
-          await createDraftRoom(deck);
+          await createDraftRoom(deck, preset);
           await refreshRooms();
         } catch (err) {
           window.alert(err && err.message ? err.message : 'Failed to create room.');

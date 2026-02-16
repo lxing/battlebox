@@ -105,6 +105,32 @@ func normalizeBattleboxUIProfiles(manifest *BattleboxManifest) {
 	manifest.UIProfiles = normalized
 }
 
+func normalizeBattleboxDraftPresets(manifest *BattleboxManifest) {
+	if manifest == nil {
+		return
+	}
+	if len(manifest.Presets) == 0 {
+		manifest.Presets = map[string]DraftPreset{}
+		return
+	}
+	normalized := make(map[string]DraftPreset, len(manifest.Presets))
+	for key, preset := range manifest.Presets {
+		name := strings.TrimSpace(key)
+		if name == "" {
+			continue
+		}
+		if preset.SeatCount <= 0 || preset.PackCount <= 0 || preset.PackSize <= 0 {
+			continue
+		}
+		normalized[name] = DraftPreset{
+			SeatCount: preset.SeatCount,
+			PackCount: preset.PackCount,
+			PackSize:  preset.PackSize,
+		}
+	}
+	manifest.Presets = normalized
+}
+
 func resolveDeckUIProfile(manifest Manifest, bbManifest BattleboxManifest) (DeckUIProfile, error) {
 	profileName := strings.TrimSpace(manifest.UIProfile)
 	if profileName == "" {

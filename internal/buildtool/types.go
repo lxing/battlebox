@@ -71,6 +71,16 @@ type DeckUIProfile struct {
 	DeckSelectionBadge string `json:"deck_selection_badge"`
 }
 
+// DraftPreset configures one room-creation preset for remote draft.
+type DraftPreset struct {
+	// Number of seats in the draft room.
+	SeatCount int `json:"seat_count"`
+	// Number of packs each seat drafts.
+	PackCount int `json:"pack_count"`
+	// Number of cards in each pack.
+	PackSize int `json:"pack_size"`
+}
+
 // Deck is the fully built deck payload written to static data files.
 type Deck struct {
 	// URL slug for this deck.
@@ -123,6 +133,8 @@ type BattleboxManifest struct {
 	DefaultUIProfile string `json:"default_ui_profile,omitempty"`
 	// Optional reusable UI profiles referenced by deck manifests.
 	UIProfiles map[string]DeckUIProfile `json:"ui_profiles,omitempty"`
+	// Optional draft room presets keyed by preset id.
+	Presets map[string]DraftPreset `json:"presets,omitempty"`
 	// Optional manual land subtype taxonomy keyed by card name.
 	LandSubtypes map[string]string `json:"land_subtypes,omitempty"`
 }
@@ -143,6 +155,8 @@ type Battlebox struct {
 	DisableTypeSort bool `json:"disable_type_sort,omitempty"`
 	// Whether matrix tab should be enabled.
 	MatrixTabEnabled bool `json:"matrix_tab_enabled"`
+	// Optional draft room presets keyed by preset id.
+	Presets map[string]DraftPreset `json:"presets,omitempty"`
 	// Decks included in this battlebox.
 	Decks []Deck `json:"decks"`
 	// Optional banned card names for warning indicators.

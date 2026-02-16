@@ -152,6 +152,7 @@ func Main() {
 				DisableDoubleRandomRoll: bbManifest.DisableDoubleRandomRoll,
 				DisableTypeSort:         bbManifest.DisableTypeSort,
 				MatrixTabEnabled:        !bbManifest.DisableMatrixTab,
+				Presets:                 cloneDraftPresets(bbManifest.Presets),
 				Decks:                   []Deck{},
 				Banned:                  loadBanned(filepath.Join(bbPath, "banned.json")),
 			}
@@ -238,4 +239,15 @@ func Main() {
 		fmt.Fprintf(os.Stderr, "Error writing build stamp: %v\n", err)
 		os.Exit(1)
 	}
+}
+
+func cloneDraftPresets(raw map[string]DraftPreset) map[string]DraftPreset {
+	if len(raw) == 0 {
+		return map[string]DraftPreset{}
+	}
+	out := make(map[string]DraftPreset, len(raw))
+	for key, value := range raw {
+		out[key] = value
+	}
+	return out
 }

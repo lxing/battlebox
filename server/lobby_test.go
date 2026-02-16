@@ -68,34 +68,49 @@ func TestDraftRoomsListAfterCreate(t *testing.T) {
 	assert.Equal(t, 1, room.PackSize, "pack size mismatch")
 }
 
-func TestDraftRoomCreateDefaultsToTwoSeats(t *testing.T) {
+func TestDraftRoomCreateRequiresExplicitConfig(t *testing.T) {
 	hub := newDraftHub()
 
-	createBody := createDraftRoomRequest{
-		Deck:      make([]string, 16),
-		PackCount: 1,
-		PackSize:  8,
+	deck := make([]string, 16)
+	for i := range deck {
+		deck[i] = "Card"
 	}
-	for i := range createBody.Deck {
-		createBody.Deck[i] = "Card"
-	}
-	raw, err := json.Marshal(createBody)
-	require.NoError(t, err, "marshal request")
 
-	createReq := httptest.NewRequest(http.MethodPost, "/api/draft/rooms", bytes.NewReader(raw))
-	createRes := httptest.NewRecorder()
-	hub.handleCreateRoom(createRes, createReq)
-	assert.Equal(t, http.StatusOK, createRes.Code, "create status mismatch")
+	testCases := []createDraftRoomRequest{
+		{
+			Deck:      deck,
+			PackCount: 1,
+			PackSize:  8,
+		},
+		{
+			Deck:      deck,
+			SeatNames: []string{"Seat 1", "Seat 2"},
+			PackSize:  8,
+		},
+		{
+			Deck:      deck,
+			SeatNames: []string{"Seat 1", "Seat 2"},
+			PackCount: 1,
+		},
+	}
+
+	for _, createBody := range testCases {
+		raw, err := json.Marshal(createBody)
+		require.NoError(t, err, "marshal request")
+
+		createReq := httptest.NewRequest(http.MethodPost, "/api/draft/rooms", bytes.NewReader(raw))
+		createRes := httptest.NewRecorder()
+		hub.handleCreateRoom(createRes, createReq)
+		assert.Equal(t, http.StatusBadRequest, createRes.Code, "create status mismatch")
+	}
 
 	listReq := httptest.NewRequest(http.MethodGet, "/api/draft/rooms", nil)
 	listRes := httptest.NewRecorder()
 	hub.handleCreateRoom(listRes, listReq)
-
 	var payload listDraftRoomsResponse
-	err = json.Unmarshal(listRes.Body.Bytes(), &payload)
+	err := json.Unmarshal(listRes.Body.Bytes(), &payload)
 	require.NoError(t, err, "decode list response")
-	require.Len(t, payload.Rooms, 1, "rooms length mismatch")
-	assert.Equal(t, 2, payload.Rooms[0].SeatCount, "seat count mismatch")
+	assert.Empty(t, payload.Rooms, "expected no rooms when required config fields are missing")
 }
 
 func TestDraftRoomSeatOccupancySingleConn(t *testing.T) {
