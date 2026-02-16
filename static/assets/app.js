@@ -1313,7 +1313,8 @@ async function renderDeck(bbSlug, deckSlug, selectedGuide, sortMode, sortDirecti
         ${showDeckToolbar ? `
           <div class="decklist-toolbar">
             ${showSampleButton ? `<button type="button" class="action-button sample-hand-open-button" id="sample-hand-open-button">${sampleButtonLabel}</button>` : ''}
-            ${showDraftButton ? '<button type="button" class="action-button draft-open-button" id="draft-open-button">Draft</button>' : ''}
+            ${showDraftButton ? '<button type="button" class="action-button draft-open-button" id="draft-open-p1-button">Draft P1</button>' : ''}
+            ${showDraftButton ? '<button type="button" class="action-button draft-open-button" id="draft-open-p2-button">Draft P2</button>' : ''}
           </div>
         ` : ''}
       </div>
@@ -1554,8 +1555,10 @@ async function renderDeck(bbSlug, deckSlug, selectedGuide, sortMode, sortDirecti
     });
   }
 
-  const draftButton = ui.battleboxPane.querySelector('#draft-open-button');
-  draftController.bindSharedDraftButton(draftButton, deck);
+  const draftP1Button = ui.battleboxPane.querySelector('#draft-open-p1-button');
+  const draftP2Button = ui.battleboxPane.querySelector('#draft-open-p2-button');
+  draftController.bindSharedDraftButton(draftP1Button, deck, 0);
+  draftController.bindSharedDraftButton(draftP2Button, deck, 1);
 
   renderDecklistBody();
   currentCollapsedMask = computeCollapsedMask();

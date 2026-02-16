@@ -55,6 +55,14 @@ var wsUpgrader = websocket.Upgrader{
 	CheckOrigin: func(r *http.Request) bool { return true },
 }
 
+func defaultSeatNames(seatCount int) []string {
+	seatNames := make([]string, seatCount)
+	for i := 0; i < seatCount; i++ {
+		seatNames[i] = fmt.Sprintf("Seat %d", i+1)
+	}
+	return seatNames
+}
+
 func newDraftHub() *draftHub {
 	return &draftHub{rooms: make(map[string]*draftRoom)}
 }
@@ -71,6 +79,10 @@ func (h *draftHub) handleCreateRoom(w http.ResponseWriter, r *http.Request) {
 	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
 		http.Error(w, "invalid json body", http.StatusBadRequest)
 		return
+	}
+
+	if len(req.SeatNames) == 0 {
+		req.SeatNames = defaultSeatNames(2)
 	}
 
 	cfg := DraftConfig{
@@ -128,6 +140,10 @@ func (h *draftHub) handleStartOrJoinSharedRoom(w http.ResponseWriter, r *http.Re
 	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
 		http.Error(w, "invalid json body", http.StatusBadRequest)
 		return
+	}
+
+	if len(req.SeatNames) == 0 {
+		req.SeatNames = defaultSeatNames(2)
 	}
 
 	cfg := DraftConfig{

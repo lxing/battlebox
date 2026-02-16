@@ -9,7 +9,36 @@ export function createDraftController({ ui, renderBattleboxPane, hidePreview }) 
     connected: false,
     status: '',
     pendingPick: false,
+    reconnectAttempt: 0,
+    reconnectTimer: null,
+    shouldReconnect: false,
   };
+
+  function clearReconnectTimer() {
+    if (draftUi.reconnectTimer) {
+      clearTimeout(draftUi.reconnectTimer);
+      draftUi.reconnectTimer = null;
+    }
+  }
+
+  function reconnectDelayMs(attempt) {
+    return Math.min(500 * (2 ** attempt), 10000);
+  }
+
+  function scheduleReconnect() {
+    if (!draftUi.shouldReconnect || !draftUi.roomId) return;
+    clearReconnectTimer();
+    const delay = reconnectDelayMs(draftUi.reconnectAttempt);
+    draftUi.reconnectAttempt += 1;
+    const label = delay >= 1000 ? `${Math.round(delay / 1000)}s` : `${delay}ms`;
+    draftUi.status = `Disconnected. Reconnecting in ${label}...`;
+    updateUIFromState();
+    draftUi.reconnectTimer = setTimeout(() => {
+      draftUi.reconnectTimer = null;
+      if (!draftUi.shouldReconnect || !draftUi.roomId) return;
+      connectSocket(draftUi.roomId, draftUi.seat, true);
+    }, delay);
+  }
 
   function parseRoute(rawHash) {
     const hash = typeof rawHash === 'string' ? rawHash : (location.hash.slice(1) || '/');
@@ -33,6 +62,8 @@ export function createDraftController({ ui, renderBattleboxPane, hidePreview }) 
   }
 
   function teardownSocket() {
+    draftUi.shouldReconnect = false;
+    clearReconnectTimer();
     if (draftUi.socket) {
       try {
         draftUi.socket.close();
@@ -109,7 +140,10 @@ export function createDraftController({ ui, renderBattleboxPane, hidePreview }) 
     }
   }
 
-  function connectSocket(roomId, seat) {
+  function connectSocket(roomId, seat, isReconnect = false) {
+    clearReconnectTimer();
+    draftUi.shouldReconnect = true;
+
     if (
       draftUi.socket
       && draftUi.socket.readyState === WebSocket.OPEN
@@ -120,12 +154,24 @@ export function createDraftController({ ui, renderBattleboxPane, hidePreview }) 
       return;
     }
 
-    teardownSocket();
+    if (draftUi.socket) {
+      try {
+        draftUi.socket.close();
+      } catch (_) {
+        // best effort
+      }
+      draftUi.socket = null;
+    }
+
     draftUi.roomId = roomId;
     draftUi.seat = seat;
-    draftUi.state = null;
+    if (!isReconnect) {
+      draftUi.state = null;
+      draftUi.reconnectAttempt = 0;
+    }
     draftUi.pendingPick = false;
-    draftUi.status = 'Connecting...';
+    draftUi.status = isReconnect ? 'Reconnecting...' : 'Connecting...';
+    draftUi.connected = false;
     updateUIFromState();
 
     const wsProtocol = location.protocol === 'https:' ? 'wss:' : 'ws:';
@@ -135,6 +181,7 @@ export function createDraftController({ ui, renderBattleboxPane, hidePreview }) 
 
     socket.addEventListener('open', () => {
       draftUi.connected = true;
+      draftUi.reconnectAttempt = 0;
       draftUi.status = 'Connected';
       updateUIFromState();
     });
@@ -143,8 +190,13 @@ export function createDraftController({ ui, renderBattleboxPane, hidePreview }) 
       if (draftUi.socket !== socket) return;
       draftUi.connected = false;
       draftUi.pendingPick = false;
-      draftUi.status = 'Disconnected';
-      updateUIFromState();
+      draftUi.socket = null;
+      if (!draftUi.shouldReconnect) {
+        draftUi.status = 'Disconnected';
+        updateUIFromState();
+        return;
+      }
+      scheduleReconnect();
     });
 
     socket.addEventListener('message', (event) => {
@@ -213,7 +265,7 @@ export function createDraftController({ ui, renderBattleboxPane, hidePreview }) 
     updateUIFromState();
   }
 
-  function bindSharedDraftButton(button, deck) {
+  function bindSharedDraftButton(button, deck, seat = 0) {
     if (!button) return;
     button.addEventListener('click', async () => {
       if (typeof hidePreview === 'function') {
@@ -235,7 +287,6 @@ export function createDraftController({ ui, renderBattleboxPane, hidePreview }) 
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
             deck: deckNames,
-            seat_names: ['Seat 1', 'Seat 2'],
             pack_count: 7,
             pack_size: 8,
           }),
@@ -246,7 +297,7 @@ export function createDraftController({ ui, renderBattleboxPane, hidePreview }) 
         }
         const payload = await res.json();
         if (!payload || !payload.room_id) throw new Error('Missing room id');
-        location.hash = buildHash(payload.room_id, 0);
+        location.hash = buildHash(payload.room_id, seat);
       } catch (err) {
         button.disabled = false;
         button.textContent = original;
