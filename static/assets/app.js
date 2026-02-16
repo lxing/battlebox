@@ -298,6 +298,34 @@ function normalizeTab(tab) {
   return [TAB_BATTLEBOX, TAB_LIFE, TAB_MATRIX].includes(tab) ? tab : TAB_BATTLEBOX;
 }
 
+function tabFromSearch() {
+  const params = new URLSearchParams(location.search);
+  const raw = params.get('tab');
+  if (!raw) return TAB_BATTLEBOX;
+  return normalizeTab(raw);
+}
+
+function replaceSearchPreserveHash(nextSearch) {
+  const hash = location.hash || '';
+  const nextUrl = `${location.pathname}${nextSearch}${hash}`;
+  history.replaceState(null, '', nextUrl);
+}
+
+function persistActiveTab(tab) {
+  const nextTab = normalizeTab(tab);
+  const params = new URLSearchParams(location.search);
+  if (nextTab === TAB_BATTLEBOX) {
+    params.delete('tab');
+  } else {
+    params.set('tab', nextTab);
+  }
+  const encoded = params.toString();
+  const nextSearch = encoded ? `?${encoded}` : '';
+  if (nextSearch !== location.search) {
+    replaceSearchPreserveHash(nextSearch);
+  }
+}
+
 function replaceHashPreserveSearch(nextHash) {
   const nextUrl = `${location.pathname}${location.search}${nextHash}`;
   history.replaceState(null, '', nextUrl);
@@ -325,6 +353,7 @@ function applyActiveTab(tab) {
 function setActiveTab(tab) {
   const nextTab = normalizeTab(tab);
   applyActiveTab(nextTab);
+  persistActiveTab(nextTab);
 }
 
 function setMatrixTabEnabled(enabled) {
@@ -498,7 +527,7 @@ async function fetchDraftRooms() {
   return payload.rooms;
 }
 
-async function createDraftRoom(deck, seat) {
+async function createDraftRoom(deck) {
   const deckNames = buildDraftDeckNames(deck);
   const res = await fetch('/api/draft/rooms', {
     method: 'POST',
@@ -516,7 +545,6 @@ async function createDraftRoom(deck, seat) {
   }
   const payload = await res.json();
   if (!payload || !payload.room_id) throw new Error('Missing room id');
-  location.hash = draftController.buildHash(payload.room_id, seat);
 }
 
 function bindLobbySeatButtons(scope) {
@@ -551,8 +579,7 @@ async function renderLobbyPane(currentDeckSlug) {
         <select id="lobby-deck-select" class="lobby-deck-select" ${noDecks ? 'disabled' : ''}>
           ${deckOptions}
         </select>
-        <button type="button" class="action-button" id="lobby-start-p1" ${noDecks ? 'disabled' : ''}>Start P1</button>
-        <button type="button" class="action-button" id="lobby-start-p2" ${noDecks ? 'disabled' : ''}>Start P2</button>
+        <button type="button" class="action-button" id="lobby-create-room" ${noDecks ? 'disabled' : ''}>Create Room</button>
         <button type="button" class="action-button" id="lobby-refresh-rooms">Refresh</button>
       </div>
       <div id="lobby-rooms-list" class="lobby-rooms-list"></div>
@@ -560,8 +587,7 @@ async function renderLobbyPane(currentDeckSlug) {
   `;
 
   const deckSelect = ui.matrixPane.querySelector('#lobby-deck-select');
-  const startP1Button = ui.matrixPane.querySelector('#lobby-start-p1');
-  const startP2Button = ui.matrixPane.querySelector('#lobby-start-p2');
+  const createRoomButton = ui.matrixPane.querySelector('#lobby-create-room');
   const refreshButton = ui.matrixPane.querySelector('#lobby-refresh-rooms');
   const roomsList = ui.matrixPane.querySelector('#lobby-rooms-list');
 
@@ -571,9 +597,8 @@ async function renderLobbyPane(currentDeckSlug) {
     return decks.find((deck) => normalizeName(deck.slug) === slug) || selectedDeck;
   };
 
-  const setStartButtonsDisabled = (disabled) => {
-    if (startP1Button) startP1Button.disabled = disabled;
-    if (startP2Button) startP2Button.disabled = disabled;
+  const setCreateButtonDisabled = (disabled) => {
+    if (createRoomButton) createRoomButton.disabled = disabled;
   };
 
   const renderRooms = (rooms) => {
@@ -644,32 +669,18 @@ async function renderLobbyPane(currentDeckSlug) {
     });
   }
 
-  if (startP1Button) {
-    startP1Button.addEventListener('click', async () => {
+  if (createRoomButton) {
+    createRoomButton.addEventListener('click', async () => {
       const deck = resolveDeck();
       if (!deck) return;
-      setStartButtonsDisabled(true);
+      setCreateButtonDisabled(true);
       try {
-        await createDraftRoom(deck, 0);
+        await createDraftRoom(deck);
+        window.location.reload();
       } catch (err) {
         window.alert(err && err.message ? err.message : 'Failed to create room.');
       } finally {
-        setStartButtonsDisabled(false);
-      }
-    });
-  }
-
-  if (startP2Button) {
-    startP2Button.addEventListener('click', async () => {
-      const deck = resolveDeck();
-      if (!deck) return;
-      setStartButtonsDisabled(true);
-      try {
-        await createDraftRoom(deck, 1);
-      } catch (err) {
-        window.alert(err && err.message ? err.message : 'Failed to create room.');
-      } finally {
-        setStartButtonsDisabled(false);
+        setCreateButtonDisabled(false);
       }
     });
   }
@@ -1822,14 +1833,14 @@ async function init() {
   preview.setupCardHover();
   window.addEventListener('hashchange', async () => {
     await safeRoute();
-    setActiveTab(TAB_BATTLEBOX);
+    setActiveTab(tabFromSearch());
   });
   window.addEventListener('popstate', async () => {
     await safeRoute();
-    setActiveTab(TAB_BATTLEBOX);
+    setActiveTab(tabFromSearch());
   });
   await safeRoute();
-  setActiveTab(TAB_BATTLEBOX);
+  setActiveTab(tabFromSearch());
 }
 
 init();
