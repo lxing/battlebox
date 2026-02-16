@@ -38,8 +38,8 @@ export function createDraftController({
   const draftUi = {
     socket: null,
     roomId: '',
-    roomLabel: '',
     roomDeckSlug: '',
+    roomDeckName: '',
     roomDeckPrintings: {},
     seat: 0,
     state: null,
@@ -69,8 +69,8 @@ export function createDraftController({
 
   function clearRoomSelection() {
     draftUi.roomId = '';
-    draftUi.roomLabel = '';
     draftUi.roomDeckSlug = '';
+    draftUi.roomDeckName = '';
     draftUi.roomDeckPrintings = {};
     draftUi.seat = 0;
     draftUi.state = null;
@@ -131,18 +131,24 @@ export function createDraftController({
     }
   }
 
-  function openRoom(roomId, seat, roomLabel = '', roomDeckSlug = '', roomDeckPrintings = {}) {
+  function openRoom(roomId, seat, roomDeckSlug = '', roomDeckPrintings = {}, roomDeckName = '') {
     const normalizedRoomId = String(roomId || '').trim();
     if (!normalizedRoomId) return;
     draftUi.roomId = normalizedRoomId;
-    draftUi.roomLabel = String(roomLabel || '').trim();
     draftUi.roomDeckSlug = normalizeDraftSlug(roomDeckSlug);
+    draftUi.roomDeckName = String(roomDeckName || '').trim();
     draftUi.roomDeckPrintings = roomDeckPrintings && typeof roomDeckPrintings === 'object' ? roomDeckPrintings : {};
     draftUi.seat = normalizeSeat(seat);
     draftUi.state = null;
     draftUi.reconnectAttempt = 0;
     draftUi.selectedPackID = '';
     draftUi.selectedPackIndex = -1;
+  }
+
+  function roomDisplayName() {
+    if (draftUi.roomDeckName) return draftUi.roomDeckName;
+    if (draftUi.roomDeckSlug) return draftUi.roomDeckSlug;
+    return draftUi.roomId;
   }
 
   function syncPackSelectionUi(cardButtons, pickButton, canPick) {
@@ -402,7 +408,7 @@ export function createDraftController({
           <div class="draft-status-row">
             <button type="button" class="draft-lobby-button" id="draft-back-lobby" aria-label="Back to lobby">⬅️</button>
             <button type="button" class="draft-lobby-button" id="draft-open-cube" aria-label="Open cube battlebox">📚</button>
-            <div class="draft-status-name">${escapeHtml(draftUi.roomLabel || draftUi.roomId)}</div>
+            <div class="draft-status-name">${escapeHtml(roomDisplayName())}</div>
             <div class="draft-status-seat">Seat ${draftUi.seat + 1}</div>
             <span class="draft-status-divider" aria-hidden="true">·</span>
             <div id="draft-pack-label" class="draft-pack-pick">Pack -</div>
@@ -434,7 +440,7 @@ export function createDraftController({
     const cubeButton = ui.draftPane.querySelector('#draft-open-cube');
     if (cubeButton) {
       cubeButton.addEventListener('click', () => {
-        const cubeDeckSlug = draftUi.roomDeckSlug || normalizeDraftSlug(draftUi.roomLabel);
+        const cubeDeckSlug = draftUi.roomDeckSlug;
         if (typeof onCubeRequested === 'function') {
           onCubeRequested(cubeDeckSlug);
         }

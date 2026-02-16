@@ -36,10 +36,10 @@ func TestDraftRoomsListAfterCreate(t *testing.T) {
 
 	createBody := createDraftRoomRequest{
 		Deck:      []string{"A", "B"},
+		DeckSlug:  "tempo",
 		SeatNames: []string{"Seat 1", "Seat 2"},
 		PackCount: 1,
 		PackSize:  1,
-		Label:     "Tempo",
 	}
 	raw, err := json.Marshal(createBody)
 	if err != nil {
@@ -76,8 +76,8 @@ func TestDraftRoomsListAfterCreate(t *testing.T) {
 	if !roomIDPattern.MatchString(room.RoomID) {
 		t.Fatalf("room id got %q want adjective-noun format", room.RoomID)
 	}
-	if room.Label != "Tempo" {
-		t.Fatalf("label got %q want %q", room.Label, "Tempo")
+	if room.DeckSlug != "tempo" {
+		t.Fatalf("deck slug got %q want %q", room.DeckSlug, "tempo")
 	}
 	if room.SeatCount != 2 {
 		t.Fatalf("seat count got %d want 2", room.SeatCount)

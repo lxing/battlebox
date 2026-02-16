@@ -42,7 +42,6 @@ async function createDraftRoom(deck) {
     body: JSON.stringify({
       deck: deckNames,
       deck_slug: deck?.slug || '',
-      label: deck?.name || '',
       pack_count: 7,
       pack_size: 8,
     }),
@@ -95,16 +94,16 @@ export function createLobbyController({
     scope.querySelectorAll('[data-room-id][data-seat-id]').forEach((button) => {
       button.addEventListener('click', () => {
         const roomID = String(button.dataset.roomId || '').trim();
-        const roomLabel = String(button.dataset.roomLabel || '').trim();
         const roomDeckSlug = String(button.dataset.roomDeckSlug || '').trim();
         const roomDeck = state.cubeDeckBySlug.get(normalizeName(roomDeckSlug));
+        const roomDeckName = String(roomDeck?.name || roomDeckSlug || '').trim();
         const roomDeckPrintings = roomDeck && roomDeck.printings && typeof roomDeck.printings === 'object'
           ? roomDeck.printings
           : {};
         const seatRaw = Number.parseInt(String(button.dataset.seatId || '0'), 10);
         const seat = Number.isFinite(seatRaw) && seatRaw >= 0 ? seatRaw : 0;
         if (!roomID) return;
-        draftController.openRoom(roomID, seat, roomLabel, roomDeckSlug, roomDeckPrintings);
+        draftController.openRoom(roomID, seat, roomDeckSlug, roomDeckPrintings, roomDeckName);
         void render(state.currentDeckSlug);
       });
     });
@@ -133,7 +132,6 @@ export function createLobbyController({
             type="button"
             class="action-button button-standard lobby-join-button"
             data-room-id="${escapeHtml(room.room_id)}"
-            data-room-label="${escapeHtml(room.label || '')}"
             data-room-deck-slug="${escapeHtml(room.deck_slug || '')}"
             data-seat-id="${idx}"
           ${occupied ? 'disabled aria-disabled="true"' : ''}
@@ -143,7 +141,9 @@ export function createLobbyController({
       `;
     }).join('');
     const roomID = escapeHtml(room.room_id);
-    const cubeLabel = escapeHtml(room.label || 'Unknown');
+    const roomDeckSlug = String(room.deck_slug || '').trim();
+    const roomDeck = state.cubeDeckBySlug.get(normalizeName(roomDeckSlug));
+    const cubeLabel = escapeHtml(String(roomDeck?.name || roomDeckSlug || 'Unknown').trim());
     const packNo = (Number.parseInt(String(room.pack_no || 0), 10) || 0) + 1;
     const pickNo = (Number.parseInt(String(room.pick_no || 0), 10) || 0) + 1;
     const connectedSeats = Number.parseInt(String(room.connected_seats || 0), 10) || 0;

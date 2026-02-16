@@ -7,7 +7,6 @@ import (
 	"fmt"
 	"net/http"
 	"strconv"
-	"strings"
 	"time"
 
 	"github.com/gorilla/websocket"
@@ -19,7 +18,6 @@ type createDraftRoomRequest struct {
 	SeatNames []string `json:"seat_names"`
 	PackCount int      `json:"pack_count"`
 	PackSize  int      `json:"pack_size"`
-	Label     string   `json:"label"`
 }
 
 type createDraftRoomResponse struct {
@@ -94,7 +92,6 @@ func (h *draftHub) handleCreateRoom(w http.ResponseWriter, r *http.Request) {
 	}
 
 	room := &draftRoom{
-		label:    strings.TrimSpace(req.Label),
 		deckSlug: normalizeSlug(req.DeckSlug),
 		draft:    draft,
 		clients:  make(map[int]map[*websocket.Conn]struct{}),
@@ -159,7 +156,6 @@ func (h *draftHub) handleStartOrJoinSharedRoom(w http.ResponseWriter, r *http.Re
 
 	room := &draftRoom{
 		id:       sharedRoomID,
-		label:    strings.TrimSpace(req.Label),
 		deckSlug: normalizeSlug(req.DeckSlug),
 		draft:    draft,
 		clients:  make(map[int]map[*websocket.Conn]struct{}),
