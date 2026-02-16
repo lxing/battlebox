@@ -28,6 +28,7 @@ import {
 import { createCardPreview } from './app/preview.js';
 import { createLifeCounter } from './app/life.js';
 import { createSampleHandViewer } from './app/hand.js';
+import { createDraftController } from './app/draft.js';
 
 const app = document.getElementById('app');
 let data = { index: null, battleboxes: {}, matrices: {}, buildId: '' };
@@ -76,6 +77,11 @@ const DEFAULT_DECK_UI = Object.freeze({
   }),
   deck_info_badge: 'colors',
   deck_selection_badge: 'colors',
+});
+const draftController = createDraftController({
+  ui,
+  renderBattleboxPane,
+  hidePreview: () => preview.hidePreview(),
 });
 
 function normalizeDecklistViewMode(value) {
@@ -624,6 +630,10 @@ async function renderMatrixPane(bbSlug, selectedDeckSlug = '', selectedMatchupSl
 async function route() {
   preview.hidePreview();
   sampleHand.hide();
+  const draftRoute = draftController.parseRoute(location.hash.slice(1) || '/');
+  if (!draftRoute) {
+    draftController.teardownSocket();
+  }
   const {
     parts,
     sortMode,
@@ -632,14 +642,16 @@ async function route() {
     collapsedMask,
     applySideboard,
   } = parseHashRoute(location.hash.slice(1) || '/');
-  const currentBattleboxSlug = parts.length > 0 ? normalizeName(parts[0]) : '';
+  const currentBattleboxSlug = (!draftRoute && parts.length > 0) ? normalizeName(parts[0]) : '';
   const currentDeckSlug = parts.length === 2 ? normalizeName(parts[1]) : '';
   const currentBattlebox = parts.length > 0
     ? data.index.battleboxes.find((b) => b.slug === currentBattleboxSlug)
     : null;
-  const matrixTabEnabled = Boolean(currentBattlebox && currentBattlebox.matrix_tab_enabled !== false);
+  const matrixTabEnabled = !draftRoute && Boolean(currentBattlebox && currentBattlebox.matrix_tab_enabled !== false);
 
-  if (parts.length === 0) {
+  if (draftRoute) {
+    draftController.render(draftRoute.roomId, draftRoute.seat);
+  } else if (parts.length === 0) {
     renderHome();
   } else if (parts.length === 1) {
     renderBattlebox(parts[0], sortMode, sortDirection);
@@ -662,6 +674,19 @@ async function route() {
 
   if (ui.battleboxPane) {
     ui.battleboxPane.scrollTo({ top: 0, left: 0, behavior: 'auto' });
+  }
+}
+
+async function safeRoute() {
+  try {
+    await route();
+  } catch (err) {
+    const message = err && err.message ? err.message : String(err || 'unknown error');
+    console.error('route failed:', err);
+    renderBattleboxPane('', `
+      <div class="loading">Something went wrong while rendering this page.</div>
+      <pre class="guide-source">${message}</pre>
+    `);
   }
 }
 
@@ -1268,6 +1293,9 @@ async function renderDeck(bbSlug, deckSlug, selectedGuide, sortMode, sortDirecti
     </h1>
   `;
   const sampleButtonLabel = deckUI.sample.mode === 'pack' ? 'Sample Pack' : 'Sample Hand';
+  const showDraftButton = bb.slug === 'cube';
+  const showSampleButton = deckUI.sample.mode !== 'none';
+  const showDeckToolbar = showSampleButton || showDraftButton;
   const bodyHtml = `
     <div class="deck-info-pane">
       <div class="deck-colors">${renderDeckBadge(deck, deckUI.deck_info_badge)}</div>
@@ -1282,11 +1310,12 @@ async function renderDeck(bbSlug, deckSlug, selectedGuide, sortMode, sortDirecti
         <div id="decklist-body">
           ${renderDecklistGrid(deckView)}
         </div>
-        ${deckUI.sample.mode === 'none' ? '' : `
+        ${showDeckToolbar ? `
           <div class="decklist-toolbar">
-            <button type="button" class="action-button sample-hand-open-button" id="sample-hand-open-button">${sampleButtonLabel}</button>
+            ${showSampleButton ? `<button type="button" class="action-button sample-hand-open-button" id="sample-hand-open-button">${sampleButtonLabel}</button>` : ''}
+            ${showDraftButton ? '<button type="button" class="action-button draft-open-button" id="draft-open-button">Draft</button>' : ''}
           </div>
-        `}
+        ` : ''}
       </div>
     </details>
 
@@ -1525,6 +1554,9 @@ async function renderDeck(bbSlug, deckSlug, selectedGuide, sortMode, sortDirecti
     });
   }
 
+  const draftButton = ui.battleboxPane.querySelector('#draft-open-button');
+  draftController.bindSharedDraftButton(draftButton, deck);
+
   renderDecklistBody();
   currentCollapsedMask = computeCollapsedMask();
   updateDeckHashFromState();
@@ -1550,14 +1582,14 @@ async function init() {
   data.buildId = data.index.build_id || '';
   preview.setupCardHover();
   window.addEventListener('hashchange', async () => {
-    await route();
+    await safeRoute();
     setActiveTab(TAB_BATTLEBOX);
   });
   window.addEventListener('popstate', async () => {
-    await route();
+    await safeRoute();
     setActiveTab(TAB_BATTLEBOX);
   });
-  await route();
+  await safeRoute();
   setActiveTab(TAB_BATTLEBOX);
 }
 

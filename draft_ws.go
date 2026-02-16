@@ -34,7 +34,8 @@ type createDraftRoomRequest struct {
 }
 
 type createDraftRoomResponse struct {
-	RoomID string `json:"room_id"`
+	RoomID  string `json:"room_id"`
+	Created bool   `json:"created"`
 }
 
 type draftWSMessage struct {
@@ -101,7 +102,70 @@ func (h *draftHub) handleCreateRoom(w http.ResponseWriter, r *http.Request) {
 	h.mu.Unlock()
 
 	w.Header().Set("Content-Type", "application/json")
-	_ = json.NewEncoder(w).Encode(createDraftRoomResponse{RoomID: room.id})
+	_ = json.NewEncoder(w).Encode(createDraftRoomResponse{RoomID: room.id, Created: true})
+}
+
+func (h *draftHub) handleStartOrJoinSharedRoom(w http.ResponseWriter, r *http.Request) {
+	if r.Method != http.MethodPost {
+		w.Header().Set("Allow", "POST")
+		http.Error(w, "method not allowed", http.StatusMethodNotAllowed)
+		return
+	}
+
+	const sharedRoomID = "shared"
+
+	h.mu.RLock()
+	existing := h.rooms[sharedRoomID]
+	h.mu.RUnlock()
+	if existing != nil {
+		w.Header().Set("Content-Type", "application/json")
+		_ = json.NewEncoder(w).Encode(createDraftRoomResponse{RoomID: sharedRoomID, Created: false})
+		return
+	}
+
+	defer r.Body.Close()
+	var req createDraftRoomRequest
+	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
+		http.Error(w, "invalid json body", http.StatusBadRequest)
+		return
+	}
+
+	cfg := DraftConfig{
+		PackCount: req.PackCount,
+		PackSize:  req.PackSize,
+		SeatCount: len(req.SeatNames),
+	}
+	if cfg.PackCount == 0 {
+		cfg.PackCount = 7
+	}
+	if cfg.PackSize == 0 {
+		cfg.PackSize = 8
+	}
+
+	draft, err := NewDraft(cfg, req.Deck, req.SeatNames)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusBadRequest)
+		return
+	}
+
+	room := &draftRoom{
+		id:      sharedRoomID,
+		draft:   draft,
+		clients: make(map[int]map[*websocket.Conn]struct{}),
+	}
+
+	h.mu.Lock()
+	if h.rooms[sharedRoomID] == nil {
+		h.rooms[sharedRoomID] = room
+		h.mu.Unlock()
+		w.Header().Set("Content-Type", "application/json")
+		_ = json.NewEncoder(w).Encode(createDraftRoomResponse{RoomID: sharedRoomID, Created: true})
+		return
+	}
+	h.mu.Unlock()
+
+	w.Header().Set("Content-Type", "application/json")
+	_ = json.NewEncoder(w).Encode(createDraftRoomResponse{RoomID: sharedRoomID, Created: false})
 }
 
 func (h *draftHub) handleWS(w http.ResponseWriter, r *http.Request) {
@@ -149,7 +213,9 @@ func (h *draftHub) handleWS(w http.ResponseWriter, r *http.Request) {
 		case "pick":
 			room.handlePick(seat, conn, msg)
 		default:
-			room.writeToConn(conn, draftWSMessage{Type: "error", Error: "unknown message type"})
+			// Ignore unknown client messages to keep write paths serialized through room handlers.
+			// This avoids concurrent writes to the same websocket connection.
+			continue
 		}
 	}
 }

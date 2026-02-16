@@ -38,19 +38,20 @@ type DraftProgress struct {
 
 // PackView is the seat-local view of an active pack.
 type PackView struct {
-	PackID string
-	Cards  []string
+	PackID string   `json:"pack_id"`
+	Cards  []string `json:"cards"`
 }
 
 // PlayerState is a seat-local snapshot.
 type PlayerState struct {
-	SeatID  int
-	State   string
-	Pool    []string
-	Active  *PackView
-	PackNo  int
-	PickNo  int
-	CanPick bool
+	SeatID  int       `json:"seat_id"`
+	State   string    `json:"state"`
+	Pool    []string  `json:"pool"`
+	Active  *PackView `json:"active_pack,omitempty"`
+	PackNo  int       `json:"pack_no"`
+	PickNo  int       `json:"pick_no"`
+	CanPick bool      `json:"can_pick"`
+	NextSeq uint64    `json:"next_seq"`
 }
 
 // PickResult is the outcome of a pick command.
@@ -175,10 +176,11 @@ func (d *Draft) PlayerState(seat int) (PlayerState, error) {
 	}
 
 	state := PlayerState{
-		SeatID: seat,
-		State:  d.State(),
-		PackNo: d.Progress.PackNumber,
-		PickNo: d.Progress.PickNumber,
+		SeatID:  seat,
+		State:   d.State(),
+		PackNo:  d.Progress.PackNumber,
+		PickNo:  d.Progress.PickNumber,
+		NextSeq: d.lastSeqBySeat[seat] + 1,
 	}
 
 	poolCopy := make([]string, len(d.Seats[seat].Pool))
