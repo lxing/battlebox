@@ -206,6 +206,19 @@ ORDER BY room_id ASC;
 	return records, nil
 }
 
+func (s *draftRoomStore) DeleteRoom(ctx context.Context, roomID string) error {
+	if s == nil || s.db == nil {
+		return errors.New("draft room store not initialized")
+	}
+	if roomID == "" {
+		return errors.New("room id required")
+	}
+	if _, err := s.db.ExecContext(ctx, `DELETE FROM draft_rooms WHERE room_id = ?;`, roomID); err != nil {
+		return fmt.Errorf("delete draft room %q: %w", roomID, err)
+	}
+	return nil
+}
+
 func (h *draftHub) snapshotRecords() []draftRoomRecord {
 	h.mu.RLock()
 	rooms := make([]*draftRoom, 0, len(h.rooms))

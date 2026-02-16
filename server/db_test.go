@@ -81,3 +81,33 @@ func TestDraftRoomStoreSaveLoad(t *testing.T) {
 	require.NoError(t, err, "third SaveRooms")
 	assert.Equal(t, 1, snapshottedCount, "mutated draft should snapshot")
 }
+
+func TestDraftRoomStoreDeleteRoom(t *testing.T) {
+	dbPath := filepath.Join(t.TempDir(), "db", "draft_rooms.sqlite")
+	store, err := openDraftRoomStore(dbPath)
+	require.NoError(t, err, "openDraftRoomStore")
+	defer func() {
+		_ = store.Close()
+	}()
+
+	draft := makeDraft(t, 1, 2, 2)
+	snapshot := snapshotFromDraft(draft)
+	roomID := "plucky-rabbit"
+
+	snapshottedCount, err := store.SaveRooms(context.Background(), []draftRoomRecord{
+		{
+			RoomID:   roomID,
+			DeckSlug: "tempo",
+			Snapshot: snapshot,
+		},
+	})
+	require.NoError(t, err, "SaveRooms")
+	assert.Equal(t, 1, snapshottedCount, "save should snapshot room")
+
+	err = store.DeleteRoom(context.Background(), roomID)
+	require.NoError(t, err, "DeleteRoom")
+
+	records, err := store.LoadRooms(context.Background())
+	require.NoError(t, err, "LoadRooms")
+	assert.Empty(t, records, "expected no rooms after delete")
+}

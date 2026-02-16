@@ -40,6 +40,7 @@ func main() {
 	if err != nil {
 		log.Fatalf("Failed to open draft store: %v", err)
 	}
+	draftHub.setRoomStore(draftStore)
 	defer func() {
 		if err := draftStore.Close(); err != nil {
 			log.Printf("Failed to close draft store: %v", err)

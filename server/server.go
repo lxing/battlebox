@@ -4,6 +4,7 @@ import (
 	"crypto/rand"
 	"encoding/binary"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"net/http"
 	"strconv"
@@ -23,6 +24,11 @@ type createDraftRoomRequest struct {
 type createDraftRoomResponse struct {
 	RoomID  string `json:"room_id"`
 	Created bool   `json:"created"`
+}
+
+type deleteDraftRoomResponse struct {
+	RoomID  string `json:"room_id"`
+	Deleted bool   `json:"deleted"`
 }
 
 type draftWSMessage struct {
@@ -57,8 +63,12 @@ func (h *draftHub) handleCreateRoom(w http.ResponseWriter, r *http.Request) {
 		h.handleListRooms(w)
 		return
 	}
+	if r.Method == http.MethodDelete {
+		h.handleDeleteRoom(w, r)
+		return
+	}
 	if r.Method != http.MethodPost {
-		w.Header().Set("Allow", "GET, POST")
+		w.Header().Set("Allow", "GET, POST, DELETE")
 		http.Error(w, "method not allowed", http.StatusMethodNotAllowed)
 		return
 	}
@@ -106,6 +116,26 @@ func (h *draftHub) handleCreateRoom(w http.ResponseWriter, r *http.Request) {
 
 	w.Header().Set("Content-Type", "application/json")
 	_ = json.NewEncoder(w).Encode(createDraftRoomResponse{RoomID: room.id, Created: true})
+}
+
+func (h *draftHub) handleDeleteRoom(w http.ResponseWriter, r *http.Request) {
+	roomID := r.URL.Query().Get("room_id")
+	if roomID == "" {
+		http.Error(w, "room_id query param required", http.StatusBadRequest)
+		return
+	}
+
+	if err := h.deleteRoom(r.Context(), roomID); err != nil {
+		if errors.Is(err, errDraftRoomNotFound) {
+			http.Error(w, "room not found", http.StatusNotFound)
+			return
+		}
+		http.Error(w, "failed to delete room", http.StatusInternalServerError)
+		return
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	_ = json.NewEncoder(w).Encode(deleteDraftRoomResponse{RoomID: roomID, Deleted: true})
 }
 
 func (h *draftHub) handleStartOrJoinSharedRoom(w http.ResponseWriter, r *http.Request) {

@@ -2,9 +2,11 @@ package main
 
 import (
 	"bytes"
+	"context"
 	"encoding/json"
 	"net/http"
 	"net/http/httptest"
+	"path/filepath"
 	"regexp"
 	"testing"
 
@@ -115,4 +117,49 @@ func TestDraftRoomSeatOccupancySingleConn(t *testing.T) {
 	assert.Equal(t, 1, summary.Connections, "connections mismatch")
 	require.Len(t, summary.OccupiedSeats, 1, "occupied seats length mismatch")
 	assert.Equal(t, 0, summary.OccupiedSeats[0], "occupied seat mismatch")
+}
+
+func TestDraftRoomDeleteRemovesSnapshotAndMemory(t *testing.T) {
+	hub := newDraftHub()
+	dbPath := filepath.Join(t.TempDir(), "db", "draft_rooms.sqlite")
+	store, err := openDraftRoomStore(dbPath)
+	require.NoError(t, err, "openDraftRoomStore")
+	defer func() {
+		_ = store.Close()
+	}()
+	hub.setRoomStore(store)
+
+	createBody := createDraftRoomRequest{
+		Deck:      []string{"A", "B"},
+		DeckSlug:  "tempo",
+		SeatNames: []string{"Seat 1", "Seat 2"},
+		PackCount: 1,
+		PackSize:  1,
+	}
+	raw, err := json.Marshal(createBody)
+	require.NoError(t, err, "marshal request")
+
+	createReq := httptest.NewRequest(http.MethodPost, "/api/draft/rooms", bytes.NewReader(raw))
+	createRes := httptest.NewRecorder()
+	hub.handleCreateRoom(createRes, createReq)
+	assert.Equal(t, http.StatusOK, createRes.Code, "create status mismatch")
+
+	snapshottedCount, err := store.SaveRooms(context.Background(), hub.snapshotRecords())
+	require.NoError(t, err, "SaveRooms")
+	assert.Equal(t, 1, snapshottedCount, "expected room snapshot to be persisted")
+
+	records, err := store.LoadRooms(context.Background())
+	require.NoError(t, err, "LoadRooms before delete")
+	require.Len(t, records, 1, "expected one persisted room before delete")
+	roomID := records[0].RoomID
+
+	deleteReq := httptest.NewRequest(http.MethodDelete, "/api/draft/rooms?room_id="+roomID, nil)
+	deleteRes := httptest.NewRecorder()
+	hub.handleCreateRoom(deleteRes, deleteReq)
+	assert.Equal(t, http.StatusOK, deleteRes.Code, "delete status mismatch")
+
+	assert.Empty(t, hub.listRoomSummaries(), "expected no in-memory rooms after delete")
+	records, err = store.LoadRooms(context.Background())
+	require.NoError(t, err, "LoadRooms after delete")
+	assert.Empty(t, records, "expected persisted room to be deleted")
 }

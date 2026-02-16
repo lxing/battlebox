@@ -1,7 +1,9 @@
 package main
 
 import (
+	"context"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"io"
 	"net/http"
@@ -16,6 +18,7 @@ type draftHub struct {
 	mu        sync.RWMutex
 	rooms     map[string]*draftRoom
 	lobbySubs map[chan struct{}]struct{}
+	roomStore *draftRoomStore
 }
 
 type draftRoom struct {
@@ -45,11 +48,44 @@ type listDraftRoomsResponse struct {
 	Rooms []draftRoomSummary `json:"rooms"`
 }
 
+var errDraftRoomNotFound = errors.New("draft room not found")
+
 func newDraftHub() *draftHub {
 	return &draftHub{
 		rooms:     make(map[string]*draftRoom),
 		lobbySubs: make(map[chan struct{}]struct{}),
 	}
+}
+
+func (h *draftHub) setRoomStore(store *draftRoomStore) {
+	h.mu.Lock()
+	defer h.mu.Unlock()
+	h.roomStore = store
+}
+
+func (h *draftHub) deleteRoom(ctx context.Context, roomID string) error {
+	if roomID == "" {
+		return errors.New("room id required")
+	}
+
+	h.mu.Lock()
+	room, ok := h.rooms[roomID]
+	if !ok {
+		h.mu.Unlock()
+		return errDraftRoomNotFound
+	}
+	if h.roomStore != nil {
+		if err := h.roomStore.DeleteRoom(ctx, roomID); err != nil {
+			h.mu.Unlock()
+			return fmt.Errorf("delete room snapshot: %w", err)
+		}
+	}
+	delete(h.rooms, roomID)
+	h.mu.Unlock()
+
+	room.closeAllConnections()
+	h.notifyLobbySubscribers()
+	return nil
 }
 
 func (h *draftHub) listRoomSummaries() []draftRoomSummary {
@@ -165,6 +201,18 @@ func (r *draftRoom) removeConn(seat int, conn *websocket.Conn) {
 	seatConns := r.clients[seat]
 	delete(seatConns, conn)
 	if len(seatConns) == 0 {
+		delete(r.clients, seat)
+	}
+}
+
+func (r *draftRoom) closeAllConnections() {
+	r.mu.Lock()
+	defer r.mu.Unlock()
+
+	for seat, seatConns := range r.clients {
+		for conn := range seatConns {
+			_ = conn.Close()
+		}
 		delete(r.clients, seat)
 	}
 }

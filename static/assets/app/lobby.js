@@ -77,6 +77,18 @@ async function createDraftRoom(deck) {
   return payload;
 }
 
+async function deleteDraftRoom(roomID) {
+  const id = String(roomID || '').trim();
+  if (!id) throw new Error('Missing room id');
+  const res = await fetch(`/api/draft/rooms?room_id=${encodeURIComponent(id)}`, {
+    method: 'DELETE',
+  });
+  if (!res.ok) {
+    const text = (await res.text()).trim();
+    throw new Error(text || `Failed to delete room (${res.status})`);
+  }
+}
+
 export function createLobbyController({
   ui,
   loadBattlebox,
@@ -141,10 +153,28 @@ export function createLobbyController({
     });
   }
 
+  function bindLobbyDeleteButtons(scope) {
+    if (!scope) return;
+    scope.querySelectorAll('[data-delete-room-id]').forEach((button) => {
+      button.addEventListener('click', async () => {
+        const roomID = String(button.dataset.deleteRoomId || '').trim();
+        if (!roomID) return;
+        button.disabled = true;
+        try {
+          await deleteDraftRoom(roomID);
+          await refreshRooms();
+        } catch (err) {
+          window.alert(err && err.message ? err.message : 'Failed to delete room.');
+          button.disabled = false;
+        }
+      });
+    });
+  }
+
   function renderRooms(rooms) {
     if (!state.roomsList) return;
     if (!Array.isArray(rooms) || rooms.length === 0) {
-      state.roomsList.innerHTML = '<div class="aux-empty">No draft rooms yet.</div>';
+      state.roomsList.innerHTML = '';
       return;
     }
 
@@ -183,7 +213,16 @@ export function createLobbyController({
             <li class="lobby-room-item">
               <div class="lobby-room-head">
                 <div class="lobby-room-id">${roomID}</div>
-                <div class="lobby-room-cube">${cubeLabel}</div>
+                <div class="lobby-room-head-right">
+                  <div class="lobby-room-cube">${cubeLabel}</div>
+                  <button
+                    type="button"
+                    class="lobby-room-delete-button"
+                    data-delete-room-id="${roomID}"
+                    aria-label="Delete room ${roomID}"
+                    title="Delete room"
+                  >🗑️</button>
+                </div>
               </div>
               <div class="lobby-room-meta">Pack ${packNo} · Pick ${pickNo} · ${connectedSeats}/${seatCount} connected</div>
               <div class="lobby-room-actions">${seatButtons}</div>
@@ -193,6 +232,7 @@ export function createLobbyController({
       </ul>
     `;
     bindLobbySeatButtons(state.roomsList);
+    bindLobbyDeleteButtons(state.roomsList);
   }
 
   async function refreshRooms() {
