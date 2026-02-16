@@ -301,7 +301,11 @@ export function createDraftController({
     }
     draftUi.pendingPick = false;
     draftUi.connected = false;
-    updateUIFromState();
+    if (isReconnect && draftUi.state) {
+      updateConnectionIndicator();
+    } else {
+      updateUIFromState();
+    }
 
     const wsProtocol = location.protocol === 'https:' ? 'wss:' : 'ws:';
     const wsUrl = `${wsProtocol}//${location.host}/api/draft/ws?room=${encodeURIComponent(roomId)}&seat=${encodeURIComponent(String(seat))}`;
@@ -311,7 +315,7 @@ export function createDraftController({
     socket.addEventListener('open', () => {
       draftUi.connected = true;
       draftUi.reconnectAttempt = 0;
-      updateUIFromState();
+      updateConnectionIndicator();
     });
 
     socket.addEventListener('close', () => {
@@ -319,7 +323,11 @@ export function createDraftController({
       draftUi.connected = false;
       draftUi.pendingPick = false;
       draftUi.socket = null;
-      updateUIFromState();
+      if (draftUi.state) {
+        updateConnectionIndicator();
+      } else {
+        updateUIFromState();
+      }
       if (!draftUi.shouldReconnect) {
         return;
       }
