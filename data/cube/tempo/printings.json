@@ -1,4 +1,9 @@
 {
+  "Plains": "unf/240",
+  "Island": "unf/241",
+  "Swamp": "unf/242",
+  "Mountain": "unf/243",
+  "Forest": "unf/244",
   "Abbot of Keral Keep": "2x2/100",
   "Adanto Vanguard": "xln/1",
   "Baleful Strix": "otc/215",

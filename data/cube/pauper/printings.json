@@ -1,4 +1,9 @@
 {
+  "Plains": "sld/1468",
+  "Island": "sld/1469",
+  "Swamp": "sld/1470",
+  "Mountain": "sld/1471",
+  "Forest": "sld/1472",
   "Ancestral Blade": "2xm/3",
   "Archaeomancer": "m13/41",
   "Ardent Elementalist": "mid/128",

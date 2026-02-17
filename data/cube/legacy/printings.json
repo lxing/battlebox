@@ -1,4 +1,9 @@
 {
+  "Plains": "dmu/277",
+  "Island": "dmu/278",
+  "Swamp": "dmu/279",
+  "Mountain": "dmu/280",
+  "Forest": "dmu/281",
   "Abrade": "vow/139",
   "Abrupt Decay": "tsr/370",
   "Abundant Harvest": "sta/48",
