@@ -31,6 +31,23 @@ func makeDraft(t *testing.T, packCount, packSize, seatCount int) *Draft {
 	})
 }
 
+func countBasicCards(cards []string) map[string]int {
+	counts := map[string]int{
+		"plains":   0,
+		"island":   0,
+		"swamp":    0,
+		"mountain": 0,
+		"forest":   0,
+	}
+	for _, card := range cards {
+		key := normalizeBasicLandKey(card)
+		if _, ok := counts[key]; ok {
+			counts[key]++
+		}
+	}
+	return counts
+}
+
 func TestDraftTwoPlayerHappyPath(t *testing.T) {
 	d := makeDraft(t, 5, 4, 2)
 	seatSeq := []uint64{1, 1}
@@ -200,6 +217,84 @@ func TestDraftMovePickBetweenZones(t *testing.T) {
 	_, err = d.MovePick(0, 3, card, PickZoneMainboard, PickZoneSideboard)
 	require.Error(t, err, "moving a non-existent source card should fail")
 	assert.Equal(t, uint64(2), d.lastSeqBySeat[0], "failed move should not advance seq")
+}
+
+func TestDraftMovePickRejectsBasics(t *testing.T) {
+	d := makeDraft(t, 1, 2, 2)
+	d.Seats[0].Picks.Mainboard = []string{"Plains"}
+
+	_, err := d.MovePick(0, 1, "Plains", PickZoneMainboard, PickZoneSideboard)
+	require.Error(t, err, "moving basics to sideboard must fail")
+	assert.Equal(t, uint64(0), d.lastSeqBySeat[0], "failed basic move should not advance seq")
+}
+
+func TestDraftSetBasicsClampAndReplace(t *testing.T) {
+	d := makeDraft(t, 1, 2, 2)
+	d.Seats[0].Picks.Mainboard = []string{"C999", "Plains", "Island"}
+	d.Seats[0].Picks.Sideboard = []string{"Forest", "C888"}
+
+	result, err := d.SetBasics(0, 1, map[string]int{
+		"plains":   25,
+		"island":   -4,
+		"swamp":    2,
+		"mountain": 1,
+		"forest":   0,
+	})
+	require.NoError(t, err, "SetBasics should succeed")
+	assert.False(t, result.Duplicate, "first SetBasics should not be duplicate")
+	assert.Equal(t, uint64(1), d.lastSeqBySeat[0], "SetBasics should advance seat seq")
+	assert.Equal(t, uint64(1), d.globalSeq, "SetBasics should advance global seq")
+	assert.Equal(t, uint64(2), result.State.NextSeq, "next seq after SetBasics mismatch")
+
+	basicCounts := countBasicCards(d.Seats[0].Picks.Mainboard)
+	assert.Equal(t, 20, basicCounts["plains"], "plains count should clamp to max")
+	assert.Equal(t, 0, basicCounts["island"], "island count should clamp to min")
+	assert.Equal(t, 2, basicCounts["swamp"], "swamp count mismatch")
+	assert.Equal(t, 1, basicCounts["mountain"], "mountain count mismatch")
+	assert.Equal(t, 0, basicCounts["forest"], "forest count mismatch")
+	assert.Contains(t, d.Seats[0].Picks.Mainboard, "C999", "non-basic mainboard cards should be preserved")
+
+	assert.Equal(t, []string{"C888"}, d.Seats[0].Picks.Sideboard, "sideboard basics should be removed")
+}
+
+func TestDraftSetBasicsRequiresAllFiveAndSupportsIdempotency(t *testing.T) {
+	d := makeDraft(t, 1, 2, 2)
+	payload := map[string]int{
+		"plains":   1,
+		"island":   2,
+		"swamp":    3,
+		"mountain": 4,
+		"forest":   5,
+	}
+
+	first, err := d.SetBasics(0, 1, payload)
+	require.NoError(t, err, "first SetBasics should succeed")
+	assert.False(t, first.Duplicate, "first SetBasics should not be duplicate")
+
+	duplicate, err := d.SetBasics(0, 1, payload)
+	require.NoError(t, err, "duplicate SetBasics should be idempotent")
+	assert.True(t, duplicate.Duplicate, "duplicate SetBasics should be flagged")
+	assert.Equal(t, uint64(1), d.lastSeqBySeat[0], "duplicate SetBasics should not advance seq")
+
+	_, err = d.SetBasics(0, 2, map[string]int{
+		"plains":   1,
+		"island":   1,
+		"swamp":    1,
+		"mountain": 1,
+	})
+	require.Error(t, err, "missing basic entries should fail")
+	assert.Equal(t, uint64(1), d.lastSeqBySeat[0], "failed SetBasics should not advance seq")
+
+	_, err = d.SetBasics(0, 2, map[string]int{
+		"plains":   1,
+		"island":   1,
+		"swamp":    1,
+		"mountain": 1,
+		"forest":   1,
+		"wastes":   1,
+	})
+	require.Error(t, err, "unknown basic entries should fail")
+	assert.Equal(t, uint64(1), d.lastSeqBySeat[0], "failed SetBasics should not advance seq")
 }
 
 func TestDraftPassPatternBatchAndImplicitBurn(t *testing.T) {

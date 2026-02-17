@@ -4,6 +4,21 @@ import { isDoubleFacedCard, normalizeName, scryfallImageUrlByName } from './util
 
 const DRAFT_PICK_ZONE_MAINBOARD = 'mainboard';
 const DRAFT_PICK_ZONE_SIDEBOARD = 'sideboard';
+const DRAFT_BASIC_MIN_COUNT = 0;
+const DRAFT_BASIC_MAX_COUNT = 20;
+const DRAFT_BASIC_LANDS = Object.freeze([
+  { key: 'plains', name: 'Plains' },
+  { key: 'island', name: 'Island' },
+  { key: 'swamp', name: 'Swamp' },
+  { key: 'mountain', name: 'Mountain' },
+  { key: 'forest', name: 'Forest' },
+]);
+const DRAFT_BASIC_NAME_BY_KEY = Object.freeze(
+  DRAFT_BASIC_LANDS.reduce((acc, basic) => {
+    acc[basic.key] = basic.name;
+    return acc;
+  }, {}),
+);
 
 function escapeHtml(value) {
   return String(value || '')
@@ -126,6 +141,64 @@ function normalizeDraftSlug(value) {
   return raw.replace(/[^a-z0-9-]+/g, '-').replace(/^-+|-+$/g, '');
 }
 
+function clampDraftBasicCount(value) {
+  const parsed = Number.parseInt(String(value), 10);
+  if (!Number.isFinite(parsed)) return DRAFT_BASIC_MIN_COUNT;
+  if (parsed < DRAFT_BASIC_MIN_COUNT) return DRAFT_BASIC_MIN_COUNT;
+  if (parsed > DRAFT_BASIC_MAX_COUNT) return DRAFT_BASIC_MAX_COUNT;
+  return parsed;
+}
+
+function createDraftBasicCounts(raw) {
+  const counts = {};
+  DRAFT_BASIC_LANDS.forEach((basic) => {
+    counts[basic.key] = clampDraftBasicCount(raw && raw[basic.key]);
+  });
+  return counts;
+}
+
+function deriveDraftBasicCountsFromPicks(picks) {
+  const counts = createDraftBasicCounts({});
+  const mainboard = Array.isArray(picks?.mainboard) ? picks.mainboard : [];
+  mainboard.forEach((cardName) => {
+    const key = normalizeName(cardName);
+    if (Object.prototype.hasOwnProperty.call(counts, key)) {
+      counts[key] = clampDraftBasicCount(counts[key] + 1);
+    }
+  });
+  return counts;
+}
+
+function isDraftBasicLand(cardName) {
+  const key = normalizeName(cardName);
+  return Object.prototype.hasOwnProperty.call(DRAFT_BASIC_NAME_BY_KEY, key);
+}
+
+function basicFallbackLabel(key) {
+  const name = DRAFT_BASIC_NAME_BY_KEY[key];
+  return name || key;
+}
+
+function renderDraftBasicsPickerCards(printings) {
+  return DRAFT_BASIC_LANDS.map((basic) => {
+    const imageUrl = getDraftCardImageUrl(basic.name, printings, false);
+    const imageMarkup = imageUrl
+      ? `<img src="${escapeHtml(imageUrl)}" alt="${escapeHtml(basic.name)}" loading="lazy">`
+      : `<span class="draft-basics-card-fallback">${escapeHtml(basicFallbackLabel(basic.key))}</span>`;
+    return `
+      <button type="button" class="draft-basics-card-button" data-basic-key="${basic.key}" aria-label="${escapeHtml(basic.name)}">
+        <span class="draft-basics-card-image">
+          ${imageMarkup}
+          <span class="draft-basics-half draft-basics-half-top" aria-hidden="true">+</span>
+          <span class="draft-basics-half draft-basics-half-bottom" aria-hidden="true">-</span>
+          <span class="draft-basics-count-badge" data-basic-count-key="${basic.key}">0</span>
+        </span>
+        <span class="draft-basics-card-name">${escapeHtml(basic.name)}</span>
+      </button>
+    `;
+  }).join('');
+}
+
 function buildDraftPickCards(cardNames, cardMetaByName, printings, doubleFaced) {
   const aggregated = new Map();
   const addCard = (name) => {
@@ -139,11 +212,12 @@ function buildDraftPickCards(cardNames, cardMetaByName, printings, doubleFaced) 
     }
     const meta = cardMetaByName && typeof cardMetaByName === 'object' ? cardMetaByName[key] : null;
     const rawManaValue = Number(meta?.mana_value);
+    const isBasic = isDraftBasicLand(rawName);
     const printing = String(meta?.printing || printings?.[key] || '');
     aggregated.set(key, {
       qty: 1,
       name: String(meta?.name || rawName),
-      type: String(meta?.type || ''),
+      type: String(meta?.type || (isBasic ? 'land' : '')),
       mana_cost: String(meta?.mana_cost || ''),
       mana_value: Number.isFinite(rawManaValue) ? rawManaValue : 0,
       printing,
@@ -216,6 +290,9 @@ export function createDraftController({
     lastPicksHtml: '',
     toggleSideboardMode: false,
     pendingDeckMutation: false,
+    pendingBasicsSet: false,
+    basicsModalOpen: false,
+    basicsDraftCounts: createDraftBasicCounts({}),
   };
 
   function clearReconnectTimer() {
@@ -251,8 +328,13 @@ export function createDraftController({
     draftUi.packCardBackFaces.clear();
     draftUi.lastPicksHtml = '';
     draftUi.toggleSideboardMode = false;
+    draftUi.pendingBasicsSet = false;
+    draftUi.basicsModalOpen = false;
+    draftUi.basicsDraftCounts = createDraftBasicCounts({});
     if (ui.draftPane) {
       ui.draftPane.dataset.sideboardSwapMode = '0';
+      const basicsOverlay = ui.draftPane.querySelector('#draft-basics-overlay');
+      if (basicsOverlay) basicsOverlay.hidden = true;
     }
   }
 
@@ -293,6 +375,7 @@ export function createDraftController({
     draftUi.connected = false;
     draftUi.pendingPick = false;
     draftUi.pendingDeckMutation = false;
+    draftUi.pendingBasicsSet = false;
     draftUi.selectedPackID = '';
     draftUi.selectedPackZones.clear();
   }
@@ -338,6 +421,9 @@ export function createDraftController({
     draftUi.packCardBackFaces.clear();
     draftUi.lastPicksHtml = '';
     draftUi.pendingDeckMutation = false;
+    draftUi.pendingBasicsSet = false;
+    draftUi.basicsModalOpen = false;
+    draftUi.basicsDraftCounts = createDraftBasicCounts({});
     draftUi.toggleSideboardMode = false;
     if (typeof onRoomSelectionChanged === 'function') {
       onRoomSelectionChanged(draftUi.roomId, draftUi.seat);
@@ -645,6 +731,87 @@ export function createDraftController({
     });
   }
 
+  function setBasicsModalOpen(isOpen) {
+    draftUi.basicsModalOpen = Boolean(isOpen);
+    if (!ui.draftPane) return;
+    const overlay = ui.draftPane.querySelector('#draft-basics-overlay');
+    if (!overlay) return;
+    overlay.hidden = !draftUi.basicsModalOpen;
+  }
+
+  function syncBasicsDialogUi() {
+    if (!ui.draftPane) return;
+    const overlay = ui.draftPane.querySelector('#draft-basics-overlay');
+    if (!overlay) return;
+    overlay.hidden = !draftUi.basicsModalOpen;
+    const setButton = overlay.querySelector('#draft-basics-set');
+    const closeButton = overlay.querySelector('#draft-basics-close');
+    const status = overlay.querySelector('#draft-basics-status');
+
+    DRAFT_BASIC_LANDS.forEach((basic) => {
+      const count = clampDraftBasicCount(draftUi.basicsDraftCounts[basic.key]);
+      const countEl = overlay.querySelector(`[data-basic-count-key="${basic.key}"]`);
+      if (countEl) countEl.textContent = String(count);
+      const cardButton = overlay.querySelector(`.draft-basics-card-button[data-basic-key="${basic.key}"]`);
+      if (cardButton) {
+        cardButton.setAttribute('aria-label', `${basic.name}: ${count}`);
+        cardButton.disabled = draftUi.pendingBasicsSet;
+      }
+    });
+
+    if (setButton) setButton.disabled = draftUi.pendingBasicsSet;
+    if (closeButton) closeButton.disabled = draftUi.pendingBasicsSet;
+    if (status) {
+      status.hidden = !draftUi.pendingBasicsSet;
+      status.textContent = draftUi.pendingBasicsSet ? 'Saving...' : '';
+    }
+  }
+
+  function closeBasicsDialog(force = false) {
+    if (draftUi.pendingBasicsSet && !force) return;
+    setBasicsModalOpen(false);
+    syncBasicsDialogUi();
+  }
+
+  function openBasicsDialog() {
+    if (!ui.draftPane) return;
+    if (!draftUi.state || draftUi.pendingDeckMutation) return;
+    draftUi.basicsDraftCounts = deriveDraftBasicCountsFromPicks(draftUi.state.picks);
+    setBasicsModalOpen(true);
+    syncBasicsDialogUi();
+  }
+
+  function updateDraftBasicCount(key, delta) {
+    if (!Object.prototype.hasOwnProperty.call(DRAFT_BASIC_NAME_BY_KEY, key)) return;
+    if (draftUi.pendingBasicsSet) return;
+    const current = clampDraftBasicCount(draftUi.basicsDraftCounts[key]);
+    const next = clampDraftBasicCount(current + delta);
+    if (next === current) return;
+    draftUi.basicsDraftCounts[key] = next;
+    syncBasicsDialogUi();
+  }
+
+  function submitSetBasics() {
+    if (!draftUi.state || draftUi.pendingBasicsSet || draftUi.pendingDeckMutation) return;
+    if (!draftUi.socket || draftUi.socket.readyState !== WebSocket.OPEN) return;
+
+    const nextSeq = Number.parseInt(String(draftUi.state.next_seq || 1), 10) || 1;
+    const basics = {};
+    DRAFT_BASIC_LANDS.forEach((basic) => {
+      basics[basic.key] = clampDraftBasicCount(draftUi.basicsDraftCounts[basic.key]);
+    });
+
+    draftUi.pendingDeckMutation = true;
+    draftUi.pendingBasicsSet = true;
+    syncSideboardModeUi();
+    syncBasicsDialogUi();
+    draftUi.socket.send(JSON.stringify({
+      type: 'set_basics',
+      seq: nextSeq,
+      basics,
+    }));
+  }
+
   function handlePackCardToggle(index) {
     const ctx = getActivePackInteractionState();
     if (!ctx || !ctx.canPick) return;
@@ -736,7 +903,50 @@ export function createDraftController({
     if (basicsButton && basicsButton.dataset.bound !== '1') {
       basicsButton.dataset.bound = '1';
       basicsButton.addEventListener('click', () => {
-        // Intentionally noop for now.
+        openBasicsDialog();
+      });
+    }
+
+    const basicsOverlay = ui.draftPane.querySelector('#draft-basics-overlay');
+    if (basicsOverlay && basicsOverlay.dataset.bound !== '1') {
+      basicsOverlay.dataset.bound = '1';
+      const closeButton = basicsOverlay.querySelector('#draft-basics-close');
+      const setButton = basicsOverlay.querySelector('#draft-basics-set');
+      const backdrop = basicsOverlay.querySelector('.draft-basics-backdrop');
+
+      if (closeButton) {
+        closeButton.addEventListener('click', () => {
+          closeBasicsDialog();
+        });
+      }
+      if (setButton) {
+        setButton.addEventListener('click', () => {
+          submitSetBasics();
+        });
+      }
+      if (backdrop) {
+        backdrop.addEventListener('click', () => {
+          closeBasicsDialog();
+        });
+      }
+
+      basicsOverlay.addEventListener('click', (event) => {
+        const target = event.target instanceof Element ? event.target : null;
+        if (!target) return;
+        const cardButton = target.closest('.draft-basics-card-button');
+        if (!cardButton || !basicsOverlay.contains(cardButton)) return;
+        const imageEl = target.closest('.draft-basics-card-image');
+        if (!imageEl || !cardButton.contains(imageEl)) return;
+        event.preventDefault();
+        event.stopPropagation();
+        if (draftUi.pendingBasicsSet) return;
+        const key = String(cardButton.getAttribute('data-basic-key') || '').trim();
+        if (!Object.prototype.hasOwnProperty.call(DRAFT_BASIC_NAME_BY_KEY, key)) return;
+        const rect = imageEl.getBoundingClientRect();
+        if (rect.height <= 0) return;
+        const clickY = event.clientY - rect.top;
+        const delta = clickY < rect.height / 2 ? 1 : -1;
+        updateDraftBasicCount(key, delta);
       });
     }
 
@@ -750,6 +960,7 @@ export function createDraftController({
         const cardEl = target.closest('.card.card-ref');
         if (!cardEl || !picksRoot.contains(cardEl)) return;
         const cardName = String(cardEl.getAttribute('data-name') || '').trim();
+        if (isDraftBasicLand(cardName)) return;
         const fromZone = resolvePicksCardZone(cardEl);
         if (!cardName || !fromZone) return;
         event.preventDefault();
@@ -771,6 +982,7 @@ export function createDraftController({
     const packContentEl = ui.draftPane.querySelector('#draft-pack-content');
     const pickButton = ui.draftPane.querySelector('#draft-pick-submit');
     const picksEl = ui.draftPane.querySelector('#draft-picks-cards');
+    const basicsButton = ui.draftPane.querySelector('#draft-basics');
 
     const setWaitingIndicator = (isVisible) => {
       if (waitingDividerEl) waitingDividerEl.hidden = !isVisible;
@@ -802,6 +1014,8 @@ export function createDraftController({
         picksEl.innerHTML = '';
         draftUi.lastPicksHtml = '';
       }
+      if (basicsButton) basicsButton.disabled = true;
+      closeBasicsDialog(true);
       syncSideboardModeUi();
       return;
     }
@@ -845,6 +1059,10 @@ export function createDraftController({
         draftUi.lastPicksHtml = picksHtml;
       }
     }
+    if (basicsButton) {
+      basicsButton.disabled = draftUi.pendingDeckMutation || !draftUi.connected;
+    }
+    syncBasicsDialogUi();
 
     if (!packRoot) return;
     const active = state.active_pack;
@@ -932,6 +1150,8 @@ export function createDraftController({
       draftUi.selectedPackID = '';
       draftUi.selectedPackZones.clear();
       draftUi.pendingDeckMutation = false;
+      draftUi.pendingBasicsSet = false;
+      closeBasicsDialog(true);
     }
     draftUi.pendingPick = false;
     draftUi.connected = false;
@@ -978,18 +1198,28 @@ export function createDraftController({
       }
       if (!msg || typeof msg !== 'object') return;
 
-      if (msg.type === 'state' || msg.type === 'pick_accepted' || msg.type === 'move_accepted') {
+      if (
+        msg.type === 'state'
+        || msg.type === 'pick_accepted'
+        || msg.type === 'move_accepted'
+        || msg.type === 'set_basics_accepted'
+      ) {
         if (msg.state) {
           draftUi.state = msg.state;
         }
         draftUi.pendingPick = false;
         draftUi.pendingDeckMutation = false;
+        if (msg.type === 'set_basics_accepted') {
+          draftUi.pendingBasicsSet = false;
+          closeBasicsDialog(true);
+        }
       } else if (msg.type === 'draft_completed') {
         draftUi.pendingPick = false;
         draftUi.pendingDeckMutation = false;
       } else if (msg.type === 'seat_occupied' || msg.type === 'room_missing') {
         draftUi.pendingPick = false;
         draftUi.pendingDeckMutation = false;
+        draftUi.pendingBasicsSet = false;
         draftUi.shouldReconnect = false;
         clearReconnectTimer();
         teardownSocket();
@@ -1001,6 +1231,7 @@ export function createDraftController({
       } else if (msg.type === 'error') {
         draftUi.pendingPick = false;
         draftUi.pendingDeckMutation = false;
+        draftUi.pendingBasicsSet = false;
       }
       updateUIFromState();
     });
@@ -1074,6 +1305,25 @@ export function createDraftController({
             </button>
           </div>
         </div>
+
+        <div id="draft-basics-overlay" class="draft-basics-overlay" hidden>
+          <div class="draft-basics-backdrop"></div>
+          <div class="draft-basics-dialog" role="dialog" aria-modal="true" aria-label="Basic lands selector">
+            <div class="panel-title draft-basics-title">Basic Lands</div>
+            <div class="draft-basics-grid">
+              ${renderDraftBasicsPickerCards(draftUi.roomDeckPrintings)}
+            </div>
+            <div class="draft-basics-actions">
+              <button type="button" class="action-button button-standard draft-basics-action-button" id="draft-basics-close">
+                Close
+              </button>
+              <button type="button" class="action-button button-standard draft-basics-action-button" id="draft-basics-set">
+                Set
+              </button>
+            </div>
+            <div id="draft-basics-status" class="draft-basics-status" aria-live="polite" hidden></div>
+          </div>
+        </div>
       </div>
     `;
 
@@ -1094,6 +1344,7 @@ export function createDraftController({
     }
     syncSideboardModeUi();
     bindPackInteractions();
+    syncBasicsDialogUi();
 
     void connectSocket(draftUi.roomId, draftUi.seat);
     updateUIFromState();

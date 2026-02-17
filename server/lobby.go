@@ -340,6 +340,30 @@ func (r *draftRoom) handleMovePick(seat int, conn *websocket.Conn, msg draftWSMe
 	})
 }
 
+func (r *draftRoom) handleSetBasics(seat int, conn *websocket.Conn, msg draftWSMessage) {
+	// TODO(remote-draft): avoid holding room mutex while writing to sockets.
+	// Move to per-connection outbound queues so slow clients cannot stall picks.
+	r.mu.Lock()
+	defer r.mu.Unlock()
+
+	if msg.Seq == 0 || len(msg.Basics) == 0 {
+		r.writeToConn(conn, draftWSMessage{Type: "error", Error: "missing basics fields"})
+		return
+	}
+
+	result, err := r.draft.SetBasics(seat, msg.Seq, msg.Basics)
+	if err != nil {
+		r.writeToConn(conn, draftWSMessage{Type: "error", Error: err.Error()})
+		return
+	}
+
+	r.writeToConn(conn, draftWSMessage{
+		Type:      "set_basics_accepted",
+		State:     &result.State,
+		Duplicate: result.Duplicate,
+	})
+}
+
 func (r *draftRoom) broadcastSeatStates() {
 	for seat, conns := range r.clients {
 		state, err := r.draft.PlayerState(seat)

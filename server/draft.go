@@ -5,6 +5,7 @@ import (
 	"encoding/binary"
 	"errors"
 	"fmt"
+	"strings"
 	"time"
 
 	"github.com/lxing/battlebox/internal/buildtool"
@@ -70,7 +71,20 @@ type PlayerState struct {
 const (
 	PickZoneMainboard = "mainboard"
 	PickZoneSideboard = "sideboard"
+
+	BasicLandMinCount = 0
+	BasicLandMaxCount = 20
 )
+
+var basicLandNameByKey = map[string]string{
+	"plains":   "Plains",
+	"island":   "Island",
+	"swamp":    "Swamp",
+	"mountain": "Mountain",
+	"forest":   "Forest",
+}
+
+var basicLandKeys = []string{"plains", "island", "swamp", "mountain", "forest"}
 
 // PickResult is the outcome of a pick command.
 type PickResult struct {
@@ -340,6 +354,25 @@ func picksForZone(seat *SeatState, zone string) (*[]string, error) {
 	return nil, errors.New("invalid pick zone")
 }
 
+func normalizeBasicLandKey(value string) string {
+	return strings.ToLower(strings.TrimSpace(value))
+}
+
+func isBasicLandCardName(cardName string) bool {
+	_, ok := basicLandNameByKey[normalizeBasicLandKey(cardName)]
+	return ok
+}
+
+func clampBasicLandCount(value int) int {
+	if value < BasicLandMinCount {
+		return BasicLandMinCount
+	}
+	if value > BasicLandMaxCount {
+		return BasicLandMaxCount
+	}
+	return value
+}
+
 // MovePick moves a picked card between mainboard and sideboard for a seat.
 // It is a seat-local mutation and does not affect packs or round progression.
 func (d *Draft) MovePick(seat int, seq uint64, cardName, fromZone, toZone string) (PickResult, error) {
@@ -348,6 +381,9 @@ func (d *Draft) MovePick(seat int, seq uint64, cardName, fromZone, toZone string
 	}
 	if cardName == "" {
 		return PickResult{}, errors.New("card name required")
+	}
+	if isBasicLandCardName(cardName) {
+		return PickResult{}, errors.New("basic lands cannot move zones")
 	}
 	if fromZone == toZone {
 		return PickResult{}, errors.New("source and destination zones must differ")
@@ -396,6 +432,82 @@ func (d *Draft) MovePick(seat int, seq uint64, cardName, fromZone, toZone string
 	*from = append((*from)[:found], (*from)[found+1:]...)
 	*to = append(*to, moved)
 
+	d.lastSeqBySeat[seat] = seq
+	d.globalSeq++
+
+	state, err := d.PlayerState(seat)
+	if err != nil {
+		return PickResult{}, err
+	}
+	return PickResult{State: state, Events: nil, Duplicate: false}, nil
+}
+
+// SetBasics replaces a seat's mainboard basic land counts with absolute values.
+// Basic land cards are always kept in mainboard and are removed from sideboard.
+func (d *Draft) SetBasics(seat int, seq uint64, basics map[string]int) (PickResult, error) {
+	if seat < 0 || seat >= d.Config.SeatCount {
+		return PickResult{}, errors.New("invalid seat")
+	}
+	if len(basics) == 0 {
+		return PickResult{}, errors.New("basic counts required")
+	}
+
+	lastSeq := d.lastSeqBySeat[seat]
+	if seq == 0 {
+		return PickResult{}, errors.New("invalid seq")
+	}
+	if seq == lastSeq {
+		state, err := d.PlayerState(seat)
+		if err != nil {
+			return PickResult{}, err
+		}
+		return PickResult{State: state, Events: nil, Duplicate: true}, nil
+	}
+	if seq < lastSeq {
+		return PickResult{}, errors.New("stale seq")
+	}
+	if seq != lastSeq+1 {
+		return PickResult{}, errors.New("seq gap")
+	}
+
+	counts := make(map[string]int, len(basicLandKeys))
+	for key, rawCount := range basics {
+		normalized := normalizeBasicLandKey(key)
+		if _, ok := basicLandNameByKey[normalized]; !ok {
+			return PickResult{}, fmt.Errorf("invalid basic land %q", key)
+		}
+		counts[normalized] = clampBasicLandCount(rawCount)
+	}
+	for _, key := range basicLandKeys {
+		if _, ok := counts[key]; !ok {
+			return PickResult{}, errors.New("all five basic land counts are required")
+		}
+	}
+
+	seatState := &d.Seats[seat]
+	nextMainboard := make([]string, 0, len(seatState.Picks.Mainboard)+(len(basicLandKeys)*BasicLandMaxCount))
+	for _, cardName := range seatState.Picks.Mainboard {
+		if isBasicLandCardName(cardName) {
+			continue
+		}
+		nextMainboard = append(nextMainboard, cardName)
+	}
+	for _, key := range basicLandKeys {
+		for i := 0; i < counts[key]; i++ {
+			nextMainboard = append(nextMainboard, basicLandNameByKey[key])
+		}
+	}
+
+	nextSideboard := make([]string, 0, len(seatState.Picks.Sideboard))
+	for _, cardName := range seatState.Picks.Sideboard {
+		if isBasicLandCardName(cardName) {
+			continue
+		}
+		nextSideboard = append(nextSideboard, cardName)
+	}
+
+	seatState.Picks.Mainboard = nextMainboard
+	seatState.Picks.Sideboard = nextSideboard
 	d.lastSeqBySeat[seat] = seq
 	d.globalSeq++
 
