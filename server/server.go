@@ -338,6 +338,10 @@ func (h *draftHub) handleWS(w http.ResponseWriter, r *http.Request) {
 			room.handleMovePick(seat, conn, msg)
 		case "set_basics":
 			room.handleSetBasics(seat, conn, msg)
+		case "bot_pick":
+			if room.handleBotPick(seat) {
+				h.notifyLobbySubscribers()
+			}
 		default:
 			// Ignore unknown client messages to keep write paths serialized through room handlers.
 			// This avoids concurrent writes to the same websocket connection.

@@ -637,3 +637,53 @@ func (d *Draft) PickBatch(seat int, seq uint64, packID string, picks []PickSelec
 	}
 	return PickResult{State: ack, Events: events, Duplicate: false}, nil
 }
+
+// randomPickBatchForSeat performs one full pass worth of random picks for a seat.
+// Picks are always assigned to the provided zone.
+func (d *Draft) randomPickBatchForSeat(seat int, zone string) (PickResult, error) {
+	if err := d.validateSeatIndex(seat); err != nil {
+		return PickResult{}, err
+	}
+	if d.State() == "done" {
+		return PickResult{}, errors.New("draft already complete")
+	}
+	if zone != PickZoneMainboard && zone != PickZoneSideboard {
+		return PickResult{}, errors.New("invalid pick zone")
+	}
+	if d.seatPicked[seat] {
+		return PickResult{}, errors.New("seat already picked this round")
+	}
+
+	pack, err := d.currentPackForSeat(seat)
+	if err != nil {
+		return PickResult{}, err
+	}
+	expectedPicks := d.picksThisPass()
+	if expectedPicks <= 0 {
+		return PickResult{}, errors.New("no picks available for current pass")
+	}
+
+	available := make([]int, 0, len(pack.Cards))
+	for i := range pack.Cards {
+		if !pack.Picked[i] {
+			available = append(available, i)
+		}
+	}
+	if len(available) < expectedPicks {
+		return PickResult{}, errors.New("not enough cards in pack for this pass")
+	}
+
+	picks := make([]PickSelection, 0, expectedPicks)
+	for i := 0; i < expectedPicks; i++ {
+		roll := randomIndex(len(available))
+		cardIdx := available[roll]
+		picks = append(picks, PickSelection{
+			CardName: pack.Cards[cardIdx],
+			Zone:     zone,
+		})
+		available = append(available[:roll], available[roll+1:]...)
+	}
+
+	nextSeq := d.lastSeqBySeat[seat] + 1
+	return d.PickBatch(seat, nextSeq, pack.ID, picks)
+}

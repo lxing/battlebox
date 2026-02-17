@@ -383,6 +383,77 @@ func (r *draftRoom) handleSetBasics(seat int, conn *websocket.Conn, msg draftWSM
 	})
 }
 
+func (r *draftRoom) hasOccupiedOtherSeatsLocked(requesterSeat int) bool {
+	for seat, seatConns := range r.clients {
+		if seat == requesterSeat {
+			continue
+		}
+		if len(seatConns) > 0 {
+			return true
+		}
+	}
+	return false
+}
+
+// handleBotPick makes random picks for all currently unpicked seats in the pass,
+// excluding requesterSeat. If any other seat is occupied by a real client, this
+// call silently no-ops.
+func (r *draftRoom) handleBotPick(requesterSeat int) bool {
+	// TODO(remote-draft): avoid holding room mutex while writing to sockets.
+	// Move to per-connection outbound queues so slow clients cannot stall picks.
+	r.mu.Lock()
+	defer r.mu.Unlock()
+
+	if r.closed || r.draft == nil || r.draft.State() == "done" {
+		return false
+	}
+	if r.hasOccupiedOtherSeatsLocked(requesterSeat) {
+		return false
+	}
+
+	targetSeats := make([]int, 0, r.draft.Config.SeatCount)
+	for seat := 0; seat < r.draft.Config.SeatCount; seat++ {
+		if seat == requesterSeat {
+			continue
+		}
+		if r.draft.seatPicked[seat] {
+			continue
+		}
+		targetSeats = append(targetSeats, seat)
+	}
+	if len(targetSeats) == 0 {
+		return false
+	}
+
+	changed := false
+	roundAdvanced := false
+	for _, targetSeat := range targetSeats {
+		result, err := r.draft.randomPickBatchForSeat(targetSeat, PickZoneMainboard)
+		if err != nil || result.Duplicate {
+			continue
+		}
+		changed = true
+		for _, event := range result.Events {
+			switch evt := event.(type) {
+			case RoundAdvanced:
+				roundAdvanced = true
+				r.broadcast(draftWSMessage{
+					Type:   "round_advanced",
+					PackNo: evt.PackNumber,
+					PickNo: evt.PickNumber,
+				})
+			case DraftCompleted:
+				r.broadcast(draftWSMessage{Type: "draft_completed"})
+			}
+		}
+	}
+
+	if roundAdvanced {
+		r.broadcastSeatStates()
+	}
+	return changed
+}
+
 func (r *draftRoom) broadcastSeatStates() {
 	for seat, conns := range r.clients {
 		state, err := r.draft.PlayerState(seat)

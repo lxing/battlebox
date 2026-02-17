@@ -650,6 +650,13 @@ export function createDraftController({
     }));
   }
 
+  function submitBotPick() {
+    if (!draftUi.state) return;
+    if (draftUi.state.state === 'done') return;
+    if (!draftUi.socket || draftUi.socket.readyState !== WebSocket.OPEN) return;
+    draftUi.socket.send(JSON.stringify({ type: 'bot_pick' }));
+  }
+
   function toggleSideboardMode() {
     draftUi.toggleSideboardMode = !draftUi.toggleSideboardMode;
     if (draftUi.toggleSideboardMode && typeof onPreviewDismissRequested === 'function') {
@@ -864,6 +871,14 @@ export function createDraftController({
       });
     }
 
+    const botButton = ui.draftPane.querySelector('#draft-bot-pick');
+    if (botButton && botButton.dataset.bound !== '1') {
+      botButton.dataset.bound = '1';
+      botButton.addEventListener('click', () => {
+        submitBotPick();
+      });
+    }
+
     const sideboardModeButton = ui.draftPane.querySelector('#draft-toggle-sideboard-mode');
     if (sideboardModeButton && sideboardModeButton.dataset.bound !== '1') {
       sideboardModeButton.dataset.bound = '1';
@@ -962,6 +977,7 @@ export function createDraftController({
     const packEmptyEl = ui.draftPane.querySelector('#draft-pack-empty');
     const packContentEl = ui.draftPane.querySelector('#draft-pack-content');
     const pickButton = ui.draftPane.querySelector('#draft-pick-submit');
+    const botButton = ui.draftPane.querySelector('#draft-bot-pick');
     const picksEl = ui.draftPane.querySelector('#draft-picks-cards');
     const basicsButton = ui.draftPane.querySelector('#draft-basics');
 
@@ -990,6 +1006,9 @@ export function createDraftController({
       if (pickButton) {
         pickButton.textContent = 'Pick';
         pickButton.disabled = true;
+      }
+      if (botButton) {
+        botButton.disabled = true;
       }
       if (picksEl) {
         picksEl.innerHTML = '';
@@ -1043,6 +1062,9 @@ export function createDraftController({
     if (basicsButton) {
       basicsButton.disabled = draftUi.pendingDeckMutation || !draftUi.connected;
     }
+    if (botButton) {
+      botButton.disabled = !draftUi.connected || state.state === 'done';
+    }
     syncBasicsDialogUi();
 
     if (!packRoot) return;
@@ -1061,6 +1083,9 @@ export function createDraftController({
       if (pickButton) {
         pickButton.textContent = 'Pick';
         pickButton.disabled = true;
+      }
+      if (botButton) {
+        botButton.disabled = !draftUi.connected || state.state === 'done';
       }
       syncSideboardModeUi();
       return;
@@ -1087,6 +1112,9 @@ export function createDraftController({
     renderPackCardsInPlace(activePackID, active.cards, canPick);
     if (pickButton) {
       pickButton.textContent = 'Pick';
+    }
+    if (botButton) {
+      botButton.disabled = !draftUi.connected || state.state === 'done';
     }
     if (packEmptyEl) packEmptyEl.hidden = true;
     if (packContentEl) packContentEl.hidden = false;
@@ -1234,6 +1262,7 @@ export function createDraftController({
             <div class="draft-status-actions">
               <button type="button" class="action-button button-standard draft-lobby-button" id="draft-back-lobby" aria-label="Back to lobby">⬅️ Lobby</button>
               <button type="button" class="action-button button-standard draft-lobby-button" id="draft-open-cube" aria-label="Open cube battlebox">📚 List</button>
+              <button type="button" class="action-button button-standard draft-lobby-button" id="draft-bot-pick" aria-label="Have bots pick for unoccupied seats" disabled>🤖 Bot</button>
             </div>
             <div class="draft-status-meta">
               <div id="draft-seat-label" class="draft-status-seat">${formatSeatLabel(draftUi.seat, 0)}</div>

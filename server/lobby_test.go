@@ -275,3 +275,73 @@ func TestDraftRoomDeleteRejectsNonOwner(t *testing.T) {
 	require.Len(t, rooms, 1, "room should remain after forbidden delete")
 	assert.Equal(t, createPayload.RoomID, rooms[0].RoomID, "remaining room mismatch")
 }
+
+func TestDraftRoomHandleBotPickPicksForUnoccupiedSeats(t *testing.T) {
+	draft := makeDraftWithConfig(t, DraftConfig{
+		PackCount:   1,
+		PackSize:    3,
+		SeatCount:   2,
+		PassPattern: []int{2},
+	})
+	room := &draftRoom{
+		id:      "room-bot",
+		draft:   draft,
+		clients: make(map[int]map[*websocket.Conn]struct{}),
+	}
+
+	changed := room.handleBotPick(0)
+	assert.True(t, changed, "bot pick should mutate draft when other seats are unpicked")
+	assert.Len(t, room.draft.Seats[1].Picks.Mainboard, 2, "bot should pick expected batch size for target seat")
+	assert.True(t, room.draft.seatPicked[1], "target seat should be marked picked for the pass")
+	assert.False(t, room.draft.seatPicked[0], "requester seat should remain unpicked")
+}
+
+func TestDraftRoomHandleBotPickNoopWhenOtherSeatOccupied(t *testing.T) {
+	draft := makeDraftWithConfig(t, DraftConfig{
+		PackCount: 1,
+		PackSize:  2,
+		SeatCount: 2,
+	})
+	room := &draftRoom{
+		id:    "room-bot-occupied",
+		draft: draft,
+		clients: map[int]map[*websocket.Conn]struct{}{
+			1: {&websocket.Conn{}: {}},
+		},
+	}
+
+	changed := room.handleBotPick(0)
+	assert.False(t, changed, "bot pick should noop when another seat is occupied")
+	assert.Empty(t, room.draft.Seats[1].Picks.Mainboard, "bot should not pick for occupied seats")
+	assert.False(t, room.draft.seatPicked[1], "occupied seat should remain unpicked")
+}
+
+func TestDraftRoomHandleBotPickAdvancesAfterRequesterPicked(t *testing.T) {
+	draft := makeDraftWithConfig(t, DraftConfig{
+		PackCount: 1,
+		PackSize:  2,
+		SeatCount: 2,
+	})
+	room := &draftRoom{
+		id:      "room-bot-advance",
+		draft:   draft,
+		clients: make(map[int]map[*websocket.Conn]struct{}),
+	}
+
+	seat0State, err := room.draft.PlayerState(0)
+	require.NoError(t, err, "seat 0 PlayerState")
+	require.NotNil(t, seat0State.Active, "seat 0 should have active pack")
+
+	_, err = room.draft.Pick(0, 1, seat0State.Active.PackID, seat0State.Active.Cards[0], PickZoneMainboard)
+	require.NoError(t, err, "seat 0 pick")
+	assert.True(t, room.draft.seatPicked[0], "requester seat should be marked picked")
+
+	changed := room.handleBotPick(0)
+	assert.True(t, changed, "bot pick should pick for other seats after requester pick")
+	assert.Equal(t, "drafting", room.draft.State(), "draft should continue to next pass after round advances")
+	assert.Equal(t, 1, room.draft.Progress.PickNumber, "draft should advance to the next pick in pass pattern")
+	assert.False(t, room.draft.seatPicked[0], "seat-picked flags should reset after round advance")
+	assert.False(t, room.draft.seatPicked[1], "seat-picked flags should reset after round advance")
+	assert.Len(t, room.draft.Seats[0].Picks.Mainboard, 1, "requester seat should keep its pick")
+	assert.Len(t, room.draft.Seats[1].Picks.Mainboard, 1, "bot seat should receive one pick")
+}
