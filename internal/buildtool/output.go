@@ -117,7 +117,12 @@ func removeJSONAndGzip(path string) error {
 
 func writeBattleboxMatrix(dataDir, outputDir, slug string) error {
 	srcPath := filepath.Join(dataDir, slug, "mtgdecks-winrate-matrix.json")
-	outPath := filepath.Join(outputDir, slug, "mtgdecks-winrate-matrix.json")
+	outPath := filepath.Join(outputDir, slug, "winrate.json")
+	legacyOutPath := filepath.Join(outputDir, slug, "mtgdecks-winrate-matrix.json")
+
+	if err := removeJSONAndGzip(legacyOutPath); err != nil {
+		return fmt.Errorf("removing legacy matrix %s: %w", legacyOutPath, err)
+	}
 
 	if !fileExists(srcPath) {
 		if err := removeJSONAndGzip(outPath); err != nil {

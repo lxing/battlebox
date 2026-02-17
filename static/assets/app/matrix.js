@@ -72,6 +72,13 @@ export function createMatrixController({
       return;
     }
 
+    if (battlebox.matrix_tab_enabled === false) {
+      ui.matrixPane.innerHTML = `<div class="matrix-empty">No winrate matrix found for ${battlebox.name || capitalize(battleboxSlug)}.</div>`;
+      state.pendingAutoScrollKey = '';
+      state.lastAutoScrollKey = '';
+      return;
+    }
+
     const matrix = await loadWinrateMatrix(battlebox.slug);
     if (!matrix || !matrix.matchups) {
       ui.matrixPane.innerHTML = `<div class="matrix-empty">No winrate matrix found for ${battlebox.name || capitalize(battleboxSlug)}.</div>`;

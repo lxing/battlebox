@@ -72,6 +72,13 @@ const qrUi = {
 };
 const guideEditorDrafts = new Map();
 const runtimeCacheBust = Date.now().toString(36);
+const matrixRouteContext = {
+  battlebox: null,
+  battleboxSlug: '',
+  selectedDeckSlug: '',
+  selectedMatchupSlug: '',
+  enabled: false,
+};
 
 function getCardTarget(event) {
   if (!event.target || !event.target.closest) return null;
@@ -394,7 +401,19 @@ function refreshAuxTabContent(tab) {
       await lobbyController.render();
     })();
   } else if (nextTab === TAB_MATRIX) {
-    matrixController.maybeAutoScrollHighlightedCell();
+    void (async () => {
+      if (!matrixRouteContext.enabled) {
+        await matrixController.render(null, matrixRouteContext.battleboxSlug, '', '');
+        return;
+      }
+      await matrixController.render(
+        matrixRouteContext.battlebox,
+        matrixRouteContext.battleboxSlug,
+        matrixRouteContext.selectedDeckSlug,
+        matrixRouteContext.selectedMatchupSlug,
+      );
+      matrixController.maybeAutoScrollHighlightedCell();
+    })();
   }
 }
 
@@ -524,6 +543,20 @@ async function fetchJsonData(path, fetchOptions) {
   return res.json();
 }
 
+async function fetchJsonDataGzipOnly(path, fetchOptions) {
+  if (!window.DecompressionStream) return null;
+  try {
+    const gzRes = await fetch(toGzipPath(path), fetchOptions);
+    if (!gzRes.ok || !gzRes.body) return null;
+    const ds = new DecompressionStream('gzip');
+    const decoded = gzRes.body.pipeThrough(ds);
+    const text = await new Response(decoded).text();
+    return JSON.parse(text);
+  } catch (_) {
+    return null;
+  }
+}
+
 async function loadBattlebox(bbSlug) {
   if (data.battleboxes[bbSlug]) return data.battleboxes[bbSlug];
   const bb = await fetchJsonData(withCacheBust(`/data/${bbSlug}.json`));
@@ -537,7 +570,7 @@ async function loadWinrateMatrix(bbSlug) {
   if (Object.prototype.hasOwnProperty.call(data.matrices, bbSlug)) {
     return data.matrices[bbSlug];
   }
-  const matrix = await fetchJsonData(withCacheBust(`/data/${bbSlug}/mtgdecks-winrate-matrix.json`));
+  const matrix = await fetchJsonDataGzipOnly(withCacheBust(`/data/${bbSlug}/winrate.json`));
   data.matrices[bbSlug] = matrix || null;
   return data.matrices[bbSlug];
 }
@@ -581,10 +614,19 @@ async function route() {
 
   if (isCubeContext) {
     lobbyController.setPreferredDeckSlug(currentDeckSlug);
+    matrixRouteContext.battlebox = null;
+    matrixRouteContext.battleboxSlug = currentBattleboxSlug;
+    matrixRouteContext.selectedDeckSlug = '';
+    matrixRouteContext.selectedMatchupSlug = '';
+    matrixRouteContext.enabled = false;
     setTabEnabled(TAB_MATRIX, false);
   } else {
     lobbyController.setPreferredDeckSlug('');
-    await matrixController.render(currentBattlebox, currentBattleboxSlug, currentDeckSlug, matchupSlug);
+    matrixRouteContext.battlebox = currentBattlebox;
+    matrixRouteContext.battleboxSlug = currentBattleboxSlug;
+    matrixRouteContext.selectedDeckSlug = currentDeckSlug;
+    matrixRouteContext.selectedMatchupSlug = matchupSlug;
+    matrixRouteContext.enabled = matrixTabEnabled;
     setTabEnabled(TAB_MATRIX, matrixTabEnabled);
   }
 
@@ -1005,8 +1047,19 @@ async function renderDeck(bbSlug, deckSlug, selectedGuide, sortMode, sortDirecti
     if (location.hash !== nextHash) {
       replaceHashPreserveSearch(nextHash);
     }
-    const currentBattlebox = data.index?.battleboxes?.find((item) => item.slug === bb.slug) || null;
-    void matrixController.render(currentBattlebox, bb.slug, deck.slug, matchupForUrl || '');
+    matrixRouteContext.battlebox = bb;
+    matrixRouteContext.battleboxSlug = bb.slug;
+    matrixRouteContext.selectedDeckSlug = deck.slug;
+    matrixRouteContext.selectedMatchupSlug = matchupForUrl || '';
+    matrixRouteContext.enabled = bb.matrix_tab_enabled !== false;
+    if (ui.activeTab === TAB_MATRIX && matrixRouteContext.enabled) {
+      void matrixController.render(
+        matrixRouteContext.battlebox,
+        matrixRouteContext.battleboxSlug,
+        matrixRouteContext.selectedDeckSlug,
+        matrixRouteContext.selectedMatchupSlug,
+      );
+    }
   };
 
   const buildSampleHandKey = () => {

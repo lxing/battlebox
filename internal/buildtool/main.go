@@ -61,7 +61,7 @@ func Main() {
 		prevHash := stamp.Battleboxes[slug]
 		outPath := filepath.Join(outputDir, slug+".json")
 		matrixSourcePath := filepath.Join(dataDir, slug, "mtgdecks-winrate-matrix.json")
-		matrixOutputPath := filepath.Join(outputDir, slug, "mtgdecks-winrate-matrix.json")
+		matrixOutputPath := filepath.Join(outputDir, slug, "winrate.json")
 		matrixOutputDrifted := fileExists(matrixSourcePath) != fileExists(matrixOutputPath)
 		if *fullBuild || stamp.GlobalHash != globalHash || prevHash != battleboxHashes[slug] || !fileExists(outPath) || matrixOutputDrifted {
 			dirtySlugs = append(dirtySlugs, slug)
