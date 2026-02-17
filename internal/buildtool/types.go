@@ -127,6 +127,8 @@ type BattleboxManifest struct {
 	Name string `json:"name"`
 	// Optional description shown on the battlebox listing.
 	Description string `json:"description"`
+	// Optional label used on the home page count (e.g., "decks", "cubes").
+	DeckCountLabel string `json:"deck_count_label,omitempty"`
 	// Disable random roll controls in the battlebox deck list view.
 	DisableRandomRoll bool `json:"disable_random_roll,omitempty"`
 	// Disable the 2-deck random roll button while keeping single roll available.
@@ -153,6 +155,8 @@ type Battlebox struct {
 	Name string `json:"name,omitempty"`
 	// Description shown on the battlebox listing.
 	Description string `json:"description,omitempty"`
+	// Optional label used on count summaries (e.g., "decks", "cubes").
+	DeckCountLabel string `json:"deck_count_label,omitempty"`
 	// Whether random roll controls should be enabled.
 	RandomRollEnabled bool `json:"random_roll_enabled"`
 	// Disable the 2-deck random roll control while keeping single roll available.
@@ -203,6 +207,8 @@ type BattleboxIndex struct {
 	Name string `json:"name,omitempty"`
 	// Description shown on the battlebox listing.
 	Description string `json:"description,omitempty"`
+	// Optional label used on the home page count (e.g., "decks", "cubes").
+	DeckCountLabel string `json:"deck_count_label,omitempty"`
 	// Whether random roll controls should be enabled.
 	RandomRollEnabled bool `json:"random_roll_enabled"`
 	// Disable the 2-deck random roll control while keeping single roll available.

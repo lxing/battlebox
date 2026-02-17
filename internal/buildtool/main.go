@@ -148,6 +148,7 @@ func Main() {
 				Slug:                    slug,
 				Name:                    bbManifest.Name,
 				Description:             bbManifest.Description,
+				DeckCountLabel:          bbManifest.DeckCountLabel,
 				RandomRollEnabled:       !bbManifest.DisableRandomRoll,
 				DisableDoubleRandomRoll: bbManifest.DisableDoubleRandomRoll,
 				DisableTypeSort:         bbManifest.DisableTypeSort,

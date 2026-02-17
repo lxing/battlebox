@@ -56,6 +56,7 @@ func loadBattleboxManifest(path string) BattleboxManifest {
 	}
 	manifest.Name = strings.TrimSpace(manifest.Name)
 	manifest.Description = strings.TrimSpace(manifest.Description)
+	manifest.DeckCountLabel = strings.TrimSpace(manifest.DeckCountLabel)
 	if len(manifest.LandSubtypes) > 0 {
 		normalized := make(map[string]string, len(manifest.LandSubtypes))
 		for name, subtype := range manifest.LandSubtypes {

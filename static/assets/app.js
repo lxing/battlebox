@@ -586,17 +586,20 @@ function renderHome() {
   `;
   const bodyHtml = `
     <ul class="deck-list">
-      ${data.index.battleboxes.map(bb => `
+      ${data.index.battleboxes.map((bb) => {
+        const countLabel = String(bb.deck_count_label || '').trim() || 'decks';
+        return `
         <li>
           <a href="#/${bb.slug}" class="battlebox-link">
             <div class="battlebox-title">
               <span>${bb.name || capitalize(bb.slug)}</span>
-              <span class="colors">${bb.decks.length} decks</span>
+              <span class="colors">${bb.decks.length} ${countLabel}</span>
             </div>
             ${bb.description ? `<div class="battlebox-desc">${bb.description}</div>` : ''}
           </a>
         </li>
-      `).join('')}
+      `;
+      }).join('')}
     </ul>
   `;
   renderBattleboxPane(headerHtml, bodyHtml);

@@ -29,6 +29,7 @@ func buildIndexOutput(dataDir string) (IndexOutput, error) {
 			Slug:                    bbDir.Name(),
 			Name:                    bbManifest.Name,
 			Description:             bbManifest.Description,
+			DeckCountLabel:          bbManifest.DeckCountLabel,
 			RandomRollEnabled:       !bbManifest.DisableRandomRoll,
 			DisableDoubleRandomRoll: bbManifest.DisableDoubleRandomRoll,
 			DisableTypeSort:         bbManifest.DisableTypeSort,

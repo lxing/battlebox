@@ -1,6 +1,7 @@
 {
-  "name": "Cube",
-  "description": "The distilled Magic lootbox experience.",
+  "name": "🎰 Cube",
+  "description": "The distilled Magic lootbox experience. Draft with friends directly in this app!",
+  "deck_count_label": "cubes",
   "disable_double_random_roll": true,
   "disable_type_sort": true,
   "disable_matrix_tab": true,
