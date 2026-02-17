@@ -173,6 +173,17 @@
   font-size: var(--font-size-sm);
 }
 
+.lobby-deck-select:focus,
+.lobby-deck-select:focus-visible,
+.lobby-deck-select:active {
+  background: var(--color-control-bg);
+  color: var(--color-text-primary);
+  border-color: var(--color-input-border);
+  outline: none;
+  box-shadow: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
 .lobby-start-row .action-button {
   width: 100%;
   min-width: 0;
