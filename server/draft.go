@@ -226,7 +226,11 @@ func (d *Draft) picksThisPass() int {
 
 func (d *Draft) currentPickNo() int {
 	if d.Progress.PackNumber >= d.Config.PackCount {
-		return 0
+		total := 0
+		for i := 0; i < len(d.Config.PassPattern); i++ {
+			total += d.Config.PassPattern[i]
+		}
+		return total
 	}
 	total := 0
 	for i := 0; i < d.Progress.PickNumber && i < len(d.Config.PassPattern); i++ {

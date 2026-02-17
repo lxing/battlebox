@@ -371,6 +371,12 @@ func TestDraftPassPatternBatchAndImplicitBurn(t *testing.T) {
 	seatSeq[1]++
 
 	assert.Equal(t, "done", d.State(), "draft should be complete after implicit burn")
+	seat0Done, err := d.PlayerState(0)
+	require.NoError(t, err, "seat0 done PlayerState")
+	seat1Done, err := d.PlayerState(1)
+	require.NoError(t, err, "seat1 done PlayerState")
+	assert.Equal(t, 5, seat0Done.PickNo, "seat0 done pick number should report total picked cards")
+	assert.Equal(t, 5, seat1Done.PickNo, "seat1 done pick number should report total picked cards")
 	assert.Len(t, d.Seats[0].Picks.Mainboard, 5, "seat0 picked cards mismatch")
 	assert.Len(t, d.Seats[1].Picks.Mainboard, 5, "seat1 picked cards mismatch")
 	for originSeat := 0; originSeat < d.Config.SeatCount; originSeat++ {
