@@ -1005,17 +1005,21 @@ async function renderDeck(bbSlug, deckSlug, selectedGuide, sortMode, sortDirecti
     <details id="matchup-details" class="collapsible matchup-guides"${matchupOpenAttr}>
       <summary class="panel-title">Matchup Guides</summary>
       <div class="collapsible-body guide-panel">
-        <div class="guide-select">
-          <select id="guide-select" aria-label="Matchup guide">
-            ${guideOptions}
-          </select>
-          <a class="guide-opponent-link action-button button-standard" id="guide-opponent-link" href="#">Go to</a>
-          <button type="button" class="action-button button-standard apply-sideboard-button${currentApplySideboard ? ' active' : ''}" id="apply-sideboard-button">
-            Sideboard
-          </button>
-          <button type="button" class="action-button button-standard guide-edit-button" id="guide-edit-button">
-            Edit
-          </button>
+        <div class="guide-controls">
+          <div class="guide-select guide-select-main-row">
+            <select id="guide-select" aria-label="Matchup guide">
+              ${guideOptions}
+            </select>
+            <a class="guide-opponent-link action-button button-standard" id="guide-opponent-link" href="#">Go to</a>
+            <button type="button" class="action-button button-standard apply-sideboard-button${currentApplySideboard ? ' active' : ''}" id="apply-sideboard-button">
+              Sideboard
+            </button>
+          </div>
+          <div class="guide-select guide-select-edit-row">
+            <button type="button" class="action-button button-standard guide-edit-button" id="guide-edit-button">
+              Edit
+            </button>
+          </div>
         </div>
         <div class="guide-box" id="guide-box"></div>
       </div>

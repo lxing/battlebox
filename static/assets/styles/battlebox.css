@@ -826,14 +826,25 @@ details.collapsible[open] summary::after {
   padding: 0;
 }
 
+.guide-controls {
+  margin-bottom: 0.5rem;
+}
+
 .guide-select {
   display: grid;
-  grid-template-columns: minmax(0, 2fr) repeat(3, minmax(0, 1fr));
+  grid-template-columns: minmax(0, 1fr);
   align-items: stretch;
   gap: 0.5rem;
-  margin-bottom: 0.5rem;
   font-size: var(--font-size-sm);
   color: var(--color-text-muted-2);
+}
+
+.guide-select-main-row {
+  grid-template-columns: minmax(0, 2fr) repeat(2, minmax(0, 1fr));
+}
+
+.guide-select-edit-row {
+  margin-top: 0.5rem;
 }
 
 .apply-sideboard-button {
@@ -847,6 +858,10 @@ details.collapsible[open] summary::after {
 
 .guide-opponent-link {
   width: 100%;
+}
+
+.guide-edit-button {
+  justify-self: start;
 }
 
 .guide-opponent-link:hover,
@@ -881,12 +896,8 @@ details.collapsible[open] summary::after {
 }
 
 @media (max-width: 560px) {
-  .guide-select {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-
-  .guide-select select {
-    grid-column: 1 / -1;
+  .guide-select-main-row {
+    grid-template-columns: minmax(0, 2fr) repeat(2, minmax(0, 1fr));
   }
 }
 
