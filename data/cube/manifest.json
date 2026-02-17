@@ -25,6 +25,12 @@
       "pack_size": 7,
       "pass_pattern": [1, 2, 2]
     },
+    "4p": {
+      "seat_count": 4,
+      "pack_count": 5,
+      "pack_size": 9,
+      "pass_pattern": [1, 2, 2, 2, 2]
+    },
     "8p": {
       "seat_count": 8,
       "pack_count": 3,

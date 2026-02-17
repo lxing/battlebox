@@ -132,6 +132,55 @@ function parseDraftPresets(rawPresets) {
     .sort((a, b) => a.id.localeCompare(b.id));
 }
 
+function normalizePositiveInt(value) {
+  const parsed = Number.parseInt(String(value), 10);
+  return Number.isFinite(parsed) && parsed > 0 ? parsed : 0;
+}
+
+function buildDraftPresetConfigKey(seatCount, packCount, packSize) {
+  return `${normalizePositiveInt(seatCount)}|${normalizePositiveInt(packCount)}|${normalizePositiveInt(packSize)}`;
+}
+
+function sumPassPattern(passPattern) {
+  if (!Array.isArray(passPattern) || passPattern.length === 0) return 0;
+  const parsed = passPattern.map((value) => Number.parseInt(String(value), 10));
+  if (!parsed.every((value) => Number.isFinite(value) && value > 0)) return 0;
+  return parsed.reduce((sum, value) => sum + value, 0);
+}
+
+function formatProgressLabel(label, zeroBasedValue, total) {
+  const safeTotal = normalizePositiveInt(total);
+  if (safeTotal <= 0) return `${label} -/-`;
+  const raw = Number.parseInt(String(zeroBasedValue), 10);
+  const current = Number.isFinite(raw) ? raw + 1 : 1;
+  const clamped = Math.max(1, Math.min(current, safeTotal));
+  return `${label} ${clamped}/${safeTotal}`;
+}
+
+function formatPresetOptionLabel(preset) {
+  const packCount = normalizePositiveInt(preset?.pack_count);
+  const packSize = normalizePositiveInt(preset?.pack_size);
+  const passPattern = Array.isArray(preset?.pass_pattern)
+    ? preset.pass_pattern.map((value) => Number.parseInt(String(value), 10))
+    : [];
+  const validPattern = passPattern.length > 0 && passPattern.every((value) => Number.isFinite(value) && value > 0);
+  if (packCount <= 0 || packSize <= 0 || !validPattern) return '';
+
+  const totalPicks = passPattern.reduce((sum, value) => sum + value, 0);
+  const burnCount = Math.max(0, packSize - totalPicks);
+  const allSinglePicks = passPattern.length === packSize && passPattern.every((value) => value === 1);
+
+  if (allSinglePicks && burnCount === 0) {
+    return `${packCount}x${packSize}`;
+  }
+
+  const patternParts = passPattern.map((value) => String(value));
+  if (burnCount > 0) {
+    patternParts.push(`🚮${burnCount}`);
+  }
+  return `${packCount}x(${patternParts.join(',')})`;
+}
+
 async function deleteDraftRoom(roomID) {
   const id = String(roomID || '').trim();
   if (!id) throw new Error('Missing room id');
@@ -155,6 +204,10 @@ export function createLobbyController({
     currentDeckSlug: '',
     currentPresetID: '',
     cubeDeckBySlug: new Map(),
+    presetsRawRef: null,
+    allPresetEntries: [],
+    presetByConfig: new Map(),
+    roomByID: new Map(),
   };
 
   function stopStream() {
@@ -177,11 +230,40 @@ export function createLobbyController({
     state.currentDeckSlug = normalizeName(deckSlug || '');
   }
 
+  function ensurePresetCache(rawPresets) {
+    if (state.presetsRawRef === rawPresets) return;
+    const allPresetEntries = parseDraftPresets(rawPresets);
+    const presetByConfig = new Map();
+    allPresetEntries.forEach((preset) => {
+      const key = buildDraftPresetConfigKey(preset.seat_count, preset.pack_count, preset.pack_size);
+      if (!presetByConfig.has(key)) {
+        presetByConfig.set(key, preset);
+      }
+    });
+    state.presetsRawRef = rawPresets;
+    state.allPresetEntries = allPresetEntries;
+    state.presetByConfig = presetByConfig;
+  }
+
+  function resolveRoomTotals(room) {
+    const seatCount = normalizePositiveInt(room?.seat_count);
+    const packCount = normalizePositiveInt(room?.pack_count);
+    const packSize = normalizePositiveInt(room?.pack_size);
+    const key = buildDraftPresetConfigKey(seatCount, packCount, packSize);
+    const preset = state.presetByConfig.get(key);
+    const picksPerPack = sumPassPattern(preset?.pass_pattern) || packSize;
+    return {
+      packTotal: packCount,
+      pickTotal: picksPerPack,
+    };
+  }
+
   function bindLobbySeatButtons(scope) {
     if (!scope) return;
     scope.querySelectorAll('[data-room-id][data-seat-id]').forEach((button) => {
       button.addEventListener('click', () => {
         const roomID = String(button.dataset.roomId || '').trim();
+        const room = state.roomByID.get(roomID) || null;
         const roomDeckSlug = String(button.dataset.roomDeckSlug || '').trim();
         const roomDeck = state.cubeDeckBySlug.get(normalizeName(roomDeckSlug));
         const roomDeckName = String(roomDeck?.name || roomDeckSlug || '').trim();
@@ -193,6 +275,7 @@ export function createLobbyController({
         const seatRaw = Number.parseInt(String(button.dataset.seatId || '0'), 10);
         const seat = Number.isFinite(seatRaw) && seatRaw >= 0 ? seatRaw : 0;
         if (!roomID) return;
+        const totals = resolveRoomTotals(room);
         draftController.openRoom(
           roomID,
           seat,
@@ -201,6 +284,8 @@ export function createLobbyController({
           roomDeckName,
           roomDeckDoubleFaced,
           roomDeckCardMeta,
+          totals.packTotal,
+          totals.pickTotal,
         );
         void render(state.currentDeckSlug);
       });
@@ -228,9 +313,14 @@ export function createLobbyController({
   function renderRooms(rooms) {
     if (!state.roomsList) return;
     if (!Array.isArray(rooms) || rooms.length === 0) {
+      state.roomByID = new Map();
       state.roomsList.innerHTML = '';
       return;
     }
+
+    state.roomByID = new Map(
+      rooms.map((room) => [String(room?.room_id || '').trim(), room]),
+    );
 
     state.roomsList.innerHTML = `
       <ul class="lobby-room-list">
@@ -260,15 +350,16 @@ export function createLobbyController({
     const roomDeckSlug = String(room.deck_slug || '').trim();
     const roomDeck = state.cubeDeckBySlug.get(normalizeName(roomDeckSlug));
     const cubeLabel = escapeHtml(String(roomDeck?.name || roomDeckSlug || 'Unknown').trim());
-    const packNo = (Number.parseInt(String(room.pack_no || 0), 10) || 0) + 1;
-    const pickNo = (Number.parseInt(String(room.pick_no || 0), 10) || 0) + 1;
+    const totals = resolveRoomTotals(room);
+    const packLabel = formatProgressLabel('Pack', room.pack_no, totals.packTotal);
+    const pickLabel = formatProgressLabel('Pick', room.pick_no, totals.pickTotal);
     return `
             <li class="lobby-room-item">
               <div class="lobby-room-head">
                 <div class="lobby-room-id">${roomID}</div>
                 <div class="lobby-room-cube">${cubeLabel}</div>
               </div>
-              <div class="lobby-room-meta">Pack ${packNo} · Pick ${pickNo}</div>
+              <div class="lobby-room-meta">${packLabel} · ${pickLabel}</div>
               <div class="lobby-room-actions">
                 <div class="lobby-seat-buttons">${seatButtons}</div>
                 <button
@@ -344,14 +435,15 @@ export function createLobbyController({
     const selectedDeck = decks.find((deck) => normalizeName(deck.slug) === activeDeckSlug) || decks[0] || null;
     const selectedDeckSlug = selectedDeck ? selectedDeck.slug : '';
     const allowedPresetIDs = new Set(Array.isArray(selectedDeck?.draft_presets) ? selectedDeck.draft_presets : []);
-    const presetEntries = parseDraftPresets(cube?.presets).filter((preset) => allowedPresetIDs.has(preset.id));
+    ensurePresetCache(cube?.presets);
+    const presetEntries = state.allPresetEntries.filter((preset) => allowedPresetIDs.has(preset.id));
     const noPresets = presetEntries.length === 0;
     if (!presetEntries.some((preset) => preset.id === state.currentPresetID)) {
       state.currentPresetID = presetEntries[0]?.id || '';
     }
     const presetOptions = presetEntries.map((preset) => {
       const selected = preset.id === state.currentPresetID ? ' selected' : '';
-      const label = `${preset.seat_count}p · ${preset.pack_count}x${preset.pack_size}`;
+      const label = formatPresetOptionLabel(preset);
       return `<option value="${escapeHtml(preset.id)}"${selected}>${escapeHtml(label)}</option>`;
     }).join('');
 

@@ -21,9 +21,74 @@ function getDraftCardImageUrl(cardName, printings, showBack = false) {
   return scryfallImageUrlByName(cardName);
 }
 
+function updateDraftPackCardFace(button, cardName, printings, showingBack) {
+  if (!button) return;
+  const frame = button.querySelector('.draft-pack-card-frame');
+  if (!frame) return;
+
+  const name = String(cardName || '').trim();
+  const faceLabel = showingBack ? ' (back face)' : ' (front face)';
+  const imageUrl = getDraftCardImageUrl(name, printings, showingBack);
+
+  button.setAttribute('title', name);
+  button.setAttribute('aria-label', `${name}${faceLabel}`);
+
+  const flipControl = frame.querySelector('[data-draft-card-flip="1"]');
+  if (flipControl) {
+    const nextTitle = showingBack ? 'Show front face' : 'Show back face';
+    flipControl.setAttribute('title', nextTitle);
+    flipControl.setAttribute('aria-label', nextTitle);
+  }
+
+  const img = frame.querySelector('img');
+  const fallback = frame.querySelector('.draft-pack-card-fallback');
+  if (imageUrl) {
+    if (img) {
+      img.setAttribute('src', imageUrl);
+      img.setAttribute('alt', `${name}${faceLabel}`);
+      return;
+    }
+    const nextImg = document.createElement('img');
+    nextImg.setAttribute('src', imageUrl);
+    nextImg.setAttribute('alt', `${name}${faceLabel}`);
+    nextImg.setAttribute('loading', 'lazy');
+    if (fallback) {
+      fallback.replaceWith(nextImg);
+    } else {
+      frame.appendChild(nextImg);
+    }
+    return;
+  }
+
+  if (fallback) {
+    fallback.textContent = `${name}${faceLabel}`;
+    return;
+  }
+  if (img) {
+    const nextFallback = document.createElement('span');
+    nextFallback.className = 'draft-pack-card-fallback';
+    nextFallback.textContent = `${name}${faceLabel}`;
+    img.replaceWith(nextFallback);
+  }
+}
+
 function normalizeSeat(value) {
   const parsed = Number.parseInt(String(value), 10);
   return Number.isFinite(parsed) && parsed >= 0 ? parsed : 0;
+}
+
+function normalizePositiveInt(value) {
+  const parsed = Number.parseInt(String(value), 10);
+  return Number.isFinite(parsed) && parsed > 0 ? parsed : 0;
+}
+
+function formatProgressLabel(label, zeroBasedValue, total) {
+  const safeTotal = normalizePositiveInt(total);
+  if (safeTotal <= 0) return `${label} -/-`;
+  const raw = Number.parseInt(String(zeroBasedValue), 10);
+  const current = Number.isFinite(raw) ? raw + 1 : 1;
+  const clamped = Math.max(1, Math.min(current, safeTotal));
+  return `${label} ${clamped}/${safeTotal}`;
 }
 
 function normalizeDraftSlug(value) {
@@ -104,6 +169,8 @@ export function createDraftController({
     roomDeckPrintings: {},
     roomDeckDoubleFaced: {},
     roomDeckCardMeta: {},
+    roomPackTotal: 0,
+    roomPickTotal: 0,
     seat: 0,
     state: null,
     connected: false,
@@ -138,6 +205,8 @@ export function createDraftController({
     draftUi.roomDeckPrintings = {};
     draftUi.roomDeckDoubleFaced = {};
     draftUi.roomDeckCardMeta = {};
+    draftUi.roomPackTotal = 0;
+    draftUi.roomPickTotal = 0;
     draftUi.seat = 0;
     draftUi.state = null;
     draftUi.pendingPick = false;
@@ -206,6 +275,8 @@ export function createDraftController({
     roomDeckName = '',
     roomDeckDoubleFaced = {},
     roomDeckCardMeta = {},
+    roomPackTotal = 0,
+    roomPickTotal = 0,
   ) {
     const normalizedRoomId = String(roomId || '').trim();
     if (!normalizedRoomId) return;
@@ -215,6 +286,8 @@ export function createDraftController({
     draftUi.roomDeckPrintings = roomDeckPrintings && typeof roomDeckPrintings === 'object' ? roomDeckPrintings : {};
     draftUi.roomDeckDoubleFaced = roomDeckDoubleFaced && typeof roomDeckDoubleFaced === 'object' ? roomDeckDoubleFaced : {};
     draftUi.roomDeckCardMeta = roomDeckCardMeta && typeof roomDeckCardMeta === 'object' ? roomDeckCardMeta : {};
+    draftUi.roomPackTotal = normalizePositiveInt(roomPackTotal);
+    draftUi.roomPickTotal = normalizePositiveInt(roomPickTotal);
     draftUi.seat = normalizeSeat(seat);
     draftUi.state = null;
     draftUi.reconnectAttempt = 0;
@@ -286,18 +359,18 @@ export function createDraftController({
     if (!state) {
       draftUi.selectedPackID = '';
       draftUi.selectedPackIndexes.clear();
-      if (packInfoEl) packInfoEl.textContent = 'Pack -';
-      if (pickInfoEl) pickInfoEl.textContent = 'Pick -';
+      if (packInfoEl) packInfoEl.textContent = 'Pack -/-';
+      if (pickInfoEl) pickInfoEl.textContent = 'Pick -/-';
       if (packEl) packEl.innerHTML = '<div class="draft-empty">Waiting for state...</div>';
       if (picksEl) picksEl.innerHTML = '';
       return;
     }
 
     if (packInfoEl) {
-      packInfoEl.textContent = `Pack ${state.pack_no + 1}`;
+      packInfoEl.textContent = formatProgressLabel('Pack', state.pack_no, draftUi.roomPackTotal);
     }
     if (pickInfoEl) {
-      pickInfoEl.textContent = `Pick ${state.pick_no + 1}`;
+      pickInfoEl.textContent = formatProgressLabel('Pick', state.pick_no, draftUi.roomPickTotal);
     }
 
     if (picksEl) {
@@ -413,7 +486,8 @@ export function createDraftController({
         const key = packCardFaceKey(activePackID, i);
         const next = !(draftUi.packCardBackFaces.get(key) === true);
         draftUi.packCardBackFaces.set(key, next);
-        updateUIFromState();
+        const cardButton = packEl.querySelector(`.draft-pack-card[data-index="${i}"]`);
+        updateDraftPackCardFace(cardButton, cardName, draftUi.roomDeckPrintings, next);
       });
     });
 
