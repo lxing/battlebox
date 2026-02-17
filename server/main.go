@@ -54,13 +54,17 @@ func main() {
 	}()
 
 	records, err := draftStore.LoadRooms(context.Background())
+	loadedRooms := 0
 	if err != nil {
-		log.Fatalf("Failed to load draft rooms: %v", err)
+		log.Printf("Failed to load draft rooms from %s, starting with empty lobby: %v", draftStorePath, err)
+	} else if err := draftHub.restoreRooms(records); err != nil {
+		log.Printf("Failed to restore draft rooms from %s, starting with empty lobby: %v", draftStorePath, err)
+		draftHub = newDraftHub()
+		draftHub.setRoomStore(draftStore)
+	} else {
+		loadedRooms = len(records)
 	}
-	if err := draftHub.restoreRooms(records); err != nil {
-		log.Fatalf("Failed to restore draft rooms: %v", err)
-	}
-	log.Printf("Loaded %d draft room(s) from %s", len(records), draftStorePath)
+	log.Printf("Loaded %d draft room(s) from %s", loadedRooms, draftStorePath)
 
 	go func() {
 		ticker := time.NewTicker(10 * time.Second)

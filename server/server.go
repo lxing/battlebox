@@ -7,6 +7,7 @@ import (
 	"errors"
 	"fmt"
 	"net/http"
+	"strings"
 	"strconv"
 	"time"
 
@@ -70,9 +71,41 @@ func draftConfigFromRequest(req createDraftRoomRequest) (DraftConfig, error) {
 	}, nil
 }
 
+func isValidDeviceID(value string) bool {
+	if value == "" || len(value) > 128 {
+		return false
+	}
+	for _, r := range value {
+		if (r >= 'a' && r <= 'z') || (r >= 'A' && r <= 'Z') || (r >= '0' && r <= '9') {
+			continue
+		}
+		switch r {
+		case '-', '_', '.', ':':
+			continue
+		default:
+			return false
+		}
+	}
+	return true
+}
+
+func requesterDeviceIDFromRequest(r *http.Request) (string, error) {
+	if r == nil {
+		return "", errors.New("device_id required")
+	}
+	candidate := strings.TrimSpace(r.Header.Get("X-Device-ID"))
+	if candidate == "" {
+		candidate = strings.TrimSpace(r.URL.Query().Get("device_id"))
+	}
+	if !isValidDeviceID(candidate) {
+		return "", errors.New("valid device_id required")
+	}
+	return candidate, nil
+}
+
 func (h *draftHub) handleCreateRoom(w http.ResponseWriter, r *http.Request) {
 	if r.Method == http.MethodGet {
-		h.handleListRooms(w)
+		h.handleListRooms(w, r)
 		return
 	}
 	if r.Method == http.MethodDelete {
@@ -91,6 +124,11 @@ func (h *draftHub) handleCreateRoom(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "invalid json body", http.StatusBadRequest)
 		return
 	}
+	requesterDeviceID, err := requesterDeviceIDFromRequest(r)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusBadRequest)
+		return
+	}
 
 	cfg, err := draftConfigFromRequest(req)
 	if err != nil {
@@ -105,12 +143,18 @@ func (h *draftHub) handleCreateRoom(w http.ResponseWriter, r *http.Request) {
 	}
 
 	room := &draftRoom{
-		deckSlug: normalizeSlug(req.DeckSlug),
-		draft:    draft,
-		clients:  make(map[int]map[*websocket.Conn]struct{}),
+		deckSlug:      normalizeSlug(req.DeckSlug),
+		ownerDeviceID: requesterDeviceID,
+		draft:         draft,
+		clients:       make(map[int]map[*websocket.Conn]struct{}),
 	}
 
 	h.mu.Lock()
+	if h.ownerAlreadyHasRoomLocked(requesterDeviceID) {
+		h.mu.Unlock()
+		http.Error(w, "only one room per device is allowed", http.StatusConflict)
+		return
+	}
 	room.id = h.nextRoomIDLocked()
 	h.rooms[room.id] = room
 	h.mu.Unlock()
@@ -126,10 +170,19 @@ func (h *draftHub) handleDeleteRoom(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "room_id query param required", http.StatusBadRequest)
 		return
 	}
+	requesterDeviceID, err := requesterDeviceIDFromRequest(r)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusBadRequest)
+		return
+	}
 
-	if err := h.deleteRoom(r.Context(), roomID); err != nil {
+	if err := h.deleteRoom(r.Context(), roomID, requesterDeviceID); err != nil {
 		if errors.Is(err, errDraftRoomNotFound) {
 			http.Error(w, "room not found", http.StatusNotFound)
+			return
+		}
+		if errors.Is(err, errDraftRoomForbidden) {
+			http.Error(w, "only the creator may delete this room", http.StatusForbidden)
 			return
 		}
 		http.Error(w, "failed to delete room", http.StatusInternalServerError)
@@ -164,6 +217,11 @@ func (h *draftHub) handleStartOrJoinSharedRoom(w http.ResponseWriter, r *http.Re
 		http.Error(w, "invalid json body", http.StatusBadRequest)
 		return
 	}
+	requesterDeviceID, err := requesterDeviceIDFromRequest(r)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusBadRequest)
+		return
+	}
 
 	cfg, err := draftConfigFromRequest(req)
 	if err != nil {
@@ -178,13 +236,19 @@ func (h *draftHub) handleStartOrJoinSharedRoom(w http.ResponseWriter, r *http.Re
 	}
 
 	room := &draftRoom{
-		id:       sharedRoomID,
-		deckSlug: normalizeSlug(req.DeckSlug),
-		draft:    draft,
-		clients:  make(map[int]map[*websocket.Conn]struct{}),
+		id:            sharedRoomID,
+		deckSlug:      normalizeSlug(req.DeckSlug),
+		ownerDeviceID: requesterDeviceID,
+		draft:         draft,
+		clients:       make(map[int]map[*websocket.Conn]struct{}),
 	}
 
 	h.mu.Lock()
+	if h.ownerAlreadyHasRoomLocked(requesterDeviceID) {
+		h.mu.Unlock()
+		http.Error(w, "only one room per device is allowed", http.StatusConflict)
+		return
+	}
 	if h.rooms[sharedRoomID] == nil {
 		h.rooms[sharedRoomID] = room
 		h.mu.Unlock()

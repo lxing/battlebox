@@ -22,8 +22,9 @@ type draftHub struct {
 }
 
 type draftRoom struct {
-	id       string
-	deckSlug string
+	id            string
+	deckSlug      string
+	ownerDeviceID string
 
 	mu      sync.Mutex
 	draft   *Draft
@@ -39,6 +40,7 @@ type draftRoomSummary struct {
 	State          string `json:"state"`
 	PackNo         int    `json:"pack_no"`
 	PickNo         int    `json:"pick_no"`
+	OwnedByRequest bool   `json:"owned_by_requester"`
 	ConnectedSeats int    `json:"connected_seats"`
 	Connections    int    `json:"connections"`
 	OccupiedSeats  []int  `json:"occupied_seats"`
@@ -49,6 +51,7 @@ type listDraftRoomsResponse struct {
 }
 
 var errDraftRoomNotFound = errors.New("draft room not found")
+var errDraftRoomForbidden = errors.New("forbidden")
 
 func newDraftHub() *draftHub {
 	return &draftHub{
@@ -63,9 +66,12 @@ func (h *draftHub) setRoomStore(store *draftRoomStore) {
 	h.roomStore = store
 }
 
-func (h *draftHub) deleteRoom(ctx context.Context, roomID string) error {
+func (h *draftHub) deleteRoom(ctx context.Context, roomID, requesterDeviceID string) error {
 	if roomID == "" {
 		return errors.New("room id required")
+	}
+	if requesterDeviceID == "" {
+		return errors.New("device id required")
 	}
 
 	h.mu.Lock()
@@ -73,6 +79,10 @@ func (h *draftHub) deleteRoom(ctx context.Context, roomID string) error {
 	if !ok {
 		h.mu.Unlock()
 		return errDraftRoomNotFound
+	}
+	if room.ownerDeviceID == "" || room.ownerDeviceID != requesterDeviceID {
+		h.mu.Unlock()
+		return errDraftRoomForbidden
 	}
 	if h.roomStore != nil {
 		if err := h.roomStore.DeleteRoom(ctx, roomID); err != nil {
@@ -88,11 +98,23 @@ func (h *draftHub) deleteRoom(ctx context.Context, roomID string) error {
 	return nil
 }
 
-func (h *draftHub) listRoomSummaries() []draftRoomSummary {
+func (h *draftHub) ownerAlreadyHasRoomLocked(deviceID string) bool {
+	if deviceID == "" {
+		return false
+	}
+	for _, room := range h.rooms {
+		if room.ownerDeviceID == deviceID {
+			return true
+		}
+	}
+	return false
+}
+
+func (h *draftHub) listRoomSummaries(requesterDeviceID string) []draftRoomSummary {
 	h.mu.RLock()
 	rooms := make([]draftRoomSummary, 0, len(h.rooms))
 	for _, room := range h.rooms {
-		rooms = append(rooms, room.summary())
+		rooms = append(rooms, room.summary(requesterDeviceID))
 	}
 	h.mu.RUnlock()
 
@@ -102,15 +124,25 @@ func (h *draftHub) listRoomSummaries() []draftRoomSummary {
 	return rooms
 }
 
-func (h *draftHub) handleListRooms(w http.ResponseWriter) {
+func (h *draftHub) handleListRooms(w http.ResponseWriter, r *http.Request) {
+	requesterDeviceID, err := requesterDeviceIDFromRequest(r)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusBadRequest)
+		return
+	}
 	w.Header().Set("Content-Type", "application/json")
-	_ = json.NewEncoder(w).Encode(listDraftRoomsResponse{Rooms: h.listRoomSummaries()})
+	_ = json.NewEncoder(w).Encode(listDraftRoomsResponse{Rooms: h.listRoomSummaries(requesterDeviceID)})
 }
 
 func (h *draftHub) handleLobbyEvents(w http.ResponseWriter, r *http.Request) {
 	if r.Method != http.MethodGet {
 		w.Header().Set("Allow", "GET")
 		http.Error(w, "method not allowed", http.StatusMethodNotAllowed)
+		return
+	}
+	requesterDeviceID, err := requesterDeviceIDFromRequest(r)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusBadRequest)
 		return
 	}
 
@@ -135,7 +167,7 @@ func (h *draftHub) handleLobbyEvents(w http.ResponseWriter, r *http.Request) {
 	}()
 
 	writeRooms := func() bool {
-		payload, err := json.Marshal(listDraftRoomsResponse{Rooms: h.listRoomSummaries()})
+		payload, err := json.Marshal(listDraftRoomsResponse{Rooms: h.listRoomSummaries(requesterDeviceID)})
 		if err != nil {
 			return false
 		}
@@ -314,7 +346,7 @@ func (r *draftRoom) writeToConn(conn *websocket.Conn, msg draftWSMessage) {
 	}
 }
 
-func (r *draftRoom) summary() draftRoomSummary {
+func (r *draftRoom) summary(requesterDeviceID string) draftRoomSummary {
 	r.mu.Lock()
 	defer r.mu.Unlock()
 
@@ -343,6 +375,7 @@ func (r *draftRoom) summary() draftRoomSummary {
 		State:          r.draft.State(),
 		PackNo:         r.draft.Progress.PackNumber,
 		PickNo:         r.draft.currentPickNo(),
+		OwnedByRequest: requesterDeviceID != "" && requesterDeviceID == r.ownerDeviceID,
 		ConnectedSeats: connectedSeats,
 		Connections:    connections,
 		OccupiedSeats:  occupiedSeats,

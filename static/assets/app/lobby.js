@@ -48,8 +48,79 @@ function buildDefaultPassPattern(packSize) {
   return Array.from({ length: size }, () => 1);
 }
 
-async function fetchDraftRooms() {
-  const res = await fetch('/api/draft/rooms', {
+const localDeviceIDKey = 'battlebox_device_id_v1';
+let deviceIDPromise = null;
+
+function appendDeviceIDToUrl(path, deviceID) {
+  const id = String(deviceID || '').trim();
+  const sep = path.includes('?') ? '&' : '?';
+  return `${path}${sep}device_id=${encodeURIComponent(id)}`;
+}
+
+function hashStringFNV1a(value) {
+  let hash = 2166136261;
+  const text = String(value || '');
+  for (let i = 0; i < text.length; i += 1) {
+    hash ^= text.charCodeAt(i);
+    hash = Math.imul(hash, 16777619);
+  }
+  return (hash >>> 0).toString(16).padStart(8, '0');
+}
+
+async function sha256Hex(value) {
+  if (!(window.crypto && window.crypto.subtle && window.TextEncoder)) {
+    return hashStringFNV1a(value);
+  }
+  const bytes = new TextEncoder().encode(String(value || ''));
+  const digest = await window.crypto.subtle.digest('SHA-256', bytes);
+  return [...new Uint8Array(digest)]
+    .map((byte) => byte.toString(16).padStart(2, '0'))
+    .join('');
+}
+
+function fingerprintSource() {
+  const nav = window.navigator || {};
+  const scr = window.screen || {};
+  const tz = (Intl.DateTimeFormat().resolvedOptions().timeZone || '').trim();
+  const langs = Array.isArray(nav.languages) ? nav.languages.join(',') : '';
+  return [
+    nav.userAgent || '',
+    nav.language || '',
+    langs,
+    nav.platform || '',
+    String(nav.hardwareConcurrency || ''),
+    String(nav.deviceMemory || ''),
+    `${String(scr.width || '')}x${String(scr.height || '')}`,
+    String(scr.colorDepth || ''),
+    tz,
+    String(new Date().getTimezoneOffset()),
+  ].join('|');
+}
+
+async function getStableDeviceID() {
+  if (deviceIDPromise) return deviceIDPromise;
+  deviceIDPromise = (async () => {
+    try {
+      const existing = String(window.localStorage.getItem(localDeviceIDKey) || '').trim();
+      if (existing) return existing;
+    } catch (_) {
+      // Continue with computed fallback.
+    }
+
+    const digest = await sha256Hex(fingerprintSource());
+    const stable = `dev_${digest.slice(0, 32)}`;
+    try {
+      window.localStorage.setItem(localDeviceIDKey, stable);
+    } catch (_) {
+      // Best effort only.
+    }
+    return stable;
+  })();
+  return deviceIDPromise;
+}
+
+async function fetchDraftRooms(deviceID) {
+  const res = await fetch(appendDeviceIDToUrl('/api/draft/rooms', deviceID), {
     method: 'GET',
     cache: 'no-store',
   });
@@ -62,7 +133,7 @@ async function fetchDraftRooms() {
   return payload.rooms;
 }
 
-async function createDraftRoom(deck, preset) {
+async function createDraftRoom(deck, preset, deviceID) {
   const deckNames = buildDraftDeckNames(deck);
   const seatCount = Number.parseInt(String(preset?.seat_count), 10) || 0;
   const packCount = Number.parseInt(String(preset?.pack_count), 10) || 0;
@@ -81,9 +152,12 @@ async function createDraftRoom(deck, preset) {
   if (passPattern.length === 0) {
     throw new Error('Invalid draft preset');
   }
-  const res = await fetch('/api/draft/rooms', {
+  const res = await fetch(appendDeviceIDToUrl('/api/draft/rooms', deviceID), {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
+    headers: {
+      'Content-Type': 'application/json',
+      'X-Device-ID': String(deviceID || ''),
+    },
     body: JSON.stringify({
       deck: deckNames,
       deck_slug: deck?.slug || '',
@@ -181,11 +255,14 @@ function formatPresetOptionLabel(preset) {
   return `${packCount}x(${patternParts.join(',')})`;
 }
 
-async function deleteDraftRoom(roomID) {
+async function deleteDraftRoom(roomID, deviceID) {
   const id = String(roomID || '').trim();
   if (!id) throw new Error('Missing room id');
-  const res = await fetch(`/api/draft/rooms?room_id=${encodeURIComponent(id)}`, {
+  const res = await fetch(appendDeviceIDToUrl(`/api/draft/rooms?room_id=${encodeURIComponent(id)}`, deviceID), {
     method: 'DELETE',
+    headers: {
+      'X-Device-ID': String(deviceID || ''),
+    },
   });
   if (!res.ok) {
     const text = (await res.text()).trim();
@@ -201,6 +278,7 @@ export function createLobbyController({
   const state = {
     eventSource: null,
     roomsList: null,
+    deviceID: '',
     currentDeckSlug: '',
     currentPresetID: '',
     cubeDeckBySlug: new Map(),
@@ -208,6 +286,9 @@ export function createLobbyController({
     allPresetEntries: [],
     presetByConfig: new Map(),
     roomByID: new Map(),
+    createRoomButton: null,
+    createRoomBaseDisabled: false,
+    ownerHasRoom: false,
   };
 
   function stopStream() {
@@ -224,6 +305,7 @@ export function createLobbyController({
   function teardown() {
     stopStream();
     state.roomsList = null;
+    state.createRoomButton = null;
   }
 
   function setPreferredDeckSlug(deckSlug) {
@@ -256,6 +338,19 @@ export function createLobbyController({
       packTotal: packCount,
       pickTotal: picksPerPack,
     };
+  }
+
+  function syncCreateRoomButtonState() {
+    if (!state.createRoomButton) return;
+    const blockedByOwner = state.ownerHasRoom;
+    state.createRoomButton.disabled = state.createRoomBaseDisabled || blockedByOwner;
+    if (blockedByOwner) {
+      state.createRoomButton.setAttribute('title', 'You may only create one room on this device');
+      state.createRoomButton.setAttribute('aria-label', 'Create Room (disabled: one room per device)');
+    } else {
+      state.createRoomButton.removeAttribute('title');
+      state.createRoomButton.setAttribute('aria-label', 'Create Room');
+    }
   }
 
   function bindLobbySeatButtons(scope) {
@@ -300,7 +395,7 @@ export function createLobbyController({
         if (!roomID) return;
         button.disabled = true;
         try {
-          await deleteDraftRoom(roomID);
+          await deleteDraftRoom(roomID, state.deviceID);
           await refreshRooms();
         } catch (err) {
           window.alert(err && err.message ? err.message : 'Failed to delete room.');
@@ -314,9 +409,14 @@ export function createLobbyController({
     if (!state.roomsList) return;
     if (!Array.isArray(rooms) || rooms.length === 0) {
       state.roomByID = new Map();
+      state.ownerHasRoom = false;
+      syncCreateRoomButtonState();
       state.roomsList.innerHTML = '';
       return;
     }
+
+    state.ownerHasRoom = rooms.some((room) => room && room.owned_by_requester === true);
+    syncCreateRoomButtonState();
 
     state.roomByID = new Map(
       rooms.map((room) => [String(room?.room_id || '').trim(), room]),
@@ -353,6 +453,8 @@ export function createLobbyController({
     const totals = resolveRoomTotals(room);
     const packLabel = formatProgressLabel('Pack', room.pack_no, totals.packTotal);
     const pickLabel = formatProgressLabel('Pick', room.pick_no, totals.pickTotal);
+    const canDelete = room?.owned_by_requester === true;
+    const deleteTitle = canDelete ? 'Delete room' : 'Only the creator can delete this room';
     return `
             <li class="lobby-room-item">
               <div class="lobby-room-head">
@@ -367,7 +469,8 @@ export function createLobbyController({
                   class="action-button button-standard lobby-room-delete-button"
                   data-delete-room-id="${roomID}"
                   aria-label="Delete room ${roomID}"
-                  title="Delete room"
+                  title="${deleteTitle}"
+                  ${canDelete ? '' : 'disabled aria-disabled="true"'}
                 >🗑️</button>
               </div>
             </li>
@@ -383,7 +486,7 @@ export function createLobbyController({
     if (!state.roomsList) return;
     state.roomsList.innerHTML = '<div class="aux-empty">Loading rooms...</div>';
     try {
-      const rooms = await fetchDraftRooms();
+      const rooms = await fetchDraftRooms(state.deviceID);
       renderRooms(rooms);
     } catch (err) {
       const message = err && err.message ? err.message : 'Failed to load rooms.';
@@ -393,8 +496,8 @@ export function createLobbyController({
 
   function startStream() {
     stopStream();
-    if (!('EventSource' in window)) return;
-    const source = new EventSource('/api/draft/lobby/events');
+    if (!('EventSource' in window) || !state.deviceID) return;
+    const source = new EventSource(appendDeviceIDToUrl('/api/draft/lobby/events', state.deviceID));
     state.eventSource = source;
     source.onmessage = (event) => {
       try {
@@ -424,6 +527,9 @@ export function createLobbyController({
     }
 
     const cube = await loadBattlebox('cube');
+    if (!state.deviceID) {
+      state.deviceID = await getStableDeviceID();
+    }
     const decks = Array.isArray(cube?.decks) ? cube.decks : [];
     state.cubeDeckBySlug = new Map(decks.map((deck) => [normalizeName(deck.slug), deck]));
     const activeDeckSlug = state.currentDeckSlug;
@@ -468,6 +574,10 @@ export function createLobbyController({
     const roomsList = ui.draftPane.querySelector('#lobby-rooms-list');
 
     state.roomsList = roomsList;
+    state.createRoomButton = createRoomButton;
+    state.createRoomBaseDisabled = noDecks || noPresets;
+    state.ownerHasRoom = false;
+    syncCreateRoomButtonState();
 
     const resolveDeck = () => {
       if (!deckSelect) return selectedDeck;
@@ -492,17 +602,18 @@ export function createLobbyController({
 
     if (createRoomButton) {
       createRoomButton.addEventListener('click', async () => {
+        if (state.ownerHasRoom) return;
         const deck = resolveDeck();
         const preset = resolvePreset();
         if (!deck || !preset) return;
         createRoomButton.disabled = true;
         try {
-          await createDraftRoom(deck, preset);
+          await createDraftRoom(deck, preset, state.deviceID);
           await refreshRooms();
         } catch (err) {
           window.alert(err && err.message ? err.message : 'Failed to create room.');
         } finally {
-          createRoomButton.disabled = false;
+          syncCreateRoomButtonState();
         }
       });
     }

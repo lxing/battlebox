@@ -9,16 +9,18 @@ import (
 	"os"
 	"path/filepath"
 	"sort"
+	"strings"
 
 	"github.com/gorilla/websocket"
 	"github.com/lxing/battlebox/internal/buildtool"
 	_ "modernc.org/sqlite"
 )
 
-const draftSnapshotSchemaVersion = 1
+const draftSnapshotSchemaVersion = 2
 
 type draftRoomSnapshot struct {
 	SchemaVersion int              `json:"schema_version"`
+	OwnerDeviceID string           `json:"owner_device_id,omitempty"`
 	Config        DraftConfig      `json:"config"`
 	Packs         [][]packSnapshot `json:"packs"`
 	Progress      DraftProgress    `json:"progress"`
@@ -35,9 +37,10 @@ type packSnapshot struct {
 }
 
 type draftRoomRecord struct {
-	RoomID   string
-	DeckSlug string
-	Snapshot draftRoomSnapshot
+	RoomID        string
+	DeckSlug      string
+	OwnerDeviceID string
+	Snapshot      draftRoomSnapshot
 }
 
 type draftRoomStore struct {
@@ -71,6 +74,7 @@ func openDraftRoomStore(dbPath string) (*draftRoomStore, error) {
 CREATE TABLE IF NOT EXISTS draft_rooms (
   room_id TEXT PRIMARY KEY,
   deck_slug TEXT NOT NULL DEFAULT '',
+  owner_device_id TEXT NOT NULL DEFAULT '',
   global_seq INTEGER NOT NULL DEFAULT 0,
   snapshot_json TEXT NOT NULL,
   created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -82,6 +86,12 @@ CREATE TABLE IF NOT EXISTS draft_rooms (
 	if _, err := db.Exec(`CREATE INDEX IF NOT EXISTS draft_rooms_updated_at_idx ON draft_rooms(updated_at);`); err != nil {
 		_ = db.Close()
 		return nil, fmt.Errorf("create draft_rooms index: %w", err)
+	}
+	if _, err := db.Exec(`ALTER TABLE draft_rooms ADD COLUMN owner_device_id TEXT NOT NULL DEFAULT '';`); err != nil {
+		if !strings.Contains(strings.ToLower(err.Error()), "duplicate column name") {
+			_ = db.Close()
+			return nil, fmt.Errorf("ensure owner_device_id column: %w", err)
+		}
 	}
 
 	return &draftRoomStore{db: db}, nil
@@ -114,10 +124,11 @@ func (s *draftRoomStore) SaveRooms(ctx context.Context, records []draftRoomRecor
 	defer selectStmt.Close()
 
 	upsertStmt, err := tx.PrepareContext(ctx, `
-INSERT INTO draft_rooms (room_id, deck_slug, global_seq, snapshot_json)
-VALUES (?, ?, ?, ?)
+INSERT INTO draft_rooms (room_id, deck_slug, owner_device_id, global_seq, snapshot_json)
+VALUES (?, ?, ?, ?, ?)
 ON CONFLICT(room_id) DO UPDATE SET
   deck_slug = excluded.deck_slug,
+  owner_device_id = excluded.owner_device_id,
   global_seq = excluded.global_seq,
   snapshot_json = excluded.snapshot_json,
   updated_at = CURRENT_TIMESTAMP;
@@ -147,10 +158,15 @@ ON CONFLICT(room_id) DO UPDATE SET
 		if err != nil {
 			return 0, fmt.Errorf("marshal snapshot for room %q: %w", record.RoomID, err)
 		}
+		ownerDeviceID := record.OwnerDeviceID
+		if ownerDeviceID == "" {
+			ownerDeviceID = record.Snapshot.OwnerDeviceID
+		}
 		if _, err := upsertStmt.ExecContext(
 			ctx,
 			record.RoomID,
 			record.DeckSlug,
+			ownerDeviceID,
 			record.Snapshot.GlobalSeq,
 			string(raw),
 		); err != nil {
@@ -171,7 +187,7 @@ func (s *draftRoomStore) LoadRooms(ctx context.Context) ([]draftRoomRecord, erro
 	}
 
 	rows, err := s.db.QueryContext(ctx, `
-SELECT room_id, deck_slug, global_seq, snapshot_json
+SELECT room_id, deck_slug, owner_device_id, global_seq, snapshot_json
 FROM draft_rooms
 ORDER BY room_id ASC;
 `)
@@ -184,9 +200,10 @@ ORDER BY room_id ASC;
 	for rows.Next() {
 		var roomID string
 		var deckSlug string
+		var ownerDeviceID string
 		var globalSeq uint64
 		var raw string
-		if err := rows.Scan(&roomID, &deckSlug, &globalSeq, &raw); err != nil {
+		if err := rows.Scan(&roomID, &deckSlug, &ownerDeviceID, &globalSeq, &raw); err != nil {
 			return nil, fmt.Errorf("scan draft room row: %w", err)
 		}
 
@@ -195,10 +212,15 @@ ORDER BY room_id ASC;
 			return nil, fmt.Errorf("decode snapshot for room %q: %w", roomID, err)
 		}
 		snapshot.GlobalSeq = globalSeq
+		if ownerDeviceID == "" {
+			ownerDeviceID = snapshot.OwnerDeviceID
+		}
+		snapshot.OwnerDeviceID = ownerDeviceID
 		records = append(records, draftRoomRecord{
-			RoomID:   roomID,
-			DeckSlug: deckSlug,
-			Snapshot: snapshot,
+			RoomID:        roomID,
+			DeckSlug:      deckSlug,
+			OwnerDeviceID: ownerDeviceID,
+			Snapshot:      snapshot,
 		})
 	}
 	if err := rows.Err(); err != nil {
@@ -250,11 +272,16 @@ func (h *draftHub) restoreRooms(records []draftRoomRecord) error {
 		if err != nil {
 			return fmt.Errorf("restore room %q: %w", record.RoomID, err)
 		}
+		ownerDeviceID := record.OwnerDeviceID
+		if ownerDeviceID == "" {
+			ownerDeviceID = record.Snapshot.OwnerDeviceID
+		}
 		h.rooms[record.RoomID] = &draftRoom{
-			id:       record.RoomID,
-			deckSlug: normalizeSlug(record.DeckSlug),
-			draft:    draft,
-			clients:  make(map[int]map[*websocket.Conn]struct{}),
+			id:            record.RoomID,
+			deckSlug:      normalizeSlug(record.DeckSlug),
+			ownerDeviceID: ownerDeviceID,
+			draft:         draft,
+			clients:       make(map[int]map[*websocket.Conn]struct{}),
 		}
 	}
 	return nil
@@ -264,10 +291,17 @@ func (r *draftRoom) snapshotRecord() draftRoomRecord {
 	r.mu.Lock()
 	defer r.mu.Unlock()
 	return draftRoomRecord{
-		RoomID:   r.id,
-		DeckSlug: r.deckSlug,
-		Snapshot: snapshotFromDraft(r.draft),
+		RoomID:        r.id,
+		DeckSlug:      r.deckSlug,
+		OwnerDeviceID: r.ownerDeviceID,
+		Snapshot:      snapshotFromRoom(r),
 	}
+}
+
+func snapshotFromRoom(r *draftRoom) draftRoomSnapshot {
+	snapshot := snapshotFromDraft(r.draft)
+	snapshot.OwnerDeviceID = r.ownerDeviceID
+	return snapshot
 }
 
 func snapshotFromDraft(d *Draft) draftRoomSnapshot {
