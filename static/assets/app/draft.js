@@ -314,6 +314,7 @@ export function createDraftController({
     draftUi.basicsDraftCounts = createDraftBasicCounts({});
     if (ui.draftPane) {
       ui.draftPane.dataset.sideboardSwapMode = '0';
+      delete ui.draftPane.dataset.draftMountedRoom;
       const basicsOverlay = ui.draftPane.querySelector('#draft-basics-overlay');
       if (basicsOverlay) basicsOverlay.hidden = true;
     }
@@ -419,6 +420,14 @@ export function createDraftController({
     if (draftUi.roomDeckName) return draftUi.roomDeckName;
     if (draftUi.roomDeckSlug) return draftUi.roomDeckSlug;
     return draftUi.roomId;
+  }
+
+  function syncDraftHeaderLabels() {
+    if (!ui.draftPane) return;
+    const roomLabel = ui.draftPane.querySelector('.draft-status-room');
+    if (roomLabel) roomLabel.textContent = String(draftUi.roomId || '').trim();
+    const cubeLabel = ui.draftPane.querySelector('.draft-status-cube');
+    if (cubeLabel) cubeLabel.textContent = roomDisplayName();
   }
 
   function syncSideboardModeUi() {
@@ -1054,7 +1063,7 @@ export function createDraftController({
         draftUi.roomDeckPrintings,
         draftUi.roomDeckDoubleFaced,
       );
-      if (picksHtml !== draftUi.lastPicksHtml) {
+      if (picksHtml !== draftUi.lastPicksHtml || picksEl.innerHTML === '') {
         picksEl.innerHTML = picksHtml;
         draftUi.lastPicksHtml = picksHtml;
       }
@@ -1249,6 +1258,18 @@ export function createDraftController({
   function render() {
     if (!ui.draftPane || !hasActiveRoom()) return false;
 
+    const mountedRoom = String(ui.draftPane.dataset.draftMountedRoom || '').trim();
+    const nextMountedRoom = `${draftUi.roomId}|${draftUi.seat}`;
+    if (mountedRoom === nextMountedRoom && ui.draftPane.querySelector('.draft-room')) {
+      syncDraftHeaderLabels();
+      syncSideboardModeUi();
+      bindPackInteractions();
+      syncBasicsDialogUi();
+      void connectSocket(draftUi.roomId, draftUi.seat);
+      updateUIFromState();
+      return true;
+    }
+
     const roomName = String(draftUi.roomId || '').trim();
     const cubeName = roomDisplayName();
     ui.draftPane.innerHTML = `
@@ -1336,6 +1357,8 @@ export function createDraftController({
         </div>
       </div>
     `;
+    ui.draftPane.dataset.draftMountedRoom = nextMountedRoom;
+    draftUi.lastPicksHtml = '';
 
     const backButton = ui.draftPane.querySelector('#draft-back-lobby');
     if (backButton) {
