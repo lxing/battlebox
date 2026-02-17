@@ -134,6 +134,41 @@
   --draft-pack-col-width: 8rem;
 }
 
+.draft-pack-scroll-wrap {
+  position: relative;
+}
+
+.draft-pack-scroll-indicator {
+  position: absolute;
+  top: 0.35rem;
+  bottom: 0.35rem;
+  width: 1.25rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: rgba(245, 248, 255, 0.9);
+  background: rgba(0, 0, 0, 0.34);
+  pointer-events: none;
+  z-index: 2;
+  user-select: none;
+}
+
+.draft-pack-scroll-indicator[hidden] {
+  display: none;
+}
+
+.draft-pack-scroll-indicator-left {
+  left: 0;
+  border-radius: 0 8px 8px 0;
+}
+
+.draft-pack-scroll-indicator-right {
+  right: 0;
+  border-radius: 8px 0 0 8px;
+}
+
 .draft-pack-grid {
   display: grid;
   grid-auto-flow: column;
@@ -141,7 +176,7 @@
   grid-auto-columns: minmax(0, var(--draft-pack-col-width));
   width: max-content;
   min-width: 100%;
-  gap: 0.4rem;
+  gap: 0;
 }
 
 .draft-pack-card {
@@ -156,7 +191,7 @@
 
 .draft-pack-card.is-selected {
   border-color: #7caaf2;
-  box-shadow: 0 0 0 2px rgba(124, 170, 242, 0.55);
+  box-shadow: inset 0 0 0 2px rgba(124, 170, 242, 0.65);
 }
 
 .draft-pack-card[data-select-locked="1"] {

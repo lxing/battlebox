@@ -379,6 +379,27 @@ export function createDraftController({
     packScroll.style.setProperty('--draft-pack-col-width', `${columnWidth}px`);
   }
 
+  function updatePackScrollIndicators() {
+    if (!ui.draftPane) return;
+    const packScroll = ui.draftPane.querySelector('.draft-pack-scroll');
+    const leftIndicator = ui.draftPane.querySelector('#draft-pack-scroll-left');
+    const rightIndicator = ui.draftPane.querySelector('#draft-pack-scroll-right');
+    if (!leftIndicator || !rightIndicator) return;
+    if (!packScroll) {
+      leftIndicator.hidden = true;
+      rightIndicator.hidden = true;
+      return;
+    }
+    const maxScrollLeft = Math.max(0, packScroll.scrollWidth - packScroll.clientWidth);
+    if (maxScrollLeft <= 2) {
+      leftIndicator.hidden = true;
+      rightIndicator.hidden = true;
+      return;
+    }
+    leftIndicator.hidden = packScroll.scrollLeft <= 2;
+    rightIndicator.hidden = packScroll.scrollLeft >= maxScrollLeft - 2;
+  }
+
   function getActivePackInteractionState() {
     const state = draftUi.state;
     const active = state?.active_pack;
@@ -562,6 +583,14 @@ export function createDraftController({
         handlePackCardToggle(i);
       }
     });
+
+    const packScroll = packRoot.querySelector('.draft-pack-scroll');
+    if (packScroll && packScroll.dataset.scrollBound !== '1') {
+      packScroll.dataset.scrollBound = '1';
+      packScroll.addEventListener('scroll', () => {
+        updatePackScrollIndicators();
+      }, { passive: true });
+    }
   }
 
   function updateUIFromState() {
@@ -590,6 +619,7 @@ export function createDraftController({
         packEmptyEl.textContent = 'Waiting for state...';
       }
       if (packContentEl) packContentEl.hidden = true;
+      updatePackScrollIndicators();
       if (mainboardButton) {
         mainboardButton.textContent = 'Mainboard (1)';
         mainboardButton.disabled = true;
@@ -657,6 +687,7 @@ export function createDraftController({
           : 'Waiting for next pack...';
       }
       if (packContentEl) packContentEl.hidden = true;
+      updatePackScrollIndicators();
       if (mainboardButton) {
         mainboardButton.textContent = 'Mainboard (1)';
         mainboardButton.disabled = true;
@@ -698,6 +729,10 @@ export function createDraftController({
     if (packContentEl) packContentEl.hidden = false;
 
     syncPackColumnWidth(packRoot);
+    updatePackScrollIndicators();
+    window.requestAnimationFrame(() => {
+      updatePackScrollIndicators();
+    });
     syncPackSelectionUiFromDom();
   }
 
@@ -836,8 +871,12 @@ export function createDraftController({
           <div id="draft-pack-cards">
             <div id="draft-pack-empty" class="draft-empty">Waiting for state...</div>
             <div id="draft-pack-content" hidden>
-              <div class="draft-pack-scroll">
-                <div id="draft-pack-grid" class="draft-pack-grid"></div>
+              <div class="draft-pack-scroll-wrap">
+                <div id="draft-pack-scroll-left" class="draft-pack-scroll-indicator draft-pack-scroll-indicator-left" aria-hidden="true" hidden>◀</div>
+                <div class="draft-pack-scroll">
+                  <div id="draft-pack-grid" class="draft-pack-grid"></div>
+                </div>
+                <div id="draft-pack-scroll-right" class="draft-pack-scroll-indicator draft-pack-scroll-indicator-right" aria-hidden="true" hidden>▶</div>
               </div>
               <div class="draft-pack-actions">
                 <button type="button" class="action-button button-standard draft-pick-confirm-button" id="draft-pick-mainboard" disabled>
