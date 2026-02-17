@@ -91,6 +91,15 @@ function formatProgressLabel(label, zeroBasedValue, total) {
   return `${label} ${clamped}/${safeTotal}`;
 }
 
+function formatSeatLabel(zeroBasedSeat, seatTotal) {
+  const rawSeat = Number.parseInt(String(zeroBasedSeat), 10);
+  const currentSeat = Number.isFinite(rawSeat) && rawSeat >= 0 ? rawSeat + 1 : 1;
+  const total = normalizePositiveInt(seatTotal);
+  if (total <= 0) return `Seat ${currentSeat}/-`;
+  const clampedSeat = Math.max(1, Math.min(currentSeat, total));
+  return `Seat ${clampedSeat}/${total}`;
+}
+
 function normalizeDraftSlug(value) {
   const raw = String(value || '').trim().toLowerCase();
   if (!raw) return '';
@@ -182,6 +191,7 @@ export function createDraftController({
     selectedPackID: '',
     selectedPackIndexes: new Set(),
     packCardBackFaces: new Map(),
+    lastPicksHtml: '',
   };
 
   function clearReconnectTimer() {
@@ -214,6 +224,7 @@ export function createDraftController({
     draftUi.selectedPackID = '';
     draftUi.selectedPackIndexes.clear();
     draftUi.packCardBackFaces.clear();
+    draftUi.lastPicksHtml = '';
   }
 
   function updateConnectionIndicator() {
@@ -295,6 +306,7 @@ export function createDraftController({
     draftUi.selectedPackID = '';
     draftUi.selectedPackIndexes.clear();
     draftUi.packCardBackFaces.clear();
+    draftUi.lastPicksHtml = '';
     if (typeof onRoomSelectionChanged === 'function') {
       onRoomSelectionChanged(draftUi.roomId, draftUi.seat);
     }
@@ -350,11 +362,201 @@ export function createDraftController({
     packScroll.style.setProperty('--draft-pack-col-width', `${columnWidth}px`);
   }
 
+  function getActivePackInteractionState() {
+    const state = draftUi.state;
+    const active = state?.active_pack;
+    if (!state || !active || !Array.isArray(active.cards) || active.cards.length === 0) return null;
+    const expectedPicks = Math.max(1, Number.parseInt(String(state.expected_picks || 1), 10) || 1);
+    const canPick = Boolean(state.can_pick) && !draftUi.pendingPick;
+    return {
+      state,
+      active,
+      expectedPicks,
+      canPick,
+    };
+  }
+
+  function syncPackSelectionUiFromDom() {
+    if (!ui.draftPane) return;
+    const cardButtons = [...ui.draftPane.querySelectorAll('#draft-pack-grid .draft-pack-card')];
+    const mainboardButton = ui.draftPane.querySelector('#draft-pick-mainboard');
+    const sideboardButton = ui.draftPane.querySelector('#draft-pick-sideboard');
+    const pickButtons = [mainboardButton, sideboardButton].filter(Boolean);
+    const ctx = getActivePackInteractionState();
+    if (!ctx) {
+      syncPackSelectionUi(cardButtons, pickButtons, false, 1);
+      return;
+    }
+    syncPackSelectionUi(cardButtons, pickButtons, ctx.canPick, ctx.expectedPicks);
+  }
+
+  function createPackCardButton() {
+    const button = document.createElement('button');
+    button.type = 'button';
+    button.className = 'action-button draft-pack-card';
+    const frame = document.createElement('span');
+    frame.className = 'draft-pack-card-frame';
+    button.appendChild(frame);
+    return button;
+  }
+
+  function updatePackCardButton(button, activePackID, cardName, index, canPick) {
+    if (!button) return;
+    const frame = button.querySelector('.draft-pack-card-frame');
+    if (!frame) return;
+
+    button.dataset.index = String(index);
+    if (canPick) {
+      button.removeAttribute('aria-disabled');
+    } else {
+      button.setAttribute('aria-disabled', 'true');
+    }
+
+    const doubleFaced = isDoubleFacedCard(cardName, draftUi.roomDeckDoubleFaced);
+    const faceKey = packCardFaceKey(activePackID, index);
+    const showingBack = doubleFaced && draftUi.packCardBackFaces.get(faceKey) === true;
+    let flipControl = frame.querySelector('[data-draft-card-flip="1"]');
+
+    if (doubleFaced) {
+      const nextTitle = showingBack ? 'Show front face' : 'Show back face';
+      if (!flipControl) {
+        frame.insertAdjacentHTML(
+          'afterbegin',
+          dfcFlipControlMarkup(
+            `data-draft-card-flip="1" data-draft-card-index="${index}"`,
+            nextTitle,
+          ),
+        );
+        flipControl = frame.querySelector('[data-draft-card-flip="1"]');
+      }
+      if (flipControl) {
+        flipControl.setAttribute('data-draft-card-index', String(index));
+        flipControl.setAttribute('title', nextTitle);
+        flipControl.setAttribute('aria-label', nextTitle);
+      }
+    } else if (flipControl) {
+      flipControl.remove();
+    }
+
+    updateDraftPackCardFace(button, cardName, draftUi.roomDeckPrintings, showingBack);
+  }
+
+  function renderPackCardsInPlace(activePackID, cards, canPick) {
+    if (!ui.draftPane) return;
+    const packGrid = ui.draftPane.querySelector('#draft-pack-grid');
+    if (!packGrid) return;
+
+    for (let i = 0; i < cards.length; i += 1) {
+      let button = packGrid.children[i];
+      if (!(button instanceof HTMLElement) || !button.classList.contains('draft-pack-card')) {
+        button = createPackCardButton();
+        packGrid.appendChild(button);
+      }
+      updatePackCardButton(button, activePackID, cards[i], i, canPick);
+    }
+    while (packGrid.children.length > cards.length) {
+      packGrid.removeChild(packGrid.lastChild);
+    }
+  }
+
+  function submitSelectedPicks(zone) {
+    const ctx = getActivePackInteractionState();
+    if (!ctx || !ctx.canPick) return;
+    const selectedIndexes = [...draftUi.selectedPackIndexes].sort((a, b) => a - b);
+    if (selectedIndexes.length !== ctx.expectedPicks) return;
+    const picks = selectedIndexes.map((idx) => ({
+      card_name: ctx.active.cards[idx],
+      zone,
+    }));
+    if (!picks.every((pick) => pick && pick.card_name)) return;
+    if (!draftUi.socket || draftUi.socket.readyState !== WebSocket.OPEN) return;
+    const nextSeq = Number.parseInt(String(ctx.state.next_seq || 1), 10) || 1;
+    draftUi.pendingPick = true;
+    draftUi.selectedPackIndexes.clear();
+    syncPackSelectionUiFromDom();
+    updateUIFromState();
+    draftUi.socket.send(JSON.stringify({
+      type: 'pick',
+      seq: nextSeq,
+      pack_id: ctx.active.pack_id,
+      picks,
+    }));
+  }
+
+  function handlePackCardToggle(index) {
+    const ctx = getActivePackInteractionState();
+    if (!ctx || !ctx.canPick) return;
+    if (index < 0 || index >= ctx.active.cards.length) return;
+    if (draftUi.selectedPackIndexes.has(index)) {
+      draftUi.selectedPackIndexes.delete(index);
+    } else {
+      if (draftUi.selectedPackIndexes.size >= ctx.expectedPicks) return;
+      draftUi.selectedPackIndexes.add(index);
+    }
+    syncPackSelectionUiFromDom();
+  }
+
+  function handlePackCardFlip(index) {
+    const ctx = getActivePackInteractionState();
+    if (!ctx) return;
+    if (index < 0 || index >= ctx.active.cards.length) return;
+    const cardName = ctx.active.cards[index];
+    if (!isDoubleFacedCard(cardName, draftUi.roomDeckDoubleFaced)) return;
+    const key = packCardFaceKey(String(ctx.active.pack_id || ''), index);
+    const next = !(draftUi.packCardBackFaces.get(key) === true);
+    draftUi.packCardBackFaces.set(key, next);
+    if (!ui.draftPane) return;
+    const cardButton = ui.draftPane.querySelector(`#draft-pack-grid .draft-pack-card[data-index="${index}"]`);
+    updateDraftPackCardFace(cardButton, cardName, draftUi.roomDeckPrintings, next);
+  }
+
+  function bindPackInteractions() {
+    if (!ui.draftPane) return;
+    const packRoot = ui.draftPane.querySelector('#draft-pack-cards');
+    if (!packRoot || packRoot.dataset.bound === '1') return;
+    packRoot.dataset.bound = '1';
+    packRoot.addEventListener('click', (event) => {
+      const target = event.target instanceof Element ? event.target : null;
+      if (!target) return;
+
+      const flipControl = target.closest('[data-draft-card-flip="1"]');
+      if (flipControl && packRoot.contains(flipControl)) {
+        event.preventDefault();
+        event.stopPropagation();
+        const i = Number.parseInt(String(flipControl.getAttribute('data-draft-card-index') || '-1'), 10);
+        handlePackCardFlip(i);
+        return;
+      }
+
+      const mainboardButton = target.closest('#draft-pick-mainboard');
+      if (mainboardButton && packRoot.contains(mainboardButton)) {
+        submitSelectedPicks('mainboard');
+        return;
+      }
+      const sideboardButton = target.closest('#draft-pick-sideboard');
+      if (sideboardButton && packRoot.contains(sideboardButton)) {
+        submitSelectedPicks('sideboard');
+        return;
+      }
+
+      const cardButton = target.closest('.draft-pack-card');
+      if (cardButton && packRoot.contains(cardButton)) {
+        const i = Number.parseInt(String(cardButton.getAttribute('data-index') || '-1'), 10);
+        handlePackCardToggle(i);
+      }
+    });
+  }
+
   function updateUIFromState() {
     if (!ui.draftPane || !hasActiveRoom()) return;
+    const seatInfoEl = ui.draftPane.querySelector('#draft-seat-label');
     const packInfoEl = ui.draftPane.querySelector('#draft-pack-label');
     const pickInfoEl = ui.draftPane.querySelector('#draft-pick-label');
-    const packEl = ui.draftPane.querySelector('#draft-pack-cards');
+    const packRoot = ui.draftPane.querySelector('#draft-pack-cards');
+    const packEmptyEl = ui.draftPane.querySelector('#draft-pack-empty');
+    const packContentEl = ui.draftPane.querySelector('#draft-pack-content');
+    const mainboardButton = ui.draftPane.querySelector('#draft-pick-mainboard');
+    const sideboardButton = ui.draftPane.querySelector('#draft-pick-sideboard');
     const picksEl = ui.draftPane.querySelector('#draft-picks-cards');
 
     updateConnectionIndicator();
@@ -363,13 +565,34 @@ export function createDraftController({
     if (!state) {
       draftUi.selectedPackID = '';
       draftUi.selectedPackIndexes.clear();
+      if (seatInfoEl) seatInfoEl.textContent = formatSeatLabel(draftUi.seat, 0);
       if (packInfoEl) packInfoEl.textContent = 'Pack -/-';
       if (pickInfoEl) pickInfoEl.textContent = 'Pick -/-';
-      if (packEl) packEl.innerHTML = '<div class="draft-empty">Waiting for state...</div>';
-      if (picksEl) picksEl.innerHTML = '';
+      if (packEmptyEl) {
+        packEmptyEl.hidden = false;
+        packEmptyEl.textContent = 'Waiting for state...';
+      }
+      if (packContentEl) packContentEl.hidden = true;
+      if (mainboardButton) {
+        mainboardButton.textContent = 'Mainboard (1)';
+        mainboardButton.disabled = true;
+      }
+      if (sideboardButton) {
+        sideboardButton.textContent = 'Sideboard (1)';
+        sideboardButton.disabled = true;
+      }
+      if (picksEl) {
+        picksEl.innerHTML = '';
+        draftUi.lastPicksHtml = '';
+      }
       return;
     }
 
+    if (seatInfoEl) {
+      const seatID = Number.parseInt(String(state.seat_id), 10);
+      const seatIndex = Number.isFinite(seatID) && seatID >= 0 ? seatID : draftUi.seat;
+      seatInfoEl.textContent = formatSeatLabel(seatIndex, state.seat_count);
+    }
     if (packInfoEl) {
       packInfoEl.textContent = formatProgressLabel('Pack', state.pack_no, draftUi.roomPackTotal);
     }
@@ -378,22 +601,38 @@ export function createDraftController({
     }
 
     if (picksEl) {
-      picksEl.innerHTML = renderDraftPicksDecklist(
+      const picksHtml = renderDraftPicksDecklist(
         state.picks,
         draftUi.roomDeckCardMeta,
         draftUi.roomDeckPrintings,
         draftUi.roomDeckDoubleFaced,
       );
+      if (picksHtml !== draftUi.lastPicksHtml) {
+        picksEl.innerHTML = picksHtml;
+        draftUi.lastPicksHtml = picksHtml;
+      }
     }
 
-    if (!packEl) return;
+    if (!packRoot) return;
     const active = state.active_pack;
     if (!active || !Array.isArray(active.cards) || active.cards.length === 0) {
       draftUi.selectedPackID = '';
       draftUi.selectedPackIndexes.clear();
-      packEl.innerHTML = state.state === 'done'
-        ? '<div class="draft-empty">Draft complete.</div>'
-        : '<div class="draft-empty">Waiting for next pack...</div>';
+      if (packEmptyEl) {
+        packEmptyEl.hidden = false;
+        packEmptyEl.textContent = state.state === 'done'
+          ? 'Draft complete.'
+          : 'Waiting for next pack...';
+      }
+      if (packContentEl) packContentEl.hidden = true;
+      if (mainboardButton) {
+        mainboardButton.textContent = 'Mainboard (1)';
+        mainboardButton.disabled = true;
+      }
+      if (sideboardButton) {
+        sideboardButton.textContent = 'Sideboard (1)';
+        sideboardButton.disabled = true;
+      }
       return;
     }
 
@@ -408,129 +647,26 @@ export function createDraftController({
         draftUi.selectedPackIndexes.delete(idx);
       }
     });
-    const canPick = Boolean(state.can_pick) && !draftUi.pendingPick;
-    const expectedPicks = Math.max(1, Number.parseInt(String(state.expected_picks || 1), 10) || 1);
+
+    const ctx = getActivePackInteractionState();
+    const canPick = Boolean(ctx?.canPick);
+    const expectedPicks = ctx?.expectedPicks || 1;
     if (!canPick) {
       draftUi.selectedPackIndexes.clear();
     }
-    packEl.innerHTML = `
-      <div class="draft-pack-scroll">
-        <div id="draft-pack-grid" class="draft-pack-grid">
-          ${active.cards.map((name, idx) => {
-    const safeName = escapeHtml(name);
-    const doubleFaced = isDoubleFacedCard(name, draftUi.roomDeckDoubleFaced);
-    const faceKey = packCardFaceKey(activePackID, idx);
-    const showingBack = doubleFaced && draftUi.packCardBackFaces.get(faceKey) === true;
-    const imageUrl = getDraftCardImageUrl(name, draftUi.roomDeckPrintings, showingBack);
-    const faceLabel = doubleFaced ? (showingBack ? ' (back face)' : ' (front face)') : '';
-    const flipControl = doubleFaced
-      ? dfcFlipControlMarkup(
-        `data-draft-card-flip="1" data-draft-card-index="${idx}"`,
-        showingBack ? 'Show front face' : 'Show back face',
-      )
-      : '';
-    return `
-          <button
-            type="button"
-            class="action-button draft-pack-card${draftUi.selectedPackIndexes.has(idx) ? ' is-selected' : ''}"
-            data-index="${idx}"
-            ${canPick ? '' : 'aria-disabled="true"'}
-            title="${safeName}"
-            aria-label="${safeName}${faceLabel}"
-          >
-            <span class="draft-pack-card-frame">
-              ${flipControl}
-              ${imageUrl ? `<img src="${imageUrl}" alt="${safeName}${faceLabel}" loading="lazy">` : `<span class="draft-pack-card-fallback">${safeName}${faceLabel}</span>`}
-            </span>
-          </button>
-        `;
-  }).join('')}
-        </div>
-      </div>
-      <div class="draft-pack-actions">
-        <button type="button" class="action-button button-standard draft-pick-confirm-button" id="draft-pick-mainboard" ${canPick && draftUi.selectedPackIndexes.size === expectedPicks ? '' : 'disabled'}>
-          Mainboard (${expectedPicks})
-        </button>
-        <button type="button" class="action-button button-standard draft-pick-confirm-button" id="draft-pick-sideboard" ${canPick && draftUi.selectedPackIndexes.size === expectedPicks ? '' : 'disabled'}>
-          Sideboard (${expectedPicks})
-        </button>
-      </div>
-    `;
-    syncPackColumnWidth(packEl);
 
-    const cardButtons = [...packEl.querySelectorAll('.draft-pack-card')];
-    const cardFlipControls = [...packEl.querySelectorAll('[data-draft-card-flip="1"]')];
-    const mainboardButton = packEl.querySelector('#draft-pick-mainboard');
-    const sideboardButton = packEl.querySelector('#draft-pick-sideboard');
-    const pickButtons = [mainboardButton, sideboardButton].filter(Boolean);
-
-    cardButtons.forEach((btn) => {
-      btn.addEventListener('click', () => {
-        if (!canPick) return;
-        const i = Number.parseInt(btn.dataset.index || '-1', 10);
-        if (i < 0 || i >= active.cards.length) return;
-        if (draftUi.selectedPackIndexes.has(i)) {
-          draftUi.selectedPackIndexes.delete(i);
-        } else {
-          if (draftUi.selectedPackIndexes.size >= expectedPicks) return;
-          draftUi.selectedPackIndexes.add(i);
-        }
-        syncPackSelectionUi(cardButtons, pickButtons, canPick, expectedPicks);
-      });
-    });
-
-    cardFlipControls.forEach((control) => {
-      control.addEventListener('click', (event) => {
-        event.preventDefault();
-        event.stopPropagation();
-        const i = Number.parseInt(control.dataset.draftCardIndex || '-1', 10);
-        if (i < 0 || i >= active.cards.length) return;
-        const cardName = active.cards[i];
-        if (!isDoubleFacedCard(cardName, draftUi.roomDeckDoubleFaced)) return;
-        const key = packCardFaceKey(activePackID, i);
-        const next = !(draftUi.packCardBackFaces.get(key) === true);
-        draftUi.packCardBackFaces.set(key, next);
-        const cardButton = packEl.querySelector(`.draft-pack-card[data-index="${i}"]`);
-        updateDraftPackCardFace(cardButton, cardName, draftUi.roomDeckPrintings, next);
-      });
-    });
-
-    function sendPick(zone) {
-      return () => {
-        const selectedIndexes = [...draftUi.selectedPackIndexes].sort((a, b) => a - b);
-        if (!canPick || selectedIndexes.length !== expectedPicks) return;
-        const picks = selectedIndexes.map((idx) => ({
-          card_name: active.cards[idx],
-          zone,
-        }));
-        if (!picks.every((pick) => pick && pick.card_name)) return;
-        if (!draftUi.socket || draftUi.socket.readyState !== WebSocket.OPEN) return;
-        const nextSeq = Number.parseInt(String(state.next_seq || 1), 10) || 1;
-        draftUi.pendingPick = true;
-        draftUi.selectedPackIndexes.clear();
-        syncPackSelectionUi(cardButtons, pickButtons, false, expectedPicks);
-        updateUIFromState();
-        draftUi.socket.send(JSON.stringify({
-          type: 'pick',
-          seq: nextSeq,
-          pack_id: active.pack_id,
-          picks,
-        }));
-      };
-    }
-
+    renderPackCardsInPlace(activePackID, active.cards, canPick);
     if (mainboardButton) {
-      mainboardButton.addEventListener('click', sendPick('mainboard'));
+      mainboardButton.textContent = `Mainboard (${expectedPicks})`;
     }
     if (sideboardButton) {
-      sideboardButton.addEventListener('click', sendPick('sideboard'));
+      sideboardButton.textContent = `Sideboard (${expectedPicks})`;
     }
+    if (packEmptyEl) packEmptyEl.hidden = true;
+    if (packContentEl) packContentEl.hidden = false;
 
-    if (!canPick) {
-      syncPackSelectionUi(cardButtons, pickButtons, false, expectedPicks);
-    } else {
-      syncPackSelectionUi(cardButtons, pickButtons, true, expectedPicks);
-    }
+    syncPackColumnWidth(packRoot);
+    syncPackSelectionUiFromDom();
   }
 
   async function connectSocket(roomId, seat, isReconnect = false) {
@@ -651,7 +787,7 @@ export function createDraftController({
               <button type="button" class="action-button button-standard draft-lobby-button" id="draft-open-cube" aria-label="Open cube battlebox">📚 List</button>
             </div>
             <div class="draft-status-meta">
-              <div class="draft-status-seat">Seat ${draftUi.seat + 1}</div>
+              <div id="draft-seat-label" class="draft-status-seat">${formatSeatLabel(draftUi.seat, 0)}</div>
               <span class="draft-status-divider" aria-hidden="true">·</span>
               <span id="draft-connection-dot" class="draft-connection-dot is-offline" role="status" aria-label="Disconnected" title="Disconnected"></span>
             </div>
@@ -665,7 +801,22 @@ export function createDraftController({
             <span class="draft-status-divider" aria-hidden="true">·</span>
             <div id="draft-pick-label" class="draft-pack-pick">Pick -</div>
           </div>
-          <div id="draft-pack-cards"></div>
+          <div id="draft-pack-cards">
+            <div id="draft-pack-empty" class="draft-empty">Waiting for state...</div>
+            <div id="draft-pack-content" hidden>
+              <div class="draft-pack-scroll">
+                <div id="draft-pack-grid" class="draft-pack-grid"></div>
+              </div>
+              <div class="draft-pack-actions">
+                <button type="button" class="action-button button-standard draft-pick-confirm-button" id="draft-pick-mainboard" disabled>
+                  Mainboard (1)
+                </button>
+                <button type="button" class="action-button button-standard draft-pick-confirm-button" id="draft-pick-sideboard" disabled>
+                  Sideboard (1)
+                </button>
+              </div>
+            </div>
+          </div>
         </div>
 
         <div class="draft-panel">
@@ -690,6 +841,7 @@ export function createDraftController({
         }
       });
     }
+    bindPackInteractions();
 
     void connectSocket(draftUi.roomId, draftUi.seat);
     updateUIFromState();

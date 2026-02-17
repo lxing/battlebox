@@ -56,6 +56,7 @@ type PackView struct {
 // PlayerState is a seat-local snapshot.
 type PlayerState struct {
 	SeatID        int       `json:"seat_id"`
+	SeatCount     int       `json:"seat_count"`
 	State         string    `json:"state"`
 	Picks         SeatPicks `json:"picks"`
 	Active        *PackView `json:"active_pack,omitempty"`
@@ -282,6 +283,7 @@ func (d *Draft) PlayerState(seat int) (PlayerState, error) {
 
 	state := PlayerState{
 		SeatID:        seat,
+		SeatCount:     d.Config.SeatCount,
 		State:         d.State(),
 		Picks:         SeatPicks{Mainboard: []string{}, Sideboard: []string{}},
 		PackNo:        d.Progress.PackNumber,
