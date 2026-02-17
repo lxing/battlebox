@@ -1,3 +1,5 @@
+import { normalizeNonNegativeInt } from './util.js';
+
 export const TAB_BATTLEBOX = 'battlebox';
 export const TAB_LIFE = 'life';
 export const TAB_DRAFT = 'draft';
@@ -15,8 +17,7 @@ function normalizeDraftRoomId(value) {
 }
 
 function normalizeDraftSeat(value) {
-  const parsed = Number.parseInt(String(value), 10);
-  return Number.isFinite(parsed) && parsed >= 0 ? parsed : 0;
+  return normalizeNonNegativeInt(value);
 }
 
 export function normalizeTab(tab) {

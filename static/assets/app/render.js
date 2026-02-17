@@ -1,13 +1,5 @@
-import { normalizeName, buildDoubleFacedMap as buildDoubleFacedLookup } from './utils.js';
-
-function escapeHtml(text) {
-  return String(text)
-    .replaceAll('&', '&amp;')
-    .replaceAll('<', '&lt;')
-    .replaceAll('>', '&gt;')
-    .replaceAll('"', '&quot;')
-    .replaceAll("'", '&#39;');
-}
+import { normalizeName } from './utils.js';
+import { escapeHtml } from './util.js';
 
 const manaSymbolFiles = (() => {
   const out = {};
@@ -200,10 +192,6 @@ export function renderGuideContent(mdPlan, mdProse, guide) {
   }
 
   return html || '<em>No guide yet</em>';
-}
-
-export function buildDoubleFacedMap(deck) {
-  return buildDoubleFacedLookup(deck);
 }
 
 function renderCardRow(card, bannedSet, highlightClass) {

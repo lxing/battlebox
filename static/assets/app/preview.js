@@ -340,6 +340,5 @@ export function createCardPreview(app, getCardTarget) {
   return {
     setupCardHover,
     hidePreview,
-    setScrollContainer,
   };
 }

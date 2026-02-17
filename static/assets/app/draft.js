@@ -1,6 +1,12 @@
 import { cardFaceImageUrl, dfcFlipControlMarkup } from './cardFaces.js';
 import { renderDecklistGrid as renderSharedDecklistGrid } from './decklist.js';
 import { isDoubleFacedCard, normalizeName, scryfallImageUrlByName } from './utils.js';
+import {
+  escapeHtml,
+  formatProgressLabel,
+  normalizeNonNegativeInt,
+  normalizePositiveInt,
+} from './util.js';
 
 const DRAFT_PICK_ZONE_MAINBOARD = 'mainboard';
 const DRAFT_PICK_ZONE_SIDEBOARD = 'sideboard';
@@ -19,15 +25,6 @@ const DRAFT_BASIC_NAME_BY_KEY = Object.freeze(
     return acc;
   }, {}),
 );
-
-function escapeHtml(value) {
-  return String(value || '')
-    .replaceAll('&', '&amp;')
-    .replaceAll('<', '&lt;')
-    .replaceAll('>', '&gt;')
-    .replaceAll('"', '&quot;')
-    .replaceAll("'", '&#39;');
-}
 
 function getDraftCardImageUrl(cardName, printings, showBack = false) {
   const key = normalizeName(cardName);
@@ -91,22 +88,7 @@ function updateDraftPackCardFace(button, cardName, printings, showingBack) {
 }
 
 function normalizeSeat(value) {
-  const parsed = Number.parseInt(String(value), 10);
-  return Number.isFinite(parsed) && parsed >= 0 ? parsed : 0;
-}
-
-function normalizePositiveInt(value) {
-  const parsed = Number.parseInt(String(value), 10);
-  return Number.isFinite(parsed) && parsed > 0 ? parsed : 0;
-}
-
-function formatProgressLabel(label, zeroBasedValue, total) {
-  const safeTotal = normalizePositiveInt(total);
-  if (safeTotal <= 0) return `${label} -/-`;
-  const raw = Number.parseInt(String(zeroBasedValue), 10);
-  const current = Number.isFinite(raw) ? raw + 1 : 1;
-  const clamped = Math.max(1, Math.min(current, safeTotal));
-  return `${label} ${clamped}/${safeTotal}`;
+  return normalizeNonNegativeInt(value);
 }
 
 function formatPickProgressLabel(zeroBasedPick, total, expectedPicks) {
@@ -127,8 +109,7 @@ function formatPickProgressLabel(zeroBasedPick, total, expectedPicks) {
 }
 
 function formatSeatLabel(zeroBasedSeat, seatTotal) {
-  const rawSeat = Number.parseInt(String(zeroBasedSeat), 10);
-  const currentSeat = Number.isFinite(rawSeat) && rawSeat >= 0 ? rawSeat + 1 : 1;
+  const currentSeat = normalizeNonNegativeInt(zeroBasedSeat) + 1;
   const total = normalizePositiveInt(seatTotal);
   if (total <= 0) return `Seat ${currentSeat}/-`;
   const clampedSeat = Math.max(1, Math.min(currentSeat, total));

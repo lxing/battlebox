@@ -1,5 +1,11 @@
 import { normalizeName } from './utils.js';
 import {
+  escapeHtml,
+  formatProgressLabel,
+  normalizeNonNegativeInt,
+  normalizePositiveInt,
+} from './util.js';
+import {
   appendDeviceIDToUrl,
   fetchDraftRooms,
   getStableDeviceID,
@@ -8,7 +14,6 @@ import {
   buildDefaultPassPattern,
   buildOpenRoomContext,
   buildPresetByConfig,
-  normalizePositiveInt,
   parseDraftPresets,
   resolveRoomTotals,
 } from './draftRoomContext.js';
@@ -22,15 +27,6 @@ function buildDraftDeckNames(deck) {
     for (let i = 0; i < qty; i += 1) names.push(name);
   });
   return names;
-}
-
-function escapeHtml(value) {
-  return String(value || '')
-    .replaceAll('&', '&amp;')
-    .replaceAll('<', '&lt;')
-    .replaceAll('>', '&gt;')
-    .replaceAll('"', '&quot;')
-    .replaceAll("'", '&#39;');
 }
 
 async function createDraftRoom(deck, preset, deviceID) {
@@ -74,15 +70,6 @@ async function createDraftRoom(deck, preset, deviceID) {
   const payload = await res.json();
   if (!payload || !payload.room_id) throw new Error('Missing room id');
   return payload;
-}
-
-function formatProgressLabel(label, zeroBasedValue, total) {
-  const safeTotal = normalizePositiveInt(total);
-  if (safeTotal <= 0) return `${label} -/-`;
-  const raw = Number.parseInt(String(zeroBasedValue), 10);
-  const current = Number.isFinite(raw) ? raw + 1 : 1;
-  const clamped = Math.max(1, Math.min(current, safeTotal));
-  return `${label} ${clamped}/${safeTotal}`;
 }
 
 function formatPresetOptionLabel(preset) {
@@ -197,8 +184,7 @@ export function createLobbyController({
       button.addEventListener('click', () => {
         const roomID = String(button.dataset.roomId || '').trim();
         const room = state.roomByID.get(roomID) || null;
-        const seatRaw = Number.parseInt(String(button.dataset.seatId || '0'), 10);
-        const seat = Number.isFinite(seatRaw) && seatRaw >= 0 ? seatRaw : 0;
+        const seat = normalizeNonNegativeInt(button.dataset.seatId || '0');
         if (!roomID) return;
         const context = buildOpenRoomContext(room, seat, state.cubeDeckBySlug, state.presetByConfig);
         if (!context) return;

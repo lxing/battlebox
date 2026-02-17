@@ -7,6 +7,7 @@ import {
   renderDeckSelectionTags,
   capitalize,
   normalizeName,
+  buildDoubleFacedMap,
   scryfallImageUrlByPrinting,
 } from './app/utils.js';
 import {
@@ -44,7 +45,6 @@ import { computeDeckView } from './app/deckView.js';
 import {
   createMarkdownRenderer,
   renderGuideContent,
-  buildDoubleFacedMap,
 } from './app/render.js';
 import { renderDecklistGrid as renderSharedDecklistGrid } from './app/decklist.js';
 import { createCardPreview } from './app/preview.js';
@@ -552,7 +552,6 @@ function ensureShell() {
   ui.lifePane = lifePane;
   ui.draftPane = draftPane;
   ui.matrixPane = matrixPane;
-  preview.setScrollContainer(battleboxPane);
 }
 
 function renderBattleboxPane(headerHtml, bodyHtml) {

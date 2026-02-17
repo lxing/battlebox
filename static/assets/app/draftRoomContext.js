@@ -1,9 +1,5 @@
 import { buildDoubleFacedMap, normalizeName } from './utils.js';
-
-export function normalizePositiveInt(value) {
-  const parsed = Number.parseInt(String(value), 10);
-  return Number.isFinite(parsed) && parsed > 0 ? parsed : 0;
-}
+import { normalizePositiveInt } from './util.js';
 
 export function buildDefaultPassPattern(packSize) {
   const size = Number.parseInt(String(packSize), 10) || 0;
@@ -30,7 +26,6 @@ export function parseDraftPresets(rawPresets) {
       if (passPattern.length === 0 || passTotal > packSize) return null;
       return {
         id: key,
-        label: key,
         seat_count: seatCount,
         pack_count: packCount,
         pack_size: packSize,
