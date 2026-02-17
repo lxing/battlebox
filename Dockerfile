@@ -14,6 +14,7 @@ FROM gcr.io/distroless/base-debian12
 WORKDIR /app
 ENV PORT=8080
 COPY --from=build /app/battlebox /app/battlebox
+COPY --from=build /app/static /app/static
+COPY --from=build /app/data /app/data
 EXPOSE 8080
-USER nonroot:nonroot
 CMD ["/app/battlebox"]

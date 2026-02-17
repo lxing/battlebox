@@ -23,8 +23,8 @@ var staticRoot = "static"
 var dataRoot = "data"
 
 const (
-	draftStorePath       = "db/db.sqlite"
-	legacyDraftStorePath = "db/draft_rooms.sqlite"
+	defaultDraftStorePath = "db/db.sqlite"
+	legacyDraftStorePath  = "db/draft_rooms.sqlite"
 )
 
 type sourceGuideRequest struct {
@@ -38,6 +38,7 @@ type sourceGuideResponse struct {
 func main() {
 	flag.Parse()
 	dev := os.Getenv("DEV") != ""
+	draftStorePath := resolveDraftStorePath()
 
 	mux := http.NewServeMux()
 	draftHub := newDraftHub()
@@ -146,6 +147,13 @@ func main() {
 		log.Printf("Starting server on :%s", port)
 		log.Fatal(http.ListenAndServe(":"+port, mux))
 	}
+}
+
+func resolveDraftStorePath() string {
+	if path := strings.TrimSpace(os.Getenv("DB_PATH")); path != "" {
+		return path
+	}
+	return defaultDraftStorePath
 }
 
 func removeLegacyDraftStoreFiles(path string) {
