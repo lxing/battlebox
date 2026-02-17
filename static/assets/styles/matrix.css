@@ -211,12 +211,6 @@
   gap: 0.6rem;
 }
 
-.lobby-room-head-right {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.4rem;
-}
-
 .lobby-room-id {
   font-size: 0.8rem;
   color: var(--color-text-strong);
@@ -231,25 +225,13 @@
 }
 
 .lobby-room-delete-button {
-  appearance: none;
-  -webkit-appearance: none;
-  border: 0;
-  background: transparent;
-  color: inherit;
-  font-size: 1rem;
-  line-height: 1;
+  margin-left: auto;
+  min-width: var(--control-height-md);
+  min-height: var(--control-height-md);
   padding: 0;
-  margin: 0;
-  width: auto;
-  min-width: 0;
-  min-height: 0;
-  cursor: pointer;
-}
-
-.lobby-room-delete-button:focus,
-.lobby-room-delete-button:focus-visible,
-.lobby-room-delete-button:active {
-  outline: none;
+  justify-content: center;
+  font-size: 0.95rem;
+  line-height: 1;
 }
 
 .lobby-room-meta {
@@ -258,6 +240,13 @@
 }
 
 .lobby-room-actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.4rem;
+}
+
+.lobby-seat-buttons {
   display: flex;
   flex-wrap: wrap;
   gap: 0.4rem;

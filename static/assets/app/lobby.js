@@ -266,19 +266,19 @@ export function createLobbyController({
             <li class="lobby-room-item">
               <div class="lobby-room-head">
                 <div class="lobby-room-id">${roomID}</div>
-                <div class="lobby-room-head-right">
-                  <div class="lobby-room-cube">${cubeLabel}</div>
-                  <button
-                    type="button"
-                    class="lobby-room-delete-button"
-                    data-delete-room-id="${roomID}"
-                    aria-label="Delete room ${roomID}"
-                    title="Delete room"
-                  >🗑️</button>
-                </div>
+                <div class="lobby-room-cube">${cubeLabel}</div>
               </div>
               <div class="lobby-room-meta">Pack ${packNo} · Pick ${pickNo}</div>
-              <div class="lobby-room-actions">${seatButtons}</div>
+              <div class="lobby-room-actions">
+                <div class="lobby-seat-buttons">${seatButtons}</div>
+                <button
+                  type="button"
+                  class="action-button button-standard lobby-room-delete-button"
+                  data-delete-room-id="${roomID}"
+                  aria-label="Delete room ${roomID}"
+                  title="Delete room"
+                >🗑️</button>
+              </div>
             </li>
           `;
   }).join('')}

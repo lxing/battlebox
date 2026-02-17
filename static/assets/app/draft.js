@@ -558,25 +558,35 @@ export function createDraftController({
   function render() {
     if (!ui.draftPane || !hasActiveRoom()) return false;
 
+    const roomName = String(draftUi.roomId || '').trim();
+    const cubeName = roomDisplayName();
     ui.draftPane.innerHTML = `
       <div class="draft-room">
         <div class="draft-panel draft-status-panel">
-          <div class="draft-status-row">
-            <button type="button" class="draft-lobby-button" id="draft-back-lobby" aria-label="Back to lobby">⬅️</button>
-            <button type="button" class="draft-lobby-button" id="draft-open-cube" aria-label="Open cube battlebox">📚</button>
-            <div class="draft-status-name">${escapeHtml(roomDisplayName())}</div>
-            <div class="draft-status-seat">Seat ${draftUi.seat + 1}</div>
-            <span class="draft-status-divider" aria-hidden="true">·</span>
-            <div id="draft-pack-label" class="draft-pack-pick">Pack -</div>
-            <span class="draft-status-divider" aria-hidden="true">·</span>
-            <div id="draft-pick-label" class="draft-pack-pick">Pick -</div>
-            <span class="draft-status-divider" aria-hidden="true">·</span>
-            <span id="draft-connection-dot" class="draft-connection-dot is-offline" role="status" aria-label="Disconnected" title="Disconnected"></span>
+          <div class="draft-status-head">
+            <div class="draft-status-room">${escapeHtml(roomName)}</div>
+            <div class="draft-status-cube">${escapeHtml(cubeName)}</div>
+          </div>
+          <div class="draft-status-actions-row">
+            <div class="draft-status-actions">
+              <button type="button" class="action-button button-standard draft-lobby-button" id="draft-back-lobby" aria-label="Back to lobby">⬅️ Lobby</button>
+              <button type="button" class="action-button button-standard draft-lobby-button" id="draft-open-cube" aria-label="Open cube battlebox">📚 List</button>
+            </div>
+            <div class="draft-status-meta">
+              <div class="draft-status-seat">Seat ${draftUi.seat + 1}</div>
+              <span class="draft-status-divider" aria-hidden="true">·</span>
+              <span id="draft-connection-dot" class="draft-connection-dot is-offline" role="status" aria-label="Disconnected" title="Disconnected"></span>
+            </div>
           </div>
         </div>
 
         <div class="draft-panel">
           <h3 class="panel-title draft-panel-title">Pack</h3>
+          <div class="draft-pack-info-row">
+            <div id="draft-pack-label" class="draft-pack-pick">Pack -</div>
+            <span class="draft-status-divider" aria-hidden="true">·</span>
+            <div id="draft-pick-label" class="draft-pack-pick">Pick -</div>
+          </div>
           <div id="draft-pack-cards"></div>
         </div>
 
