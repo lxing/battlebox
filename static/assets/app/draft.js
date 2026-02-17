@@ -238,7 +238,22 @@ export function createDraftController({
     const selectedCount = draftUi.selectedPackIndexes.size;
     cardButtons.forEach((btn) => {
       const idx = Number.parseInt(btn.dataset.index || '-1', 10);
-      btn.classList.toggle('is-selected', draftUi.selectedPackIndexes.has(idx));
+      const isSelected = draftUi.selectedPackIndexes.has(idx);
+      const lockUnselected = canPick && selectedCount >= required && !isSelected;
+      const disabled = !canPick;
+      btn.classList.toggle('is-selected', isSelected);
+      if (disabled) {
+        btn.setAttribute('aria-disabled', 'true');
+      } else {
+        btn.removeAttribute('aria-disabled');
+      }
+      if (lockUnselected) {
+        btn.dataset.selectLocked = '1';
+        btn.setAttribute('tabindex', '-1');
+      } else {
+        delete btn.dataset.selectLocked;
+        btn.removeAttribute('tabindex');
+      }
     });
     pickButtons.forEach((button) => {
       button.disabled = !canPick || selectedCount !== required;
@@ -380,6 +395,7 @@ export function createDraftController({
         if (draftUi.selectedPackIndexes.has(i)) {
           draftUi.selectedPackIndexes.delete(i);
         } else {
+          if (draftUi.selectedPackIndexes.size >= expectedPicks) return;
           draftUi.selectedPackIndexes.add(i);
         }
         syncPackSelectionUi(cardButtons, pickButtons, canPick, expectedPicks);

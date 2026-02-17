@@ -137,6 +137,10 @@
   box-shadow: 0 0 0 2px rgba(124, 170, 242, 0.55);
 }
 
+.draft-pack-card[data-select-locked="1"] {
+  pointer-events: none;
+}
+
 .draft-pack-card-frame {
   display: block;
   position: relative;
