@@ -114,8 +114,17 @@
 .draft-pack-info-row {
   display: flex;
   align-items: center;
-  gap: 0.45rem;
+  justify-content: space-between;
+  gap: 0.5rem;
   margin: 0 0 0.45rem;
+}
+
+.draft-pack-status-row {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  min-width: 0;
+  flex: 1 1 auto;
 }
 
 #draft-pack-cards {
@@ -189,9 +198,14 @@
   overflow: hidden;
 }
 
-.draft-pack-card.is-selected {
-  border-color: #7caaf2;
-  box-shadow: inset 0 0 0 2px rgba(124, 170, 242, 0.65);
+.draft-pack-card.is-mainboard {
+  border-color: #4d8ded;
+  box-shadow: inset 0 0 0 2px rgba(77, 141, 237, 0.65);
+}
+
+.draft-pack-card.is-sideboard {
+  border-color: #e05f5f;
+  box-shadow: inset 0 0 0 2px rgba(224, 95, 95, 0.68);
 }
 
 .draft-pack-card[data-select-locked="1"] {
@@ -213,6 +227,33 @@
   object-fit: cover;
 }
 
+.draft-pack-card-zone-tag {
+  position: absolute;
+  left: 0.24rem;
+  bottom: 0.24rem;
+  z-index: 2;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 4px;
+  padding: 0.08rem 0.28rem;
+  font-size: 0.54rem;
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: 0.03em;
+  color: #f6f9ff;
+  pointer-events: none;
+  user-select: none;
+}
+
+.draft-pack-card-zone-tag.is-mainboard {
+  background: rgba(77, 141, 237, 0.88);
+}
+
+.draft-pack-card-zone-tag.is-sideboard {
+  background: rgba(224, 95, 95, 0.9);
+}
+
 .draft-pack-card-fallback {
   display: flex;
   width: 100%;
@@ -226,14 +267,10 @@
   padding: 0.35rem;
 }
 
-.draft-pack-actions {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 0.4rem;
-}
-
 .draft-pick-confirm-button {
-  width: 100%;
+  flex: 0 0 auto;
+  min-width: 4.2rem;
+  padding: 0 0.65rem;
 }
 
 .draft-empty {

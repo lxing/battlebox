@@ -2,6 +2,9 @@ import { cardFaceImageUrl, dfcFlipControlMarkup } from './cardFaces.js';
 import { renderDecklistGrid as renderSharedDecklistGrid } from './decklist.js';
 import { isDoubleFacedCard, normalizeName, scryfallImageUrlByName } from './utils.js';
 
+const DRAFT_PICK_ZONE_MAINBOARD = 'mainboard';
+const DRAFT_PICK_ZONE_SIDEBOARD = 'sideboard';
+
 function escapeHtml(value) {
   return String(value || '')
     .replaceAll('&', '&amp;')
@@ -206,7 +209,7 @@ export function createDraftController({
     reconnectTimer: null,
     shouldReconnect: false,
     selectedPackID: '',
-    selectedPackIndexes: new Set(),
+    selectedPackZones: new Map(),
     packCardBackFaces: new Map(),
     lastPicksHtml: '',
   };
@@ -239,7 +242,7 @@ export function createDraftController({
     draftUi.state = null;
     draftUi.pendingPick = false;
     draftUi.selectedPackID = '';
-    draftUi.selectedPackIndexes.clear();
+    draftUi.selectedPackZones.clear();
     draftUi.packCardBackFaces.clear();
     draftUi.lastPicksHtml = '';
   }
@@ -281,7 +284,7 @@ export function createDraftController({
     draftUi.connected = false;
     draftUi.pendingPick = false;
     draftUi.selectedPackID = '';
-    draftUi.selectedPackIndexes.clear();
+    draftUi.selectedPackZones.clear();
   }
 
   function teardown() {
@@ -321,7 +324,7 @@ export function createDraftController({
     draftUi.state = null;
     draftUi.reconnectAttempt = 0;
     draftUi.selectedPackID = '';
-    draftUi.selectedPackIndexes.clear();
+    draftUi.selectedPackZones.clear();
     draftUi.packCardBackFaces.clear();
     draftUi.lastPicksHtml = '';
     if (typeof onRoomSelectionChanged === 'function') {
@@ -339,15 +342,45 @@ export function createDraftController({
     return draftUi.roomId;
   }
 
-  function syncPackSelectionUi(cardButtons, pickButtons, canPick, expectedPicks) {
+  function pickZoneLabel(zone) {
+    if (zone === DRAFT_PICK_ZONE_MAINBOARD) return 'Main';
+    if (zone === DRAFT_PICK_ZONE_SIDEBOARD) return 'Side';
+    return '';
+  }
+
+  function applyPackCardPickZoneUi(cardButton, zone) {
+    const isMainboard = zone === DRAFT_PICK_ZONE_MAINBOARD;
+    const isSideboard = zone === DRAFT_PICK_ZONE_SIDEBOARD;
+    cardButton.classList.toggle('is-mainboard', isMainboard);
+    cardButton.classList.toggle('is-sideboard', isSideboard);
+
+    const frame = cardButton.querySelector('.draft-pack-card-frame');
+    if (!frame) return;
+    let zoneTag = frame.querySelector('.draft-pack-card-zone-tag');
+    if (!isMainboard && !isSideboard) {
+      if (zoneTag) zoneTag.remove();
+      return;
+    }
+    if (!zoneTag) {
+      zoneTag = document.createElement('span');
+      zoneTag.className = 'draft-pack-card-zone-tag';
+      frame.appendChild(zoneTag);
+    }
+    zoneTag.textContent = pickZoneLabel(zone);
+    zoneTag.classList.toggle('is-mainboard', isMainboard);
+    zoneTag.classList.toggle('is-sideboard', isSideboard);
+  }
+
+  function syncPackSelectionUi(cardButtons, pickButton, canPick, expectedPicks) {
     const required = Number.isFinite(expectedPicks) && expectedPicks > 0 ? expectedPicks : 1;
-    const selectedCount = draftUi.selectedPackIndexes.size;
+    const selectedCount = draftUi.selectedPackZones.size;
     cardButtons.forEach((btn) => {
       const idx = Number.parseInt(btn.dataset.index || '-1', 10);
-      const isSelected = draftUi.selectedPackIndexes.has(idx);
-      const lockUnselected = canPick && selectedCount >= required && !isSelected;
+      const zone = draftUi.selectedPackZones.get(idx);
+      const hasSelection = zone === DRAFT_PICK_ZONE_MAINBOARD || zone === DRAFT_PICK_ZONE_SIDEBOARD;
+      const lockUnselected = canPick && selectedCount >= required && !hasSelection;
       const disabled = !canPick;
-      btn.classList.toggle('is-selected', isSelected);
+      applyPackCardPickZoneUi(btn, zone);
       if (disabled) {
         btn.setAttribute('aria-disabled', 'true');
       } else {
@@ -361,9 +394,9 @@ export function createDraftController({
         btn.removeAttribute('tabindex');
       }
     });
-    pickButtons.forEach((button) => {
-      button.disabled = !canPick || selectedCount !== required;
-    });
+    if (pickButton) {
+      pickButton.disabled = !canPick || selectedCount !== required;
+    }
   }
 
   function syncPackColumnWidth(packEl) {
@@ -417,15 +450,13 @@ export function createDraftController({
   function syncPackSelectionUiFromDom() {
     if (!ui.draftPane) return;
     const cardButtons = [...ui.draftPane.querySelectorAll('#draft-pack-grid .draft-pack-card')];
-    const mainboardButton = ui.draftPane.querySelector('#draft-pick-mainboard');
-    const sideboardButton = ui.draftPane.querySelector('#draft-pick-sideboard');
-    const pickButtons = [mainboardButton, sideboardButton].filter(Boolean);
+    const pickButton = ui.draftPane.querySelector('#draft-pick-submit');
     const ctx = getActivePackInteractionState();
     if (!ctx) {
-      syncPackSelectionUi(cardButtons, pickButtons, false, 1);
+      syncPackSelectionUi(cardButtons, pickButton, false, 1);
       return;
     }
-    syncPackSelectionUi(cardButtons, pickButtons, ctx.canPick, ctx.expectedPicks);
+    syncPackSelectionUi(cardButtons, pickButton, ctx.canPick, ctx.expectedPicks);
   }
 
   function createPackCardButton() {
@@ -497,20 +528,27 @@ export function createDraftController({
     }
   }
 
-  function submitSelectedPicks(zone) {
+  function submitSelectedPicks() {
     const ctx = getActivePackInteractionState();
     if (!ctx || !ctx.canPick) return;
-    const selectedIndexes = [...draftUi.selectedPackIndexes].sort((a, b) => a - b);
-    if (selectedIndexes.length !== ctx.expectedPicks) return;
-    const picks = selectedIndexes.map((idx) => ({
+    const selections = [...draftUi.selectedPackZones.entries()]
+      .filter(([idx, zone]) => (
+        Number.isInteger(idx)
+        && idx >= 0
+        && idx < ctx.active.cards.length
+        && (zone === DRAFT_PICK_ZONE_MAINBOARD || zone === DRAFT_PICK_ZONE_SIDEBOARD)
+      ))
+      .sort((a, b) => a[0] - b[0]);
+    if (selections.length !== ctx.expectedPicks) return;
+    const picks = selections.map(([idx, zone]) => ({
       card_name: ctx.active.cards[idx],
       zone,
     }));
-    if (!picks.every((pick) => pick && pick.card_name)) return;
+    if (!picks.every((pick) => pick && pick.card_name && pick.zone)) return;
     if (!draftUi.socket || draftUi.socket.readyState !== WebSocket.OPEN) return;
     const nextSeq = Number.parseInt(String(ctx.state.next_seq || 1), 10) || 1;
     draftUi.pendingPick = true;
-    draftUi.selectedPackIndexes.clear();
+    draftUi.selectedPackZones.clear();
     syncPackSelectionUiFromDom();
     updateUIFromState();
     draftUi.socket.send(JSON.stringify({
@@ -525,11 +563,14 @@ export function createDraftController({
     const ctx = getActivePackInteractionState();
     if (!ctx || !ctx.canPick) return;
     if (index < 0 || index >= ctx.active.cards.length) return;
-    if (draftUi.selectedPackIndexes.has(index)) {
-      draftUi.selectedPackIndexes.delete(index);
+    const currentZone = draftUi.selectedPackZones.get(index) || '';
+    if (!currentZone) {
+      if (draftUi.selectedPackZones.size >= ctx.expectedPicks) return;
+      draftUi.selectedPackZones.set(index, DRAFT_PICK_ZONE_MAINBOARD);
+    } else if (currentZone === DRAFT_PICK_ZONE_MAINBOARD) {
+      draftUi.selectedPackZones.set(index, DRAFT_PICK_ZONE_SIDEBOARD);
     } else {
-      if (draftUi.selectedPackIndexes.size >= ctx.expectedPicks) return;
-      draftUi.selectedPackIndexes.add(index);
+      draftUi.selectedPackZones.delete(index);
     }
     syncPackSelectionUiFromDom();
   }
@@ -566,17 +607,6 @@ export function createDraftController({
         return;
       }
 
-      const mainboardButton = target.closest('#draft-pick-mainboard');
-      if (mainboardButton && packRoot.contains(mainboardButton)) {
-        submitSelectedPicks('mainboard');
-        return;
-      }
-      const sideboardButton = target.closest('#draft-pick-sideboard');
-      if (sideboardButton && packRoot.contains(sideboardButton)) {
-        submitSelectedPicks('sideboard');
-        return;
-      }
-
       const cardButton = target.closest('.draft-pack-card');
       if (cardButton && packRoot.contains(cardButton)) {
         const i = Number.parseInt(String(cardButton.getAttribute('data-index') || '-1'), 10);
@@ -591,6 +621,14 @@ export function createDraftController({
         updatePackScrollIndicators();
       }, { passive: true });
     }
+
+    const pickButton = ui.draftPane.querySelector('#draft-pick-submit');
+    if (pickButton && pickButton.dataset.bound !== '1') {
+      pickButton.dataset.bound = '1';
+      pickButton.addEventListener('click', () => {
+        submitSelectedPicks();
+      });
+    }
   }
 
   function updateUIFromState() {
@@ -598,35 +636,38 @@ export function createDraftController({
     const seatInfoEl = ui.draftPane.querySelector('#draft-seat-label');
     const packInfoEl = ui.draftPane.querySelector('#draft-pack-label');
     const pickInfoEl = ui.draftPane.querySelector('#draft-pick-label');
+    const waitingDividerEl = ui.draftPane.querySelector('#draft-waiting-divider');
+    const waitingLabelEl = ui.draftPane.querySelector('#draft-waiting-label');
     const packRoot = ui.draftPane.querySelector('#draft-pack-cards');
     const packEmptyEl = ui.draftPane.querySelector('#draft-pack-empty');
     const packContentEl = ui.draftPane.querySelector('#draft-pack-content');
-    const mainboardButton = ui.draftPane.querySelector('#draft-pick-mainboard');
-    const sideboardButton = ui.draftPane.querySelector('#draft-pick-sideboard');
+    const pickButton = ui.draftPane.querySelector('#draft-pick-submit');
     const picksEl = ui.draftPane.querySelector('#draft-picks-cards');
+
+    const setWaitingIndicator = (isVisible) => {
+      if (waitingDividerEl) waitingDividerEl.hidden = !isVisible;
+      if (waitingLabelEl) waitingLabelEl.hidden = !isVisible;
+    };
 
     updateConnectionIndicator();
 
     const state = draftUi.state;
     if (!state) {
       draftUi.selectedPackID = '';
-      draftUi.selectedPackIndexes.clear();
+      draftUi.selectedPackZones.clear();
       if (seatInfoEl) seatInfoEl.textContent = formatSeatLabel(draftUi.seat, 0);
       if (packInfoEl) packInfoEl.textContent = 'Pack -/-';
       if (pickInfoEl) pickInfoEl.textContent = 'Pick -/-';
+      setWaitingIndicator(false);
       if (packEmptyEl) {
         packEmptyEl.hidden = false;
         packEmptyEl.textContent = 'Waiting for state...';
       }
       if (packContentEl) packContentEl.hidden = true;
       updatePackScrollIndicators();
-      if (mainboardButton) {
-        mainboardButton.textContent = 'Mainboard (1)';
-        mainboardButton.disabled = true;
-      }
-      if (sideboardButton) {
-        sideboardButton.textContent = 'Sideboard (1)';
-        sideboardButton.disabled = true;
+      if (pickButton) {
+        pickButton.textContent = 'Pick';
+        pickButton.disabled = true;
       }
       if (picksEl) {
         picksEl.innerHTML = '';
@@ -644,23 +685,23 @@ export function createDraftController({
       packInfoEl.textContent = formatProgressLabel('Pack', state.pack_no, draftUi.roomPackTotal);
     }
     if (pickInfoEl) {
-      const basePickLabel = formatPickProgressLabel(
+      pickInfoEl.textContent = formatPickProgressLabel(
         state.pick_no,
         draftUi.roomPickTotal,
         state.expected_picks,
       );
-      const hasActivePack = Boolean(
-        state.active_pack
-        && Array.isArray(state.active_pack.cards)
-        && state.active_pack.cards.length > 0,
-      );
-      const waitingOnTable = (
-        state.state !== 'done'
-        && hasActivePack
-        && (draftUi.pendingPick || !state.can_pick)
-      );
-      pickInfoEl.textContent = waitingOnTable ? `${basePickLabel} · Waiting...` : basePickLabel;
     }
+    const hasActivePack = Boolean(
+      state.active_pack
+      && Array.isArray(state.active_pack.cards)
+      && state.active_pack.cards.length > 0,
+    );
+    const waitingOnTable = (
+      state.state !== 'done'
+      && hasActivePack
+      && (draftUi.pendingPick || !state.can_pick)
+    );
+    setWaitingIndicator(waitingOnTable);
 
     if (picksEl) {
       const picksHtml = renderDraftPicksDecklist(
@@ -679,7 +720,7 @@ export function createDraftController({
     const active = state.active_pack;
     if (!active || !Array.isArray(active.cards) || active.cards.length === 0) {
       draftUi.selectedPackID = '';
-      draftUi.selectedPackIndexes.clear();
+      draftUi.selectedPackZones.clear();
       if (packEmptyEl) {
         packEmptyEl.hidden = false;
         packEmptyEl.textContent = state.state === 'done'
@@ -688,13 +729,9 @@ export function createDraftController({
       }
       if (packContentEl) packContentEl.hidden = true;
       updatePackScrollIndicators();
-      if (mainboardButton) {
-        mainboardButton.textContent = 'Mainboard (1)';
-        mainboardButton.disabled = true;
-      }
-      if (sideboardButton) {
-        sideboardButton.textContent = 'Sideboard (1)';
-        sideboardButton.disabled = true;
+      if (pickButton) {
+        pickButton.textContent = 'Pick';
+        pickButton.disabled = true;
       }
       return;
     }
@@ -702,28 +739,24 @@ export function createDraftController({
     const activePackID = String(active.pack_id || '');
     if (draftUi.selectedPackID !== activePackID) {
       draftUi.selectedPackID = activePackID;
-      draftUi.selectedPackIndexes.clear();
+      draftUi.selectedPackZones.clear();
       draftUi.packCardBackFaces.clear();
     }
-    [...draftUi.selectedPackIndexes].forEach((idx) => {
+    [...draftUi.selectedPackZones.keys()].forEach((idx) => {
       if (idx < 0 || idx >= active.cards.length) {
-        draftUi.selectedPackIndexes.delete(idx);
+        draftUi.selectedPackZones.delete(idx);
       }
     });
 
     const ctx = getActivePackInteractionState();
     const canPick = Boolean(ctx?.canPick);
-    const expectedPicks = ctx?.expectedPicks || 1;
     if (!canPick) {
-      draftUi.selectedPackIndexes.clear();
+      draftUi.selectedPackZones.clear();
     }
 
     renderPackCardsInPlace(activePackID, active.cards, canPick);
-    if (mainboardButton) {
-      mainboardButton.textContent = `Mainboard (${expectedPicks})`;
-    }
-    if (sideboardButton) {
-      sideboardButton.textContent = `Sideboard (${expectedPicks})`;
+    if (pickButton) {
+      pickButton.textContent = 'Pick';
     }
     if (packEmptyEl) packEmptyEl.hidden = true;
     if (packContentEl) packContentEl.hidden = false;
@@ -765,7 +798,7 @@ export function createDraftController({
       draftUi.state = null;
       draftUi.reconnectAttempt = 0;
       draftUi.selectedPackID = '';
-      draftUi.selectedPackIndexes.clear();
+      draftUi.selectedPackZones.clear();
     }
     draftUi.pendingPick = false;
     draftUi.connected = false;
@@ -864,9 +897,16 @@ export function createDraftController({
         <div class="draft-panel">
           <h3 class="panel-title draft-panel-title">Pack</h3>
           <div class="draft-pack-info-row">
-            <div id="draft-pack-label" class="draft-pack-pick">Pack -</div>
-            <span class="draft-status-divider" aria-hidden="true">·</span>
-            <div id="draft-pick-label" class="draft-pack-pick">Pick -</div>
+            <div class="draft-pack-status-row">
+              <div id="draft-pack-label" class="draft-pack-pick">Pack -/-</div>
+              <span class="draft-status-divider" aria-hidden="true">·</span>
+              <div id="draft-pick-label" class="draft-pack-pick">Pick -/-</div>
+              <span id="draft-waiting-divider" class="draft-status-divider" aria-hidden="true" hidden>·</span>
+              <div id="draft-waiting-label" class="draft-pack-pick" hidden>Waiting...</div>
+            </div>
+            <button type="button" class="action-button button-standard draft-pick-confirm-button" id="draft-pick-submit" disabled>
+              Pick
+            </button>
           </div>
           <div id="draft-pack-cards">
             <div id="draft-pack-empty" class="draft-empty">Waiting for state...</div>
@@ -877,14 +917,6 @@ export function createDraftController({
                   <div id="draft-pack-grid" class="draft-pack-grid"></div>
                 </div>
                 <div id="draft-pack-scroll-right" class="draft-pack-scroll-indicator draft-pack-scroll-indicator-right" aria-hidden="true" hidden>▶</div>
-              </div>
-              <div class="draft-pack-actions">
-                <button type="button" class="action-button button-standard draft-pick-confirm-button" id="draft-pick-mainboard" disabled>
-                  Mainboard (1)
-                </button>
-                <button type="button" class="action-button button-standard draft-pick-confirm-button" id="draft-pick-sideboard" disabled>
-                  Sideboard (1)
-                </button>
               </div>
             </div>
           </div>
