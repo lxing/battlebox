@@ -160,6 +160,7 @@ export function createDraftController({
   ui,
   onLobbyRequested,
   onCubeRequested,
+  onRoomSelectionChanged,
 }) {
   const draftUi = {
     socket: null,
@@ -294,6 +295,9 @@ export function createDraftController({
     draftUi.selectedPackID = '';
     draftUi.selectedPackIndexes.clear();
     draftUi.packCardBackFaces.clear();
+    if (typeof onRoomSelectionChanged === 'function') {
+      onRoomSelectionChanged(draftUi.roomId, draftUi.seat);
+    }
   }
 
   function packCardFaceKey(packID, cardIndex) {

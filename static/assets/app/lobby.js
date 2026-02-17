@@ -1,4 +1,17 @@
-import { buildDoubleFacedMap, normalizeName } from './utils.js';
+import { normalizeName } from './utils.js';
+import {
+  appendDeviceIDToUrl,
+  fetchDraftRooms,
+  getStableDeviceID,
+} from './draftApi.js';
+import {
+  buildDefaultPassPattern,
+  buildOpenRoomContext,
+  buildPresetByConfig,
+  normalizePositiveInt,
+  parseDraftPresets,
+  resolveRoomTotals,
+} from './draftRoomContext.js';
 
 function buildDraftDeckNames(deck) {
   const names = [];
@@ -11,28 +24,6 @@ function buildDraftDeckNames(deck) {
   return names;
 }
 
-function buildDraftCardMetaMap(deck) {
-  const map = {};
-  const addCard = (card) => {
-    const name = String(card?.name || '').trim();
-    const key = normalizeName(name);
-    if (!key || map[key]) return;
-    const manaValue = Number(card?.mana_value);
-    map[key] = {
-      name,
-      type: String(card?.type || ''),
-      mana_cost: String(card?.mana_cost || ''),
-      mana_value: Number.isFinite(manaValue) ? manaValue : 0,
-      printing: String(card?.printing || ''),
-      double_faced: card?.double_faced === true,
-    };
-  };
-
-  (Array.isArray(deck?.cards) ? deck.cards : []).forEach(addCard);
-  (Array.isArray(deck?.sideboard) ? deck.sideboard : []).forEach(addCard);
-  return map;
-}
-
 function escapeHtml(value) {
   return String(value || '')
     .replaceAll('&', '&amp;')
@@ -40,97 +31,6 @@ function escapeHtml(value) {
     .replaceAll('>', '&gt;')
     .replaceAll('"', '&quot;')
     .replaceAll("'", '&#39;');
-}
-
-function buildDefaultPassPattern(packSize) {
-  const size = Number.parseInt(String(packSize), 10) || 0;
-  if (size <= 0) return [];
-  return Array.from({ length: size }, () => 1);
-}
-
-const localDeviceIDKey = 'battlebox_device_id_v1';
-let deviceIDPromise = null;
-
-function appendDeviceIDToUrl(path, deviceID) {
-  const id = String(deviceID || '').trim();
-  const sep = path.includes('?') ? '&' : '?';
-  return `${path}${sep}device_id=${encodeURIComponent(id)}`;
-}
-
-function hashStringFNV1a(value) {
-  let hash = 2166136261;
-  const text = String(value || '');
-  for (let i = 0; i < text.length; i += 1) {
-    hash ^= text.charCodeAt(i);
-    hash = Math.imul(hash, 16777619);
-  }
-  return (hash >>> 0).toString(16).padStart(8, '0');
-}
-
-async function sha256Hex(value) {
-  if (!(window.crypto && window.crypto.subtle && window.TextEncoder)) {
-    return hashStringFNV1a(value);
-  }
-  const bytes = new TextEncoder().encode(String(value || ''));
-  const digest = await window.crypto.subtle.digest('SHA-256', bytes);
-  return [...new Uint8Array(digest)]
-    .map((byte) => byte.toString(16).padStart(2, '0'))
-    .join('');
-}
-
-function fingerprintSource() {
-  const nav = window.navigator || {};
-  const scr = window.screen || {};
-  const tz = (Intl.DateTimeFormat().resolvedOptions().timeZone || '').trim();
-  const langs = Array.isArray(nav.languages) ? nav.languages.join(',') : '';
-  return [
-    nav.userAgent || '',
-    nav.language || '',
-    langs,
-    nav.platform || '',
-    String(nav.hardwareConcurrency || ''),
-    String(nav.deviceMemory || ''),
-    `${String(scr.width || '')}x${String(scr.height || '')}`,
-    String(scr.colorDepth || ''),
-    tz,
-    String(new Date().getTimezoneOffset()),
-  ].join('|');
-}
-
-async function getStableDeviceID() {
-  if (deviceIDPromise) return deviceIDPromise;
-  deviceIDPromise = (async () => {
-    try {
-      const existing = String(window.localStorage.getItem(localDeviceIDKey) || '').trim();
-      if (existing) return existing;
-    } catch (_) {
-      // Continue with computed fallback.
-    }
-
-    const digest = await sha256Hex(fingerprintSource());
-    const stable = `dev_${digest.slice(0, 32)}`;
-    try {
-      window.localStorage.setItem(localDeviceIDKey, stable);
-    } catch (_) {
-      // Best effort only.
-    }
-    return stable;
-  })();
-  return deviceIDPromise;
-}
-
-async function fetchDraftRooms(deviceID) {
-  const res = await fetch(appendDeviceIDToUrl('/api/draft/rooms', deviceID), {
-    method: 'GET',
-    cache: 'no-store',
-  });
-  if (!res.ok) {
-    const text = (await res.text()).trim();
-    throw new Error(text || `Failed to load rooms (${res.status})`);
-  }
-  const payload = await res.json();
-  if (!payload || !Array.isArray(payload.rooms)) return [];
-  return payload.rooms;
 }
 
 async function createDraftRoom(deck, preset, deviceID) {
@@ -174,52 +74,6 @@ async function createDraftRoom(deck, preset, deviceID) {
   const payload = await res.json();
   if (!payload || !payload.room_id) throw new Error('Missing room id');
   return payload;
-}
-
-function parseDraftPresets(rawPresets) {
-  if (!rawPresets || typeof rawPresets !== 'object' || Array.isArray(rawPresets)) return [];
-  return Object.entries(rawPresets)
-    .map(([id, value]) => {
-      const key = String(id || '').trim();
-      if (!key || !value || typeof value !== 'object') return null;
-      const seatCount = Number.parseInt(String(value.seat_count), 10);
-      const packCount = Number.parseInt(String(value.pack_count), 10);
-      const packSize = Number.parseInt(String(value.pack_size), 10);
-      const passPatternRaw = Array.isArray(value.pass_pattern) ? value.pass_pattern : buildDefaultPassPattern(packSize);
-      const passPattern = passPatternRaw.map((entry) => Number.parseInt(String(entry), 10));
-      const passTotal = passPattern.reduce((sum, entry) => sum + entry, 0);
-      if (!Number.isFinite(seatCount) || seatCount <= 0) return null;
-      if (!Number.isFinite(packCount) || packCount <= 0) return null;
-      if (!Number.isFinite(packSize) || packSize <= 0) return null;
-      if (!passPattern.every((entry) => Number.isFinite(entry) && entry > 0)) return null;
-      if (passPattern.length === 0 || passTotal > packSize) return null;
-      return {
-        id: key,
-        label: key,
-        seat_count: seatCount,
-        pack_count: packCount,
-        pack_size: packSize,
-        pass_pattern: passPattern,
-      };
-    })
-    .filter(Boolean)
-    .sort((a, b) => a.id.localeCompare(b.id));
-}
-
-function normalizePositiveInt(value) {
-  const parsed = Number.parseInt(String(value), 10);
-  return Number.isFinite(parsed) && parsed > 0 ? parsed : 0;
-}
-
-function buildDraftPresetConfigKey(seatCount, packCount, packSize) {
-  return `${normalizePositiveInt(seatCount)}|${normalizePositiveInt(packCount)}|${normalizePositiveInt(packSize)}`;
-}
-
-function sumPassPattern(passPattern) {
-  if (!Array.isArray(passPattern) || passPattern.length === 0) return 0;
-  const parsed = passPattern.map((value) => Number.parseInt(String(value), 10));
-  if (!parsed.every((value) => Number.isFinite(value) && value > 0)) return 0;
-  return parsed.reduce((sum, value) => sum + value, 0);
 }
 
 function formatProgressLabel(label, zeroBasedValue, total) {
@@ -318,29 +172,10 @@ export function createLobbyController({
   function ensurePresetCache(rawPresets) {
     if (state.presetsRawRef === rawPresets) return;
     const allPresetEntries = parseDraftPresets(rawPresets);
-    const presetByConfig = new Map();
-    allPresetEntries.forEach((preset) => {
-      const key = buildDraftPresetConfigKey(preset.seat_count, preset.pack_count, preset.pack_size);
-      if (!presetByConfig.has(key)) {
-        presetByConfig.set(key, preset);
-      }
-    });
+    const presetByConfig = buildPresetByConfig(allPresetEntries);
     state.presetsRawRef = rawPresets;
     state.allPresetEntries = allPresetEntries;
     state.presetByConfig = presetByConfig;
-  }
-
-  function resolveRoomTotals(room) {
-    const seatCount = normalizePositiveInt(room?.seat_count);
-    const packCount = normalizePositiveInt(room?.pack_count);
-    const packSize = normalizePositiveInt(room?.pack_size);
-    const key = buildDraftPresetConfigKey(seatCount, packCount, packSize);
-    const preset = state.presetByConfig.get(key);
-    const picksPerPack = sumPassPattern(preset?.pass_pattern) || packSize;
-    return {
-      packTotal: packCount,
-      pickTotal: picksPerPack,
-    };
   }
 
   function syncCreateRoomButtonState() {
@@ -362,28 +197,21 @@ export function createLobbyController({
       button.addEventListener('click', () => {
         const roomID = String(button.dataset.roomId || '').trim();
         const room = state.roomByID.get(roomID) || null;
-        const roomDeckSlug = String(button.dataset.roomDeckSlug || '').trim();
-        const roomDeck = state.cubeDeckBySlug.get(normalizeName(roomDeckSlug));
-        const roomDeckName = String(roomDeck?.name || roomDeckSlug || '').trim();
-        const roomDeckPrintings = roomDeck && roomDeck.printings && typeof roomDeck.printings === 'object'
-          ? roomDeck.printings
-          : {};
-        const roomDeckDoubleFaced = buildDoubleFacedMap(roomDeck);
-        const roomDeckCardMeta = buildDraftCardMetaMap(roomDeck);
         const seatRaw = Number.parseInt(String(button.dataset.seatId || '0'), 10);
         const seat = Number.isFinite(seatRaw) && seatRaw >= 0 ? seatRaw : 0;
         if (!roomID) return;
-        const totals = resolveRoomTotals(room);
+        const context = buildOpenRoomContext(room, seat, state.cubeDeckBySlug, state.presetByConfig);
+        if (!context) return;
         draftController.openRoom(
-          roomID,
-          seat,
-          roomDeckSlug,
-          roomDeckPrintings,
-          roomDeckName,
-          roomDeckDoubleFaced,
-          roomDeckCardMeta,
-          totals.packTotal,
-          totals.pickTotal,
+          context.roomId,
+          context.seat,
+          context.roomDeckSlug,
+          context.roomDeckPrintings,
+          context.roomDeckName,
+          context.roomDeckDoubleFaced,
+          context.roomDeckCardMeta,
+          context.roomPackTotal,
+          context.roomPickTotal,
         );
         void render(state.currentDeckSlug);
       });
@@ -441,7 +269,6 @@ export function createLobbyController({
             type="button"
             class="action-button button-standard lobby-join-button"
             data-room-id="${escapeHtml(room.room_id)}"
-            data-room-deck-slug="${escapeHtml(room.deck_slug || '')}"
             data-seat-id="${idx}"
           ${occupied ? 'disabled aria-disabled="true"' : ''}
         >
@@ -453,7 +280,7 @@ export function createLobbyController({
     const roomDeckSlug = String(room.deck_slug || '').trim();
     const roomDeck = state.cubeDeckBySlug.get(normalizeName(roomDeckSlug));
     const cubeLabel = escapeHtml(String(roomDeck?.name || roomDeckSlug || 'Unknown').trim());
-    const totals = resolveRoomTotals(room);
+    const totals = resolveRoomTotals(room, state.presetByConfig);
     const packLabel = formatProgressLabel('Pack', room.pack_no, totals.packTotal);
     const pickLabel = formatProgressLabel('Pick', room.pick_no, totals.pickTotal);
     const canDelete = room?.owned_by_requester === true;

@@ -17,6 +17,28 @@ import {
   buildBattleboxHash,
   buildDeckHash,
 } from './app/state.js';
+import {
+  TAB_BATTLEBOX,
+  TAB_LIFE,
+  TAB_DRAFT,
+  TAB_MATRIX,
+  normalizeTab,
+  tabFromSearch,
+  parseDraftRoomSelectionFromSearch,
+  replaceHashPreserveSearch,
+  setTabInLocationSearch,
+  setDraftRoomSelectionInLocationSearch,
+} from './app/urlState.js';
+import {
+  fetchDraftRooms,
+  getStableDeviceID,
+} from './app/draftApi.js';
+import {
+  buildCubeDeckBySlug,
+  buildOpenRoomContext,
+  buildPresetByConfig,
+  parseDraftPresets,
+} from './app/draftRoomContext.js';
 import { computeDeckView } from './app/deckView.js';
 import {
   createMarkdownRenderer,
@@ -33,10 +55,6 @@ import { createMatrixController } from './app/matrix.js';
 
 const app = document.getElementById('app');
 let data = { index: null, battleboxes: {}, matrices: {}, buildId: '' };
-const TAB_BATTLEBOX = 'battlebox';
-const TAB_LIFE = 'life';
-const TAB_DRAFT = 'draft';
-const TAB_MATRIX = 'matrix';
 const ui = {
   shell: null,
   header: null,
@@ -78,9 +96,53 @@ const DEFAULT_DECK_UI = Object.freeze({
   deck_selection_badge: 'colors',
 });
 let lobbyController = null;
+
+async function hydrateDraftRoomFromSearch() {
+  if (draftController.hasActiveRoom()) return true;
+  const selection = parseDraftRoomSelectionFromSearch();
+  if (!selection) return false;
+
+  try {
+    const [cube, deviceID] = await Promise.all([
+      loadBattlebox('cube'),
+      getStableDeviceID(),
+    ]);
+    const rooms = await fetchDraftRooms(deviceID);
+    const room = (Array.isArray(rooms) ? rooms : []).find(
+      (entry) => String(entry?.room_id || '').trim() === selection.roomId,
+    );
+    if (room) {
+      const cubeDeckBySlug = buildCubeDeckBySlug(cube);
+      const presetEntries = parseDraftPresets(cube?.presets);
+      const presetByConfig = buildPresetByConfig(presetEntries);
+      const context = buildOpenRoomContext(room, selection.seat, cubeDeckBySlug, presetByConfig);
+      if (context) {
+        draftController.openRoom(
+          context.roomId,
+          context.seat,
+          context.roomDeckSlug,
+          context.roomDeckPrintings,
+          context.roomDeckName,
+          context.roomDeckDoubleFaced,
+          context.roomDeckCardMeta,
+          context.roomPackTotal,
+          context.roomPickTotal,
+        );
+        return true;
+      }
+    }
+  } catch (_) {
+    // Fallback to minimal room hydration below.
+  }
+
+  draftController.openRoom(selection.roomId, selection.seat);
+  return true;
+}
+
 const draftController = createDraftController({
   ui,
   onLobbyRequested: () => {
+    setDraftRoomSelectionInLocationSearch('', 0);
     setActiveTab(TAB_DRAFT);
   },
   onCubeRequested: (deckSlug) => {
@@ -90,6 +152,9 @@ const draftController = createDraftController({
     if (location.hash !== nextHash) {
       location.hash = nextHash;
     }
+  },
+  onRoomSelectionChanged: (roomId, seat) => {
+    setDraftRoomSelectionInLocationSearch(roomId, seat);
   },
 });
 lobbyController = createLobbyController({
@@ -304,43 +369,6 @@ function bindBreadcrumbQrButton(container) {
   });
 }
 
-function normalizeTab(tab) {
-  return [TAB_BATTLEBOX, TAB_LIFE, TAB_DRAFT, TAB_MATRIX].includes(tab) ? tab : TAB_BATTLEBOX;
-}
-
-function tabFromSearch() {
-  const params = new URLSearchParams(location.search);
-  const raw = params.get('tab');
-  if (!raw) return TAB_BATTLEBOX;
-  return normalizeTab(raw);
-}
-
-function replaceSearchPreserveHash(nextSearch) {
-  const hash = location.hash || '';
-  const nextUrl = `${location.pathname}${nextSearch}${hash}`;
-  history.replaceState(null, '', nextUrl);
-}
-
-function persistActiveTab(tab) {
-  const nextTab = normalizeTab(tab);
-  const params = new URLSearchParams(location.search);
-  if (nextTab === TAB_BATTLEBOX) {
-    params.delete('tab');
-  } else {
-    params.set('tab', nextTab);
-  }
-  const encoded = params.toString();
-  const nextSearch = encoded ? `?${encoded}` : '';
-  if (nextSearch !== location.search) {
-    replaceSearchPreserveHash(nextSearch);
-  }
-}
-
-function replaceHashPreserveSearch(nextHash) {
-  const nextUrl = `${location.pathname}${location.search}${nextHash}`;
-  history.replaceState(null, '', nextUrl);
-}
-
 function applyActiveTab(tab) {
   if (!ui.battleboxPane || !ui.lifePane || !ui.draftPane || !ui.matrixPane || !ui.footer) return;
   const nextTab = normalizeTab(tab);
@@ -361,7 +389,10 @@ function applyActiveTab(tab) {
 function refreshAuxTabContent(tab) {
   const nextTab = normalizeTab(tab);
   if (nextTab === TAB_DRAFT) {
-    void lobbyController.render();
+    void (async () => {
+      await hydrateDraftRoomFromSearch();
+      await lobbyController.render();
+    })();
   } else if (nextTab === TAB_MATRIX) {
     matrixController.maybeAutoScrollHighlightedCell();
   }
@@ -377,7 +408,7 @@ function setActiveTab(tab) {
     }
   }
   applyActiveTab(nextTab);
-  persistActiveTab(nextTab);
+  setTabInLocationSearch(nextTab);
   refreshAuxTabContent(nextTab);
 }
 
