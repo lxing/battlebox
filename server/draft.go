@@ -327,6 +327,85 @@ func (d *Draft) Pick(seat int, seq uint64, packID, cardName, zone string) (PickR
 	return d.PickBatch(seat, seq, packID, []PickSelection{{CardName: cardName, Zone: zone}})
 }
 
+func picksForZone(seat *SeatState, zone string) (*[]string, error) {
+	if seat == nil {
+		return nil, errors.New("seat state required")
+	}
+	if zone == PickZoneMainboard {
+		return &seat.Picks.Mainboard, nil
+	}
+	if zone == PickZoneSideboard {
+		return &seat.Picks.Sideboard, nil
+	}
+	return nil, errors.New("invalid pick zone")
+}
+
+// MovePick moves a picked card between mainboard and sideboard for a seat.
+// It is a seat-local mutation and does not affect packs or round progression.
+func (d *Draft) MovePick(seat int, seq uint64, cardName, fromZone, toZone string) (PickResult, error) {
+	if seat < 0 || seat >= d.Config.SeatCount {
+		return PickResult{}, errors.New("invalid seat")
+	}
+	if cardName == "" {
+		return PickResult{}, errors.New("card name required")
+	}
+	if fromZone == toZone {
+		return PickResult{}, errors.New("source and destination zones must differ")
+	}
+
+	lastSeq := d.lastSeqBySeat[seat]
+	if seq == 0 {
+		return PickResult{}, errors.New("invalid seq")
+	}
+	if seq == lastSeq {
+		state, err := d.PlayerState(seat)
+		if err != nil {
+			return PickResult{}, err
+		}
+		return PickResult{State: state, Events: nil, Duplicate: true}, nil
+	}
+	if seq < lastSeq {
+		return PickResult{}, errors.New("stale seq")
+	}
+	if seq != lastSeq+1 {
+		return PickResult{}, errors.New("seq gap")
+	}
+
+	seatState := &d.Seats[seat]
+	from, err := picksForZone(seatState, fromZone)
+	if err != nil {
+		return PickResult{}, err
+	}
+	to, err := picksForZone(seatState, toZone)
+	if err != nil {
+		return PickResult{}, err
+	}
+
+	found := -1
+	for i := range *from {
+		if (*from)[i] == cardName {
+			found = i
+			break
+		}
+	}
+	if found < 0 {
+		return PickResult{}, errors.New("card not found in source zone")
+	}
+
+	moved := (*from)[found]
+	*from = append((*from)[:found], (*from)[found+1:]...)
+	*to = append(*to, moved)
+
+	d.lastSeqBySeat[seat] = seq
+	d.globalSeq++
+
+	state, err := d.PlayerState(seat)
+	if err != nil {
+		return PickResult{}, err
+	}
+	return PickResult{State: state, Events: nil, Duplicate: false}, nil
+}
+
 // PickBatch applies all picks for a seat in the current pass as a single atomic operation.
 func (d *Draft) PickBatch(seat int, seq uint64, packID string, picks []PickSelection) (PickResult, error) {
 	if seat < 0 || seat >= d.Config.SeatCount {

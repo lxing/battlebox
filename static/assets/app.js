@@ -82,6 +82,13 @@ const matrixRouteContext = {
 
 function getCardTarget(event) {
   if (!event.target || !event.target.closest) return null;
+  const draftSwapModeCard = event.target.closest('#draft-picks-cards .card');
+  if (draftSwapModeCard) {
+    const draftPane = event.target.closest('#tab-draft');
+    if (draftPane && draftPane.dataset.sideboardSwapMode === '1') {
+      return null;
+    }
+  }
   const hit = event.target.closest('.card-hit');
   if (hit) {
     const parentCard = hit.closest('.card');
@@ -162,6 +169,18 @@ const draftController = createDraftController({
   },
   onRoomSelectionChanged: (roomId, seat) => {
     setDraftRoomSelectionInLocationSearch(roomId, seat);
+  },
+  onPreviewDismissRequested: () => {
+    preview.hidePreview();
+  },
+  onSampleHandRequested: (payload) => {
+    const key = String(payload?.key || '').trim();
+    const cards = Array.isArray(payload?.cards) ? payload.cards : [];
+    const sample = payload?.sample || { initialDrawCount: 7, allowDraw: true };
+    if (!key) return;
+    preview.hidePreview();
+    sampleHand.setDeckContext(key, cards, sample);
+    sampleHand.open();
   },
 });
 lobbyController = createLobbyController({

@@ -316,6 +316,30 @@ func (r *draftRoom) handlePick(seat int, conn *websocket.Conn, msg draftWSMessag
 	return true
 }
 
+func (r *draftRoom) handleMovePick(seat int, conn *websocket.Conn, msg draftWSMessage) {
+	// TODO(remote-draft): avoid holding room mutex while writing to sockets.
+	// Move to per-connection outbound queues so slow clients cannot stall picks.
+	r.mu.Lock()
+	defer r.mu.Unlock()
+
+	if msg.Seq == 0 || msg.CardName == "" || msg.FromZone == "" || msg.ToZone == "" {
+		r.writeToConn(conn, draftWSMessage{Type: "error", Error: "missing move fields"})
+		return
+	}
+
+	result, err := r.draft.MovePick(seat, msg.Seq, msg.CardName, msg.FromZone, msg.ToZone)
+	if err != nil {
+		r.writeToConn(conn, draftWSMessage{Type: "error", Error: err.Error()})
+		return
+	}
+
+	r.writeToConn(conn, draftWSMessage{
+		Type:      "move_accepted",
+		State:     &result.State,
+		Duplicate: result.Duplicate,
+	})
+}
+
 func (r *draftRoom) broadcastSeatStates() {
 	for seat, conns := range r.clients {
 		state, err := r.draft.PlayerState(seat)

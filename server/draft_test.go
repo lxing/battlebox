@@ -173,6 +173,35 @@ func TestDraftPickInvalidZoneRejected(t *testing.T) {
 	require.Error(t, err, "expected invalid zone rejection")
 }
 
+func TestDraftMovePickBetweenZones(t *testing.T) {
+	d := makeDraft(t, 1, 2, 2)
+	st, err := d.PlayerState(0)
+	require.NoError(t, err, "PlayerState error")
+
+	card := st.Active.Cards[0]
+	_, err = d.Pick(0, 1, st.Active.PackID, card, PickZoneMainboard)
+	require.NoError(t, err, "initial pick should succeed")
+	require.Equal(t, []string{card}, d.Seats[0].Picks.Mainboard, "mainboard after pick mismatch")
+
+	moved, err := d.MovePick(0, 2, card, PickZoneMainboard, PickZoneSideboard)
+	require.NoError(t, err, "move pick should succeed")
+	assert.False(t, moved.Duplicate, "first move should not be duplicate")
+	assert.Empty(t, d.Seats[0].Picks.Mainboard, "mainboard should be empty after move")
+	assert.Equal(t, []string{card}, d.Seats[0].Picks.Sideboard, "sideboard after move mismatch")
+	assert.Equal(t, uint64(2), d.globalSeq, "global seq should increment for move")
+	assert.Equal(t, uint64(3), moved.State.NextSeq, "next seq after move mismatch")
+
+	duplicate, err := d.MovePick(0, 2, card, PickZoneMainboard, PickZoneSideboard)
+	require.NoError(t, err, "duplicate move should be idempotent")
+	assert.True(t, duplicate.Duplicate, "duplicate move should be flagged")
+	assert.Empty(t, d.Seats[0].Picks.Mainboard, "mainboard should remain unchanged after duplicate move")
+	assert.Equal(t, []string{card}, d.Seats[0].Picks.Sideboard, "sideboard should remain unchanged after duplicate move")
+
+	_, err = d.MovePick(0, 3, card, PickZoneMainboard, PickZoneSideboard)
+	require.Error(t, err, "moving a non-existent source card should fail")
+	assert.Equal(t, uint64(2), d.lastSeqBySeat[0], "failed move should not advance seq")
+}
+
 func TestDraftPassPatternBatchAndImplicitBurn(t *testing.T) {
 	d := makeDraftWithConfig(t, DraftConfig{
 		PackCount:   1,

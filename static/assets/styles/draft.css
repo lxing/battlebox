@@ -273,6 +273,30 @@
   padding: 0 0.65rem;
 }
 
+.draft-sideboard-mode-button {
+  min-height: var(--control-height-md);
+  padding: 0 0.6rem;
+  white-space: nowrap;
+}
+
+.draft-sideboard-mode-button.active {
+  background: #5e4141;
+  border-color: #d97f7f;
+  color: #ffe6e6;
+}
+
+.draft-picks-toolbar {
+  margin-top: 0.45rem;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.4rem;
+}
+
+.draft-picks-toolbar-button,
+.draft-sideboard-mode-button {
+  width: 100%;
+}
+
 .draft-empty {
   color: var(--color-text-muted-2);
   font-size: var(--font-size-sm);

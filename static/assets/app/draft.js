@@ -190,6 +190,8 @@ export function createDraftController({
   onLobbyRequested,
   onCubeRequested,
   onRoomSelectionChanged,
+  onPreviewDismissRequested,
+  onSampleHandRequested,
 }) {
   const draftUi = {
     socket: null,
@@ -212,6 +214,8 @@ export function createDraftController({
     selectedPackZones: new Map(),
     packCardBackFaces: new Map(),
     lastPicksHtml: '',
+    toggleSideboardMode: false,
+    pendingDeckMutation: false,
   };
 
   function clearReconnectTimer() {
@@ -241,10 +245,15 @@ export function createDraftController({
     draftUi.seat = 0;
     draftUi.state = null;
     draftUi.pendingPick = false;
+    draftUi.pendingDeckMutation = false;
     draftUi.selectedPackID = '';
     draftUi.selectedPackZones.clear();
     draftUi.packCardBackFaces.clear();
     draftUi.lastPicksHtml = '';
+    draftUi.toggleSideboardMode = false;
+    if (ui.draftPane) {
+      ui.draftPane.dataset.sideboardSwapMode = '0';
+    }
   }
 
   function updateConnectionIndicator() {
@@ -283,6 +292,7 @@ export function createDraftController({
     draftUi.socket = null;
     draftUi.connected = false;
     draftUi.pendingPick = false;
+    draftUi.pendingDeckMutation = false;
     draftUi.selectedPackID = '';
     draftUi.selectedPackZones.clear();
   }
@@ -327,6 +337,8 @@ export function createDraftController({
     draftUi.selectedPackZones.clear();
     draftUi.packCardBackFaces.clear();
     draftUi.lastPicksHtml = '';
+    draftUi.pendingDeckMutation = false;
+    draftUi.toggleSideboardMode = false;
     if (typeof onRoomSelectionChanged === 'function') {
       onRoomSelectionChanged(draftUi.roomId, draftUi.seat);
     }
@@ -340,6 +352,18 @@ export function createDraftController({
     if (draftUi.roomDeckName) return draftUi.roomDeckName;
     if (draftUi.roomDeckSlug) return draftUi.roomDeckSlug;
     return draftUi.roomId;
+  }
+
+  function syncSideboardModeUi() {
+    if (!ui.draftPane) return;
+    ui.draftPane.dataset.sideboardSwapMode = draftUi.toggleSideboardMode ? '1' : '0';
+    const toggleButton = ui.draftPane.querySelector('#draft-toggle-sideboard-mode');
+    const modeOn = draftUi.toggleSideboardMode;
+    if (!toggleButton) return;
+    toggleButton.classList.toggle('active', modeOn);
+    toggleButton.setAttribute('aria-pressed', modeOn ? 'true' : 'false');
+    toggleButton.textContent = 'Sideboard ↔️';
+    toggleButton.disabled = draftUi.pendingDeckMutation;
   }
 
   function pickZoneLabel(zone) {
@@ -559,6 +583,68 @@ export function createDraftController({
     }));
   }
 
+  function toggleSideboardMode() {
+    draftUi.toggleSideboardMode = !draftUi.toggleSideboardMode;
+    if (draftUi.toggleSideboardMode && typeof onPreviewDismissRequested === 'function') {
+      onPreviewDismissRequested();
+    }
+    syncSideboardModeUi();
+  }
+
+  function resolvePicksCardZone(cardEl) {
+    if (!cardEl) return '';
+    const grid = cardEl.closest('.decklist-grid');
+    const column = cardEl.closest('.decklist-col');
+    if (!grid || !column) return '';
+    const columns = [...grid.querySelectorAll(':scope > .decklist-col')];
+    const index = columns.indexOf(column);
+    if (columns.length > 1 && index === 1) return DRAFT_PICK_ZONE_SIDEBOARD;
+    return DRAFT_PICK_ZONE_MAINBOARD;
+  }
+
+  function submitMovePick(cardName, fromZone) {
+    const state = draftUi.state;
+    if (!state || draftUi.pendingDeckMutation) return;
+    if (!cardName) return;
+    if (fromZone !== DRAFT_PICK_ZONE_MAINBOARD && fromZone !== DRAFT_PICK_ZONE_SIDEBOARD) return;
+    const toZone = fromZone === DRAFT_PICK_ZONE_MAINBOARD
+      ? DRAFT_PICK_ZONE_SIDEBOARD
+      : DRAFT_PICK_ZONE_MAINBOARD;
+    if (!draftUi.socket || draftUi.socket.readyState !== WebSocket.OPEN) return;
+    const nextSeq = Number.parseInt(String(state.next_seq || 1), 10) || 1;
+    draftUi.pendingDeckMutation = true;
+    syncSideboardModeUi();
+    draftUi.socket.send(JSON.stringify({
+      type: 'move_pick',
+      seq: nextSeq,
+      card_name: cardName,
+      from_zone: fromZone,
+      to_zone: toZone,
+    }));
+  }
+
+  function openDraftSampleHand() {
+    if (typeof onSampleHandRequested !== 'function') return;
+    const state = draftUi.state;
+    const picks = state?.picks && typeof state.picks === 'object'
+      ? state.picks
+      : { mainboard: [] };
+    const mainCards = buildDraftPickCards(
+      picks.mainboard,
+      draftUi.roomDeckCardMeta,
+      draftUi.roomDeckPrintings,
+      draftUi.roomDeckDoubleFaced,
+    );
+    onSampleHandRequested({
+      key: `${draftUi.roomId}|seat:${draftUi.seat}|draft-mainboard`,
+      cards: mainCards,
+      sample: {
+        initialDrawCount: 7,
+        allowDraw: true,
+      },
+    });
+  }
+
   function handlePackCardToggle(index) {
     const ctx = getActivePackInteractionState();
     if (!ctx || !ctx.canPick) return;
@@ -629,6 +715,48 @@ export function createDraftController({
         submitSelectedPicks();
       });
     }
+
+    const sideboardModeButton = ui.draftPane.querySelector('#draft-toggle-sideboard-mode');
+    if (sideboardModeButton && sideboardModeButton.dataset.bound !== '1') {
+      sideboardModeButton.dataset.bound = '1';
+      sideboardModeButton.addEventListener('click', () => {
+        toggleSideboardMode();
+      });
+    }
+
+    const sampleHandButton = ui.draftPane.querySelector('#draft-sample-hand');
+    if (sampleHandButton && sampleHandButton.dataset.bound !== '1') {
+      sampleHandButton.dataset.bound = '1';
+      sampleHandButton.addEventListener('click', () => {
+        openDraftSampleHand();
+      });
+    }
+
+    const basicsButton = ui.draftPane.querySelector('#draft-basics');
+    if (basicsButton && basicsButton.dataset.bound !== '1') {
+      basicsButton.dataset.bound = '1';
+      basicsButton.addEventListener('click', () => {
+        // Intentionally noop for now.
+      });
+    }
+
+    const picksRoot = ui.draftPane.querySelector('#draft-picks-cards');
+    if (picksRoot && picksRoot.dataset.bound !== '1') {
+      picksRoot.dataset.bound = '1';
+      picksRoot.addEventListener('click', (event) => {
+        if (!draftUi.toggleSideboardMode || draftUi.pendingDeckMutation) return;
+        const target = event.target instanceof Element ? event.target : null;
+        if (!target) return;
+        const cardEl = target.closest('.card.card-ref');
+        if (!cardEl || !picksRoot.contains(cardEl)) return;
+        const cardName = String(cardEl.getAttribute('data-name') || '').trim();
+        const fromZone = resolvePicksCardZone(cardEl);
+        if (!cardName || !fromZone) return;
+        event.preventDefault();
+        event.stopPropagation();
+        submitMovePick(cardName, fromZone);
+      });
+    }
   }
 
   function updateUIFromState() {
@@ -650,6 +778,7 @@ export function createDraftController({
     };
 
     updateConnectionIndicator();
+    syncSideboardModeUi();
 
     const state = draftUi.state;
     if (!state) {
@@ -673,6 +802,7 @@ export function createDraftController({
         picksEl.innerHTML = '';
         draftUi.lastPicksHtml = '';
       }
+      syncSideboardModeUi();
       return;
     }
 
@@ -733,6 +863,7 @@ export function createDraftController({
         pickButton.textContent = 'Pick';
         pickButton.disabled = true;
       }
+      syncSideboardModeUi();
       return;
     }
 
@@ -767,6 +898,7 @@ export function createDraftController({
       updatePackScrollIndicators();
     });
     syncPackSelectionUiFromDom();
+    syncSideboardModeUi();
   }
 
   async function connectSocket(roomId, seat, isReconnect = false) {
@@ -799,6 +931,7 @@ export function createDraftController({
       draftUi.reconnectAttempt = 0;
       draftUi.selectedPackID = '';
       draftUi.selectedPackZones.clear();
+      draftUi.pendingDeckMutation = false;
     }
     draftUi.pendingPick = false;
     draftUi.connected = false;
@@ -845,15 +978,18 @@ export function createDraftController({
       }
       if (!msg || typeof msg !== 'object') return;
 
-      if (msg.type === 'state' || msg.type === 'pick_accepted') {
+      if (msg.type === 'state' || msg.type === 'pick_accepted' || msg.type === 'move_accepted') {
         if (msg.state) {
           draftUi.state = msg.state;
         }
         draftUi.pendingPick = false;
+        draftUi.pendingDeckMutation = false;
       } else if (msg.type === 'draft_completed') {
         draftUi.pendingPick = false;
+        draftUi.pendingDeckMutation = false;
       } else if (msg.type === 'seat_occupied' || msg.type === 'room_missing') {
         draftUi.pendingPick = false;
+        draftUi.pendingDeckMutation = false;
         draftUi.shouldReconnect = false;
         clearReconnectTimer();
         teardownSocket();
@@ -864,6 +1000,7 @@ export function createDraftController({
         return;
       } else if (msg.type === 'error') {
         draftUi.pendingPick = false;
+        draftUi.pendingDeckMutation = false;
       }
       updateUIFromState();
     });
@@ -925,6 +1062,17 @@ export function createDraftController({
         <div class="draft-panel">
           <h3 class="panel-title draft-panel-title">Picks</h3>
           <div id="draft-picks-cards"></div>
+          <div class="draft-picks-toolbar">
+            <button type="button" class="action-button button-standard draft-sideboard-mode-button" id="draft-toggle-sideboard-mode" aria-pressed="false">
+              Sideboard ↔️
+            </button>
+            <button type="button" class="action-button button-standard draft-picks-toolbar-button" id="draft-sample-hand">
+              Sample Hand
+            </button>
+            <button type="button" class="action-button button-standard draft-picks-toolbar-button" id="draft-basics">
+              Basics
+            </button>
+          </div>
         </div>
       </div>
     `;
@@ -944,6 +1092,7 @@ export function createDraftController({
         }
       });
     }
+    syncSideboardModeUi();
     bindPackInteractions();
 
     void connectSocket(draftUi.roomId, draftUi.seat);

@@ -7,8 +7,8 @@ import (
 	"errors"
 	"fmt"
 	"net/http"
-	"strings"
 	"strconv"
+	"strings"
 	"time"
 
 	"github.com/gorilla/websocket"
@@ -39,6 +39,8 @@ type draftWSMessage struct {
 	PackID   string          `json:"pack_id,omitempty"`
 	CardName string          `json:"card_name,omitempty"`
 	Zone     string          `json:"zone,omitempty"`
+	FromZone string          `json:"from_zone,omitempty"`
+	ToZone   string          `json:"to_zone,omitempty"`
 	Picks    []PickSelection `json:"picks,omitempty"`
 	Error    string          `json:"error,omitempty"`
 	Redirect string          `json:"redirect,omitempty"`
@@ -330,6 +332,8 @@ func (h *draftHub) handleWS(w http.ResponseWriter, r *http.Request) {
 			if room.handlePick(seat, conn, msg) {
 				h.notifyLobbySubscribers()
 			}
+		case "move_pick":
+			room.handleMovePick(seat, conn, msg)
 		default:
 			// Ignore unknown client messages to keep write paths serialized through room handlers.
 			// This avoids concurrent writes to the same websocket connection.
