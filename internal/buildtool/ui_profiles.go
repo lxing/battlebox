@@ -56,6 +56,7 @@ func normalizeDeckUIProfile(raw DeckUIProfile) DeckUIProfile {
 	out.DecklistView = normalizeDecklistView(raw.DecklistView)
 	out.DeckInfoBadge = normalizeBadgeMode(raw.DeckInfoBadge)
 	out.DeckSelectionBadge = normalizeBadgeMode(raw.DeckSelectionBadge)
+	out.ShowBasicsPane = raw.ShowBasicsPane
 
 	mode := normalizeSampleMode(raw.Sample.Mode)
 	size := raw.Sample.Size

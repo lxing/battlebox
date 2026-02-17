@@ -71,6 +71,8 @@ type DeckUIProfile struct {
 	DeckInfoBadge string `json:"deck_info_badge"`
 	// Badge style for battlebox deck selection rows: colors or card_count.
 	DeckSelectionBadge string `json:"deck_selection_badge"`
+	// Whether to show a decorative basic-lands pane between decklist and primer.
+	ShowBasicsPane bool `json:"show_basics_pane,omitempty"`
 }
 
 // DraftPreset configures one room-creation preset for remote draft.

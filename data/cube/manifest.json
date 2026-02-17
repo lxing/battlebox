@@ -15,7 +15,8 @@
         "allow_draw": false
       },
       "deck_info_badge": "card_count",
-      "deck_selection_badge": "card_count"
+      "deck_selection_badge": "card_count",
+      "show_basics_pane": true
     }
   },
   "presets": {

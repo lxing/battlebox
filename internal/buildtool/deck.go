@@ -89,6 +89,7 @@ func processDeck(deckPath, slug, battlebox string, printings map[string]string, 
 			deck.Printings[key] = card.Printing
 		}
 	}
+	addBasicLandPrintings(deck.Printings, printings)
 
 	// Read primer
 	primerPath := filepath.Join(deckPath, "primer.md")
@@ -131,6 +132,18 @@ func applyCubeLandSubtypes(cards []Card, battlebox string, subtypeByName map[str
 		}
 		if subtype, ok := subtypeByName[normalizeName(cards[i].Name)]; ok {
 			cards[i].LandSubtype = subtype
+		}
+	}
+}
+
+func addBasicLandPrintings(deckPrintings map[string]string, allPrintings map[string]string) {
+	for _, key := range []string{"plains", "island", "swamp", "mountain", "forest"} {
+		if _, exists := deckPrintings[key]; exists {
+			continue
+		}
+		printing := strings.TrimSpace(allPrintings[key])
+		if printing != "" {
+			deckPrintings[key] = printing
 		}
 	}
 }

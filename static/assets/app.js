@@ -7,6 +7,7 @@ import {
   renderDeckSelectionTags,
   capitalize,
   normalizeName,
+  scryfallImageUrlByPrinting,
 } from './app/utils.js';
 import {
   normalizeSortMode,
@@ -108,7 +109,15 @@ const DEFAULT_DECK_UI = Object.freeze({
   }),
   deck_info_badge: 'colors',
   deck_selection_badge: 'colors',
+  show_basics_pane: false,
 });
+const BASIC_LANDS = Object.freeze([
+  { key: 'plains', name: 'Plains' },
+  { key: 'island', name: 'Island' },
+  { key: 'swamp', name: 'Swamp' },
+  { key: 'mountain', name: 'Mountain' },
+  { key: 'forest', name: 'Forest' },
+]);
 let lobbyController = null;
 
 async function hydrateDraftRoomFromSearch() {
@@ -241,6 +250,7 @@ function resolveDeckUI(deck) {
     },
     deck_info_badge: normalizeBadgeMode(rawUI.deck_info_badge),
     deck_selection_badge: normalizeBadgeMode(rawUI.deck_selection_badge),
+    show_basics_pane: rawUI.show_basics_pane === true,
   };
 }
 
@@ -256,6 +266,29 @@ function renderDeckBadge(deck, mode) {
     return `${getDeckCardCount(deck)} cards`;
   }
   return formatColors(deck?.colors || '');
+}
+
+function renderBasicsPane(deckPrintings) {
+  const basicsHtml = BASIC_LANDS.map((basic) => {
+    const printing = String(deckPrintings?.[basic.key] || '').trim();
+    const hasPrinting = printing !== '';
+    if (!hasPrinting) {
+      return `<span class="deck-basics-card deck-basics-card-missing">${basic.name}</span>`;
+    }
+    const imageUrl = scryfallImageUrlByPrinting(printing, 'front');
+    return `
+      <span class="deck-basics-card deck-basics-card-image card card-ref" data-name="${basic.name}" data-printing="${printing}">
+        <img src="${imageUrl}" alt="${basic.name}" loading="lazy" decoding="async">
+      </span>
+    `;
+  }).join('');
+
+  return `
+    <div class="deck-basics-pane">
+      <div class="panel-title deck-basics-header">Basic Lands</div>
+      <div class="deck-basics-row">${basicsHtml}</div>
+    </div>
+  `;
 }
 
 function guideToRawMarkdown(guide) {
@@ -1007,6 +1040,8 @@ async function renderDeck(bbSlug, deckSlug, selectedGuide, sortMode, sortDirecti
   const sampleButtonLabel = deckUI.sample.mode === 'pack' ? 'Sample Pack' : 'Sample Hand';
   const showSampleButton = deckUI.sample.mode !== 'none';
   const showDeckToolbar = showSampleButton;
+  const showBasicsPane = deckUI.show_basics_pane === true;
+  const basicsPaneHtml = showBasicsPane ? renderBasicsPane(deckPrintings) : '';
   const bodyHtml = `
     <div class="deck-info-pane">
       <div class="deck-colors">${renderDeckBadge(deck, deckUI.deck_info_badge)}</div>
@@ -1028,6 +1063,8 @@ async function renderDeck(bbSlug, deckSlug, selectedGuide, sortMode, sortDirecti
         ` : ''}
       </div>
     </details>
+
+    ${basicsPaneHtml}
 
     <details id="primer-details" class="collapsible"${primerOpenAttr}>
       <summary class="panel-title">Primer</summary>
