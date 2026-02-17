@@ -269,6 +269,7 @@ export function createDraftController({
     selectedPackZones: new Map(),
     packCardBackFaces: new Map(),
     lastPicksHtml: '',
+    botAutoPickEnabled: false,
     toggleSideboardMode: false,
     pendingDeckMutation: false,
     pendingBasicsSet: false,
@@ -308,6 +309,7 @@ export function createDraftController({
     draftUi.selectedPackZones.clear();
     draftUi.packCardBackFaces.clear();
     draftUi.lastPicksHtml = '';
+    draftUi.botAutoPickEnabled = false;
     draftUi.toggleSideboardMode = false;
     draftUi.pendingBasicsSet = false;
     draftUi.basicsModalOpen = false;
@@ -406,6 +408,7 @@ export function createDraftController({
     draftUi.pendingBasicsSet = false;
     draftUi.basicsModalOpen = false;
     draftUi.basicsDraftCounts = createDraftBasicCounts({});
+    draftUi.botAutoPickEnabled = false;
     draftUi.toggleSideboardMode = false;
     if (typeof onRoomSelectionChanged === 'function') {
       onRoomSelectionChanged(draftUi.roomId, draftUi.seat);
@@ -428,6 +431,32 @@ export function createDraftController({
     if (roomLabel) roomLabel.textContent = String(draftUi.roomId || '').trim();
     const cubeLabel = ui.draftPane.querySelector('.draft-status-cube');
     if (cubeLabel) cubeLabel.textContent = roomDisplayName();
+  }
+
+  function shouldTriggerBotPickForCurrentState() {
+    const state = draftUi.state;
+    if (!state || state.state === 'done') return false;
+    const active = state.active_pack;
+    if (!active || !Array.isArray(active.cards) || active.cards.length === 0) return false;
+    return !state.can_pick;
+  }
+
+  function syncBotModeUi() {
+    if (!ui.draftPane) return;
+    const button = ui.draftPane.querySelector('#draft-bot-pick');
+    if (!button) return;
+    const enabled = draftUi.botAutoPickEnabled;
+    button.classList.toggle('active', enabled);
+    button.setAttribute('aria-pressed', enabled ? 'true' : 'false');
+    button.textContent = enabled ? '🤖 Bot: On' : '🤖 Bot: Off';
+  }
+
+  function maybeSendBotPick() {
+    if (!draftUi.botAutoPickEnabled) return;
+    if (!draftUi.connected) return;
+    if (!shouldTriggerBotPickForCurrentState()) return;
+    if (!draftUi.socket || draftUi.socket.readyState !== WebSocket.OPEN) return;
+    draftUi.socket.send(JSON.stringify({ type: 'bot_pick' }));
   }
 
   function syncSideboardModeUi() {
@@ -659,11 +688,12 @@ export function createDraftController({
     }));
   }
 
-  function submitBotPick() {
-    if (!draftUi.state) return;
-    if (draftUi.state.state === 'done') return;
-    if (!draftUi.socket || draftUi.socket.readyState !== WebSocket.OPEN) return;
-    draftUi.socket.send(JSON.stringify({ type: 'bot_pick' }));
+  function toggleBotPickMode() {
+    draftUi.botAutoPickEnabled = !draftUi.botAutoPickEnabled;
+    syncBotModeUi();
+    if (draftUi.botAutoPickEnabled) {
+      maybeSendBotPick();
+    }
   }
 
   function toggleSideboardMode() {
@@ -884,7 +914,7 @@ export function createDraftController({
     if (botButton && botButton.dataset.bound !== '1') {
       botButton.dataset.bound = '1';
       botButton.addEventListener('click', () => {
-        submitBotPick();
+        toggleBotPickMode();
       });
     }
 
@@ -996,6 +1026,7 @@ export function createDraftController({
     };
 
     updateConnectionIndicator();
+    syncBotModeUi();
     syncSideboardModeUi();
 
     const state = draftUi.state;
@@ -1231,6 +1262,9 @@ export function createDraftController({
           draftUi.pendingBasicsSet = false;
           closeBasicsDialog(true);
         }
+        if (msg.type === 'pick_accepted' && !msg.duplicate) {
+          maybeSendBotPick();
+        }
       } else if (msg.type === 'draft_completed') {
         draftUi.pendingPick = false;
         draftUi.pendingDeckMutation = false;
@@ -1262,6 +1296,7 @@ export function createDraftController({
     const nextMountedRoom = `${draftUi.roomId}|${draftUi.seat}`;
     if (mountedRoom === nextMountedRoom && ui.draftPane.querySelector('.draft-room')) {
       syncDraftHeaderLabels();
+      syncBotModeUi();
       syncSideboardModeUi();
       bindPackInteractions();
       syncBasicsDialogUi();
@@ -1375,6 +1410,7 @@ export function createDraftController({
         }
       });
     }
+    syncBotModeUi();
     syncSideboardModeUi();
     bindPackInteractions();
     syncBasicsDialogUi();
