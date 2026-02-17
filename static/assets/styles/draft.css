@@ -196,16 +196,17 @@
   border-radius: 8px;
   background: #111;
   overflow: hidden;
+  --draft-pack-selection-ring-color: transparent;
 }
 
 .draft-pack-card.is-mainboard {
-  border-color: #4d8ded;
-  box-shadow: inset 0 0 0 2px rgba(77, 141, 237, 0.65);
+  border-color: var(--draft-pack-mainboard-border);
+  --draft-pack-selection-ring-color: var(--draft-pack-mainboard-ring);
 }
 
 .draft-pack-card.is-sideboard {
-  border-color: #e05f5f;
-  box-shadow: inset 0 0 0 2px rgba(224, 95, 95, 0.68);
+  border-color: var(--draft-pack-sideboard-border);
+  --draft-pack-selection-ring-color: var(--draft-pack-sideboard-ring);
 }
 
 .draft-pack-card[data-select-locked="1"] {
@@ -218,6 +219,15 @@
   width: 100%;
   aspect-ratio: 63 / 88;
   overflow: hidden;
+}
+
+.draft-pack-card-frame::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  box-shadow: inset 0 0 0 var(--draft-pack-selection-ring-width) var(--draft-pack-selection-ring-color);
+  pointer-events: none;
+  z-index: 1;
 }
 
 .draft-pack-card img {

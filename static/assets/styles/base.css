@@ -55,6 +55,12 @@
   --color-matrix-head-bg: #2a2a46;
   --color-matrix-row-head-bg: #23233b;
   --color-matrix-col-highlight-bg: #32445d;
+
+  --draft-pack-selection-ring-width: 3px;
+  --draft-pack-mainboard-border: #4d8ded;
+  --draft-pack-mainboard-ring: rgba(77, 141, 237, 0.92);
+  --draft-pack-sideboard-border: #e05f5f;
+  --draft-pack-sideboard-ring: rgba(224, 95, 95, 0.92);
 }
 
 body {
