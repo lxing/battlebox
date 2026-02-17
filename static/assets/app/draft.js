@@ -91,6 +91,23 @@ function formatProgressLabel(label, zeroBasedValue, total) {
   return `${label} ${clamped}/${safeTotal}`;
 }
 
+function formatPickProgressLabel(zeroBasedPick, total, expectedPicks) {
+  const safeTotal = normalizePositiveInt(total);
+  if (safeTotal <= 0) return 'Pick -/-';
+
+  const rawPick = Number.parseInt(String(zeroBasedPick), 10);
+  const pickStart = Number.isFinite(rawPick) ? rawPick + 1 : 1;
+  const clampedStart = Math.max(1, Math.min(pickStart, safeTotal));
+  const rawExpected = Number.parseInt(String(expectedPicks), 10);
+  const span = Number.isFinite(rawExpected) && rawExpected > 0 ? rawExpected : 1;
+  const clampedEnd = Math.max(clampedStart, Math.min(clampedStart + span - 1, safeTotal));
+
+  if (clampedEnd > clampedStart) {
+    return `Pick ${clampedStart}-${clampedEnd}/${safeTotal}`;
+  }
+  return `Pick ${clampedStart}/${safeTotal}`;
+}
+
 function formatSeatLabel(zeroBasedSeat, seatTotal) {
   const rawSeat = Number.parseInt(String(zeroBasedSeat), 10);
   const currentSeat = Number.isFinite(rawSeat) && rawSeat >= 0 ? rawSeat + 1 : 1;
@@ -597,7 +614,22 @@ export function createDraftController({
       packInfoEl.textContent = formatProgressLabel('Pack', state.pack_no, draftUi.roomPackTotal);
     }
     if (pickInfoEl) {
-      pickInfoEl.textContent = formatProgressLabel('Pick', state.pick_no, draftUi.roomPickTotal);
+      const basePickLabel = formatPickProgressLabel(
+        state.pick_no,
+        draftUi.roomPickTotal,
+        state.expected_picks,
+      );
+      const hasActivePack = Boolean(
+        state.active_pack
+        && Array.isArray(state.active_pack.cards)
+        && state.active_pack.cards.length > 0,
+      );
+      const waitingOnTable = (
+        state.state !== 'done'
+        && hasActivePack
+        && (draftUi.pendingPick || !state.can_pick)
+      );
+      pickInfoEl.textContent = waitingOnTable ? `${basePickLabel} · Waiting...` : basePickLabel;
     }
 
     if (picksEl) {
