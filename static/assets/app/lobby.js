@@ -232,27 +232,30 @@ function formatProgressLabel(label, zeroBasedValue, total) {
 }
 
 function formatPresetOptionLabel(preset) {
+  const seatCount = normalizePositiveInt(preset?.seat_count);
   const packCount = normalizePositiveInt(preset?.pack_count);
   const packSize = normalizePositiveInt(preset?.pack_size);
   const passPattern = Array.isArray(preset?.pass_pattern)
     ? preset.pass_pattern.map((value) => Number.parseInt(String(value), 10))
     : [];
   const validPattern = passPattern.length > 0 && passPattern.every((value) => Number.isFinite(value) && value > 0);
-  if (packCount <= 0 || packSize <= 0 || !validPattern) return '';
+  if (seatCount <= 0 || packCount <= 0 || packSize <= 0 || !validPattern) return '';
 
   const totalPicks = passPattern.reduce((sum, value) => sum + value, 0);
   const burnCount = Math.max(0, packSize - totalPicks);
   const allSinglePicks = passPattern.length === packSize && passPattern.every((value) => value === 1);
+  const seatLabel = `${seatCount}p`;
+  const divider = ' · ';
 
   if (allSinglePicks && burnCount === 0) {
-    return `${packCount}x${packSize}`;
+    return `${seatLabel}${divider}${packCount}${divider}${packSize}`;
   }
 
   const patternParts = passPattern.map((value) => String(value));
   if (burnCount > 0) {
     patternParts.push(`🚮${burnCount}`);
   }
-  return `${packCount}x(${patternParts.join(',')})`;
+  return `${seatLabel}${divider}${packCount}${divider}${patternParts.join(',')}`;
 }
 
 async function deleteDraftRoom(roomID, deviceID) {
@@ -562,7 +565,7 @@ export function createLobbyController({
           <select id="lobby-preset-select" class="lobby-deck-select" ${noPresets ? 'disabled' : ''}>
             ${presetOptions}
           </select>
-          <button type="button" class="action-button button-standard" id="lobby-create-room" ${noDecks || noPresets ? 'disabled' : ''}>Create Room</button>
+          <button type="button" class="action-button button-standard" id="lobby-create-room" ${noDecks || noPresets ? 'disabled' : ''}>Create</button>
         </div>
         <div id="lobby-rooms-list" class="lobby-rooms-list"></div>
       </div>
