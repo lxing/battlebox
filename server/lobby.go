@@ -25,6 +25,7 @@ type draftRoom struct {
 	id            string
 	deckSlug      string
 	ownerDeviceID string
+	closed        bool
 
 	mu      sync.Mutex
 	draft   *Draft
@@ -84,6 +85,9 @@ func (h *draftHub) deleteRoom(ctx context.Context, roomID, requesterDeviceID str
 		h.mu.Unlock()
 		return errDraftRoomForbidden
 	}
+	room.mu.Lock()
+	room.closed = true
+	room.mu.Unlock()
 	if h.roomStore != nil {
 		if err := h.roomStore.DeleteRoom(ctx, roomID); err != nil {
 			h.mu.Unlock()
@@ -217,6 +221,9 @@ func (r *draftRoom) addConn(seat int, conn *websocket.Conn) bool {
 	r.mu.Lock()
 	defer r.mu.Unlock()
 
+	if r.closed {
+		return false
+	}
 	if seatConns, ok := r.clients[seat]; ok && len(seatConns) > 0 {
 		return false
 	}
@@ -225,6 +232,18 @@ func (r *draftRoom) addConn(seat int, conn *websocket.Conn) bool {
 	}
 	r.clients[seat][conn] = struct{}{}
 	return true
+}
+
+func (h *draftHub) addConnToRoomIfPresent(roomID string, seat int, conn *websocket.Conn) (*draftRoom, bool) {
+	h.mu.RLock()
+	room := h.rooms[roomID]
+	if room == nil {
+		h.mu.RUnlock()
+		return nil, false
+	}
+	accepted := room.addConn(seat, conn)
+	h.mu.RUnlock()
+	return room, accepted
 }
 
 func (r *draftRoom) removeConn(seat int, conn *websocket.Conn) {

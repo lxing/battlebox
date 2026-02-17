@@ -260,6 +260,28 @@ func (h *draftHub) snapshotRecords() []draftRoomRecord {
 	return records
 }
 
+func (h *draftHub) snapshotAndSaveRooms(ctx context.Context) (int, error) {
+	h.mu.Lock()
+	defer h.mu.Unlock()
+
+	if h.roomStore == nil {
+		return 0, errors.New("draft room store not initialized")
+	}
+
+	rooms := make([]*draftRoom, 0, len(h.rooms))
+	for _, room := range h.rooms {
+		rooms = append(rooms, room)
+	}
+	records := make([]draftRoomRecord, 0, len(rooms))
+	for _, room := range rooms {
+		records = append(records, room.snapshotRecord())
+	}
+	sort.Slice(records, func(i, j int) bool {
+		return records[i].RoomID < records[j].RoomID
+	})
+	return h.roomStore.SaveRooms(ctx, records)
+}
+
 func (h *draftHub) restoreRooms(records []draftRoomRecord) error {
 	h.mu.Lock()
 	defer h.mu.Unlock()

@@ -70,8 +70,7 @@ func main() {
 		ticker := time.NewTicker(10 * time.Second)
 		defer ticker.Stop()
 		for range ticker.C {
-			snapshots := draftHub.snapshotRecords()
-			snapshottedCount, err := draftStore.SaveRooms(context.Background(), snapshots)
+			snapshottedCount, err := draftHub.snapshotAndSaveRooms(context.Background())
 			if err != nil {
 				log.Printf("Failed to snapshot draft rooms: %v", err)
 				continue

@@ -373,11 +373,39 @@ func clampBasicLandCount(value int) int {
 	return value
 }
 
+func (d *Draft) validateSeatIndex(seat int) error {
+	if seat < 0 || seat >= d.Config.SeatCount {
+		return errors.New("invalid seat")
+	}
+	return nil
+}
+
+func (d *Draft) validateMutationSeq(seat int, seq uint64) (PickResult, bool, error) {
+	lastSeq := d.lastSeqBySeat[seat]
+	if seq == 0 {
+		return PickResult{}, false, errors.New("invalid seq")
+	}
+	if seq == lastSeq {
+		state, err := d.PlayerState(seat)
+		if err != nil {
+			return PickResult{}, false, err
+		}
+		return PickResult{State: state, Events: nil, Duplicate: true}, true, nil
+	}
+	if seq < lastSeq {
+		return PickResult{}, false, errors.New("stale seq")
+	}
+	if seq != lastSeq+1 {
+		return PickResult{}, false, errors.New("seq gap")
+	}
+	return PickResult{}, false, nil
+}
+
 // MovePick moves a picked card between mainboard and sideboard for a seat.
 // It is a seat-local mutation and does not affect packs or round progression.
 func (d *Draft) MovePick(seat int, seq uint64, cardName, fromZone, toZone string) (PickResult, error) {
-	if seat < 0 || seat >= d.Config.SeatCount {
-		return PickResult{}, errors.New("invalid seat")
+	if err := d.validateSeatIndex(seat); err != nil {
+		return PickResult{}, err
 	}
 	if cardName == "" {
 		return PickResult{}, errors.New("card name required")
@@ -389,22 +417,10 @@ func (d *Draft) MovePick(seat int, seq uint64, cardName, fromZone, toZone string
 		return PickResult{}, errors.New("source and destination zones must differ")
 	}
 
-	lastSeq := d.lastSeqBySeat[seat]
-	if seq == 0 {
-		return PickResult{}, errors.New("invalid seq")
-	}
-	if seq == lastSeq {
-		state, err := d.PlayerState(seat)
-		if err != nil {
-			return PickResult{}, err
-		}
-		return PickResult{State: state, Events: nil, Duplicate: true}, nil
-	}
-	if seq < lastSeq {
-		return PickResult{}, errors.New("stale seq")
-	}
-	if seq != lastSeq+1 {
-		return PickResult{}, errors.New("seq gap")
+	if duplicateResult, duplicate, err := d.validateMutationSeq(seat, seq); err != nil {
+		return PickResult{}, err
+	} else if duplicate {
+		return duplicateResult, nil
 	}
 
 	seatState := &d.Seats[seat]
@@ -445,29 +461,17 @@ func (d *Draft) MovePick(seat int, seq uint64, cardName, fromZone, toZone string
 // SetBasics replaces a seat's mainboard basic land counts with absolute values.
 // Basic land cards are always kept in mainboard and are removed from sideboard.
 func (d *Draft) SetBasics(seat int, seq uint64, basics map[string]int) (PickResult, error) {
-	if seat < 0 || seat >= d.Config.SeatCount {
-		return PickResult{}, errors.New("invalid seat")
+	if err := d.validateSeatIndex(seat); err != nil {
+		return PickResult{}, err
 	}
 	if len(basics) == 0 {
 		return PickResult{}, errors.New("basic counts required")
 	}
 
-	lastSeq := d.lastSeqBySeat[seat]
-	if seq == 0 {
-		return PickResult{}, errors.New("invalid seq")
-	}
-	if seq == lastSeq {
-		state, err := d.PlayerState(seat)
-		if err != nil {
-			return PickResult{}, err
-		}
-		return PickResult{State: state, Events: nil, Duplicate: true}, nil
-	}
-	if seq < lastSeq {
-		return PickResult{}, errors.New("stale seq")
-	}
-	if seq != lastSeq+1 {
-		return PickResult{}, errors.New("seq gap")
+	if duplicateResult, duplicate, err := d.validateMutationSeq(seat, seq); err != nil {
+		return PickResult{}, err
+	} else if duplicate {
+		return duplicateResult, nil
 	}
 
 	counts := make(map[string]int, len(basicLandKeys))
@@ -520,28 +524,16 @@ func (d *Draft) SetBasics(seat int, seq uint64, basics map[string]int) (PickResu
 
 // PickBatch applies all picks for a seat in the current pass as a single atomic operation.
 func (d *Draft) PickBatch(seat int, seq uint64, packID string, picks []PickSelection) (PickResult, error) {
-	if seat < 0 || seat >= d.Config.SeatCount {
-		return PickResult{}, errors.New("invalid seat")
+	if err := d.validateSeatIndex(seat); err != nil {
+		return PickResult{}, err
 	}
 	if d.State() == "done" {
 		return PickResult{}, errors.New("draft already complete")
 	}
-	lastSeq := d.lastSeqBySeat[seat]
-	if seq == 0 {
-		return PickResult{}, errors.New("invalid seq")
-	}
-	if seq == lastSeq {
-		state, err := d.PlayerState(seat)
-		if err != nil {
-			return PickResult{}, err
-		}
-		return PickResult{State: state, Events: nil, Duplicate: true}, nil
-	}
-	if seq < lastSeq {
-		return PickResult{}, errors.New("stale seq")
-	}
-	if seq != lastSeq+1 {
-		return PickResult{}, errors.New("seq gap")
+	if duplicateResult, duplicate, err := d.validateMutationSeq(seat, seq); err != nil {
+		return PickResult{}, err
+	} else if duplicate {
+		return duplicateResult, nil
 	}
 	if d.seatPicked[seat] {
 		return PickResult{}, errors.New("seat already picked this round")

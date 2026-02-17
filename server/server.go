@@ -56,6 +56,8 @@ var wsUpgrader = websocket.Upgrader{
 	CheckOrigin: func(r *http.Request) bool { return true },
 }
 
+var errInvalidDraftCreateJSON = errors.New("invalid json body")
+
 func draftConfigFromRequest(req createDraftRoomRequest) (DraftConfig, error) {
 	if req.SeatCount <= 0 {
 		return DraftConfig{}, errors.New("seat_count must be > 0")
@@ -72,6 +74,36 @@ func draftConfigFromRequest(req createDraftRoomRequest) (DraftConfig, error) {
 		SeatCount:   req.SeatCount,
 		PassPattern: append([]int(nil), req.PassPattern...),
 	}, nil
+}
+
+func draftRoomFromRequest(r *http.Request, roomID string) (*draftRoom, string, error) {
+	defer r.Body.Close()
+
+	var req createDraftRoomRequest
+	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
+		return nil, "", errInvalidDraftCreateJSON
+	}
+	requesterDeviceID, err := requesterDeviceIDFromRequest(r)
+	if err != nil {
+		return nil, "", err
+	}
+	cfg, err := draftConfigFromRequest(req)
+	if err != nil {
+		return nil, "", err
+	}
+	draft, err := NewDraft(cfg, req.Deck)
+	if err != nil {
+		return nil, "", err
+	}
+
+	room := &draftRoom{
+		id:            roomID,
+		deckSlug:      normalizeSlug(req.DeckSlug),
+		ownerDeviceID: requesterDeviceID,
+		draft:         draft,
+		clients:       make(map[int]map[*websocket.Conn]struct{}),
+	}
+	return room, requesterDeviceID, nil
 }
 
 func isValidDeviceID(value string) bool {
@@ -121,35 +153,14 @@ func (h *draftHub) handleCreateRoom(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	defer r.Body.Close()
-	var req createDraftRoomRequest
-	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
-		http.Error(w, "invalid json body", http.StatusBadRequest)
-		return
-	}
-	requesterDeviceID, err := requesterDeviceIDFromRequest(r)
+	room, requesterDeviceID, err := draftRoomFromRequest(r, "")
 	if err != nil {
+		if errors.Is(err, errInvalidDraftCreateJSON) {
+			http.Error(w, "invalid json body", http.StatusBadRequest)
+			return
+		}
 		http.Error(w, err.Error(), http.StatusBadRequest)
 		return
-	}
-
-	cfg, err := draftConfigFromRequest(req)
-	if err != nil {
-		http.Error(w, err.Error(), http.StatusBadRequest)
-		return
-	}
-
-	draft, err := NewDraft(cfg, req.Deck)
-	if err != nil {
-		http.Error(w, err.Error(), http.StatusBadRequest)
-		return
-	}
-
-	room := &draftRoom{
-		deckSlug:      normalizeSlug(req.DeckSlug),
-		ownerDeviceID: requesterDeviceID,
-		draft:         draft,
-		clients:       make(map[int]map[*websocket.Conn]struct{}),
 	}
 
 	h.mu.Lock()
@@ -214,36 +225,14 @@ func (h *draftHub) handleStartOrJoinSharedRoom(w http.ResponseWriter, r *http.Re
 		return
 	}
 
-	defer r.Body.Close()
-	var req createDraftRoomRequest
-	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
-		http.Error(w, "invalid json body", http.StatusBadRequest)
-		return
-	}
-	requesterDeviceID, err := requesterDeviceIDFromRequest(r)
+	room, requesterDeviceID, err := draftRoomFromRequest(r, sharedRoomID)
 	if err != nil {
+		if errors.Is(err, errInvalidDraftCreateJSON) {
+			http.Error(w, "invalid json body", http.StatusBadRequest)
+			return
+		}
 		http.Error(w, err.Error(), http.StatusBadRequest)
 		return
-	}
-
-	cfg, err := draftConfigFromRequest(req)
-	if err != nil {
-		http.Error(w, err.Error(), http.StatusBadRequest)
-		return
-	}
-
-	draft, err := NewDraft(cfg, req.Deck)
-	if err != nil {
-		http.Error(w, err.Error(), http.StatusBadRequest)
-		return
-	}
-
-	room := &draftRoom{
-		id:            sharedRoomID,
-		deckSlug:      normalizeSlug(req.DeckSlug),
-		ownerDeviceID: requesterDeviceID,
-		draft:         draft,
-		clients:       make(map[int]map[*websocket.Conn]struct{}),
 	}
 
 	h.mu.Lock()
@@ -269,32 +258,9 @@ func (h *draftHub) handleStartOrJoinSharedRoom(w http.ResponseWriter, r *http.Re
 func (h *draftHub) handleWS(w http.ResponseWriter, r *http.Request) {
 	roomID := r.URL.Query().Get("room")
 
-	h.mu.RLock()
-	room := h.rooms[roomID]
-	h.mu.RUnlock()
-	if room == nil {
-		conn, err := wsUpgrader.Upgrade(w, r, nil)
-		if err != nil {
-			return
-		}
-		defer conn.Close()
-		_ = conn.WriteJSON(draftWSMessage{
-			Type:     "room_missing",
-			Error:    "Room not found",
-			Redirect: "#/cube",
-		})
-		return
-	}
-
 	seatRaw := r.URL.Query().Get("seat")
 	seat, err := strconv.Atoi(seatRaw)
 	if err != nil {
-		http.Error(w, "invalid seat", http.StatusBadRequest)
-		return
-	}
-	// TODO(remote-draft): add seat-scoped auth (token/session) so clients cannot
-	// impersonate arbitrary seats via query params alone.
-	if seat < 0 || seat >= room.draft.Config.SeatCount {
 		http.Error(w, "invalid seat", http.StatusBadRequest)
 		return
 	}
@@ -305,7 +271,42 @@ func (h *draftHub) handleWS(w http.ResponseWriter, r *http.Request) {
 	}
 	defer conn.Close()
 
-	if !room.addConn(seat, conn) {
+	// TODO(remote-draft): add seat-scoped auth (token/session) so clients cannot
+	// impersonate arbitrary seats via query params alone.
+	var seatCount int
+	h.mu.RLock()
+	roomForSeatCheck := h.rooms[roomID]
+	if roomForSeatCheck != nil {
+		seatCount = roomForSeatCheck.draft.Config.SeatCount
+	}
+	h.mu.RUnlock()
+	if roomForSeatCheck == nil {
+		_ = conn.WriteJSON(draftWSMessage{
+			Type:     "room_missing",
+			Error:    "Room not found",
+			Redirect: "#/cube",
+		})
+		return
+	}
+	if seat < 0 || seat >= seatCount {
+		_ = conn.WriteJSON(draftWSMessage{
+			Type:     "room_missing",
+			Error:    "Room not found",
+			Redirect: "#/cube",
+		})
+		return
+	}
+
+	room, accepted := h.addConnToRoomIfPresent(roomID, seat, conn)
+	if room == nil {
+		_ = conn.WriteJSON(draftWSMessage{
+			Type:     "room_missing",
+			Error:    "Room not found",
+			Redirect: "#/cube",
+		})
+		return
+	}
+	if !accepted {
 		room.writeToConn(conn, draftWSMessage{
 			Type:     "seat_occupied",
 			Error:    "Seat already occupied",
