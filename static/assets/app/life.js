@@ -17,9 +17,17 @@ const TOKEN_TYPES = [
   { id: 'treasure', icon: '💰', label: 'Treasure' },
   { id: 'food', icon: '🍔', label: 'Food' },
   { id: 'clue', icon: '🔎', label: 'Clue' },
+  { id: 'map', icon: '🗺️', label: 'Map' },
 ];
 const TOKEN_IDS = TOKEN_TYPES.map((token) => token.id);
-const TOKEN_SLOT_CLASSES = ['life-token-slot-a', 'life-token-slot-b', 'life-token-slot-c', 'life-token-slot-d'];
+const TOKEN_SLOT_CLASSES = [
+  'life-token-slot-a',
+  'life-token-slot-b',
+  'life-token-slot-c',
+  'life-token-slot-d',
+  'life-token-slot-e',
+  'life-token-slot-f',
+];
 
 function parseLifeTotal(value, fallback) {
   const parsed = Number.parseInt(String(value), 10);
@@ -99,7 +107,14 @@ function buildTokenToggleGridHtml(player) {
   const buttons = TOKEN_TYPES.map((token) => (
     `<button type="button" class="static-button life-token-toggle life-token-toggle-${token.id}" data-life-token-toggle data-player="${player}" data-token="${token.id}" data-life-control aria-label="Toggle player ${player === 'p1' ? '1' : '2'} ${token.label.toLowerCase()} counter">${token.icon}</button>`
   )).join('');
-  return `<div class="life-token-toggle-grid life-token-toggle-grid-${player}" data-life-token-toggle-grid="${player}" data-life-control>${buttons}</div>`;
+  return `
+    <div class="life-token-menu life-token-menu-${player}" data-life-token-menu="${player}" data-life-control>
+      <button type="button" class="static-button life-token-menu-button life-token-menu-anchor" data-life-token-menu-trigger="${player}" data-life-control aria-label="Toggle player ${player === 'p1' ? '1' : '2'} token controls" aria-expanded="false">♟️</button>
+      <div class="life-token-menu-panel life-token-menu-panel-${player}" data-life-token-menu-panel="${player}" data-life-control hidden>
+        ${buttons}
+      </div>
+    </div>
+  `;
 }
 
 function buildTokenTickersHtml(player) {
@@ -274,6 +289,22 @@ export function createLifeCounter(container, startingLife = 20) {
     p1: createTokenMap(null),
     p2: createTokenMap(null),
   };
+  const tokenMenuButtons = {
+    p1: null,
+    p2: null,
+  };
+  const tokenMenuPanels = {
+    p1: null,
+    p2: null,
+  };
+  const tokenMenuContainers = {
+    p1: null,
+    p2: null,
+  };
+  const tokenMenuOpen = {
+    p1: false,
+    p2: false,
+  };
   const tokenTickers = {
     p1: createTokenMap(null),
     p2: createTokenMap(null),
@@ -287,6 +318,18 @@ export function createLifeCounter(container, startingLife = 20) {
     const tokenId = button.dataset.token;
     if (!TOKEN_IDS.includes(tokenId)) return;
     tokenToggleButtons[player][tokenId] = button;
+  });
+  container.querySelectorAll('[data-life-token-menu]').forEach((menu) => {
+    const player = menu.dataset.lifeTokenMenu === 'p2' ? 'p2' : 'p1';
+    tokenMenuContainers[player] = menu;
+  });
+  container.querySelectorAll('[data-life-token-menu-trigger]').forEach((button) => {
+    const player = button.dataset.lifeTokenMenuTrigger === 'p2' ? 'p2' : 'p1';
+    tokenMenuButtons[player] = button;
+  });
+  container.querySelectorAll('[data-life-token-menu-panel]').forEach((panel) => {
+    const player = panel.dataset.lifeTokenMenuPanel === 'p2' ? 'p2' : 'p1';
+    tokenMenuPanels[player] = panel;
   });
   container.querySelectorAll('[data-life-token-ticker]').forEach((ticker) => {
     const player = ticker.dataset.player === 'p2' ? 'p2' : 'p1';
@@ -350,7 +393,7 @@ export function createLifeCounter(container, startingLife = 20) {
       });
 
       const visibleCount = orderedVisible.length;
-      const slotOrder = visibleCount >= 4
+      const slotOrder = visibleCount >= TOKEN_SLOT_CLASSES.length
         ? TOKEN_SLOT_CLASSES
         : TOKEN_SLOT_CLASSES.slice(0, visibleCount);
       orderedVisible.forEach((tokenId, index) => {
@@ -361,6 +404,24 @@ export function createLifeCounter(container, startingLife = 20) {
           ticker.classList.add(slotClass);
         }
       });
+    });
+  };
+  const renderTokenMenus = () => {
+    ['p1', 'p2'].forEach((player) => {
+      const button = tokenMenuButtons[player];
+      const panel = tokenMenuPanels[player];
+      const menu = tokenMenuContainers[player];
+      const open = tokenMenuOpen[player] === true;
+      if (menu) {
+        menu.classList.toggle('open', open);
+      }
+      if (panel) {
+        panel.hidden = !open;
+      }
+      if (button) {
+        button.classList.toggle('active', open);
+        button.setAttribute('aria-expanded', open ? 'true' : 'false');
+      }
     });
   };
   const initiativeOverlay = createInitiativeOverlay(container, state, () => {
@@ -398,6 +459,10 @@ export function createLifeCounter(container, startingLife = 20) {
     renderTokens();
     writeLifeState(state);
   };
+  const toggleTokenMenu = (player) => {
+    tokenMenuOpen[player] = !tokenMenuOpen[player];
+    renderTokenMenus();
+  };
 
   const resetGameState = () => {
     state.p1 = startingLife;
@@ -416,9 +481,12 @@ export function createLifeCounter(container, startingLife = 20) {
       p1: [],
       p2: [],
     };
+    tokenMenuOpen.p1 = false;
+    tokenMenuOpen.p2 = false;
     render();
     renderMonarch();
     renderInitiative();
+    renderTokenMenus();
     renderTokens();
     writeLifeState(state);
     initiativeOverlay.sync();
@@ -563,6 +631,10 @@ export function createLifeCounter(container, startingLife = 20) {
     });
   });
   ['p1', 'p2'].forEach((player) => {
+    const menuButton = tokenMenuButtons[player];
+    bindControlAction(menuButton, () => {
+      toggleTokenMenu(player);
+    });
     TOKEN_IDS.forEach((tokenId) => {
       const ticker = tokenTickers[player][tokenId];
       const button = tokenToggleButtons[player][tokenId];
@@ -606,6 +678,7 @@ export function createLifeCounter(container, startingLife = 20) {
   render();
   renderMonarch();
   renderInitiative();
+  renderTokenMenus();
   renderTokens();
   initiativeOverlay.sync();
 }
