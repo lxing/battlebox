@@ -534,10 +534,13 @@ export function createDraftController({
     const packGrid = packEl.querySelector('#draft-pack-grid');
     if (!packScroll || !packGrid) return;
     const gridStyle = window.getComputedStyle(packGrid);
+    const scrollStyle = window.getComputedStyle(packScroll);
     const gap = Number.parseFloat(gridStyle.columnGap || gridStyle.gap || '0') || 0;
-    const viewportWidth = packScroll.clientWidth;
+    const paddingLeft = Number.parseFloat(scrollStyle.paddingLeft || '0') || 0;
+    const paddingRight = Number.parseFloat(scrollStyle.paddingRight || '0') || 0;
+    const viewportWidth = Math.max(0, packScroll.clientWidth - paddingLeft - paddingRight);
     if (viewportWidth <= 0) return;
-    const columnWidth = Math.max(0, (viewportWidth - gap) / 2);
+    const columnWidth = Math.max(0, (viewportWidth * 0.45) - (gap / 2));
     packScroll.style.setProperty('--draft-pack-col-width', `${columnWidth}px`);
   }
 

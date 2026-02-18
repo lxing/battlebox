@@ -5,6 +5,7 @@
 }
 
 .draft-panel {
+  --draft-panel-inline-padding: 0.6rem;
   border: 0;
   border-radius: var(--radius-md);
   background: var(--color-surface);
@@ -12,6 +13,7 @@
 }
 
 .draft-status-panel {
+  --draft-panel-inline-padding: 0.5rem;
   padding: 0.35rem 0.5rem;
 }
 
@@ -138,6 +140,8 @@
   overflow-x: auto;
   overflow-y: hidden;
   -webkit-overflow-scrolling: touch;
+  padding-left: var(--draft-panel-inline-padding, 0);
+  padding-right: var(--draft-panel-inline-padding, 0);
   padding-bottom: 0.1rem;
   width: 100%;
   --draft-pack-col-width: 8rem;
@@ -145,6 +149,8 @@
 
 .draft-pack-scroll-wrap {
   position: relative;
+  margin-left: calc(-1 * var(--draft-panel-inline-padding, 0));
+  margin-right: calc(-1 * var(--draft-panel-inline-padding, 0));
 }
 
 .draft-pack-scroll-indicator {
