@@ -404,9 +404,22 @@ export function createLifeCounter(container, startingLife = 20) {
     state.p2 = startingLife;
     state.monarch = null;
     state.initiative = resetInitiativeState();
+    state.tokens = {
+      p1: createTokenMap(null),
+      p2: createTokenMap(null),
+    };
+    state.tokenVisible = {
+      p1: createTokenMap(false),
+      p2: createTokenMap(false),
+    };
+    state.tokenOrder = {
+      p1: [],
+      p2: [],
+    };
     render();
     renderMonarch();
     renderInitiative();
+    renderTokens();
     writeLifeState(state);
     initiativeOverlay.sync();
   };
