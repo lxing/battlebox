@@ -152,29 +152,9 @@ body {
   color: var(--color-gray);
 }
 
-.tabbar-button:hover,
-.tabbar-button:active,
-.tabbar-button:focus,
-.tabbar-button:focus-visible {
-  background: var(--color-surface);
-  border-color: var(--color-gray);
-  color: var(--color-white);
-  outline: none;
-}
-
 .tabbar-button.active {
   background: var(--color-blue);
   border-color: var(--color-blue);
-}
-
-.tabbar-button.active:hover,
-.tabbar-button.active:active,
-.tabbar-button.active:focus,
-.tabbar-button.active:focus-visible {
-  background: var(--color-blue);
-  border-color: var(--color-blue);
-  color: var(--color-white);
-  outline: none;
 }
 
 button,
@@ -182,6 +162,7 @@ input[type='button'],
 input[type='submit'],
 input[type='reset'] {
   touch-action: manipulation;
+  -webkit-tap-highlight-color: var(--color-transparent);
 }
 
 .action-button,
@@ -200,16 +181,10 @@ input[type='reset'] {
   justify-content: center;
   outline: none;
   touch-action: manipulation;
-}
-
-.action-button:hover {
-  background: var(--color-gray);
-  color: var(--color-white);
-}
-
-.action-button:active {
-  background: var(--color-blue);
-  border-color: var(--color-blue);
+  -webkit-tap-highlight-color: var(--color-transparent);
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-touch-callout: none;
 }
 
 .button-standard {
@@ -217,13 +192,10 @@ input[type='reset'] {
   padding: 0 0.8rem;
 }
 
-.static-button:hover,
-.static-button:active,
+.action-button:focus,
+.action-button:focus-visible,
 .static-button:focus,
 .static-button:focus-visible {
-  background: var(--color-surface);
-  border-color: var(--color-gray);
-  color: var(--color-white);
   outline: none;
 }
 

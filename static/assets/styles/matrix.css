@@ -251,11 +251,6 @@
   color: var(--color-white);
 }
 
-.lobby-room-delete-button.is-armed:hover {
-  background: var(--color-red);
-  border-color: var(--color-red);
-}
-
 .lobby-room-meta {
   font-size: 0.74rem;
   color: var(--color-gray);

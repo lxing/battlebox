@@ -20,14 +20,6 @@
   filter: invert(1);
 }
 
-.qr-breadcrumb-button:hover,
-.qr-breadcrumb-button:active,
-.qr-breadcrumb-button:focus,
-.qr-breadcrumb-button:focus-visible {
-  background: var(--color-transparent);
-  outline: none;
-}
-
 .qr-popup-overlay {
   position: fixed;
   inset: 0;
@@ -96,7 +88,7 @@
   flex-direction: column;
   gap: 0.35rem;
   background: var(--color-surface);
-  border: 1px solid var(--color-gray);
+  border: 0;
   border-radius: var(--radius-md);
   padding: 0.45rem;
   touch-action: manipulation;
@@ -164,10 +156,6 @@
   pointer-events: auto;
   cursor: pointer;
   user-select: none;
-}
-
-.card-dfc-flip-control:hover {
-  background: var(--color-transparent);
 }
 
 .sample-hand-card img {
@@ -872,16 +860,6 @@ details.collapsible[open] summary::after {
   justify-self: start;
 }
 
-.guide-opponent-link:hover,
-.guide-opponent-link:active,
-.guide-opponent-link:focus,
-.guide-opponent-link:focus-visible {
-  background: var(--color-surface);
-  border-color: var(--color-gray);
-  color: var(--color-white);
-  outline: none;
-}
-
 .guide-select select {
   width: 100%;
   background: var(--color-surface);
@@ -933,7 +911,7 @@ details.collapsible[open] summary::after {
   width: min(780px, 100%);
   max-height: min(90vh, 900px);
   background: var(--color-surface);
-  border: 1px solid var(--color-gray);
+  border: 0;
   border-radius: var(--radius-md);
   padding: 0.75rem;
   display: grid;
