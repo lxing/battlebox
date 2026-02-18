@@ -245,6 +245,17 @@
   line-height: 1;
 }
 
+.lobby-room-delete-button.is-armed {
+  background: var(--draft-pack-sideboard-border);
+  border-color: var(--draft-pack-sideboard-border);
+  color: #fff;
+}
+
+.lobby-room-delete-button.is-armed:hover {
+  background: var(--draft-pack-sideboard-ring);
+  border-color: var(--draft-pack-sideboard-border);
+}
+
 .lobby-room-meta {
   font-size: 0.74rem;
   color: var(--color-text-muted-2);

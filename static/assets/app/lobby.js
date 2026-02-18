@@ -133,6 +133,8 @@ export function createLobbyController({
     createRoomButton: null,
     createRoomBaseDisabled: false,
     ownerHasRoom: false,
+    deleteConfirmRoomID: '',
+    deleteConfirmTimer: null,
   };
 
   function stopStream() {
@@ -148,6 +150,11 @@ export function createLobbyController({
 
   function teardown() {
     stopStream();
+    if (state.deleteConfirmTimer) {
+      clearTimeout(state.deleteConfirmTimer);
+      state.deleteConfirmTimer = null;
+    }
+    state.deleteConfirmRoomID = '';
     state.roomsList = null;
     state.createRoomButton = null;
   }
@@ -210,6 +217,26 @@ export function createLobbyController({
       button.addEventListener('click', async () => {
         const roomID = String(button.dataset.deleteRoomId || '').trim();
         if (!roomID) return;
+        if (state.deleteConfirmRoomID !== roomID) {
+          if (state.deleteConfirmTimer) {
+            clearTimeout(state.deleteConfirmTimer);
+            state.deleteConfirmTimer = null;
+          }
+          state.deleteConfirmRoomID = roomID;
+          state.deleteConfirmTimer = setTimeout(() => {
+            state.deleteConfirmTimer = null;
+            state.deleteConfirmRoomID = '';
+            updateDeleteButtonArmState(state.roomsList);
+          }, 2000);
+          updateDeleteButtonArmState(state.roomsList);
+          return;
+        }
+        if (state.deleteConfirmTimer) {
+          clearTimeout(state.deleteConfirmTimer);
+          state.deleteConfirmTimer = null;
+        }
+        state.deleteConfirmRoomID = '';
+        updateDeleteButtonArmState(state.roomsList);
         button.disabled = true;
         try {
           await deleteDraftRoom(roomID, state.deviceID);
@@ -222,11 +249,33 @@ export function createLobbyController({
     });
   }
 
+  function updateDeleteButtonArmState(scope) {
+    if (!scope) return;
+    scope.querySelectorAll('[data-delete-room-id]').forEach((button) => {
+      const roomID = String(button.dataset.deleteRoomId || '').trim();
+      const armed = roomID && roomID === state.deleteConfirmRoomID;
+      button.classList.toggle('is-armed', armed);
+      const baseTitle = String(button.dataset.deleteTitle || '').trim();
+      if (armed) {
+        button.setAttribute('title', 'Click again to delete');
+      } else if (baseTitle) {
+        button.setAttribute('title', baseTitle);
+      } else {
+        button.removeAttribute('title');
+      }
+    });
+  }
+
   function renderRooms(rooms) {
     if (!state.roomsList) return;
     if (!Array.isArray(rooms) || rooms.length === 0) {
       state.roomByID = new Map();
       state.ownerHasRoom = false;
+      if (state.deleteConfirmTimer) {
+        clearTimeout(state.deleteConfirmTimer);
+        state.deleteConfirmTimer = null;
+      }
+      state.deleteConfirmRoomID = '';
       syncCreateRoomButtonState();
       state.roomsList.innerHTML = '';
       return;
@@ -238,6 +287,13 @@ export function createLobbyController({
     state.roomByID = new Map(
       rooms.map((room) => [String(room?.room_id || '').trim(), room]),
     );
+    if (state.deleteConfirmRoomID && !state.roomByID.has(state.deleteConfirmRoomID)) {
+      if (state.deleteConfirmTimer) {
+        clearTimeout(state.deleteConfirmTimer);
+        state.deleteConfirmTimer = null;
+      }
+      state.deleteConfirmRoomID = '';
+    }
 
     state.roomsList.innerHTML = `
       <ul class="lobby-room-list">
@@ -284,6 +340,7 @@ export function createLobbyController({
                   type="button"
                   class="action-button button-standard lobby-room-delete-button"
                   data-delete-room-id="${roomID}"
+                  data-delete-title="${deleteTitle}"
                   aria-label="Delete room ${roomID}"
                   title="${deleteTitle}"
                   ${canDelete ? '' : 'disabled aria-disabled="true"'}
@@ -296,6 +353,7 @@ export function createLobbyController({
     `;
     bindLobbySeatButtons(state.roomsList);
     bindLobbyDeleteButtons(state.roomsList);
+    updateDeleteButtonArmState(state.roomsList);
   }
 
   async function refreshRooms() {
