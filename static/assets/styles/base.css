@@ -129,12 +129,14 @@ body {
 
 .tabbar {
   display: flex;
-  gap: var(--pane-gap);
+  gap: 0;
 }
 
 .tabbar-button {
   flex: 1 1 0;
   min-height: var(--control-height-md);
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
   user-select: none;
   -webkit-user-select: none;
   -webkit-touch-callout: none;
@@ -153,8 +155,8 @@ body {
 }
 
 .tabbar-button.active {
-  background: var(--color-blue);
-  border-color: var(--color-blue);
+  background: var(--color-black);
+  border-top: 0;
 }
 
 button,
@@ -185,6 +187,12 @@ input[type='reset'] {
   user-select: none;
   -webkit-user-select: none;
   -webkit-touch-callout: none;
+}
+
+.tabbar-button.action-button,
+.tabbar-button.static-button {
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
 }
 
 .button-standard {
