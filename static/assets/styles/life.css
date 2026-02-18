@@ -39,6 +39,137 @@
   touch-action: manipulation;
 }
 
+.life-player::before {
+  content: '';
+  position: absolute;
+  top: 0.55rem;
+  bottom: 0.55rem;
+  left: 50%;
+  width: 1px;
+  transform: translateX(-50%);
+  background: var(--color-gray);
+  opacity: 0.2;
+  pointer-events: none;
+}
+
+.life-blood-toggle {
+  position: absolute;
+  z-index: 2;
+  width: 2.1rem;
+  min-width: 2.1rem;
+  height: 2.1rem;
+  min-height: 2.1rem;
+  padding: 0;
+  border: 1px solid var(--color-gray);
+  border-radius: var(--radius-md);
+  background: var(--color-surface);
+  color: var(--color-white);
+  font-size: 1.22rem;
+  line-height: 1;
+}
+
+.life-blood-toggle.active {
+  background: var(--color-blue);
+  border-color: var(--color-blue);
+  color: var(--color-white);
+}
+
+.life-blood-toggle-p1 {
+  left: 0.42rem;
+  bottom: 0.42rem;
+}
+
+.life-blood-toggle-p2 {
+  left: 0.42rem;
+  bottom: 0.42rem;
+}
+
+.life-blood-ticker {
+  position: absolute;
+  z-index: 2;
+  display: grid;
+  grid-template-columns: 1.2rem minmax(0, 1fr) 1.2rem;
+  align-items: center;
+  justify-items: center;
+  width: 6.6rem;
+  height: 2.55rem;
+  padding: 0.2rem 0.2rem;
+  border: 1px solid var(--color-gray);
+  border-radius: var(--radius-md);
+  background: var(--color-surface);
+  color: var(--color-white);
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+}
+
+.life-blood-ticker[hidden] {
+  display: none !important;
+}
+
+.life-blood-ticker::before {
+  content: '';
+  position: absolute;
+  left: 50%;
+  width: 1px;
+  transform: translateX(-50%);
+  background: var(--color-gray);
+  opacity: 0.2;
+  pointer-events: none;
+  top: 0.42rem;
+  bottom: 0.42rem;
+}
+
+.life-blood-ticker-p1 {
+  right: 0.42rem;
+  bottom: 0.42rem;
+}
+
+.life-blood-ticker-p2 {
+  right: 0.42rem;
+  bottom: 0.42rem;
+}
+
+.life-blood-ticker .life-hit-hint {
+  position: static;
+  top: auto;
+  transform: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  font-size: 0.9rem;
+  opacity: 0.55;
+}
+
+.life-blood-center {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-rows: auto auto;
+  align-content: center;
+  justify-items: center;
+  align-items: center;
+  height: 100%;
+  padding: 0.08rem 0;
+  gap: 0.16rem;
+}
+
+.life-blood-total {
+  font-size: 1.02rem;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.life-blood-icon {
+  position: static;
+  font-size: 0.87rem;
+  line-height: 1;
+  opacity: 0.8;
+  pointer-events: none;
+}
+
 .life-player-random-highlight {
   box-shadow: inset 0 0 0 2px var(--color-white);
 }
