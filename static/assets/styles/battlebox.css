@@ -1,7 +1,7 @@
 .qr-breadcrumb-button {
   margin-left: auto;
   border: 0;
-  background: transparent;
+  background: var(--color-transparent);
   color: inherit;
   width: 1.5rem;
   height: 1.5rem;
@@ -24,7 +24,7 @@
 .qr-breadcrumb-button:active,
 .qr-breadcrumb-button:focus,
 .qr-breadcrumb-button:focus-visible {
-  background: transparent;
+  background: var(--color-transparent);
   outline: none;
 }
 
@@ -32,7 +32,7 @@
   position: fixed;
   inset: 0;
   z-index: var(--z-qr-overlay);
-  background: var(--overlay-backdrop);
+  background: var(--color-overlay);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -62,7 +62,7 @@
 
 .qr-popup-fallback {
   font-size: var(--font-size-sm);
-  color: var(--color-text-muted-2);
+  color: var(--color-gray);
 }
 
 .sample-hand-overlay {
@@ -83,7 +83,7 @@
 .sample-hand-backdrop {
   position: absolute;
   inset: 0;
-  background: var(--overlay-backdrop);
+  background: var(--color-overlay);
 }
 
 .sample-hand-sheet {
@@ -95,8 +95,8 @@
   display: flex;
   flex-direction: column;
   gap: 0.35rem;
-  background: var(--color-panel-bg);
-  border: var(--border-panel);
+  background: var(--color-surface);
+  border: 1px solid var(--color-gray);
   border-radius: var(--radius-md);
   padding: 0.45rem;
   touch-action: manipulation;
@@ -135,8 +135,8 @@
   width: 100%;
   border-radius: 8px;
   overflow: hidden;
-  border: 1px solid #000;
-  background: #111;
+  border: 1px solid var(--color-black);
+  background: var(--color-black);
   aspect-ratio: 63 / 88;
 }
 
@@ -157,8 +157,8 @@
   border: 0;
   padding: 0;
   margin: 0;
-  background: transparent;
-  color: #f2f4ff;
+  background: var(--color-transparent);
+  color: var(--color-white);
   font-size: 0.76rem;
   line-height: 1;
   pointer-events: auto;
@@ -167,7 +167,7 @@
 }
 
 .card-dfc-flip-control:hover {
-  background: transparent;
+  background: var(--color-transparent);
 }
 
 .sample-hand-card img {
@@ -182,7 +182,7 @@
   align-items: center;
   justify-content: center;
   text-align: center;
-  color: #ddd;
+  color: var(--color-gray);
   font-size: 0.75rem;
   line-height: 1.25;
   padding: 0.4rem;
@@ -191,7 +191,7 @@
 .sample-hand-empty {
   grid-column: 1 / -1;
   text-align: center;
-  color: #9da0bd;
+  color: var(--color-gray);
   font-size: 0.78rem;
   padding: 0.8rem 0;
 }
@@ -209,22 +209,22 @@
   justify-content: space-between;
   align-items: center;
   padding: 0.75rem 1rem;
-  background: var(--color-panel-bg);
-  border: 1px solid transparent;
+  background: var(--color-surface);
+  border: 1px solid var(--color-transparent);
   border-radius: var(--radius-md);
-  color: var(--color-text-strong);
+  color: var(--color-white);
   text-decoration: none;
   transition: none;
 }
 
 .deck-list a.deck-highlight {
-  border-color: var(--color-text-strong);
+  border-color: var(--color-white);
 }
 
 .deck-list a:focus,
 .deck-list a:focus-visible,
 .deck-list a:active {
-  border-color: transparent;
+  border-color: var(--color-transparent);
   outline: none;
 }
 
@@ -303,8 +303,8 @@
 }
 
 .randomizer-controls .action-button.active {
-  background: var(--color-button-active-bg);
-  border-color: var(--color-button-active-border);
+  background: var(--color-blue);
+  border-color: var(--color-blue);
 }
 
 .battlebox-link {
@@ -321,7 +321,7 @@
 }
 
 .battlebox-desc {
-  color: var(--color-text-muted-2);
+  color: var(--color-gray);
   font-size: 0.8rem;
   width: 100%;
   text-align: left;
@@ -339,8 +339,8 @@
 }
 
 .deck-info-pane {
-  background: var(--color-panel-bg);
-  border: var(--border-panel);
+  background: var(--color-surface);
+  border: 0;
   border-radius: var(--radius-md);
   padding: 0.5rem 0.75rem;
   margin: var(--pane-gap) 0;
@@ -354,8 +354,8 @@
 }
 
 .deck-basics-pane {
-  background: var(--color-panel-bg);
-  border: var(--border-panel);
+  background: var(--color-surface);
+  border: 0;
   border-radius: var(--radius-md);
   padding: 0.5rem 0.75rem;
   margin: var(--pane-gap) 0;
@@ -379,8 +379,8 @@
   aspect-ratio: 63 / 88;
   border-radius: var(--radius-md);
   overflow: hidden;
-  border: 1px solid #000;
-  background: #111;
+  border: 1px solid var(--color-black);
+  background: var(--color-black);
 }
 
 .deck-basics-card-image img {
@@ -391,7 +391,7 @@
 }
 
 .deck-basics-card-missing {
-  color: var(--color-text-muted-2);
+  color: var(--color-gray);
   font-size: 0.7rem;
   line-height: 1.25;
   text-decoration: none;
@@ -404,7 +404,7 @@
 .deck-basics-card-missing:active,
 .deck-basics-card-missing:focus,
 .deck-basics-card-missing:focus-visible {
-  color: var(--color-text-muted-2);
+  color: var(--color-gray);
   text-decoration: none;
   outline: none;
 }
@@ -426,7 +426,7 @@
   line-height: 1.3;
   font-weight: 600;
   text-transform: lowercase;
-  border: 1px solid transparent;
+  border: 1px solid var(--color-transparent);
 }
 
 .deck-tag.deck-tag-difficulty {
@@ -437,65 +437,65 @@
 }
 
 .deck-tag-aggro {
-  background: #5b1f52;
-  color: #ffdff8;
-  border-color: #b3479f;
+  background: var(--color-purple);
+  color: var(--color-white);
+  border-color: var(--color-purple);
 }
 
 .deck-tag-tempo {
-  background: #1f3f75;
-  color: #dcebff;
-  border-color: #4c7fd1;
+  background: var(--color-blue);
+  color: var(--color-white);
+  border-color: var(--color-blue);
 }
 
 .deck-tag-midrange {
-  background: #202124;
-  color: #e8e8e8;
-  border-color: #5b5d63;
+  background: var(--color-gray);
+  color: var(--color-white);
+  border-color: var(--color-gray);
 }
 
 .deck-tag-control {
-  background: #40245f;
-  color: #eddfff;
-  border-color: #7f59b4;
+  background: var(--color-purple);
+  color: var(--color-white);
+  border-color: var(--color-purple);
 }
 
 .deck-tag-combo {
-  background: #6fdcff;
-  color: #082638;
-  border-color: #bcefff;
+  background: var(--color-blue);
+  color: var(--color-white);
+  border-color: var(--color-blue);
 }
 
 .deck-tag-tribal {
-  background: #5a3517;
-  color: #ffe6cf;
-  border-color: #c27a3b;
+  background: var(--color-brown);
+  color: var(--color-white);
+  border-color: var(--color-brown);
 }
 
 .deck-tag-shared,
 .deck-tag-2p,
 .deck-tag-4p {
-  background: #fffef0;
-  color: #1f1f1f;
-  border-color: #d7d6c8;
+  background: var(--color-yellow);
+  color: var(--color-black);
+  border-color: var(--color-yellow);
 }
 
 .deck-tag-beginner {
-  background: #2e7d32;
-  color: #ecffec;
-  border-color: var(--color-accent-success);
+  background: var(--color-green);
+  color: var(--color-white);
+  border-color: var(--color-green);
 }
 
 .deck-tag-intermediate {
-  background: #c2b547;
-  color: #2a2500;
-  border-color: #d8cf83;
+  background: var(--color-yellow);
+  color: var(--color-black);
+  border-color: var(--color-yellow);
 }
 
 .deck-tag-expert {
-  background: #b33a3a;
-  color: #fff1f1;
-  border-color: #cf7a7a;
+  background: var(--color-red);
+  color: var(--color-white);
+  border-color: var(--color-red);
 }
 
 .breadcrumbs {
@@ -503,7 +503,7 @@
 }
 
 .breadcrumbs a {
-  color: var(--color-text-muted-2);
+  color: var(--color-gray);
   text-decoration: none;
 }
 
@@ -511,13 +511,13 @@
 .breadcrumbs a:focus,
 .breadcrumbs a:focus-visible,
 .breadcrumbs a:active {
-  color: var(--color-text-muted-2);
+  color: var(--color-gray);
   text-decoration: none;
   outline: none;
 }
 
 .crumb-sep {
-  color: var(--color-text-dim);
+  color: var(--color-gray);
 }
 
 .mana-symbol {
@@ -545,9 +545,9 @@
   margin-left: 0.3rem;
   vertical-align: 0.18em;
   white-space: nowrap;
-  background: #c40000;
-  color: var(--color-text-strong);
-  border: 1px solid #9c0000;
+  background: var(--color-red);
+  color: var(--color-white);
+  border: 1px solid var(--color-red);
   border-radius: 4px;
   text-transform: uppercase;
   font-size: 0.46rem;
@@ -585,7 +585,7 @@
 }
 
 .decklist-cube-title {
-  color: var(--color-text-muted);
+  color: var(--color-gray);
   font-size: var(--decklist-label-font-size);
   text-transform: uppercase;
   margin-bottom: 0.25rem;
@@ -594,7 +594,7 @@
 }
 
 .decklist-cube-empty {
-  color: var(--color-text-muted);
+  color: var(--color-gray);
   font-size: 0.75rem;
   font-style: italic;
   padding-left: calc(2ch + 0.05rem);
@@ -606,20 +606,12 @@
   gap: 0.3rem;
 }
 
-.card-row.sb-added {
-  --card-ref-color: var(--color-accent-success);
-}
-
 .card-row.sb-added .card-qty {
-  color: var(--card-ref-color);
-}
-
-.card-row.sb-removed {
-  --card-ref-color: #cf7a7a;
+  color: var(--color-green);
 }
 
 .card-row.sb-removed .card-qty {
-  color: var(--card-ref-color);
+  color: var(--color-red);
 }
 
 .card-group {
@@ -627,7 +619,7 @@
 }
 
 .card-group-label {
-  color: var(--color-text-muted);
+  color: var(--color-gray);
   font-size: var(--decklist-label-font-size);
   text-transform: uppercase;
   margin-bottom: 0.25rem;
@@ -641,7 +633,7 @@
 }
 
 .card-qty {
-  color: var(--color-text-muted);
+  color: var(--color-gray);
   width: 2ch;
   text-align: right;
   flex: 0 0 2ch;
@@ -679,7 +671,7 @@
 }
 
 .mana-cost-token {
-  color: var(--color-text-muted);
+  color: var(--color-gray);
   font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace;
   font-size: var(--mana-symbol-size-sm);
   letter-spacing: 0.01em;
@@ -704,19 +696,35 @@
 }
 
 .card-ref {
-  color: var(--card-ref-color, var(--color-card-link));
+  color: var(--color-blue);
   cursor: pointer;
   text-decoration: none;
-  -webkit-tap-highlight-color: transparent;
+  -webkit-tap-highlight-color: var(--color-transparent);
 }
 
 .card-ref:hover,
 .card-ref:active,
 .card-ref:focus,
 .card-ref:focus-visible {
-  color: var(--card-ref-color, var(--color-card-link));
+  color: var(--color-blue);
   text-decoration: none;
   outline: none;
+}
+
+.card-row.sb-added .card-ref,
+.card-row.sb-added .card-ref:hover,
+.card-row.sb-added .card-ref:active,
+.card-row.sb-added .card-ref:focus,
+.card-row.sb-added .card-ref:focus-visible {
+  color: var(--color-green);
+}
+
+.card-row.sb-removed .card-ref,
+.card-row.sb-removed .card-ref:hover,
+.card-row.sb-removed .card-ref:active,
+.card-row.sb-removed .card-ref:focus,
+.card-row.sb-removed .card-ref:focus-visible {
+  color: var(--color-red);
 }
 
 .card-preview {
@@ -748,7 +756,7 @@
   height: 100%;
   object-fit: cover;
   border-radius: var(--radius-md);
-  box-shadow: var(--shadow-preview);
+  box-shadow: 0 4px 20px var(--color-shadow);
 }
 
 .card-preview.card-preview-double .card-preview-images img {
@@ -756,8 +764,8 @@
 }
 
 .card-preview-loading {
-  background: var(--color-panel-bg);
-  color: #ccc;
+  background: var(--color-black);
+  color: var(--color-gray);
   text-align: center;
   width: 100%;
   height: 100%;
@@ -766,12 +774,12 @@
   justify-content: center;
   border-radius: var(--radius-md);
   font-size: 0.8rem;
-  box-shadow: var(--shadow-preview);
+  box-shadow: 0 4px 20px var(--color-shadow);
 }
 
 details.collapsible {
-  background: var(--color-panel-bg);
-  border: var(--border-panel);
+  background: var(--color-surface);
+  border: 0;
   border-radius: var(--radius-md);
   padding: 0.5rem 0.75rem;
   margin: var(--pane-gap) 0;
@@ -792,7 +800,7 @@ details.collapsible summary::-webkit-details-marker {
 
 details.collapsible summary::after {
   content: '+';
-  color: var(--color-text-muted);
+  color: var(--color-gray);
   font-weight: 700;
 }
 
@@ -836,7 +844,7 @@ details.collapsible[open] summary::after {
   align-items: stretch;
   gap: 0.5rem;
   font-size: var(--font-size-sm);
-  color: var(--color-text-muted-2);
+  color: var(--color-gray);
 }
 
 .guide-select-main-row {
@@ -852,8 +860,8 @@ details.collapsible[open] summary::after {
 }
 
 .apply-sideboard-button.active {
-  background: #4a7d50;
-  border-color: var(--color-accent-success);
+  background: var(--color-green);
+  border-color: var(--color-green);
 }
 
 .guide-opponent-link {
@@ -868,17 +876,17 @@ details.collapsible[open] summary::after {
 .guide-opponent-link:active,
 .guide-opponent-link:focus,
 .guide-opponent-link:focus-visible {
-  background: var(--color-button-bg);
-  border-color: var(--color-button-border);
-  color: var(--color-text-strong);
+  background: var(--color-surface);
+  border-color: var(--color-gray);
+  color: var(--color-white);
   outline: none;
 }
 
 .guide-select select {
   width: 100%;
-  background: var(--color-control-bg);
-  color: var(--color-text-primary);
-  border: 1px solid var(--color-input-border);
+  background: var(--color-surface);
+  color: var(--color-white);
+  border: 1px solid var(--color-gray);
   border-radius: var(--radius-md);
   padding: 0.35rem 0.5rem;
   font-size: var(--font-size-sm);
@@ -887,12 +895,12 @@ details.collapsible[open] summary::after {
 .guide-select select:focus,
 .guide-select select:focus-visible,
 .guide-select select:active {
-  background: var(--color-control-bg);
-  color: var(--color-text-primary);
-  border-color: var(--color-input-border);
+  background: var(--color-surface);
+  color: var(--color-white);
+  border-color: var(--color-gray);
   outline: none;
   box-shadow: none;
-  -webkit-tap-highlight-color: transparent;
+  -webkit-tap-highlight-color: var(--color-transparent);
 }
 
 @media (max-width: 560px) {
@@ -913,7 +921,7 @@ details.collapsible[open] summary::after {
 .guide-editor-overlay {
   position: fixed;
   inset: 0;
-  background: var(--overlay-backdrop);
+  background: var(--color-overlay);
   z-index: 1200;
   display: flex;
   align-items: center;
@@ -924,8 +932,8 @@ details.collapsible[open] summary::after {
 .guide-editor-modal {
   width: min(780px, 100%);
   max-height: min(90vh, 900px);
-  background: var(--color-panel-bg);
-  border: var(--border-panel);
+  background: var(--color-surface);
+  border: 1px solid var(--color-gray);
   border-radius: var(--radius-md);
   padding: 0.75rem;
   display: grid;
@@ -943,9 +951,9 @@ details.collapsible[open] summary::after {
   min-height: 220px;
   resize: vertical;
   border-radius: var(--radius-md);
-  border: 1px solid var(--color-input-border);
-  background: var(--color-control-bg);
-  color: var(--color-text-primary);
+  border: 1px solid var(--color-gray);
+  background: var(--color-surface);
+  color: var(--color-white);
   padding: 0.6rem;
   font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace;
   font-size: 0.82rem;
@@ -965,7 +973,7 @@ details.collapsible[open] summary::after {
 .guide-editor-status {
   min-height: 1rem;
   font-size: 0.78rem;
-  color: #c3c3d0;
+  color: var(--color-gray);
 }
 
 .guide-plan {
@@ -976,7 +984,7 @@ details.collapsible[open] summary::after {
 }
 
 .guide-plan-col {
-  background: var(--color-control-bg);
+  background: var(--color-surface);
   border-radius: var(--radius-md);
   padding: 0.5rem 0.6rem;
 }
@@ -984,7 +992,7 @@ details.collapsible[open] summary::after {
 .guide-plan-title {
   text-transform: uppercase;
   font-size: 0.7rem;
-  color: var(--color-text-muted-2);
+  color: var(--color-gray);
   letter-spacing: 0.04em;
   margin-bottom: 0.25rem;
 }
@@ -1000,7 +1008,7 @@ details.collapsible[open] summary::after {
 }
 
 .guide-plan-none {
-  color: var(--color-text-muted);
+  color: var(--color-gray);
   font-style: italic;
 }
 

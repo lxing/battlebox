@@ -5,9 +5,9 @@
 }
 
 .draft-panel {
-  border: var(--border-panel);
+  border: 0;
   border-radius: var(--radius-md);
-  background: var(--color-panel-bg);
+  background: var(--color-surface);
   padding: 0.6rem;
 }
 
@@ -27,7 +27,7 @@
 }
 
 .draft-status-room {
-  color: var(--color-text-strong);
+  color: var(--color-white);
   font-size: 0.8rem;
   font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace;
   font-weight: 500;
@@ -39,7 +39,7 @@
 }
 
 .draft-status-cube {
-  color: var(--color-text-primary);
+  color: var(--color-white);
   font-size: 0.8rem;
   font-weight: 600;
   white-space: nowrap;
@@ -70,13 +70,13 @@
 
 .draft-status-seat,
 .draft-pack-pick {
-  color: var(--color-text-muted-2);
+  color: var(--color-gray);
   font-size: var(--font-size-sm);
   flex: 0 0 auto;
 }
 
 .draft-status-divider {
-  color: var(--color-text-muted-2);
+  color: var(--color-gray);
   font-size: var(--font-size-sm);
   line-height: 1;
   flex: 0 0 auto;
@@ -99,16 +99,16 @@
   border-radius: 999px;
   display: inline-block;
   flex: 0 0 auto;
-  background: #b34242;
-  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.4);
+  background: var(--color-red);
+  box-shadow: 0 0 0 1px var(--color-black);
 }
 
 .draft-connection-dot.is-online {
-  background: var(--color-accent-success);
+  background: var(--color-green);
 }
 
 .draft-connection-dot.is-offline {
-  background: #b34242;
+  background: var(--color-red);
 }
 
 .draft-pack-info-row {
@@ -157,8 +157,8 @@
   justify-content: center;
   font-size: 0.72rem;
   font-weight: 700;
-  color: rgba(245, 248, 255, 0.9);
-  background: rgba(0, 0, 0, 0.34);
+  color: var(--color-white);
+  background: var(--color-black);
   pointer-events: none;
   z-index: 2;
   user-select: none;
@@ -192,21 +192,18 @@
   width: 100%;
   min-height: 0;
   padding: 0;
-  border: 1px solid #000;
+  border: 1px solid var(--color-black);
   border-radius: 8px;
-  background: #111;
+  background: var(--color-black);
   overflow: hidden;
-  --draft-pack-selection-ring-color: transparent;
 }
 
 .draft-pack-card.is-mainboard {
-  border-color: var(--draft-pack-mainboard-border);
-  --draft-pack-selection-ring-color: var(--draft-pack-mainboard-ring);
+  border-color: var(--color-blue);
 }
 
 .draft-pack-card.is-sideboard {
-  border-color: var(--draft-pack-sideboard-border);
-  --draft-pack-selection-ring-color: var(--draft-pack-sideboard-ring);
+  border-color: var(--color-red);
 }
 
 .draft-pack-card[data-select-locked="1"] {
@@ -225,9 +222,17 @@
   content: '';
   position: absolute;
   inset: 0;
-  box-shadow: inset 0 0 0 var(--draft-pack-selection-ring-width) var(--draft-pack-selection-ring-color);
+  box-shadow: none;
   pointer-events: none;
   z-index: 1;
+}
+
+.draft-pack-card.is-mainboard .draft-pack-card-frame::after {
+  box-shadow: inset 0 0 0 var(--draft-pack-selection-ring-width) var(--color-blue);
+}
+
+.draft-pack-card.is-sideboard .draft-pack-card-frame::after {
+  box-shadow: inset 0 0 0 var(--draft-pack-selection-ring-width) var(--color-red);
 }
 
 .draft-pack-card img {
@@ -251,17 +256,17 @@
   font-weight: 700;
   line-height: 1;
   letter-spacing: 0.03em;
-  color: #f6f9ff;
+  color: var(--color-white);
   pointer-events: none;
   user-select: none;
 }
 
 .draft-pack-card-zone-tag.is-mainboard {
-  background: rgba(77, 141, 237, 0.88);
+  background: var(--color-blue);
 }
 
 .draft-pack-card-zone-tag.is-sideboard {
-  background: rgba(224, 95, 95, 0.9);
+  background: var(--color-red);
 }
 
 .draft-pack-card-fallback {
@@ -271,7 +276,7 @@
   align-items: center;
   justify-content: center;
   text-align: center;
-  color: #ddd;
+  color: var(--color-gray);
   font-size: 0.72rem;
   line-height: 1.25;
   padding: 0.35rem;
@@ -290,9 +295,9 @@
 }
 
 .draft-sideboard-mode-button.active {
-  background: #5e4141;
-  border-color: #d97f7f;
-  color: #ffe6e6;
+  background: var(--color-red);
+  border-color: var(--color-red);
+  color: var(--color-white);
 }
 
 .draft-picks-toolbar {
@@ -308,7 +313,7 @@
 }
 
 .draft-empty {
-  color: var(--color-text-muted-2);
+  color: var(--color-gray);
   font-size: var(--font-size-sm);
 }
 
@@ -329,15 +334,15 @@
 .draft-basics-backdrop {
   position: absolute;
   inset: 0;
-  background: var(--overlay-backdrop);
+  background: var(--color-overlay);
 }
 
 .draft-basics-dialog {
   position: relative;
   z-index: 1;
   width: min(680px, 100%);
-  background: var(--color-panel-bg);
-  border: var(--border-panel);
+  background: var(--color-surface);
+  border: 0;
   border-radius: var(--radius-md);
   padding: 0.55rem;
 }
@@ -353,7 +358,7 @@
 }
 
 .draft-basics-card-button {
-  background: transparent;
+  background: var(--color-transparent);
   border: 0;
   padding: 0;
   margin: 0;
@@ -371,9 +376,9 @@
 .draft-basics-card-image {
   position: relative;
   display: block;
-  border: 1px solid #000;
+  border: 1px solid var(--color-black);
   border-radius: 8px;
-  background: #111;
+  background: var(--color-black);
   overflow: hidden;
   aspect-ratio: 63 / 88;
 }
@@ -385,7 +390,7 @@
   right: 0;
   top: 50%;
   height: 1px;
-  background: rgba(0, 0, 0, 0.42);
+  background: var(--color-black);
   z-index: 2;
   pointer-events: none;
 }
@@ -404,7 +409,7 @@
   align-items: center;
   justify-content: center;
   text-align: center;
-  color: #ddd;
+  color: var(--color-gray);
   font-size: 0.72rem;
   line-height: 1.25;
   padding: 0.35rem;
@@ -421,12 +426,12 @@
   min-width: 1.05rem;
   min-height: 1.05rem;
   border-radius: 999px;
-  border: 1px solid rgba(240, 245, 255, 0.32);
-  background: rgba(20, 30, 45, 0.88);
+  border: 1px solid var(--color-white);
+  background: var(--color-black);
   font-size: 0.68rem;
   font-weight: 700;
-  color: #f3f6ff;
-  text-shadow: 0 1px 1px rgba(0, 0, 0, 0.8);
+  color: var(--color-white);
+  text-shadow: 0 1px 1px var(--color-black);
   user-select: none;
   pointer-events: none;
 }
@@ -452,14 +457,14 @@
   font-size: 0.68rem;
   line-height: 1.2;
   font-weight: 700;
-  color: #f6f9ff;
-  border: 1px solid rgba(240, 245, 255, 0.28);
-  background: rgba(18, 28, 42, 0.92);
+  color: var(--color-white);
+  border: 1px solid var(--color-white);
+  background: var(--color-black);
   pointer-events: none;
 }
 
 .draft-basics-card-name {
-  color: var(--color-text-muted-2);
+  color: var(--color-gray);
   font-size: 0.7rem;
   line-height: 1.2;
   text-align: center;
@@ -479,7 +484,7 @@
 
 .draft-basics-status {
   margin-top: 0.3rem;
-  color: var(--color-text-muted-2);
+  color: var(--color-gray);
   font-size: var(--font-size-sm);
 }
 

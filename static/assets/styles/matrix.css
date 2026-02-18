@@ -7,9 +7,9 @@
 
 .matrix-scroll {
   overflow: auto;
-  border: var(--border-panel);
+  border: 1px solid var(--color-gray);
   border-radius: var(--radius-md);
-  background: var(--color-control-bg);
+  background: var(--color-surface);
 }
 
 .winrate-matrix {
@@ -21,7 +21,7 @@
 
 .winrate-matrix th,
 .winrate-matrix td {
-  border: 1px solid #2d2d4a;
+  border: 1px solid var(--color-gray);
   padding: 0.32rem 0.45rem;
   text-align: center;
   white-space: nowrap;
@@ -32,15 +32,15 @@
   left: 0;
   top: 0;
   z-index: 4;
-  background: var(--color-matrix-head-bg);
+  background: var(--color-surface);
 }
 
 .matrix-col-head {
   position: sticky;
   top: 0;
   z-index: 3;
-  background: var(--color-matrix-head-bg);
-  color: #f0f0f8;
+  background: var(--color-surface);
+  color: var(--color-white);
   font-weight: 600;
   width: 2.2rem;
   min-width: 2.2rem;
@@ -65,40 +65,40 @@
   left: 0;
   z-index: 2;
   text-align: left !important;
-  background: var(--color-matrix-row-head-bg);
-  color: #f0f0f8;
+  background: var(--color-surface);
+  color: var(--color-white);
   font-weight: 600;
 }
 
 .matrix-cell {
-  color: #101010;
+  color: var(--color-black);
   white-space: normal;
   line-height: 1.05;
-  background: var(--color-matrix-cell-default);
+  background: var(--color-gray);
 }
 
 .matrix-cell-band-0 {
-  background: var(--color-matrix-band-0);
+  background: var(--color-red);
 }
 
 .matrix-cell-band-1 {
-  background: var(--color-matrix-band-1);
+  background: var(--color-brown);
 }
 
 .matrix-cell-band-2 {
-  background: var(--color-matrix-band-2);
+  background: var(--color-yellow);
 }
 
 .matrix-cell-band-3 {
-  background: var(--color-matrix-band-3);
+  background: var(--color-green);
 }
 
 .matrix-cell-band-4 {
-  background: var(--color-matrix-band-4);
+  background: var(--color-green);
 }
 
 .matrix-cell-band-5 {
-  background: var(--color-matrix-band-5);
+  background: var(--color-blue);
 }
 
 .matrix-cell-main {
@@ -107,44 +107,44 @@
 
 .matrix-cell-record {
   margin-top: 0.12rem;
-  color: #181818;
+  color: var(--color-black);
   font-size: 0.65rem;
 }
 
 .matrix-cell-empty {
-  color: #8b8ba6;
+  color: var(--color-gray);
 }
 
 .matrix-row-selected > .matrix-row-head {
-  background: #3a3a5d;
+  background: var(--color-gray);
 }
 
 .matrix-row-selected > .matrix-cell {
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.3), inset 0 -1px 0 rgba(255, 255, 255, 0.3);
+  box-shadow: inset 0 1px 0 var(--color-white), inset 0 -1px 0 var(--color-white);
 }
 
 .matrix-col-matchup {
-  background: var(--color-matrix-col-highlight-bg);
+  background: var(--color-blue);
 }
 
 .matrix-cell-col-matchup {
-  box-shadow: inset 1px 0 0 rgba(170, 205, 255, 0.28), inset -1px 0 0 rgba(170, 205, 255, 0.28);
+  box-shadow: inset 1px 0 0 var(--color-blue), inset -1px 0 0 var(--color-blue);
 }
 
 .matrix-cell-matchup {
-  box-shadow: inset 0 0 0 2px rgba(230, 240, 255, 0.9);
+  box-shadow: inset 0 0 0 2px var(--color-white);
 }
 
 .matrix-row-selected > .matrix-cell.matrix-cell-matchup {
   box-shadow:
-    inset 0 0 0 2px rgba(230, 240, 255, 0.95),
-    inset 0 1px 0 rgba(255, 255, 255, 0.3),
-    inset 0 -1px 0 rgba(255, 255, 255, 0.3);
+    inset 0 0 0 2px var(--color-white),
+    inset 0 1px 0 var(--color-white),
+    inset 0 -1px 0 var(--color-white);
 }
 
 .matrix-empty,
 .aux-empty {
-  color: #b8b8cf;
+  color: var(--color-gray);
   font-size: 0.9rem;
   padding: 0.5rem 0.1rem;
 }
@@ -165,9 +165,9 @@
   width: 100%;
   min-width: 0;
   min-height: var(--control-height-md);
-  background: var(--color-control-bg);
-  color: var(--color-text-primary);
-  border: 1px solid var(--color-input-border);
+  background: var(--color-surface);
+  color: var(--color-white);
+  border: 1px solid var(--color-gray);
   border-radius: var(--radius-md);
   padding: 0 0.55rem;
   font-size: var(--font-size-sm);
@@ -176,12 +176,12 @@
 .lobby-deck-select:focus,
 .lobby-deck-select:focus-visible,
 .lobby-deck-select:active {
-  background: var(--color-control-bg);
-  color: var(--color-text-primary);
-  border-color: var(--color-input-border);
+  background: var(--color-surface);
+  color: var(--color-white);
+  border-color: var(--color-gray);
   outline: none;
   box-shadow: none;
-  -webkit-tap-highlight-color: transparent;
+  -webkit-tap-highlight-color: var(--color-transparent);
 }
 
 .lobby-start-row .action-button {
@@ -206,9 +206,9 @@
 }
 
 .lobby-room-item {
-  border: var(--border-panel);
+  border: 0;
   border-radius: var(--radius-md);
-  background: var(--color-control-bg);
+  background: var(--color-surface);
   padding: 0.55rem 0.65rem;
   display: flex;
   flex-direction: column;
@@ -224,13 +224,13 @@
 
 .lobby-room-id {
   font-size: 0.8rem;
-  color: var(--color-text-strong);
+  color: var(--color-white);
   font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace;
 }
 
 .lobby-room-cube {
   font-size: 0.8rem;
-  color: var(--color-text-primary);
+  color: var(--color-white);
   font-weight: 600;
   text-align: right;
 }
@@ -246,19 +246,19 @@
 }
 
 .lobby-room-delete-button.is-armed {
-  background: var(--draft-pack-sideboard-border);
-  border-color: var(--draft-pack-sideboard-border);
-  color: #fff;
+  background: var(--color-red);
+  border-color: var(--color-red);
+  color: var(--color-white);
 }
 
 .lobby-room-delete-button.is-armed:hover {
-  background: var(--draft-pack-sideboard-ring);
-  border-color: var(--draft-pack-sideboard-border);
+  background: var(--color-red);
+  border-color: var(--color-red);
 }
 
 .lobby-room-meta {
   font-size: 0.74rem;
-  color: var(--color-text-muted-2);
+  color: var(--color-gray);
 }
 
 .lobby-room-actions {
