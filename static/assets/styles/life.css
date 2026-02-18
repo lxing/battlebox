@@ -33,6 +33,10 @@
 }
 
 .life-player {
+  --token-edge-inset: 0.42rem;
+  --token-toggle-size: 2.1rem;
+  --token-toggle-gap: 0.2rem;
+  --token-menu-width: calc((var(--token-toggle-size) * 2) + var(--token-toggle-gap));
   position: relative;
   display: flex;
   align-items: center;
@@ -60,12 +64,10 @@
 }
 
 .life-token-menu {
-  --token-toggle-size: 2.1rem;
-  --token-toggle-gap: 0.2rem;
   position: absolute;
   z-index: 2;
-  right: 0.42rem;
-  bottom: 0.42rem;
+  right: var(--token-edge-inset);
+  bottom: var(--token-edge-inset);
 }
 
 .life-token-menu-button {
@@ -133,15 +135,15 @@
 .life-token-counters {
   --token-counter-height: 2.55rem;
   --token-counter-gap: 0.22rem;
-  --token-counter-max-width: calc(50% - 0.7rem);
-  --token-counter-width: min(6.6rem, calc((var(--token-counter-max-width) - (var(--token-counter-gap) * 2)) / 3));
+  --token-counter-max-width: max(0px, calc(100% - var(--token-edge-inset) - var(--token-menu-width)));
+  --token-counter-width: calc((var(--token-counter-max-width) - (var(--token-counter-gap) * 2)) / 3);
   position: absolute;
   z-index: 2;
-  left: 0.42rem;
-  bottom: 0.42rem;
-  width: calc((var(--token-counter-width) * 3) + (var(--token-counter-gap) * 2));
+  left: 0;
+  bottom: var(--token-edge-inset);
+  width: var(--token-counter-max-width);
   height: calc((var(--token-counter-height) * 2) + var(--token-counter-gap));
-  max-width: var(--token-counter-max-width);
+  overflow: hidden;
 }
 
 .life-token-ticker {
@@ -180,32 +182,32 @@
 }
 
 .life-token-slot-a {
-  right: 0;
+  left: 0;
   bottom: 0;
 }
 
 .life-token-slot-b {
-  right: calc((var(--token-counter-width) * 1) + (var(--token-counter-gap) * 1));
+  left: calc((var(--token-counter-width) * 1) + (var(--token-counter-gap) * 1));
   bottom: 0;
 }
 
 .life-token-slot-c {
-  right: calc((var(--token-counter-width) * 2) + (var(--token-counter-gap) * 2));
+  left: calc((var(--token-counter-width) * 2) + (var(--token-counter-gap) * 2));
   bottom: 0;
 }
 
 .life-token-slot-d {
-  right: 0;
+  left: 0;
   bottom: calc(var(--token-counter-height) + var(--token-counter-gap));
 }
 
 .life-token-slot-e {
-  right: calc((var(--token-counter-width) * 1) + (var(--token-counter-gap) * 1));
+  left: calc((var(--token-counter-width) * 1) + (var(--token-counter-gap) * 1));
   bottom: calc(var(--token-counter-height) + var(--token-counter-gap));
 }
 
 .life-token-slot-f {
-  right: calc((var(--token-counter-width) * 2) + (var(--token-counter-gap) * 2));
+  left: calc((var(--token-counter-width) * 2) + (var(--token-counter-gap) * 2));
   bottom: calc(var(--token-counter-height) + var(--token-counter-gap));
 }
 
