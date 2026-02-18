@@ -1,10 +1,7 @@
 +3 [[Aura of Silence]]
 +3 [[Xantid Swarm]]
--3 [[Elephant Grass]]
--1 [[Mobilization]]
--1 [[Opalescence]]
--1 [[Worship]]
+-4 [[Elephant Grass]]
+-1 [[Solitary Confinement]]
+-1 [[Parallax Wave]]
 
-<AI-generated placeholder. Probably nonsense>
-
-[[Aura of Silence]] is your best answer to [[Stasis]] and [[Black Vise]], and [[Xantid Swarm]] helps force it through countermagic.
+[[Aura of Silence]] for redundancy against [[Stasis]] and [[Black Vise]]. [[Xantid Swarm]] to power through countermagic.

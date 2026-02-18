@@ -1,8 +1,6 @@
 +4 [[Pyrokinesis]]
 +2 [[Cave-In]]
--4 [[Counterspell]]
--2 [[Daze]]
+-4 [[Daze]]
+-2 [[Careful Study]]
 
-<AI-generated placeholder. Probably nonsense>
-
-[[Pyrokinesis]] and [[Cave-In]] break up their mana engine and sweep early boards before they can stabilize.
+Trade in your worthless counterspells for a broad sweeper.

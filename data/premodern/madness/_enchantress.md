@@ -1,10 +1,6 @@
 +3 [[Naturalize]]
-+2 [[Cave-in]]
--2 [[Careful Study]]
 -1 [[Gilded Drake]]
 -1 [[Wonder]]
 -1 [[Waterfront Bouncer]]
 
-<AI-generated placeholder. Probably nonsense>
-
-Use [[Naturalize]] to keep [[Elephant Grass]] and [[Solitary Confinement]] off the table, and [[Tsabo's Web]] pressures [[Serra's Sanctum]].
+Build up a big board state and [[Naturalize]] a prison piece for an alpha strike. You can marginally  disrupt their engine with countermagic, optionally boarding in [[Cave-in]] to neutralize [[Argothian Enchantress]] and [[Xantid Swarm]].
