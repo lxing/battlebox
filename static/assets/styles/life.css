@@ -5,6 +5,13 @@
   gap: var(--pane-gap);
 }
 
+.life-counter,
+.life-counter * {
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-touch-callout: none;
+}
+
 .life-controls {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -52,11 +59,20 @@
   pointer-events: none;
 }
 
-.life-blood-toggle {
+.life-token-toggle-grid {
   position: absolute;
   z-index: 2;
-  width: 2.1rem;
-  min-width: 2.1rem;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.2rem;
+  left: 0.42rem;
+  bottom: 0.42rem;
+  width: 4.4rem;
+}
+
+.life-token-toggle {
+  width: 100%;
+  min-width: 0;
   height: 2.1rem;
   min-height: 2.1rem;
   padding: 0;
@@ -68,31 +84,32 @@
   line-height: 1;
 }
 
-.life-blood-toggle.active {
+.life-token-toggle.active {
   background: var(--color-blue);
   border-color: var(--color-blue);
   color: var(--color-white);
 }
 
-.life-blood-toggle-p1 {
-  left: 0.42rem;
-  bottom: 0.42rem;
-}
-
-.life-blood-toggle-p2 {
-  left: 0.42rem;
-  bottom: 0.42rem;
-}
-
-.life-blood-ticker {
+.life-token-counters {
+  --token-counter-width: 6.6rem;
+  --token-counter-height: 2.55rem;
+  --token-counter-gap: 0.22rem;
   position: absolute;
   z-index: 2;
+  right: 0.42rem;
+  bottom: 0.42rem;
+  width: calc((var(--token-counter-width) * 2) + var(--token-counter-gap));
+  height: calc((var(--token-counter-height) * 2) + var(--token-counter-gap));
+}
+
+.life-token-ticker {
+  position: absolute;
   display: grid;
   grid-template-columns: 1.2rem minmax(0, 1fr) 1.2rem;
   align-items: center;
   justify-items: center;
-  width: 6.6rem;
-  height: 2.55rem;
+  width: var(--token-counter-width);
+  height: var(--token-counter-height);
   padding: 0.2rem 0.2rem;
   border: 1px solid var(--color-gray);
   border-radius: var(--radius-md);
@@ -103,11 +120,11 @@
   touch-action: manipulation;
 }
 
-.life-blood-ticker[hidden] {
+.life-token-ticker[hidden] {
   display: none !important;
 }
 
-.life-blood-ticker::before {
+.life-token-ticker::before {
   content: '';
   position: absolute;
   left: 50%;
@@ -120,17 +137,27 @@
   bottom: 0.42rem;
 }
 
-.life-blood-ticker-p1 {
-  right: 0.42rem;
-  bottom: 0.42rem;
+.life-token-slot-a {
+  right: 0;
+  bottom: 0;
 }
 
-.life-blood-ticker-p2 {
-  right: 0.42rem;
-  bottom: 0.42rem;
+.life-token-slot-b {
+  right: calc(var(--token-counter-width) + var(--token-counter-gap));
+  bottom: 0;
 }
 
-.life-blood-ticker .life-hit-hint {
+.life-token-slot-c {
+  right: 0;
+  bottom: calc(var(--token-counter-height) + var(--token-counter-gap));
+}
+
+.life-token-slot-d {
+  right: calc(var(--token-counter-width) + var(--token-counter-gap));
+  bottom: calc(var(--token-counter-height) + var(--token-counter-gap));
+}
+
+.life-token-ticker .life-hit-hint {
   position: static;
   top: auto;
   transform: none;
@@ -143,7 +170,7 @@
   opacity: 0.55;
 }
 
-.life-blood-center {
+.life-token-center {
   position: relative;
   z-index: 1;
   display: grid;
@@ -156,13 +183,13 @@
   gap: 0.16rem;
 }
 
-.life-blood-total {
+.life-token-total {
   font-size: 1.02rem;
   font-weight: 700;
   line-height: 1;
 }
 
-.life-blood-icon {
+.life-token-icon {
   position: static;
   font-size: 0.87rem;
   line-height: 1;

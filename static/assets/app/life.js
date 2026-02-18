@@ -10,8 +10,16 @@ const HOLD_REPEAT_MS = 500;
 const HOLD_DELTA_MULTIPLIER = 10;
 const RESET_HIGHLIGHT_MS = 10000;
 const RESET_CONFIRM_WINDOW_MS = 2500;
-const BLOOD_TOKEN_MIN = 0;
-const BLOOD_TOKEN_MAX = 20;
+const TOKEN_MIN = 0;
+const TOKEN_MAX = 20;
+const TOKEN_TYPES = [
+  { id: 'blood', icon: '🩸', label: 'Blood' },
+  { id: 'treasure', icon: '💰', label: 'Treasure' },
+  { id: 'food', icon: '🍔', label: 'Food' },
+  { id: 'clue', icon: '🔎', label: 'Clue' },
+];
+const TOKEN_IDS = TOKEN_TYPES.map((token) => token.id);
+const TOKEN_SLOT_CLASSES = ['life-token-slot-a', 'life-token-slot-b', 'life-token-slot-c', 'life-token-slot-d'];
 
 function parseLifeTotal(value, fallback) {
   const parsed = Number.parseInt(String(value), 10);
@@ -22,19 +30,90 @@ function parseMonarchOwner(value) {
   return value === 'p1' || value === 'p2' ? value : null;
 }
 
-function clampBloodTotal(value) {
-  return Math.max(BLOOD_TOKEN_MIN, Math.min(BLOOD_TOKEN_MAX, value));
+function createTokenMap(initialValue) {
+  return TOKEN_IDS.reduce((acc, tokenId) => {
+    acc[tokenId] = initialValue;
+    return acc;
+  }, {});
 }
 
-function parseBloodTotal(value) {
-  if (value === null) return null;
+function clampTokenCount(value) {
+  return Math.max(TOKEN_MIN, Math.min(TOKEN_MAX, value));
+}
+
+function parseTokenCount(value) {
+  if (value === null || value === undefined) return null;
   const parsed = Number.parseInt(String(value), 10);
   if (Number.isNaN(parsed)) return null;
-  return clampBloodTotal(parsed);
+  return clampTokenCount(parsed);
 }
 
-function parseBloodVisible(value) {
+function parseTokenVisible(value) {
   return value === true;
+}
+
+function parseTokenCounts(value) {
+  const counts = createTokenMap(null);
+  TOKEN_IDS.forEach((tokenId) => {
+    counts[tokenId] = parseTokenCount(value?.[tokenId]);
+  });
+  return counts;
+}
+
+function parseTokenVisibility(value) {
+  const visible = createTokenMap(false);
+  TOKEN_IDS.forEach((tokenId) => {
+    visible[tokenId] = parseTokenVisible(value?.[tokenId]);
+  });
+  return visible;
+}
+
+function parseTokenOrder(value) {
+  if (!Array.isArray(value)) return [];
+  const order = [];
+  value.forEach((tokenId) => {
+    if (!TOKEN_IDS.includes(tokenId)) return;
+    if (order.includes(tokenId)) return;
+    order.push(tokenId);
+  });
+  return order;
+}
+
+function serializeTokenCounts(value) {
+  const counts = createTokenMap(null);
+  TOKEN_IDS.forEach((tokenId) => {
+    counts[tokenId] = value?.[tokenId] ?? null;
+  });
+  return counts;
+}
+
+function serializeTokenVisibility(value) {
+  const visible = createTokenMap(false);
+  TOKEN_IDS.forEach((tokenId) => {
+    visible[tokenId] = value?.[tokenId] === true;
+  });
+  return visible;
+}
+
+function buildTokenToggleGridHtml(player) {
+  const buttons = TOKEN_TYPES.map((token) => (
+    `<button type="button" class="static-button life-token-toggle life-token-toggle-${token.id}" data-life-token-toggle data-player="${player}" data-token="${token.id}" data-life-control aria-label="Toggle player ${player === 'p1' ? '1' : '2'} ${token.label.toLowerCase()} counter">${token.icon}</button>`
+  )).join('');
+  return `<div class="life-token-toggle-grid life-token-toggle-grid-${player}" data-life-token-toggle-grid="${player}" data-life-control>${buttons}</div>`;
+}
+
+function buildTokenTickersHtml(player) {
+  const tickers = TOKEN_TYPES.map((token) => (
+    `<div class="life-token-ticker" data-life-token-ticker data-player="${player}" data-token="${token.id}" data-life-control aria-label="Player ${player === 'p1' ? '1' : '2'} ${token.label.toLowerCase()} counter" hidden>
+      <span class="life-hit-hint life-hit-hint-left" aria-hidden="true">-</span>
+      <span class="life-token-center">
+        <span class="life-token-icon" aria-hidden="true">${token.icon}</span>
+        <span class="life-token-total" data-life-token-total data-player="${player}" data-token="${token.id}">1</span>
+      </span>
+      <span class="life-hit-hint life-hit-hint-right" aria-hidden="true">+</span>
+    </div>`
+  )).join('');
+  return `<div class="life-token-counters life-token-counters-${player}" data-life-token-counters="${player}" data-life-control>${tickers}</div>`;
 }
 
 function readLifeState(startingLife) {
@@ -43,13 +122,17 @@ function readLifeState(startingLife) {
     p2: startingLife,
     monarch: null,
     initiative: createInitialInitiativeState(),
-    blood: {
-      p1: null,
-      p2: null,
+    tokens: {
+      p1: createTokenMap(null),
+      p2: createTokenMap(null),
     },
-    bloodVisible: {
-      p1: false,
-      p2: false,
+    tokenVisible: {
+      p1: createTokenMap(false),
+      p2: createTokenMap(false),
+    },
+    tokenOrder: {
+      p1: [],
+      p2: [],
     },
   };
   try {
@@ -61,13 +144,17 @@ function readLifeState(startingLife) {
       p2: parseLifeTotal(parsed?.p2, startingLife),
       monarch: parseMonarchOwner(parsed?.monarch),
       initiative: createInitialInitiativeState(parsed?.initiative),
-      blood: {
-        p1: parseBloodTotal(parsed?.blood?.p1),
-        p2: parseBloodTotal(parsed?.blood?.p2),
+      tokens: {
+        p1: parseTokenCounts(parsed?.tokens?.p1),
+        p2: parseTokenCounts(parsed?.tokens?.p2),
       },
-      bloodVisible: {
-        p1: parseBloodVisible(parsed?.bloodVisible?.p1),
-        p2: parseBloodVisible(parsed?.bloodVisible?.p2),
+      tokenVisible: {
+        p1: parseTokenVisibility(parsed?.tokenVisible?.p1),
+        p2: parseTokenVisibility(parsed?.tokenVisible?.p2),
+      },
+      tokenOrder: {
+        p1: parseTokenOrder(parsed?.tokenOrder?.p1),
+        p2: parseTokenOrder(parsed?.tokenOrder?.p2),
       },
     };
   } catch (_) {
@@ -84,13 +171,17 @@ function writeLifeState(state) {
         p2: state.p2,
         monarch: parseMonarchOwner(state.monarch),
         initiative: createInitialInitiativeState(state.initiative),
-        blood: {
-          p1: state.blood?.p1 ?? null,
-          p2: state.blood?.p2 ?? null,
+        tokens: {
+          p1: serializeTokenCounts(state.tokens?.p1),
+          p2: serializeTokenCounts(state.tokens?.p2),
         },
-        bloodVisible: {
-          p1: state.bloodVisible?.p1 === true,
-          p2: state.bloodVisible?.p2 === true,
+        tokenVisible: {
+          p1: serializeTokenVisibility(state.tokenVisible?.p1),
+          p2: serializeTokenVisibility(state.tokenVisible?.p2),
+        },
+        tokenOrder: {
+          p1: parseTokenOrder(state.tokenOrder?.p1),
+          p2: parseTokenOrder(state.tokenOrder?.p2),
         },
       })
     );
@@ -133,15 +224,8 @@ export function createLifeCounter(container, startingLife = 20) {
   container.innerHTML = `
     <div class="life-counter" aria-label="Life counter">
       <section class="life-player life-player-top" data-player="p2" aria-label="Player 2 life total">
-        <button type="button" class="static-button life-blood-toggle life-blood-toggle-p2" data-life-blood-toggle="p2" data-life-control aria-label="Toggle player 2 blood counter">🩸</button>
-        <div class="life-blood-ticker life-blood-ticker-p2" data-life-blood-ticker="p2" data-player="p2" data-life-control aria-label="Player 2 blood counter" hidden>
-          <span class="life-hit-hint life-hit-hint-left" aria-hidden="true">-</span>
-          <span class="life-blood-center">
-            <span class="life-blood-icon" aria-hidden="true">🩸</span>
-            <span class="life-blood-total" data-life-blood-total="p2">1</span>
-          </span>
-          <span class="life-hit-hint life-hit-hint-right" aria-hidden="true">+</span>
-        </div>
+        ${buildTokenToggleGridHtml('p2')}
+        ${buildTokenTickersHtml('p2')}
         <span class="life-player-icon life-player-icon-p2" aria-hidden="true">🐭</span>
         <span class="life-monarch life-monarch-p2" data-life-monarch="p2" aria-hidden="true" hidden>👑</span>
         <span class="life-initiative life-initiative-p2" data-life-initiative="p2" aria-hidden="true" hidden>♿️</span>
@@ -155,15 +239,8 @@ export function createLifeCounter(container, startingLife = 20) {
         <button type="button" class="static-button life-control-button" id="life-right-button" aria-label="Open initiative tracker">♿️</button>
       </section>
       <section class="life-player life-player-bottom" data-player="p1" aria-label="Player 1 life total">
-        <button type="button" class="static-button life-blood-toggle life-blood-toggle-p1" data-life-blood-toggle="p1" data-life-control aria-label="Toggle player 1 blood counter">🩸</button>
-        <div class="life-blood-ticker life-blood-ticker-p1" data-life-blood-ticker="p1" data-player="p1" data-life-control aria-label="Player 1 blood counter" hidden>
-          <span class="life-hit-hint life-hit-hint-left" aria-hidden="true">-</span>
-          <span class="life-blood-center">
-            <span class="life-blood-icon" aria-hidden="true">🩸</span>
-            <span class="life-blood-total" data-life-blood-total="p1">1</span>
-          </span>
-          <span class="life-hit-hint life-hit-hint-right" aria-hidden="true">+</span>
-        </div>
+        ${buildTokenToggleGridHtml('p1')}
+        ${buildTokenTickersHtml('p1')}
         <span class="life-player-icon life-player-icon-p1" aria-hidden="true">🐿️</span>
         <span class="life-monarch life-monarch-p1" data-life-monarch="p1" aria-hidden="true" hidden>👑</span>
         <span class="life-initiative life-initiative-p1" data-life-initiative="p1" aria-hidden="true" hidden>♿️</span>
@@ -193,18 +270,36 @@ export function createLifeCounter(container, startingLife = 20) {
     p1: container.querySelector('[data-life-initiative="p1"]'),
     p2: container.querySelector('[data-life-initiative="p2"]'),
   };
-  const bloodButtons = {
-    p1: container.querySelector('[data-life-blood-toggle="p1"]'),
-    p2: container.querySelector('[data-life-blood-toggle="p2"]'),
+  const tokenToggleButtons = {
+    p1: createTokenMap(null),
+    p2: createTokenMap(null),
   };
-  const bloodTickers = {
-    p1: container.querySelector('[data-life-blood-ticker="p1"]'),
-    p2: container.querySelector('[data-life-blood-ticker="p2"]'),
+  const tokenTickers = {
+    p1: createTokenMap(null),
+    p2: createTokenMap(null),
   };
-  const bloodTotals = {
-    p1: container.querySelector('[data-life-blood-total="p1"]'),
-    p2: container.querySelector('[data-life-blood-total="p2"]'),
+  const tokenTotals = {
+    p1: createTokenMap(null),
+    p2: createTokenMap(null),
   };
+  container.querySelectorAll('[data-life-token-toggle]').forEach((button) => {
+    const player = button.dataset.player === 'p2' ? 'p2' : 'p1';
+    const tokenId = button.dataset.token;
+    if (!TOKEN_IDS.includes(tokenId)) return;
+    tokenToggleButtons[player][tokenId] = button;
+  });
+  container.querySelectorAll('[data-life-token-ticker]').forEach((ticker) => {
+    const player = ticker.dataset.player === 'p2' ? 'p2' : 'p1';
+    const tokenId = ticker.dataset.token;
+    if (!TOKEN_IDS.includes(tokenId)) return;
+    tokenTickers[player][tokenId] = ticker;
+  });
+  container.querySelectorAll('[data-life-token-total]').forEach((total) => {
+    const player = total.dataset.player === 'p2' ? 'p2' : 'p1';
+    const tokenId = total.dataset.token;
+    if (!TOKEN_IDS.includes(tokenId)) return;
+    tokenTotals[player][tokenId] = total;
+  });
 
   const render = () => {
     totals.p1.textContent = String(state.p1);
@@ -230,22 +325,42 @@ export function createLifeCounter(container, startingLife = 20) {
       marker.hidden = owner !== player;
     });
   };
-  const renderBlood = () => {
+  const renderTokens = () => {
     ['p1', 'p2'].forEach((player) => {
-      const button = bloodButtons[player];
-      const ticker = bloodTickers[player];
-      const total = bloodTotals[player];
-      const visible = state.bloodVisible[player] === true;
-      const value = state.blood[player] === null ? 1 : clampBloodTotal(state.blood[player]);
-      if (button) {
-        button.classList.toggle('active', visible);
-      }
-      if (ticker) {
-        ticker.hidden = !visible;
-      }
-      if (total) {
-        total.textContent = String(value);
-      }
+      const orderedVisible = state.tokenOrder[player].filter((tokenId) => state.tokenVisible[player][tokenId] === true);
+      TOKEN_IDS.forEach((tokenId) => {
+        const button = tokenToggleButtons[player][tokenId];
+        const ticker = tokenTickers[player][tokenId];
+        const total = tokenTotals[player][tokenId];
+        const visible = state.tokenVisible[player][tokenId] === true;
+        const positioned = orderedVisible.includes(tokenId);
+        if (button) {
+          button.classList.toggle('active', visible);
+        }
+        if (ticker) {
+          ticker.hidden = !visible || !positioned;
+          TOKEN_SLOT_CLASSES.forEach((slotClass) => {
+            ticker.classList.remove(slotClass);
+          });
+        }
+        if (total) {
+          const value = state.tokens[player][tokenId] === null ? 1 : clampTokenCount(state.tokens[player][tokenId]);
+          total.textContent = String(value);
+        }
+      });
+
+      const visibleCount = orderedVisible.length;
+      const slotOrder = visibleCount >= 4
+        ? TOKEN_SLOT_CLASSES
+        : TOKEN_SLOT_CLASSES.slice(0, visibleCount);
+      orderedVisible.forEach((tokenId, index) => {
+        const ticker = tokenTickers[player][tokenId];
+        if (!ticker) return;
+        const slotClass = slotOrder[index];
+        if (slotClass) {
+          ticker.classList.add(slotClass);
+        }
+      });
     });
   };
   const initiativeOverlay = createInitiativeOverlay(container, state, () => {
@@ -258,26 +373,29 @@ export function createLifeCounter(container, startingLife = 20) {
     render();
     writeLifeState(state);
   };
-  const applyBloodDelta = (player, delta) => {
-    const current = state.blood[player] === null ? 1 : state.blood[player];
-    const next = clampBloodTotal(current + delta);
-    state.blood[player] = next;
-    renderBlood();
+  const applyTokenDelta = (player, tokenId, delta) => {
+    const current = state.tokens[player][tokenId] === null ? 1 : state.tokens[player][tokenId];
+    const next = clampTokenCount(current + delta);
+    state.tokens[player][tokenId] = next;
+    renderTokens();
     writeLifeState(state);
   };
-  const toggleBloodTicker = (player) => {
-    const visible = state.bloodVisible[player] === true;
+  const toggleTokenTicker = (player, tokenId) => {
+    const visible = state.tokenVisible[player][tokenId] === true;
     if (visible) {
-      state.bloodVisible[player] = false;
-      renderBlood();
+      state.tokenVisible[player][tokenId] = false;
+      state.tokenOrder[player] = state.tokenOrder[player].filter((value) => value !== tokenId);
+      renderTokens();
       writeLifeState(state);
       return;
     }
-    if (state.blood[player] === null) {
-      state.blood[player] = 1;
+    if (state.tokens[player][tokenId] === null) {
+      state.tokens[player][tokenId] = 1;
     }
-    state.bloodVisible[player] = true;
-    renderBlood();
+    state.tokenVisible[player][tokenId] = true;
+    state.tokenOrder[player] = state.tokenOrder[player].filter((value) => value !== tokenId);
+    state.tokenOrder[player].push(tokenId);
+    renderTokens();
     writeLifeState(state);
   };
 
@@ -393,13 +511,15 @@ export function createLifeCounter(container, startingLife = 20) {
       applyDelta(player, delta);
     });
   };
-  const onBloodPointerDown = (event) => {
+  const onTokenPointerDown = (event) => {
     const ticker = event.currentTarget;
     const interaction = getLifeInteraction(ticker, event);
     if (!interaction) return;
     const player = interaction.player;
+    const tokenId = ticker.dataset.token;
+    if (!TOKEN_IDS.includes(tokenId)) return;
     startHoldInteraction(event, ticker, interaction, (delta) => {
-      applyBloodDelta(player, delta);
+      applyTokenDelta(player, tokenId, delta);
     });
   };
 
@@ -429,22 +549,24 @@ export function createLifeCounter(container, startingLife = 20) {
       event.stopPropagation();
     });
   });
-  Object.values(bloodTickers).forEach((ticker) => {
-    if (!ticker) return;
-    ticker.addEventListener('pointerdown', onBloodPointerDown);
-    ticker.addEventListener('pointerup', onPointerUp);
-    ticker.addEventListener('pointercancel', onPointerCancel);
-    ticker.addEventListener('lostpointercapture', onPointerCancel);
-    ticker.addEventListener('click', (event) => {
-      event.preventDefault();
-      event.stopPropagation();
+  ['p1', 'p2'].forEach((player) => {
+    TOKEN_IDS.forEach((tokenId) => {
+      const ticker = tokenTickers[player][tokenId];
+      const button = tokenToggleButtons[player][tokenId];
+      if (ticker) {
+        ticker.addEventListener('pointerdown', onTokenPointerDown);
+        ticker.addEventListener('pointerup', onPointerUp);
+        ticker.addEventListener('pointercancel', onPointerCancel);
+        ticker.addEventListener('lostpointercapture', onPointerCancel);
+        ticker.addEventListener('click', (event) => {
+          event.preventDefault();
+          event.stopPropagation();
+        });
+      }
+      bindControlAction(button, () => {
+        toggleTokenTicker(player, tokenId);
+      });
     });
-  });
-  bindControlAction(bloodButtons.p1, () => {
-    toggleBloodTicker('p1');
-  });
-  bindControlAction(bloodButtons.p2, () => {
-    toggleBloodTicker('p2');
   });
 
   bindControlAction(resetButton, () => {
@@ -471,6 +593,6 @@ export function createLifeCounter(container, startingLife = 20) {
   render();
   renderMonarch();
   renderInitiative();
-  renderBlood();
+  renderTokens();
   initiativeOverlay.sync();
 }
