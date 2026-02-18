@@ -293,11 +293,8 @@ func (r *draftRoom) handlePick(seat int, conn *websocket.Conn, msg draftWSMessag
 	}
 	picks := append([]PickSelection(nil), msg.Picks...)
 	if len(picks) == 0 {
-		if msg.CardName == "" || msg.Zone == "" {
-			r.writeToConn(conn, draftWSMessage{Type: "error", Error: "missing pick fields"})
-			return false
-		}
-		picks = []PickSelection{{CardName: msg.CardName, Zone: msg.Zone}}
+		r.writeToConn(conn, draftWSMessage{Type: "error", Error: "missing pick fields"})
+		return false
 	}
 
 	result, err := r.draft.PickBatch(seat, msg.Seq, msg.PackID, picks)

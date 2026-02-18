@@ -24,7 +24,6 @@ var dataRoot = "data"
 
 const (
 	defaultDraftStorePath = "db/db.sqlite"
-	legacyDraftStorePath  = "db/draft_rooms.sqlite"
 )
 
 type sourceGuideRequest struct {
@@ -42,7 +41,6 @@ func main() {
 
 	mux := http.NewServeMux()
 	draftHub := newDraftHub()
-	removeLegacyDraftStoreFiles(legacyDraftStorePath)
 	draftStore, err := openDraftRoomStore(draftStorePath)
 	if err != nil {
 		log.Fatalf("Failed to open draft store: %v", err)
@@ -154,15 +152,6 @@ func resolveDraftStorePath() string {
 		return path
 	}
 	return defaultDraftStorePath
-}
-
-func removeLegacyDraftStoreFiles(path string) {
-	files := []string{path, path + "-shm", path + "-wal"}
-	for _, file := range files {
-		if err := os.Remove(file); err != nil && !os.IsNotExist(err) {
-			log.Printf("Failed to remove legacy draft db file %s: %v", file, err)
-		}
-	}
 }
 
 func normalizeSlug(raw string) string {

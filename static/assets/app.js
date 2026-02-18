@@ -125,40 +125,33 @@ async function hydrateDraftRoomFromSearch() {
   const selection = parseDraftRoomSelectionFromSearch();
   if (!selection) return false;
 
-  try {
-    const [cube, deviceID] = await Promise.all([
-      loadBattlebox('cube'),
-      getStableDeviceID(),
-    ]);
-    const rooms = await fetchDraftRooms(deviceID);
-    const room = (Array.isArray(rooms) ? rooms : []).find(
-      (entry) => String(entry?.room_id || '').trim() === selection.roomId,
-    );
-    if (room) {
-      const cubeDeckBySlug = buildCubeDeckBySlug(cube);
-      const presetEntries = parseDraftPresets(cube?.presets);
-      const presetByConfig = buildPresetByConfig(presetEntries);
-      const context = buildOpenRoomContext(room, selection.seat, cubeDeckBySlug, presetByConfig);
-      if (context) {
-        draftController.openRoom(
-          context.roomId,
-          context.seat,
-          context.roomDeckSlug,
-          context.roomDeckPrintings,
-          context.roomDeckName,
-          context.roomDeckDoubleFaced,
-          context.roomDeckCardMeta,
-          context.roomPackTotal,
-          context.roomPickTotal,
-        );
-        return true;
-      }
-    }
-  } catch (_) {
-    // Fallback to minimal room hydration below.
-  }
+  const [cube, deviceID] = await Promise.all([
+    loadBattlebox('cube'),
+    getStableDeviceID(),
+  ]);
+  const rooms = await fetchDraftRooms(deviceID);
+  const room = (Array.isArray(rooms) ? rooms : []).find(
+    (entry) => String(entry?.room_id || '').trim() === selection.roomId,
+  );
+  if (!room) return false;
 
-  draftController.openRoom(selection.roomId, selection.seat);
+  const cubeDeckBySlug = buildCubeDeckBySlug(cube);
+  const presetEntries = parseDraftPresets(cube?.presets);
+  const presetByConfig = buildPresetByConfig(presetEntries);
+  const context = buildOpenRoomContext(room, selection.seat, cubeDeckBySlug, presetByConfig);
+  if (!context) return false;
+
+  draftController.openRoom(
+    context.roomId,
+    context.seat,
+    context.roomDeckSlug,
+    context.roomDeckPrintings,
+    context.roomDeckName,
+    context.roomDeckDoubleFaced,
+    context.roomDeckCardMeta,
+    context.roomPackTotal,
+    context.roomPickTotal,
+  );
   return true;
 }
 
@@ -223,18 +216,12 @@ function normalizeBadgeMode(value) {
 function resolveDeckUI(deck) {
   const rawUI = deck && deck.ui && typeof deck.ui === 'object' ? deck.ui : {};
   const rawSample = rawUI.sample && typeof rawUI.sample === 'object' ? rawUI.sample : null;
-  const legacyView = normalizeDecklistViewMode(deck?.view);
-
-  let sampleMode = normalizeSampleMode(rawSample?.mode);
-  if (!rawSample && legacyView === 'cube') {
-    sampleMode = 'none';
-  }
+  const sampleMode = normalizeSampleMode(rawSample?.mode);
   const parsedSampleSize = Number.parseInt(String(rawSample?.size), 10);
-  const legacySampleSize = Number.parseInt(String(deck?.sample_hand_size), 10);
   const defaultSampleSize = sampleMode === 'pack' ? 8 : DEFAULT_DECK_UI.sample.size;
   const sampleSize = Number.isFinite(parsedSampleSize) && parsedSampleSize > 0
     ? parsedSampleSize
-    : (Number.isFinite(legacySampleSize) && legacySampleSize > 0 ? legacySampleSize : defaultSampleSize);
+    : defaultSampleSize;
 
   const rawAllowDraw = typeof rawSample?.allow_draw === 'boolean'
     ? rawSample.allow_draw
@@ -242,7 +229,7 @@ function resolveDeckUI(deck) {
   const sampleAllowDraw = sampleMode === 'hand' ? rawAllowDraw : false;
 
   return {
-    decklist_view: normalizeDecklistViewMode(rawUI.decklist_view || legacyView),
+    decklist_view: normalizeDecklistViewMode(rawUI.decklist_view),
     sample: {
       mode: sampleMode,
       size: sampleSize,
@@ -575,20 +562,6 @@ function toGzipPath(path) {
 }
 
 async function fetchJsonData(path, fetchOptions) {
-  if (window.DecompressionStream) {
-    try {
-      const gzRes = await fetch(toGzipPath(path), fetchOptions);
-      if (gzRes.ok && gzRes.body) {
-        const ds = new DecompressionStream('gzip');
-        const decoded = gzRes.body.pipeThrough(ds);
-        const text = await new Response(decoded).text();
-        return JSON.parse(text);
-      }
-    } catch (e) {
-      // Fallback to uncompressed JSON when gzip decode is unavailable.
-    }
-  }
-
   const res = await fetch(path, fetchOptions);
   if (!res.ok) return null;
   return res.json();

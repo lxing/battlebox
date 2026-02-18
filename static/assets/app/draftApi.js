@@ -7,20 +7,7 @@ export function appendDeviceIDToUrl(path, deviceID) {
   return `${path}${sep}device_id=${encodeURIComponent(id)}`;
 }
 
-function hashStringFNV1a(value) {
-  let hash = 2166136261;
-  const text = String(value || '');
-  for (let i = 0; i < text.length; i += 1) {
-    hash ^= text.charCodeAt(i);
-    hash = Math.imul(hash, 16777619);
-  }
-  return (hash >>> 0).toString(16).padStart(8, '0');
-}
-
 async function sha256Hex(value) {
-  if (!(window.crypto && window.crypto.subtle && window.TextEncoder)) {
-    return hashStringFNV1a(value);
-  }
   const bytes = new TextEncoder().encode(String(value || ''));
   const digest = await window.crypto.subtle.digest('SHA-256', bytes);
   return [...new Uint8Array(digest)]
@@ -50,20 +37,12 @@ function fingerprintSource() {
 export async function getStableDeviceID() {
   if (deviceIDPromise) return deviceIDPromise;
   deviceIDPromise = (async () => {
-    try {
-      const existing = String(window.localStorage.getItem(localDeviceIDKey) || '').trim();
-      if (existing) return existing;
-    } catch (_) {
-      // Continue with computed fallback.
-    }
+    const existing = String(window.localStorage.getItem(localDeviceIDKey) || '').trim();
+    if (existing) return existing;
 
     const digest = await sha256Hex(fingerprintSource());
     const stable = `dev_${digest.slice(0, 32)}`;
-    try {
-      window.localStorage.setItem(localDeviceIDKey, stable);
-    } catch (_) {
-      // Best effort only.
-    }
+    window.localStorage.setItem(localDeviceIDKey, stable);
     return stable;
   })();
   return deviceIDPromise;
