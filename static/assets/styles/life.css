@@ -34,9 +34,10 @@
 
 .life-player {
   --token-edge-inset: 0.42rem;
-  --token-toggle-size: 2.1rem;
+  --token-toggle-size: 2.5rem;
   --token-toggle-gap: 0.2rem;
   --token-menu-width: calc((var(--token-toggle-size) * 2) + var(--token-toggle-gap));
+  --token-menu-counter-gap: 0.2rem;
   position: relative;
   display: flex;
   align-items: center;
@@ -135,13 +136,12 @@
 .life-token-counters {
   --token-counter-height: 2.55rem;
   --token-counter-gap: 0.22rem;
-  --token-counter-max-width: max(0px, calc(100% - var(--token-edge-inset) - var(--token-menu-width)));
-  --token-counter-width: calc((var(--token-counter-max-width) - (var(--token-counter-gap) * 2)) / 3);
+  --token-counter-width: calc((100% - (var(--token-counter-gap) * 2)) / 3);
   position: absolute;
   z-index: 2;
   left: 0;
+  right: calc(var(--token-edge-inset) + var(--token-menu-width) + var(--token-menu-counter-gap));
   bottom: var(--token-edge-inset);
-  width: var(--token-counter-max-width);
   height: calc((var(--token-counter-height) * 2) + var(--token-counter-gap));
   overflow: hidden;
 }
