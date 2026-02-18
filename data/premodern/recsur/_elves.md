@@ -8,5 +8,3 @@
 -1 [[Yavimaya Granger]]
 
 <AI-generated placeholder. Probably nonsense>
-
-Extra spot removal plus [[Shard Phoenix]] keeps their mana creatures and token floods in check.

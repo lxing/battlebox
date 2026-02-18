@@ -9,5 +9,3 @@
 -1 [[Gush]]
 
 <AI-generated placeholder. Probably nonsense>
-
-The full blast package plus [[Chill]] slows their red pressure so you can assemble [[Stasis]].

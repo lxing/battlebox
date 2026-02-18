@@ -8,5 +8,3 @@
 -1 [[Impulse]]
 
 <AI-generated placeholder. Probably nonsense>
-
-[[Phyrexian Furnace]] keeps [[Genesis]] in check, and the extra [[Wrath of God]] helps clean up their midrange board.

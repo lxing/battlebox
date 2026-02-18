@@ -8,5 +8,3 @@
 -1 [[Spike Feeder]]
 
 <AI-generated placeholder. Probably nonsense>
-
-[[Withered Wretch]] keeps [[Psychatog]] small, and [[Tsabo's Web]] punishes their mana base while you pressure with [[Survival of the Fittest]].

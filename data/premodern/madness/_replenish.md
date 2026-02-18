@@ -3,5 +3,3 @@
 -1 [[Gilded Drake]]
 
 <AI-generated placeholder. Probably nonsense>
-
-Keep [[Attunement]] and [[Parallax Wave]] off the table with [[Naturalize]] so [[Replenish]] is never a blowout.

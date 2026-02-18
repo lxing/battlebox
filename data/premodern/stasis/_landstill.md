@@ -5,5 +5,3 @@
 -1 [[Foil]]
 
 <AI-generated placeholder. Probably nonsense>
-
-[[Gaea's Blessing]] prevents decking through [[Standstill]], and extra [[Mana Short]] helps force through [[Stasis]].

@@ -5,5 +5,3 @@
 -1 [[Sleight of Hand]]
 
 <AI-generated placeholder. Probably nonsense>
-
-[[Engineered Plague]] naming Elf and [[Pyroclasm]] reset their board and shut off [[Priest of Titania]] starts.

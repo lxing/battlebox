@@ -5,5 +5,3 @@
 -3 [[Chain Lightning]]
 
 <AI-generated placeholder. Probably nonsense>
-
-Sweep their early board repeatedly; [[End the Festivities]] and [[Cast into the Fire]] are your best reset buttons.

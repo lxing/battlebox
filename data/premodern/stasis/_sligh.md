@@ -9,5 +9,3 @@
 -1 [[Gush]]
 
 <AI-generated placeholder. Probably nonsense>
-
-[[Chill]] plus the blasts keep burn under control, letting your lock pieces stabilize the game.

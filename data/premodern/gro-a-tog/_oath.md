@@ -8,5 +8,3 @@
 -1 [[Portent]]
 
 <AI-generated placeholder. Probably nonsense>
-
-You need to answer [[Oath of Druids]] on sight; load up on [[Disenchant]] and [[Annul]], then save removal for the creature it finds.

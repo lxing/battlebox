@@ -6,5 +6,3 @@
 -1 [[Squee, Goblin Nabob]]
 
 <AI-generated placeholder. Probably nonsense>
-
-[[Naturalize]] answers [[Pernicious Deed]] and other key permanents, while [[Tsabo's Web]] keeps their utility lands from choking your mana.

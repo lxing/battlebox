@@ -2,5 +2,3 @@
 -1 [[Lose Focus]]
 
 <AI-generated placeholder. Probably nonsense>
-
-Sweep the small setup creatures and keep them from assembling the combo; prioritize removal over card selection.

@@ -7,5 +7,3 @@
 -1 [[Wall of Blossoms]]
 
 <AI-generated placeholder. Probably nonsense>
-
-You need answers to [[Oath of Druids]] and its graveyard payoff, so bring more removal and hate.

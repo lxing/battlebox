@@ -7,5 +7,3 @@
 -1 [[Wall of Blossoms]]
 
 <AI-generated placeholder. Probably nonsense>
-
-Bring more answers to their enchantment engine and use [[Tormod's Crypt]] to blunt [[Replenish]] turns.

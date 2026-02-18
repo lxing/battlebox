@@ -11,5 +11,3 @@
 -1 [[Gempalm Incinerator]]
 
 <AI-generated placeholder. Probably nonsense>
-
-You need to answer [[Stasis]] and [[Black Vise]] on sight, so load up on enchantment removal and blasts to force it through.

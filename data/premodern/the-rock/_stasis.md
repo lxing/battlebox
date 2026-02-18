@@ -8,5 +8,3 @@
 -1 [[Wall of Blossoms]]
 
 <AI-generated placeholder. Probably nonsense>
-
-Bring more ways to answer [[Stasis]] and attack their mana so they cannot maintain the lock.

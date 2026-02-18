@@ -7,5 +7,3 @@
 -1 [[Krosan Tusker]]
 
 <AI-generated placeholder. Probably nonsense>
-
-Add lifegain and cheap removal so you can stabilize against burn and finish with larger creatures.

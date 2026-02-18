@@ -8,5 +8,3 @@
 -1 [[Siege-Gang Commander]]
 
 <AI-generated placeholder. Probably nonsense>
-
-Use blasts to win counter wars, and [[Anarchy]] punishes their white finishers and [[Decree of Justice]] tokens.

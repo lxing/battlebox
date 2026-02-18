@@ -9,5 +9,3 @@
 -1 [[Spike Feeder]]
 
 <AI-generated placeholder. Probably nonsense>
-
-Hit their engine pieces with [[Naturalize]] and try to snag [[Replenish]] itself with [[Lobotomy]] before it swings the game.

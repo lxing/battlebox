@@ -8,5 +8,3 @@
 -1 [[Stifle]]
 
 <AI-generated placeholder. Probably nonsense>
-
-Keep their enchantments off the stack and the table with [[Annul]] and extra removal so [[Replenish]] is never a blowout.

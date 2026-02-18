@@ -5,5 +5,3 @@
 -1 [[Lose Focus]]
 
 <AI-generated placeholder. Probably nonsense>
-
-Maximize cheap sweepers to break up their mana engine; [[Breath Weapon]] and [[Cast into the Fire]] buy the time you need.

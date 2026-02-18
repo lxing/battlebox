@@ -8,5 +8,3 @@
 -1 [[Mogg Fanatic]]
 
 <AI-generated placeholder. Probably nonsense>
-
-Blasts keep their blue draw spells in check, while [[Tormod's Crypt]] shuts off [[Wonder]] and weakens [[Arrogant Wurm]] lines.

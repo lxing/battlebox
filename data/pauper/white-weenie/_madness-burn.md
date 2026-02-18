@@ -5,5 +5,3 @@
 -2 [[Eagles of the North]]
 
 <AI-generated placeholder. Probably nonsense>
-
-[[Lone Missionary]] and [[Prismatic Strands]] swing the race, while [[Standard Bearer]] soaks targeted burn.

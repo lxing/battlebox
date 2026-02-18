@@ -7,5 +7,3 @@
 -1 [[Cursed Scroll]]
 
 <AI-generated placeholder. Probably nonsense>
-
-[[Anarchy]] clears [[Exalted Angel]], and [[Pyrokinesis]] helps you survive their early creatures long enough for burn to finish.

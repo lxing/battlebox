@@ -7,5 +7,3 @@
 -1 [[Worship]]
 
 <AI-generated placeholder. Probably nonsense>
-
-[[Tormod's Crypt]] fights [[Genesis]] and [[Cabal Therapy]] recursion, while [[Swords to Plowshares]] answers [[Blastoderm]] and other Living Wish targets.

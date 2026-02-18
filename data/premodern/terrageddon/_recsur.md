@@ -7,5 +7,3 @@
 -1 [[Sylvan Library]]
 
 <AI-generated placeholder. Probably nonsense>
-
-[[Cursed Totem]] shuts down their mana engine, and [[Tormod's Crypt]] keeps [[Genesis]] and [[Recurring Nightmare]] from taking over.

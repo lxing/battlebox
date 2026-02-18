@@ -6,5 +6,3 @@
 -1 [[Squee, Goblin Nabob]]
 
 <AI-generated placeholder. Probably nonsense>
-
-You must answer [[Stasis]] immediately; [[Naturalize]] does that, and [[Tsabo's Web]] keeps [[Forsaken City]] and other mana lands tapped.

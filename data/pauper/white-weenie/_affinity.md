@@ -5,5 +5,3 @@
 -1 [[Battle Screech]]
 
 <AI-generated placeholder. Probably nonsense>
-
-Hammer their artifact mana and payoffs; [[Dust to Dust]] and [[Revoke Existence]] keep them from stabilizing behind bridges.

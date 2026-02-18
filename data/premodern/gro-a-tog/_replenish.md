@@ -7,5 +7,3 @@
 -1 [[Armageddon]]
 
 <AI-generated placeholder. Probably nonsense>
-
-Fight their setup with [[Annul]] and keep the graveyard plan checked by removing [[Attunement]] and [[Parallax Wave]] on sight.

@@ -5,5 +5,3 @@
 -1 [[Portent]]
 
 <AI-generated placeholder. Probably nonsense>
-
-[[Annul]] hits [[Mox Diamond]] and sideboard artifacts, while [[Misdirection]] helps you win counter wars around [[Phyrexian Dreadnought]].

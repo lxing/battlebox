@@ -8,5 +8,3 @@
 -1 [[Opt]]
 
 <AI-generated placeholder. Probably nonsense>
-
-[[Call of the Herd]] and the extra [[Psychatog]] give you resilient threats against their removal, and [[Winter Orb]] punishes their slow, tap-out turns.

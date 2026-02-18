@@ -5,5 +5,3 @@
 -1 [[Mana Leak]]
 
 <AI-generated placeholder. Probably nonsense>
-
-[[Meddling Mage]] naming [[Pernicious Deed]] or [[Living Wish]] buys time, and [[Fact or Fiction]] keeps you ahead on resources.

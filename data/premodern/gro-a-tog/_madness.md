@@ -6,5 +6,3 @@
 -1 [[Portent]]
 
 <AI-generated placeholder. Probably nonsense>
-
-[[Pyroclasm]] clears early pressure like [[Basking Rootwalla]], and [[Call of the Herd]] gives you blockers that trade well with [[Arrogant Wurm]].

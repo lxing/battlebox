@@ -7,5 +7,3 @@
 -1 [[Yavimaya Elder]]
 
 <AI-generated placeholder. Probably nonsense>
-
-[[Engineered Plague]] naming Elf shuts down their board, and extra removal keeps [[Priest of Titania]] under control.

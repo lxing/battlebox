@@ -6,5 +6,3 @@
 -1 [[Attunement]]
 
 <AI-generated placeholder. Probably nonsense>
-
-[[Chill]] slows their curve, blasts answer [[Goblin Lackey]] and burn, and the extra [[Swords to Plowshares]] cleanly removes [[Goblin Piledriver]].

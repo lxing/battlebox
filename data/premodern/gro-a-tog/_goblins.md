@@ -5,5 +5,3 @@
 -1 [[Sleight of Hand]]
 
 <AI-generated placeholder. Probably nonsense>
-
-[[Engineered Plague]] naming Goblin plus [[Pyroclasm]] buys huge tempo and keeps [[Goblin Warchief]] turns from snowballing.

@@ -6,5 +6,3 @@
 -1 [[Squee, Goblin Nabob]]
 
 <AI-generated placeholder. Probably nonsense>
-
-[[Naturalize]] fights [[Standstill]] and [[Humility]], and [[Tsabo's Web]] keeps [[Mishra's Factory]] and [[Dust Bowl]] from grinding you out.

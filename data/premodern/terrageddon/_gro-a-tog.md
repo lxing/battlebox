@@ -5,5 +5,3 @@
 -1 [[Weathered Wayfarer]]
 
 <AI-generated placeholder. Probably nonsense>
-
-[[Tormod's Crypt]] keeps [[Psychatog]] in check, and [[Disenchant]] answers [[Mox Diamond]] or sideboard artifacts.

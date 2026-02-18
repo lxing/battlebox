@@ -6,5 +6,3 @@
 -1 [[Squee, Goblin Nabob]]
 
 <AI-generated placeholder. Probably nonsense>
-
-[[Naturalize]] is your best answer to [[Recurring Nightmare]], and [[Tsabo's Web]] keeps their land engine from taking over.

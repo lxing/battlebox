@@ -7,5 +7,3 @@
 -1 [[Cursed Scroll]]
 
 <AI-generated placeholder. Probably nonsense>
-
-Blasts are your best way to force spells through their counters, and [[Crash]] buys tempo against an Island-heavy manabase.

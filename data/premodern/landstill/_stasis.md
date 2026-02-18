@@ -9,5 +9,3 @@
 -1 [[Mana Leak]]
 
 <AI-generated placeholder. Probably nonsense>
-
-Load up on enchantment answers and use [[Annul]] to stop [[Stasis]] from ever resolving.

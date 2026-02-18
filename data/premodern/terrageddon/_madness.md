@@ -7,5 +7,3 @@
 -1 [[Sylvan Library]]
 
 <AI-generated placeholder. Probably nonsense>
-
-[[Cursed Totem]] shuts off [[Wild Mongrel]] activations, and [[Tormod's Crypt]] keeps [[Wonder]] from breaking the ground stall.

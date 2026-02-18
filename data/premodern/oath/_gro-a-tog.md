@@ -5,5 +5,3 @@
 -2 [[Sphere of Resistance]]
 
 <AI-generated placeholder. Probably nonsense>
-
-[[Cursed Totem]] slows [[Quirion Dryad]] and [[Meddling Mage]] lines, while [[Tormod's Crypt]] keeps [[Psychatog]] from getting huge.

@@ -7,5 +7,3 @@
 -1 [[Standstill]]
 
 <AI-generated placeholder. Probably nonsense>
-
-[[Circle of Protection: Red]] buys time against burn, and the extra [[Wrath of God]] helps reset after their early pressure.

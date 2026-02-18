@@ -9,5 +9,3 @@
 -1 [[Yavimaya Elder]]
 
 <AI-generated placeholder. Probably nonsense>
-
-[[Engineered Plague]] is your best card here, and extra removal helps keep [[Goblin Warchief]] and [[Goblin Lackey]] in check.

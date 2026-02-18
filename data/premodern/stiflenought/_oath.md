@@ -6,5 +6,3 @@
 -1 [[Portent]]
 
 <AI-generated placeholder. Probably nonsense>
-
-[[Annul]] stops [[Oath of Druids]] and [[Mox Diamond]], and [[Chain of Vapor]] can reset the enchantment if it lands.

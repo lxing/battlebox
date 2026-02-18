@@ -4,5 +4,3 @@
 -2 [[Respite]]
 
 <AI-generated placeholder. Probably nonsense>
-
-Use graveyard hate to shut off their recursion and keep their long game manageable.

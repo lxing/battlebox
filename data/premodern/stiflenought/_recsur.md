@@ -6,5 +6,3 @@
 -1 [[Portent]]
 
 <AI-generated placeholder. Probably nonsense>
-
-[[Annul]] is a clean answer to [[Survival of the Fittest]] and [[Recurring Nightmare]], and [[Powder Keg]] cleans up mana dorks.

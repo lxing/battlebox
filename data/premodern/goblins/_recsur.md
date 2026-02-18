@@ -7,5 +7,3 @@
 -1 [[Siege-Gang Commander]]
 
 <AI-generated placeholder. Probably nonsense>
-
-[[Tormod's Crypt]] breaks up [[Recurring Nightmare]] and [[Genesis]] loops, and [[Pyrokinesis]] clears mana dorks before they snowball.

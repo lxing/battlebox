@@ -8,5 +8,3 @@
 -1 [[Naturalize]]
 
 <AI-generated placeholder. Probably nonsense>
-
-Extra threats help you rebuild after land destruction, and more mana denial lets you keep them off balance.

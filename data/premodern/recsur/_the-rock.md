@@ -9,5 +9,3 @@
 -1 [[Spike Feeder]]
 
 <AI-generated placeholder. Probably nonsense>
-
-[[Naturalize]] answers [[Pernicious Deed]] and other key permanents, while [[Withered Wretch]] keeps [[Genesis]] from taking over.

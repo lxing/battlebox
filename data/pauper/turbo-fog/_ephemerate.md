@@ -4,5 +4,3 @@
 -2 [[Weather the Storm]]
 
 <AI-generated placeholder. Probably nonsense>
-
-Stack interaction is everything here; extra counters stop their flicker engine from snowballing.

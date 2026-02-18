@@ -8,5 +8,3 @@
 -1 [[Nimble Mongoose]]
 
 <AI-generated placeholder. Probably nonsense>
-
-Bring the full set of enchantment answers and graveyard hate so [[Replenish]] is never a blowout.

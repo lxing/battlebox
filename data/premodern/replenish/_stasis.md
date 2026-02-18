@@ -5,5 +5,3 @@
 -1 [[Frantic Search]]
 
 <AI-generated placeholder. Probably nonsense>
-
-[[Meddling Mage]] naming [[Stasis]] is critical, and [[Orim's Chant]] creates a safe window to resolve [[Replenish]].

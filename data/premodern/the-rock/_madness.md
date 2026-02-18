@@ -7,5 +7,3 @@
 -1 [[Krosan Tusker]]
 
 <AI-generated placeholder. Probably nonsense>
-
-Graveyard hate turns off [[Wonder]] and keeps their threats from outgrowing your removal.

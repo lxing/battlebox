@@ -4,5 +4,3 @@
 -1 [[Crimson Fleet Commodore]]
 
 <AI-generated placeholder. Probably nonsense>
-
-Lean on [[Pyroblast]] to stop their blue value chain and protect your threats from tempo swings.

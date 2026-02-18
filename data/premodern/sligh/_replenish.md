@@ -8,5 +8,3 @@
 -1 [[Price of Progress]]
 
 <AI-generated placeholder. Probably nonsense>
-
-Blasts fight their blue setup spells, and [[Anarchy]] clears their white enchantments after they commit to the board.

@@ -8,5 +8,3 @@
 -1 [[Wall of Blossoms]]
 
 <AI-generated placeholder. Probably nonsense>
-
-Extra land destruction attacks their mana base, and [[Haunting Echoes]] punishes their slow, draw-heavy plan.

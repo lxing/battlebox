@@ -9,5 +9,3 @@
 -1 [[Spike Feeder]]
 
 <AI-generated placeholder. Probably nonsense>
-
-You must remove [[Stasis]] immediately; this brings your full suite of artifact and enchantment answers and slows their mana.

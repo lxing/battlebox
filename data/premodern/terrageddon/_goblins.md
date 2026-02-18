@@ -7,5 +7,3 @@
 -1 [[Sylvan Library]]
 
 <AI-generated placeholder. Probably nonsense>
-
-[[Warmth]] and [[Zuran Orb]] swing the race against burn, and [[Circle of Protection: Red]] shuts down key combat steps.

@@ -7,5 +7,3 @@
 -1 [[Squee, Goblin Nabob]]
 
 <AI-generated placeholder. Probably nonsense>
-
-[[Pyrokinesis]] helps you survive their early creatures, and [[Tsabo's Web]] blunts [[Rishadan Port]] and [[Wasteland]] pressure.

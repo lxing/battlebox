@@ -6,5 +6,3 @@
 -1 [[Squee, Goblin Nabob]]
 
 <AI-generated placeholder. Probably nonsense>
-
-You need clean answers to [[Oath of Druids]]; [[Naturalize]] handles the enchantment and [[Tsabo's Web]] pressures their utility lands.

@@ -7,5 +7,3 @@
 -1 [[Sylvan Library]]
 
 <AI-generated placeholder. Probably nonsense>
-
-[[Cursed Totem]] slows their mana acceleration, and [[Tormod's Crypt]] keeps [[Genesis]] from looping value.

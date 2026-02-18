@@ -5,5 +5,3 @@
 -1 [[Lose Focus]]
 
 <AI-generated placeholder. Probably nonsense>
-
-Sweep their early board and keep the pressure down; [[Breath Weapon]] and [[Cast into the Fire]] are your best stabilizers.

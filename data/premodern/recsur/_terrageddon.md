@@ -7,5 +7,3 @@
 -1 [[Yavimaya Granger]]
 
 <AI-generated placeholder. Probably nonsense>
-
-[[Tsabo's Web]] keeps their land denial from snowballing, and extra lifegain helps you stabilize against early pressure.
