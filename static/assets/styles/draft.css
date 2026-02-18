@@ -212,10 +212,6 @@
   border-color: var(--color-red);
 }
 
-.draft-pack-card[data-select-locked="1"] {
-  pointer-events: none;
-}
-
 .draft-pack-card-frame {
   display: block;
   position: relative;
@@ -246,6 +242,12 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
+}
+
+.draft-pack-card-frame .card-dfc-flip-control {
+  width: 2.5rem;
+  height: 2.5rem;
+  font-size: 1.52rem;
 }
 
 .draft-pack-card-zone-tag {

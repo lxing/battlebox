@@ -883,8 +883,6 @@ export function createDraftController({
 
       const flipControl = target.closest('[data-draft-card-flip="1"]');
       if (flipControl && packRoot.contains(flipControl)) {
-        event.preventDefault();
-        event.stopPropagation();
         const i = Number.parseInt(String(flipControl.getAttribute('data-draft-card-index') || '-1'), 10);
         handlePackCardFlip(i);
         return;
@@ -892,6 +890,7 @@ export function createDraftController({
 
       const cardButton = target.closest('.draft-pack-card');
       if (cardButton && packRoot.contains(cardButton)) {
+        if (cardButton.dataset.selectLocked === '1') return;
         const i = Number.parseInt(String(cardButton.getAttribute('data-index') || '-1'), 10);
         handlePackCardToggle(i);
       }
