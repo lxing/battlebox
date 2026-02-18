@@ -53,6 +53,29 @@ var parseCache = validationParseCache{
 	guides:  make(map[string]guideParseCacheEntry),
 }
 
+var expectedMainboardCountOverrides = map[string]map[string]int{
+	"cube": {
+		"artifact": 180,
+		"legacy":   360,
+		"modern":   180,
+		"pauper":   180,
+		"peasant":  180,
+		"tempo":    180,
+	},
+	"shared": {
+		"dandan":      80,
+		"draft-chaff": 203,
+	},
+}
+
+var basicLandPrintingKeys = map[string]struct{}{
+	"plains":   {},
+	"island":   {},
+	"swamp":    {},
+	"mountain": {},
+	"forest":   {},
+}
+
 func resetValidationCache() {
 	parseCache.primers = make(map[string]primerParseCacheEntry)
 	parseCache.guides = make(map[string]guideParseCacheEntry)
@@ -341,6 +364,9 @@ func validatePrintingsUsage(dataDir string, projectPrintings map[string]string, 
 				if _, ok := deckCards[key]; ok {
 					continue
 				}
+				if _, ok := basicLandPrintingKeys[key]; ok {
+					continue
+				}
 				warnings = append(warnings, fmt.Sprintf("Unreferenced deck printing (%s/%s): %s", bbSlug, deckSlug, key))
 			}
 
@@ -420,12 +446,9 @@ func validatePrintingsUsage(dataDir string, projectPrintings map[string]string, 
 }
 
 func expectedMainboardCount(battleboxSlug, deckSlug string) int {
-	if battleboxSlug == "shared" {
-		switch deckSlug {
-		case "dandan":
-			return 80
-		case "draft-chaff":
-			return 203
+	if battleboxOverrides, ok := expectedMainboardCountOverrides[battleboxSlug]; ok {
+		if expected, ok := battleboxOverrides[deckSlug]; ok {
+			return expected
 		}
 	}
 	return 60
