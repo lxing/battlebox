@@ -1,5 +1,6 @@
 import {
   formatColors,
+  archetypeTagRank,
   sortArchetypeTags,
   sortDifficultyTags,
   renderDeckTags,
@@ -768,7 +769,7 @@ function renderBattlebox(bbSlug, initialSortMode, initialSortDirection) {
   const deckMetaBySlug = new Map(
     bb.decks.map(deck => [deck.slug, {
       nameKey: normalizeName(deck.name || deck.slug),
-      typeKey: sortArchetypeTags(deck.tags).map(normalizeName).join('|'),
+      typeRankKey: sortArchetypeTags(deck.tags).map(archetypeTagRank),
       difficultyRank: resolveDifficultyRank(deck.difficulty_tags),
     }])
   );
@@ -812,20 +813,30 @@ function renderBattlebox(bbSlug, initialSortMode, initialSortDirection) {
     });
   };
 
+  const compareTypeRankKey = (a, b) => {
+    const maxLen = Math.max(a.length, b.length);
+    for (let idx = 0; idx < maxLen; idx++) {
+      const av = Number.isFinite(a[idx]) ? a[idx] : Number.MAX_SAFE_INTEGER;
+      const bv = Number.isFinite(b[idx]) ? b[idx] : Number.MAX_SAFE_INTEGER;
+      if (av !== bv) return av - bv;
+    }
+    return 0;
+  };
+
   const compareDeckItems = (a, b, mode) => {
     const metaA = deckMetaBySlug.get(a.dataset.slug) || {
       nameKey: normalizeName(a.dataset.slug || ''),
-      typeKey: '',
+      typeRankKey: [],
       difficultyRank: Number.MAX_SAFE_INTEGER,
     };
     const metaB = deckMetaBySlug.get(b.dataset.slug) || {
       nameKey: normalizeName(b.dataset.slug || ''),
-      typeKey: '',
+      typeRankKey: [],
       difficultyRank: Number.MAX_SAFE_INTEGER,
     };
     const nameCmp = metaA.nameKey.localeCompare(metaB.nameKey);
     if (mode === 'types') {
-      const typeCmp = metaA.typeKey.localeCompare(metaB.typeKey);
+      const typeCmp = compareTypeRankKey(metaA.typeRankKey, metaB.typeRankKey);
       if (typeCmp !== 0) return typeCmp;
       return nameCmp;
     }

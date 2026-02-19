@@ -1,3 +1,23 @@
+const ARCHETYPE_TAG_RANK = {
+  aggro: 0,
+  midrange: 1,
+  control: 2,
+  combo: 3,
+  tempo: 4,
+  tribal: 5,
+  shared: 6,
+  '2p': 7,
+  '4p': 8,
+};
+
+export function archetypeTagRank(tag) {
+  const key = normalizeName(tag);
+  if (Object.prototype.hasOwnProperty.call(ARCHETYPE_TAG_RANK, key)) {
+    return ARCHETYPE_TAG_RANK[key];
+  }
+  return 100;
+}
+
 export function formatColors(colors) {
   return colors.split('').map(c =>
     `<span class="mana-symbol mana-${c}"></span>`
@@ -6,22 +26,11 @@ export function formatColors(colors) {
 
 export function sortArchetypeTags(tags) {
   if (!Array.isArray(tags) || tags.length === 0) return [];
-  const rank = {
-    aggro: 0,
-    tempo: 1,
-    midrange: 2,
-    control: 3,
-    combo: 4,
-    tribal: 5,
-    shared: 6,
-    '2p': 7,
-    '4p': 8,
-  };
   return [...tags].sort((a, b) => {
     const ak = normalizeName(a);
     const bk = normalizeName(b);
-    const ar = Object.prototype.hasOwnProperty.call(rank, ak) ? rank[ak] : 100;
-    const br = Object.prototype.hasOwnProperty.call(rank, bk) ? rank[bk] : 100;
+    const ar = archetypeTagRank(ak);
+    const br = archetypeTagRank(bk);
     if (ar !== br) return ar - br;
     return ak.localeCompare(bk);
   });

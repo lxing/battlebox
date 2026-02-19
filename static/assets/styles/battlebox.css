@@ -425,9 +425,9 @@
 }
 
 .deck-tag-aggro {
-  background: var(--color-purple);
-  color: var(--color-white);
-  border-color: var(--color-purple);
+  background: var(--color-white);
+  color: var(--color-black);
+  border-color: var(--color-white);
 }
 
 .deck-tag-tempo {
@@ -443,21 +443,21 @@
 }
 
 .deck-tag-control {
+  background: var(--color-black);
+  color: var(--color-white);
+  border-color: var(--color-black);
+}
+
+.deck-tag-combo {
   background: var(--color-purple);
   color: var(--color-white);
   border-color: var(--color-purple);
 }
 
-.deck-tag-combo {
-  background: var(--color-blue);
-  color: var(--color-white);
-  border-color: var(--color-blue);
-}
-
 .deck-tag-tribal {
-  background: var(--color-brown);
+  background: var(--color-orange);
   color: var(--color-white);
-  border-color: var(--color-brown);
+  border-color: var(--color-orange);
 }
 
 .deck-tag-shared,
