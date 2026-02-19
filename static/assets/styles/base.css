@@ -15,7 +15,7 @@
   --color-surface: #1f1f35;
   --color-white: #fff;
   --color-gray: #888;
-  --color-blue: #4d8ded;
+  --color-blue: #396eb8;
   --color-red: #c84d4d;
   --color-light-green: #63a96a;
   --color-green: #376b48;
@@ -160,8 +160,8 @@ body {
 }
 
 .toggle-highlight-button.active:not(:disabled) {
-  background: var(--color-green);
-  border-color: var(--color-green);
+  background: var(--color-blue);
+  border-color: var(--color-blue);
   color: var(--color-white);
 }
 
