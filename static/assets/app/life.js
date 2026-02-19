@@ -109,7 +109,7 @@ function buildTokenToggleGridHtml(player) {
   )).join('');
   return `
     <div class="life-token-menu life-token-menu-${player}" data-life-token-menu="${player}" data-life-control>
-      <button type="button" class="static-button life-token-menu-button life-token-menu-anchor" data-life-token-menu-trigger="${player}" data-life-control aria-label="Toggle player ${player === 'p1' ? '1' : '2'} token controls" aria-expanded="false">♟️</button>
+      <button type="button" class="static-button life-token-menu-button life-token-menu-anchor" data-life-token-menu-trigger="${player}" data-life-control aria-label="Toggle player ${player === 'p1' ? '1' : '2'} token controls" aria-expanded="false"><span class="life-token-menu-glyph" aria-hidden="true">♟️</span></button>
       <div class="life-token-menu-panel life-token-menu-panel-${player}" data-life-token-menu-panel="${player}" data-life-control hidden>
         ${buttons}
       </div>

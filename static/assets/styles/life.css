@@ -93,6 +93,11 @@
   z-index: 3;
 }
 
+.life-token-menu-glyph {
+  display: inline-block;
+  filter: invert(1);
+}
+
 .life-token-menu-button.active {
   background: var(--color-blue);
   border-color: var(--color-blue);
