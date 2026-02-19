@@ -33,6 +33,7 @@ func buildIndexOutput(dataDir string) (IndexOutput, error) {
 			RandomRollEnabled:       !bbManifest.DisableRandomRoll,
 			DisableDoubleRandomRoll: bbManifest.DisableDoubleRandomRoll,
 			DisableTypeSort:         bbManifest.DisableTypeSort,
+			TypeSortIcon:            resolveBattleboxTypeSortIcon(bbManifest),
 			MatrixTabEnabled:        !bbManifest.DisableMatrixTab,
 			Decks:                   []DeckIndex{},
 		}

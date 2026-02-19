@@ -71,6 +71,8 @@ type DeckUIProfile struct {
 	DeckInfoBadge string `json:"deck_info_badge"`
 	// Badge style for battlebox deck selection rows: colors or card_count.
 	DeckSelectionBadge string `json:"deck_selection_badge"`
+	// Optional type-sort icon override for battlebox list controls.
+	TypeSortIcon string `json:"type_sort_icon,omitempty"`
 	// Whether to show a decorative basic-lands pane between decklist and primer.
 	ShowBasicsPane bool `json:"show_basics_pane,omitempty"`
 }
@@ -165,6 +167,8 @@ type Battlebox struct {
 	DisableDoubleRandomRoll bool `json:"disable_double_random_roll,omitempty"`
 	// Disable the type sort control.
 	DisableTypeSort bool `json:"disable_type_sort,omitempty"`
+	// Icon used by the type-sort control (defaults to DNA when omitted in source).
+	TypeSortIcon string `json:"type_sort_icon,omitempty"`
 	// Whether matrix tab should be enabled.
 	MatrixTabEnabled bool `json:"matrix_tab_enabled"`
 	// Optional draft room presets keyed by preset id.
@@ -217,6 +221,8 @@ type BattleboxIndex struct {
 	DisableDoubleRandomRoll bool `json:"disable_double_random_roll,omitempty"`
 	// Disable the type sort control.
 	DisableTypeSort bool `json:"disable_type_sort,omitempty"`
+	// Icon used by the type-sort control (defaults to DNA when omitted in source).
+	TypeSortIcon string `json:"type_sort_icon,omitempty"`
 	// Whether matrix tab should be enabled.
 	MatrixTabEnabled bool `json:"matrix_tab_enabled"`
 	// Deck summaries for this battlebox.

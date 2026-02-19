@@ -708,6 +708,7 @@ function renderBattlebox(bbSlug, initialSortMode, initialSortDirection) {
   if (!bb) return renderNotFound();
   const initialSort = normalizeSortMode(initialSortMode);
   const initialDirection = normalizeSortDirection(initialSortDirection);
+  const typeSortIcon = String(bb.type_sort_icon || '').trim() || '🧬';
 
   const headerHtml = `
     <h1 class="breadcrumbs">
@@ -729,7 +730,7 @@ function renderBattlebox(bbSlug, initialSortMode, initialSortDirection) {
       </div>
       <div class="randomizer-sort-controls" role="group" aria-label="Sort decks">
         <button type="button" class="randomizer-sort action-button" data-sort="name" title="Sort by name" aria-label="Sort by name">🔤</button>
-        <button type="button" class="randomizer-sort action-button" data-sort="types" title="Sort by types" aria-label="Sort by types">🧬</button>
+        <button type="button" class="randomizer-sort action-button" data-sort="types" title="Sort by types" aria-label="Sort by types">${typeSortIcon}</button>
         <button type="button" class="randomizer-sort action-button" data-sort="difficulty" title="Sort by difficulty" aria-label="Sort by difficulty">🧠</button>
       </div>
     </div>
@@ -823,7 +824,7 @@ function renderBattlebox(bbSlug, initialSortMode, initialSortDirection) {
     return 0;
   };
 
-  const compareDeckItems = (a, b, mode) => {
+  const compareDeckItems = (a, b, mode, direction) => {
     const metaA = deckMetaBySlug.get(a.dataset.slug) || {
       nameKey: normalizeName(a.dataset.slug || ''),
       typeRankKey: [],
@@ -835,17 +836,18 @@ function renderBattlebox(bbSlug, initialSortMode, initialSortDirection) {
       difficultyRank: Number.MAX_SAFE_INTEGER,
     };
     const nameCmp = metaA.nameKey.localeCompare(metaB.nameKey);
+    const descending = direction === 'desc';
     if (mode === 'types') {
       const typeCmp = compareTypeRankKey(metaA.typeRankKey, metaB.typeRankKey);
-      if (typeCmp !== 0) return typeCmp;
+      if (typeCmp !== 0) return descending ? -typeCmp : typeCmp;
       return nameCmp;
     }
     if (mode === 'difficulty') {
       const diffCmp = metaA.difficultyRank - metaB.difficultyRank;
-      if (diffCmp !== 0) return diffCmp;
+      if (diffCmp !== 0) return descending ? -diffCmp : diffCmp;
       return nameCmp;
     }
-    return nameCmp;
+    return descending ? -nameCmp : nameCmp;
   };
 
   const applySort = (mode, isInitial = false) => {
@@ -862,8 +864,7 @@ function renderBattlebox(bbSlug, initialSortMode, initialSortDirection) {
       }
     }
     const items = [...deckList.querySelectorAll('.deck-item')];
-    const direction = sortDirection === 'desc' ? -1 : 1;
-    items.sort((a, b) => compareDeckItems(a, b, sortMode) * direction);
+    items.sort((a, b) => compareDeckItems(a, b, sortMode, sortDirection));
     items.forEach(item => deckList.appendChild(item));
     sortButtons.forEach(btn => {
       btn.classList.toggle('active', btn.dataset.sort === sortMode);

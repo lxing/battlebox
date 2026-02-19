@@ -6,6 +6,8 @@ import (
 	"strings"
 )
 
+const defaultTypeSortIcon = "🧬"
+
 func defaultDeckUIProfile() DeckUIProfile {
 	return DeckUIProfile{
 		DecklistView: "default",
@@ -16,6 +18,7 @@ func defaultDeckUIProfile() DeckUIProfile {
 		},
 		DeckInfoBadge:      "colors",
 		DeckSelectionBadge: "colors",
+		TypeSortIcon:       "",
 	}
 }
 
@@ -56,6 +59,7 @@ func normalizeDeckUIProfile(raw DeckUIProfile) DeckUIProfile {
 	out.DecklistView = normalizeDecklistView(raw.DecklistView)
 	out.DeckInfoBadge = normalizeBadgeMode(raw.DeckInfoBadge)
 	out.DeckSelectionBadge = normalizeBadgeMode(raw.DeckSelectionBadge)
+	out.TypeSortIcon = strings.TrimSpace(raw.TypeSortIcon)
 	out.ShowBasicsPane = raw.ShowBasicsPane
 
 	mode := normalizeSampleMode(raw.Sample.Mode)
@@ -85,6 +89,22 @@ func normalizeDeckUIProfile(raw DeckUIProfile) DeckUIProfile {
 		AllowDraw: allowDraw,
 	}
 	return out
+}
+
+func resolveBattleboxTypeSortIcon(manifest BattleboxManifest) string {
+	profileName := strings.TrimSpace(manifest.DefaultUIProfile)
+	if profileName == "" {
+		return defaultTypeSortIcon
+	}
+	profile, ok := manifest.UIProfiles[profileName]
+	if !ok {
+		return defaultTypeSortIcon
+	}
+	icon := strings.TrimSpace(profile.TypeSortIcon)
+	if icon == "" {
+		return defaultTypeSortIcon
+	}
+	return icon
 }
 
 func normalizeBattleboxUIProfiles(manifest *BattleboxManifest) {

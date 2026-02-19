@@ -152,6 +152,7 @@ func Main() {
 				RandomRollEnabled:       !bbManifest.DisableRandomRoll,
 				DisableDoubleRandomRoll: bbManifest.DisableDoubleRandomRoll,
 				DisableTypeSort:         bbManifest.DisableTypeSort,
+				TypeSortIcon:            resolveBattleboxTypeSortIcon(bbManifest),
 				MatrixTabEnabled:        !bbManifest.DisableMatrixTab,
 				Presets:                 cloneDraftPresets(bbManifest.Presets),
 				Decks:                   []Deck{},

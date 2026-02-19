@@ -3,12 +3,12 @@
   "description": "The distilled Magic lootbox experience. Draft with friends directly in this app!",
   "deck_count_label": "cubes",
   "disable_double_random_roll": true,
-  "disable_type_sort": true,
   "disable_matrix_tab": true,
   "default_ui_profile": "cube",
   "ui_profiles": {
     "cube": {
       "decklist_view": "cube",
+      "type_sort_icon": "👥",
       "sample": {
         "mode": "pack",
         "size": 7,
