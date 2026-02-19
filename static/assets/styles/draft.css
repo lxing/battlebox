@@ -302,12 +302,6 @@
   white-space: nowrap;
 }
 
-.draft-sideboard-mode-button.active {
-  background: var(--color-red);
-  border-color: var(--color-red);
-  color: var(--color-white);
-}
-
 .draft-picks-toolbar {
   margin-top: 0.45rem;
   display: grid;

@@ -984,7 +984,7 @@ async function renderDeck(bbSlug, deckSlug, selectedGuide, sortMode, sortDirecti
               ${guideOptions}
             </select>
             <a class="guide-opponent-link action-button button-standard" id="guide-opponent-link" href="#">Go to</a>
-            <button type="button" class="action-button button-standard apply-sideboard-button${currentApplySideboard ? ' active' : ''}" id="apply-sideboard-button">
+            <button type="button" class="action-button button-standard apply-sideboard-button toggle-highlight-button${currentApplySideboard ? ' active' : ''}" id="apply-sideboard-button">
               Sideboard
             </button>
           </div>

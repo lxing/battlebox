@@ -847,11 +847,6 @@ details.collapsible[open] summary::after {
   width: 100%;
 }
 
-.apply-sideboard-button.active {
-  background: var(--color-green);
-  border-color: var(--color-green);
-}
-
 .guide-opponent-link {
   width: 100%;
 }

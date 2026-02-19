@@ -159,6 +159,12 @@ body {
   color: var(--color-white);
 }
 
+.toggle-highlight-button.active:not(:disabled) {
+  background: var(--color-green);
+  border-color: var(--color-green);
+  color: var(--color-white);
+}
+
 button,
 input[type='button'],
 input[type='submit'],

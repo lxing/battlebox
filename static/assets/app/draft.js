@@ -448,7 +448,7 @@ export function createDraftController({
     const enabled = draftUi.botAutoPickEnabled;
     button.classList.toggle('active', enabled);
     button.setAttribute('aria-pressed', enabled ? 'true' : 'false');
-    button.textContent = enabled ? '🤖 Bot: On' : '🤖 Bot: Off';
+    button.textContent = '🤖 Bot';
   }
 
   function maybeSendBotPick() {
@@ -1320,7 +1320,7 @@ export function createDraftController({
             <div class="draft-status-actions">
               <button type="button" class="action-button button-standard draft-lobby-button" id="draft-back-lobby" aria-label="Back to lobby">⬅️ Lobby</button>
               <button type="button" class="action-button button-standard draft-lobby-button" id="draft-open-cube" aria-label="Open cube battlebox">📚 List</button>
-              <button type="button" class="action-button button-standard draft-lobby-button" id="draft-bot-pick" aria-label="Have bots pick for unoccupied seats" disabled>🤖 Bot</button>
+              <button type="button" class="action-button button-standard draft-lobby-button toggle-highlight-button" id="draft-bot-pick" aria-label="Have bots pick for unoccupied seats" disabled>🤖 Bot</button>
             </div>
             <div class="draft-status-meta">
               <div id="draft-seat-label" class="draft-status-seat">${formatSeatLabel(draftUi.seat, 0)}</div>
@@ -1362,7 +1362,7 @@ export function createDraftController({
           <h3 class="panel-title draft-panel-title">Picks</h3>
           <div id="draft-picks-cards"></div>
           <div class="draft-picks-toolbar">
-            <button type="button" class="action-button button-standard draft-sideboard-mode-button" id="draft-toggle-sideboard-mode" aria-pressed="false">
+            <button type="button" class="action-button button-standard draft-sideboard-mode-button toggle-highlight-button" id="draft-toggle-sideboard-mode" aria-pressed="false">
               Sideboard ↔️
             </button>
             <button type="button" class="action-button button-standard draft-picks-toolbar-button" id="draft-sample-hand">
