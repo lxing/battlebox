@@ -20,14 +20,16 @@ const TOKEN_TYPES = [
   { id: 'map', icon: '🗺️', label: 'Map' },
 ];
 const TOKEN_IDS = TOKEN_TYPES.map((token) => token.id);
-const TOKEN_SLOT_CLASSES = [
-  'life-token-slot-a',
-  'life-token-slot-b',
-  'life-token-slot-c',
-  'life-token-slot-d',
-  'life-token-slot-e',
-  'life-token-slot-f',
-];
+
+function resolveTokenCounterGrid(visibleCount) {
+  if (visibleCount <= 2) {
+    return { rows: 2, cols: 2, itemRowSpan: 2 };
+  }
+  if (visibleCount <= 4) {
+    return { rows: 2, cols: 2, itemRowSpan: 1 };
+  }
+  return { rows: 2, cols: 3, itemRowSpan: 1 };
+}
 
 function parseLifeTotal(value, fallback) {
   const parsed = Number.parseInt(String(value), 10);
@@ -305,6 +307,10 @@ export function createLifeCounter(container, startingLife = 20) {
     p1: false,
     p2: false,
   };
+  const tokenCounterContainers = {
+    p1: null,
+    p2: null,
+  };
   const tokenTickers = {
     p1: createTokenMap(null),
     p2: createTokenMap(null),
@@ -330,6 +336,10 @@ export function createLifeCounter(container, startingLife = 20) {
   container.querySelectorAll('[data-life-token-menu-panel]').forEach((panel) => {
     const player = panel.dataset.lifeTokenMenuPanel === 'p2' ? 'p2' : 'p1';
     tokenMenuPanels[player] = panel;
+  });
+  container.querySelectorAll('[data-life-token-counters]').forEach((counterGrid) => {
+    const player = counterGrid.dataset.lifeTokenCounters === 'p2' ? 'p2' : 'p1';
+    tokenCounterContainers[player] = counterGrid;
   });
   container.querySelectorAll('[data-life-token-ticker]').forEach((ticker) => {
     const player = ticker.dataset.player === 'p2' ? 'p2' : 'p1';
@@ -370,6 +380,7 @@ export function createLifeCounter(container, startingLife = 20) {
   };
   const renderTokens = () => {
     ['p1', 'p2'].forEach((player) => {
+      const counterGrid = tokenCounterContainers[player];
       const orderedVisible = state.tokenOrder[player].filter((tokenId) => state.tokenVisible[player][tokenId] === true);
       TOKEN_IDS.forEach((tokenId) => {
         const button = tokenToggleButtons[player][tokenId];
@@ -382,9 +393,9 @@ export function createLifeCounter(container, startingLife = 20) {
         }
         if (ticker) {
           ticker.hidden = !visible || !positioned;
-          TOKEN_SLOT_CLASSES.forEach((slotClass) => {
-            ticker.classList.remove(slotClass);
-          });
+          ticker.style.gridColumn = '';
+          ticker.style.gridRow = '';
+          ticker.classList.remove('life-token-ticker-tall');
         }
         if (total) {
           const value = state.tokens[player][tokenId] === null ? 1 : clampTokenCount(state.tokens[player][tokenId]);
@@ -393,16 +404,22 @@ export function createLifeCounter(container, startingLife = 20) {
       });
 
       const visibleCount = orderedVisible.length;
-      const slotOrder = visibleCount >= TOKEN_SLOT_CLASSES.length
-        ? TOKEN_SLOT_CLASSES
-        : TOKEN_SLOT_CLASSES.slice(0, visibleCount);
+      const { rows, cols, itemRowSpan } = resolveTokenCounterGrid(visibleCount);
+      if (counterGrid) {
+        counterGrid.hidden = visibleCount <= 0;
+        counterGrid.style.setProperty('--token-counter-rows', String(rows));
+        counterGrid.style.setProperty('--token-counter-cols', String(cols));
+      }
       orderedVisible.forEach((tokenId, index) => {
         const ticker = tokenTickers[player][tokenId];
         if (!ticker) return;
-        const slotClass = slotOrder[index];
-        if (slotClass) {
-          ticker.classList.add(slotClass);
-        }
+        const row = Math.floor(index / cols) + 1;
+        const col = (index % cols) + 1;
+        const fillBottomFirst = rows > 1 && itemRowSpan === 1;
+        const visualRow = fillBottomFirst ? (rows - row + 1) : row;
+        ticker.style.gridRow = itemRowSpan > 1 ? `${visualRow} / span ${itemRowSpan}` : String(visualRow);
+        ticker.style.gridColumn = String(col);
+        ticker.classList.toggle('life-token-ticker-tall', itemRowSpan > 1);
       });
     });
   };
