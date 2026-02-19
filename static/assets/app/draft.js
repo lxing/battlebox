@@ -3,6 +3,7 @@ import { renderDecklistGrid as renderSharedDecklistGrid } from './decklist.js';
 import { isDoubleFacedCard, normalizeName, scryfallImageUrlByName } from './utils.js';
 import {
   escapeHtml,
+  formatPickProgressLabel,
   formatProgressLabel,
   normalizeNonNegativeInt,
   normalizePositiveInt,
@@ -91,29 +92,17 @@ function normalizeSeat(value) {
   return normalizeNonNegativeInt(value);
 }
 
-function formatPickProgressLabel(zeroBasedPick, total, expectedPicks) {
-  const safeTotal = normalizePositiveInt(total);
-  if (safeTotal <= 0) return 'Pick -/-';
-
-  const rawPick = Number.parseInt(String(zeroBasedPick), 10);
-  const pickStart = Number.isFinite(rawPick) ? rawPick + 1 : 1;
-  const clampedStart = Math.max(1, Math.min(pickStart, safeTotal));
-  const rawExpected = Number.parseInt(String(expectedPicks), 10);
-  const span = Number.isFinite(rawExpected) && rawExpected > 0 ? rawExpected : 1;
-  const clampedEnd = Math.max(clampedStart, Math.min(clampedStart + span - 1, safeTotal));
-
-  if (clampedEnd > clampedStart) {
-    return `Pick ${clampedStart}-${clampedEnd}/${safeTotal}`;
-  }
-  return `Pick ${clampedStart}/${safeTotal}`;
-}
-
 function formatSeatLabel(zeroBasedSeat, seatTotal) {
   const currentSeat = normalizeNonNegativeInt(zeroBasedSeat) + 1;
   const total = normalizePositiveInt(seatTotal);
   if (total <= 0) return `Seat ${currentSeat}/-`;
   const clampedSeat = Math.max(1, Math.min(currentSeat, total));
   return `Seat ${clampedSeat}/${total}`;
+}
+
+function formatPickButtonLabel(expectedPicks) {
+  const picks = normalizePositiveInt(expectedPicks);
+  return `Pick ${picks > 0 ? picks : 1}`;
 }
 
 function normalizeDraftSlug(value) {
@@ -1046,7 +1035,7 @@ export function createDraftController({
       if (packContentEl) packContentEl.hidden = true;
       updatePackScrollIndicators();
       if (pickButton) {
-        pickButton.textContent = 'Pick';
+        pickButton.textContent = formatPickButtonLabel(1);
         pickButton.disabled = true;
       }
       if (botButton) {
@@ -1123,7 +1112,7 @@ export function createDraftController({
       if (packContentEl) packContentEl.hidden = true;
       updatePackScrollIndicators();
       if (pickButton) {
-        pickButton.textContent = 'Pick';
+        pickButton.textContent = formatPickButtonLabel(state.expected_picks);
         pickButton.disabled = true;
       }
       if (botButton) {
@@ -1153,7 +1142,7 @@ export function createDraftController({
 
     renderPackCardsInPlace(activePackID, active.cards, canPick);
     if (pickButton) {
-      pickButton.textContent = 'Pick';
+      pickButton.textContent = formatPickButtonLabel(ctx?.expectedPicks);
     }
     if (botButton) {
       botButton.disabled = !draftUi.connected || state.state === 'done';
@@ -1341,7 +1330,7 @@ export function createDraftController({
               <div id="draft-waiting-label" class="draft-pack-pick" hidden>Waiting...</div>
             </div>
             <button type="button" class="action-button button-standard draft-pick-confirm-button" id="draft-pick-submit" disabled>
-              Pick
+              Pick 1
             </button>
           </div>
           <div id="draft-pack-cards">

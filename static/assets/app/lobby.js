@@ -1,6 +1,7 @@
 import { normalizeName } from './utils.js';
 import {
   escapeHtml,
+  formatPickProgressLabel,
   formatProgressLabel,
   normalizeNonNegativeInt,
   normalizePositiveInt,
@@ -324,7 +325,7 @@ export function createLobbyController({
     const cubeLabel = escapeHtml(String(roomDeck?.name || roomDeckSlug || 'Unknown').trim());
     const totals = resolveRoomTotals(room, state.presetByConfig);
     const packLabel = formatProgressLabel('Pack', room.pack_no, totals.packTotal);
-    const pickLabel = formatProgressLabel('Pick', room.pick_no, totals.pickTotal);
+    const pickLabel = formatPickProgressLabel(room.pick_no, totals.pickTotal, room.expected_picks);
     const canDelete = room?.owned_by_requester === true;
     const deleteTitle = canDelete ? 'Delete room' : 'Only the creator can delete this room';
     return `

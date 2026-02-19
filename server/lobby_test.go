@@ -75,6 +75,7 @@ func TestDraftRoomsListAfterCreate(t *testing.T) {
 	assert.Equal(t, 2, room.SeatCount, "seat count mismatch")
 	assert.Equal(t, 1, room.PackCount, "pack count mismatch")
 	assert.Equal(t, 1, room.PackSize, "pack size mismatch")
+	assert.Equal(t, 1, room.ExpectedPicks, "expected picks mismatch")
 	assert.True(t, room.OwnedByRequest, "expected room to be owned by requester")
 }
 

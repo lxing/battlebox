@@ -41,6 +41,7 @@ type draftRoomSummary struct {
 	State          string `json:"state"`
 	PackNo         int    `json:"pack_no"`
 	PickNo         int    `json:"pick_no"`
+	ExpectedPicks  int    `json:"expected_picks"`
 	OwnedByRequest bool   `json:"owned_by_requester"`
 	ConnectedSeats int    `json:"connected_seats"`
 	Connections    int    `json:"connections"`
@@ -510,6 +511,7 @@ func (r *draftRoom) summary(requesterDeviceID string) draftRoomSummary {
 		State:          r.draft.State(),
 		PackNo:         r.draft.Progress.PackNumber,
 		PickNo:         r.draft.currentPickNo(),
+		ExpectedPicks:  r.draft.picksThisPass(),
 		OwnedByRequest: requesterDeviceID != "" && requesterDeviceID == r.ownerDeviceID,
 		ConnectedSeats: connectedSeats,
 		Connections:    connections,
