@@ -90,11 +90,11 @@
 }
 
 .matrix-cell-band-3 {
-  background: var(--color-green);
+  background: var(--color-light-green);
 }
 
 .matrix-cell-band-4 {
-  background: var(--color-dark-green);
+  background: var(--color-green);
 }
 
 .matrix-cell-band-5 {
