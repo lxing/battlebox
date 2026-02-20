@@ -93,6 +93,8 @@ type DraftPreset struct {
 type ComboManifest struct {
 	// Stable combo identifier used by deck references and frontend routing.
 	ID string `json:"id"`
+	// Optional combo category tags (engine, finisher, value).
+	Types []string `json:"types,omitempty"`
 	// Card groups where outer list is AND and each inner list is OR.
 	Cards [][]string `json:"cards"`
 	// Optional explanatory text describing how the combo works.
@@ -111,6 +113,8 @@ type ComboCardOption struct {
 type Combo struct {
 	// Stable combo identifier from source manifest.
 	ID string `json:"id"`
+	// Optional combo category tags (engine, finisher, value).
+	Types []string `json:"types,omitempty"`
 	// Card groups where outer list is AND and each inner list is OR.
 	Cards [][]ComboCardOption `json:"cards"`
 	// Optional explanatory text describing how the combo works.

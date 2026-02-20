@@ -705,6 +705,9 @@ function renderComboPane() {
   const cardsHtml = filtered.length ? filtered.map((combo) => {
     const comboID = String(combo?.id || '').trim();
     const comboText = String(combo?.text || '').trim();
+    const comboTypes = (Array.isArray(combo?.types) ? combo.types : [])
+      .map((value) => normalizeName(value))
+      .filter((value, idx, values) => (value === 'engine' || value === 'finisher' || value === 'value') && values.indexOf(value) === idx);
     const comboDecks = (Array.isArray(combo?.decks) ? combo.decks : [])
       .map((slug) => normalizeName(slug))
       .filter((slug) => slug && deckNameBySlug.has(slug))
@@ -717,11 +720,14 @@ function renderComboPane() {
       : '<span class="combo-deck-badge combo-deck-badge-empty">No matching decks</span>';
 
     const pieceGroupsHtml = renderComboPieceGroups(combo?.cards);
+    const typeTagsHtml = comboTypes.length
+      ? `<span class="combo-type-tags">${comboTypes.map((type) => `<span class="combo-type-tag">${escapeHtml(type)}</span>`).join('')}</span>`
+      : '';
     return `
       <details class="combo-card">
         <summary class="combo-card-summary">
           <span class="combo-card-title">${escapeHtml(comboID)}</span>
-          <span class="combo-card-count">${comboDecks.length}</span>
+          ${typeTagsHtml}
         </summary>
         <div class="combo-card-body">
           <div class="combo-deck-badges">${badgesHtml}</div>

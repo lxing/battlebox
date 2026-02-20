@@ -4,6 +4,9 @@
   "combos": [
     {
       "id": "survival-squee",
+      "types": [
+        "engine"
+      ],
       "cards": [
         [
           "Survival of the Fittest"

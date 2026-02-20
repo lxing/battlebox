@@ -5,6 +5,12 @@ import (
 	"strings"
 )
 
+var comboTypeRank = map[string]int{
+	"engine":   0,
+	"finisher": 1,
+	"value":    2,
+}
+
 // normalizeBattleboxCombos sanitizes combo definitions from source manifests.
 // The shape is intentionally simple:
 // - outer cards list is logical AND
@@ -35,6 +41,7 @@ func normalizeBattleboxCombos(manifest *BattleboxManifest) {
 		}
 		out = append(out, ComboManifest{
 			ID:    id,
+			Types: normalizeComboTypes(raw.Types),
 			Cards: cards,
 			Text:  strings.TrimSpace(raw.Text),
 		})
@@ -71,6 +78,43 @@ func normalizeComboCards(raw [][]string) [][]string {
 		}
 	}
 	return out
+}
+
+func normalizeComboTypes(raw []string) []string {
+	if len(raw) == 0 {
+		return nil
+	}
+	seen := make(map[string]struct{}, len(raw))
+	normalized := make([]string, 0, len(raw))
+	for _, value := range raw {
+		key := normalizeName(value)
+		if _, ok := comboTypeRank[key]; !ok {
+			continue
+		}
+		if _, exists := seen[key]; exists {
+			continue
+		}
+		normalized = append(normalized, key)
+		seen[key] = struct{}{}
+	}
+	if len(normalized) <= 1 {
+		return normalized
+	}
+	for i := 1; i < len(normalized); i++ {
+		cur := normalized[i]
+		curRank := comboTypeRank[cur]
+		j := i - 1
+		for ; j >= 0; j-- {
+			prev := normalized[j]
+			prevRank := comboTypeRank[prev]
+			if prevRank <= curRank {
+				break
+			}
+			normalized[j+1] = prev
+		}
+		normalized[j+1] = cur
+	}
+	return normalized
 }
 
 // buildBattleboxCombos expands normalized combo manifests into output payloads.
@@ -138,6 +182,7 @@ func buildBattleboxCombos(raw []ComboManifest, decks []Deck) ([]Combo, []string)
 		}
 		out = append(out, Combo{
 			ID:    combo.ID,
+			Types: append([]string(nil), combo.Types...),
 			Cards: resolvedCards,
 			Text:  combo.Text,
 			Decks: matchedDecks,
