@@ -51,9 +51,12 @@ export function createCardPreview(app, getCardTarget) {
       boundsBottom = Math.min(boundsBottom, rect.bottom - margin);
     };
 
-    const battleboxPane = document.getElementById('tab-battlebox');
     const draftPane = document.getElementById('tab-draft');
-    const boundedPane = draftPane && !draftPane.hidden ? draftPane : battleboxPane;
+    const battleboxPane = document.getElementById('tab-battlebox');
+    const matrixPane = document.getElementById('tab-matrix');
+    const comboPane = document.getElementById('tab-combo');
+    const boundedPane = [draftPane, battleboxPane, matrixPane, comboPane]
+      .find((pane) => pane && !pane.hidden) || null;
     applyContainerBounds(boundedPane);
 
     const boundsWidth = Math.max(0, boundsRight - boundsLeft);
