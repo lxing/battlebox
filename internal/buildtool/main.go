@@ -155,6 +155,7 @@ func Main() {
 				TypeSortIcon:            resolveBattleboxTypeSortIcon(bbManifest),
 				MatrixTabEnabled:        !bbManifest.DisableMatrixTab,
 				Presets:                 cloneDraftPresets(bbManifest.Presets),
+				Combos:                  []Combo{},
 				Decks:                   []Deck{},
 				Banned:                  loadBanned(filepath.Join(bbPath, "banned.json")),
 			}
@@ -177,6 +178,11 @@ func Main() {
 
 				battlebox.Decks = append(battlebox.Decks, *deck)
 			}
+			combos, comboWarnings := buildBattleboxCombos(bbManifest.Combos, battlebox.Decks)
+			for _, warning := range comboWarnings {
+				fmt.Fprintf(os.Stderr, "Warning: %s/%s\n", slug, warning)
+			}
+			battlebox.Combos = combos
 
 			output.Battleboxes = append(output.Battleboxes, battlebox)
 			fmt.Printf("Processed battlebox: %s (%d decks)\n", slug, len(battlebox.Decks))

@@ -89,6 +89,36 @@ type DraftPreset struct {
 	PassPattern []int `json:"pass_pattern,omitempty"`
 }
 
+// ComboManifest is one combo definition authored in a battlebox manifest.
+type ComboManifest struct {
+	// Stable combo identifier used by deck references and frontend routing.
+	ID string `json:"id"`
+	// Card groups where outer list is AND and each inner list is OR.
+	Cards [][]string `json:"cards"`
+	// Optional explanatory text describing how the combo works.
+	Text string `json:"text,omitempty"`
+}
+
+// ComboCardOption is one concrete card option in a combo card group.
+type ComboCardOption struct {
+	// Canonical card name from combo manifest source.
+	Name string `json:"name"`
+	// Resolved printing key in "set/collector_number" format.
+	Printing string `json:"printing"`
+}
+
+// Combo is the built combo payload emitted in battlebox JSON.
+type Combo struct {
+	// Stable combo identifier from source manifest.
+	ID string `json:"id"`
+	// Card groups where outer list is AND and each inner list is OR.
+	Cards [][]ComboCardOption `json:"cards"`
+	// Optional explanatory text describing how the combo works.
+	Text string `json:"text,omitempty"`
+	// Deck slugs that currently satisfy the combo card requirements.
+	Decks []string `json:"decks"`
+}
+
 // Deck is the fully built deck payload written to static data files.
 type Deck struct {
 	// URL slug for this deck.
@@ -147,6 +177,8 @@ type BattleboxManifest struct {
 	UIProfiles map[string]DeckUIProfile `json:"ui_profiles,omitempty"`
 	// Optional draft room presets keyed by preset id.
 	Presets map[string]DraftPreset `json:"presets,omitempty"`
+	// Optional combo library shared across decks in this battlebox.
+	Combos []ComboManifest `json:"combos,omitempty"`
 	// Optional manual land subtype taxonomy keyed by card name.
 	LandSubtypes map[string]string `json:"land_subtypes,omitempty"`
 }
@@ -173,6 +205,8 @@ type Battlebox struct {
 	MatrixTabEnabled bool `json:"matrix_tab_enabled"`
 	// Optional draft room presets keyed by preset id.
 	Presets map[string]DraftPreset `json:"presets,omitempty"`
+	// Optional combo library with resolved printings and deck references.
+	Combos []Combo `json:"combos,omitempty"`
 	// Decks included in this battlebox.
 	Decks []Deck `json:"decks"`
 	// Optional banned card names for warning indicators.

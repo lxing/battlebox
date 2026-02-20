@@ -71,6 +71,7 @@ func loadBattleboxManifest(path string) BattleboxManifest {
 	}
 	normalizeBattleboxUIProfiles(&manifest)
 	normalizeBattleboxDraftPresets(&manifest)
+	normalizeBattleboxCombos(&manifest)
 	return manifest
 }
 

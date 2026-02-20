@@ -1,4 +1,18 @@
 {
   "name": "🪄 Premodern",
-  "description": "Relive the golden age of Magic. Old borders, classic strategies, sensible aesthetics, solid gameplay."
+  "description": "Relive the golden age of Magic. Old borders, classic strategies, sensible aesthetics, solid gameplay.",
+  "combos": [
+    {
+      "id": "survival-squee",
+      "cards": [
+        [
+          "Survival of the Fittest"
+        ],
+        [
+          "Squee, Goblin Nabob"
+        ]
+      ],
+      "text": "Survival discards Squee to tutor creatures, then Squee returns every upkeep to repeat the loop."
+    }
+  ]
 }
