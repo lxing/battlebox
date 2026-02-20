@@ -653,15 +653,14 @@ function renderComboPieceGroups(comboCards) {
   const groups = Array.isArray(comboCards) ? comboCards : [];
   return groups.map((group, groupIdx) => {
     const options = Array.isArray(group) ? group : [];
-    const optionsHtml = options.map((option, optionIdx) => {
+    const optionsHtml = options.map((option) => {
       const name = String(option?.name || '').trim();
       const printing = String(option?.printing || '').trim();
       const imageUrl = printing ? scryfallImageUrlByPrinting(printing, 'front') : '';
-      const slash = optionIdx > 0 ? '<span class="combo-piece-sep">/</span>' : '';
       if (!imageUrl) {
-        return `${slash}<span class="combo-piece-card combo-piece-card-missing">${escapeHtml(name)}</span>`;
+        return `<span class="combo-piece-card combo-piece-card-missing">${escapeHtml(name)}</span>`;
       }
-      return `${slash}
+      return `
         <button
           type="button"
           class="combo-piece-card combo-piece-card-image deck-basics-card card card-ref"
@@ -747,8 +746,8 @@ function renderComboPane() {
 
   ui.comboPane.innerHTML = `
     <div class="combo-panel">
+      <div class="panel-title combo-library-header">Combo Library</div>
       <div class="combo-controls">
-        <label class="combo-filter-label" for="combo-deck-filter">Deck</label>
         <select id="combo-deck-filter" class="combo-filter-select" aria-label="Filter combos by deck">
           ${filterOptionsHtml}
         </select>

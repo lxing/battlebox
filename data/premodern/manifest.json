@@ -3,7 +3,7 @@
   "description": "Relive the golden age of Magic. Old borders, classic strategies, sensible aesthetics, solid gameplay.",
   "combos": [
     {
-      "id": "survival-squee",
+      "id": "survival-package",
       "types": [
         "engine"
       ],
@@ -12,10 +12,44 @@
           "Survival of the Fittest"
         ],
         [
-          "Squee, Goblin Nabob"
+          "Squee, Goblin Nabob",
+          "Genesis"
         ]
       ],
-      "text": "Survival discards Squee to tutor creatures, then Squee returns every upkeep to repeat the loop."
+      "text": ""
+    },
+    {
+      "id": "stiflenought",
+      "types": [
+        "finisher"
+      ],
+      "cards": [
+        [
+          "Phyrexian Dreadnought"
+        ],
+        [
+          "Stifle",
+          "Vision Charm"
+        ]
+      ],
+      "text": ""
+    },
+    {
+      "id": "parallax-stack",
+      "types": [
+        "finisher"
+      ],
+      "cards": [
+        [
+          "Parallax Tide",
+          "Parallax Wave"
+        ],
+        [
+          "Seal of Cleansing",
+          "Stifle"
+        ]
+      ],
+      "text": ""
     }
   ]
 }

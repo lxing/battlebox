@@ -5,15 +5,11 @@
 }
 
 .combo-controls {
-  display: grid;
-  grid-template-columns: auto minmax(0, 1fr);
-  align-items: center;
-  gap: 0.45rem;
+  display: block;
 }
 
-.combo-filter-label {
-  font-size: 0.76rem;
-  color: var(--color-gray);
+.combo-library-header {
+  margin-bottom: 0;
 }
 
 .combo-filter-select {
@@ -154,12 +150,6 @@
   display: inline-flex;
   align-items: center;
   gap: 0.08rem;
-}
-
-.combo-piece-sep {
-  font-size: 0.7rem;
-  color: var(--color-gray);
-  margin: 0 0.06rem;
 }
 
 .combo-group-plus {
