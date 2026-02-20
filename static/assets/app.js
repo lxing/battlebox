@@ -83,6 +83,13 @@ const matrixRouteContext = {
   selectedMatchupSlug: '',
   enabled: false,
 };
+const comboRouteContext = {
+  battleboxData: null,
+  battleboxSlug: '',
+  selectedDeckSlug: '',
+  filterDeckSlug: '',
+  enabled: false,
+};
 
 function getCardTarget(event) {
   if (!event.target || !event.target.closest) return null;
@@ -457,6 +464,8 @@ function refreshAuxTabContent(tab) {
       );
       matrixController.maybeAutoScrollHighlightedCell();
     })();
+  } else if (nextTab === TAB_COMBO) {
+    renderComboPane();
   }
 }
 
@@ -609,6 +618,149 @@ async function loadWinrateMatrix(bbSlug) {
   return data.matrices[bbSlug];
 }
 
+function normalizeComboDeckFilter(filterSlug, battleboxData) {
+  const normalized = normalizeName(filterSlug || '');
+  if (!normalized) return '';
+  const decks = Array.isArray(battleboxData?.decks) ? battleboxData.decks : [];
+  return decks.some((deck) => normalizeName(deck?.slug) === normalized) ? normalized : '';
+}
+
+function buildComboDeckNameMap(battleboxData) {
+  const bySlug = new Map();
+  const decks = Array.isArray(battleboxData?.decks) ? battleboxData.decks : [];
+  decks.forEach((deck) => {
+    const slug = normalizeName(deck?.slug || '');
+    if (!slug) return;
+    bySlug.set(slug, String(deck?.name || slug));
+  });
+  return bySlug;
+}
+
+function escapeHtml(value) {
+  return String(value || '')
+    .replaceAll('&', '&amp;')
+    .replaceAll('<', '&lt;')
+    .replaceAll('>', '&gt;');
+}
+
+function escapeAttr(value) {
+  return escapeHtml(value)
+    .replaceAll('"', '&quot;')
+    .replaceAll("'", '&#39;');
+}
+
+function renderComboPieceGroups(comboCards) {
+  const groups = Array.isArray(comboCards) ? comboCards : [];
+  return groups.map((group, groupIdx) => {
+    const options = Array.isArray(group) ? group : [];
+    const optionsHtml = options.map((option, optionIdx) => {
+      const name = String(option?.name || '').trim();
+      const printing = String(option?.printing || '').trim();
+      const imageUrl = printing ? scryfallImageUrlByPrinting(printing, 'front') : '';
+      const slash = optionIdx > 0 ? '<span class="combo-piece-sep">/</span>' : '';
+      if (!imageUrl) {
+        return `${slash}<span class="combo-piece-card combo-piece-card-missing">${escapeHtml(name)}</span>`;
+      }
+      return `${slash}
+        <button
+          type="button"
+          class="combo-piece-card combo-piece-card-image deck-basics-card card card-ref"
+          data-name="${escapeAttr(name)}"
+          data-printing="${escapeAttr(printing)}"
+          aria-label="${escapeAttr(name)}"
+        >
+          <img src="${escapeAttr(imageUrl)}" alt="${escapeAttr(name)}" loading="lazy" decoding="async">
+        </button>
+      `;
+    }).join('');
+    const plus = groupIdx > 0 ? '<span class="combo-group-plus">+</span>' : '';
+    return `${plus}<span class="combo-piece-group">${optionsHtml}</span>`;
+  }).join('');
+}
+
+function renderComboPane() {
+  if (!ui.comboPane) return;
+
+  const battleboxData = comboRouteContext.battleboxData;
+  if (!comboRouteContext.enabled || !battleboxData) {
+    ui.comboPane.innerHTML = '<div class="aux-empty">No combos for this battlebox.</div>';
+    return;
+  }
+
+  const combos = Array.isArray(battleboxData.combos) ? battleboxData.combos.slice() : [];
+  const deckNameBySlug = buildComboDeckNameMap(battleboxData);
+  const deckOptions = [...deckNameBySlug.entries()]
+    .sort((a, b) => a[1].localeCompare(b[1]));
+
+  const selectedFilter = normalizeComboDeckFilter(comboRouteContext.filterDeckSlug, battleboxData);
+  comboRouteContext.filterDeckSlug = selectedFilter;
+
+  combos.sort((a, b) => String(a?.id || '').localeCompare(String(b?.id || '')));
+  const filtered = combos.filter((combo) => {
+    if (!selectedFilter) return true;
+    const comboDecks = Array.isArray(combo?.decks) ? combo.decks : [];
+    return comboDecks.some((slug) => normalizeName(slug) === selectedFilter);
+  });
+
+  const cardsHtml = filtered.length ? filtered.map((combo) => {
+    const comboID = String(combo?.id || '').trim();
+    const comboText = String(combo?.text || '').trim();
+    const comboDecks = (Array.isArray(combo?.decks) ? combo.decks : [])
+      .map((slug) => normalizeName(slug))
+      .filter((slug) => slug && deckNameBySlug.has(slug))
+      .sort((a, b) => deckNameBySlug.get(a).localeCompare(deckNameBySlug.get(b)));
+    const badgesHtml = comboDecks.length
+      ? comboDecks.map((slug) => {
+          const selectedClass = selectedFilter && slug === selectedFilter ? ' is-selected' : '';
+          return `<span class="combo-deck-badge${selectedClass}">${escapeHtml(deckNameBySlug.get(slug))}</span>`;
+        }).join('')
+      : '<span class="combo-deck-badge combo-deck-badge-empty">No matching decks</span>';
+
+    const pieceGroupsHtml = renderComboPieceGroups(combo?.cards);
+    return `
+      <details class="combo-card">
+        <summary class="combo-card-summary">
+          <span class="combo-card-title">${escapeHtml(comboID)}</span>
+          <span class="combo-card-count">${comboDecks.length}</span>
+        </summary>
+        <div class="combo-card-body">
+          <div class="combo-deck-badges">${badgesHtml}</div>
+          ${comboText ? `<div class="combo-explainer">${escapeHtml(comboText)}</div>` : ''}
+          <div class="combo-piece-line-scroll">
+            <div class="combo-piece-line">${pieceGroupsHtml}</div>
+          </div>
+        </div>
+      </details>
+    `;
+  }).join('') : '<div class="aux-empty">No combos match this deck filter.</div>';
+
+  const filterOptionsHtml = [
+    '<option value="">All decks</option>',
+    ...deckOptions.map(([slug, name]) => `<option value="${escapeAttr(slug)}">${escapeHtml(name)}</option>`),
+  ].join('');
+
+  ui.comboPane.innerHTML = `
+    <div class="combo-panel">
+      <div class="combo-controls">
+        <label class="combo-filter-label" for="combo-deck-filter">Deck</label>
+        <select id="combo-deck-filter" class="combo-filter-select" aria-label="Filter combos by deck">
+          ${filterOptionsHtml}
+        </select>
+      </div>
+      <div class="combo-list">${cardsHtml}</div>
+    </div>
+  `;
+
+  const filterSelect = ui.comboPane.querySelector('#combo-deck-filter');
+  if (filterSelect) {
+    filterSelect.value = selectedFilter;
+    filterSelect.addEventListener('change', () => {
+      comboRouteContext.filterDeckSlug = normalizeComboDeckFilter(filterSelect.value, battleboxData);
+      renderComboPane();
+    });
+  }
+}
+
 async function route() {
   preview.hidePreview();
   sampleHand.hide();
@@ -662,6 +814,11 @@ async function route() {
     matrixRouteContext.selectedDeckSlug = '';
     matrixRouteContext.selectedMatchupSlug = '';
     matrixRouteContext.enabled = false;
+    comboRouteContext.battleboxData = null;
+    comboRouteContext.battleboxSlug = currentBattleboxSlug;
+    comboRouteContext.selectedDeckSlug = '';
+    comboRouteContext.filterDeckSlug = '';
+    comboRouteContext.enabled = false;
     setTabEnabled(TAB_MATRIX, false);
     setTabEnabled(TAB_COMBO, false);
   } else {
@@ -671,6 +828,17 @@ async function route() {
     matrixRouteContext.selectedDeckSlug = currentDeckSlug;
     matrixRouteContext.selectedMatchupSlug = matchupSlug;
     matrixRouteContext.enabled = matrixTabEnabled;
+    const normalizedDeckSlug = normalizeName(currentDeckSlug || '');
+    const battleboxChanged = comboRouteContext.battleboxSlug !== currentBattleboxSlug;
+    comboRouteContext.battleboxData = currentBattleboxData;
+    comboRouteContext.battleboxSlug = currentBattleboxSlug;
+    comboRouteContext.selectedDeckSlug = normalizedDeckSlug;
+    comboRouteContext.enabled = comboTabEnabled;
+    if (battleboxChanged) {
+      comboRouteContext.filterDeckSlug = normalizedDeckSlug;
+    } else if (normalizedDeckSlug) {
+      comboRouteContext.filterDeckSlug = normalizedDeckSlug;
+    }
     setTabEnabled(TAB_MATRIX, matrixTabEnabled);
     setTabEnabled(TAB_COMBO, comboTabEnabled);
   }
