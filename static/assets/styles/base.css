@@ -124,6 +124,12 @@ body {
   padding-bottom: var(--pane-gap);
 }
 
+.tab-pane-combo {
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding-bottom: var(--pane-gap);
+}
+
 .tab-pane[hidden] {
   display: none !important;
 }

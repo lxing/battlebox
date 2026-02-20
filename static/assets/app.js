@@ -25,6 +25,7 @@ import {
   TAB_LIFE,
   TAB_DRAFT,
   TAB_MATRIX,
+  TAB_COMBO,
   normalizeTab,
   tabFromSearch,
   parseDraftRoomSelectionFromSearch,
@@ -66,6 +67,7 @@ const ui = {
   lifePane: null,
   draftPane: null,
   matrixPane: null,
+  comboPane: null,
   activeTab: TAB_BATTLEBOX,
 };
 const qrUi = {
@@ -417,13 +419,14 @@ function bindBreadcrumbQrButton(container) {
 }
 
 function applyActiveTab(tab) {
-  if (!ui.battleboxPane || !ui.lifePane || !ui.draftPane || !ui.matrixPane || !ui.footer) return;
+  if (!ui.battleboxPane || !ui.lifePane || !ui.draftPane || !ui.matrixPane || !ui.comboPane || !ui.footer) return;
   const nextTab = normalizeTab(tab);
   ui.activeTab = nextTab;
   ui.battleboxPane.hidden = nextTab !== TAB_BATTLEBOX;
   ui.lifePane.hidden = nextTab !== TAB_LIFE;
   ui.draftPane.hidden = nextTab !== TAB_DRAFT;
   ui.matrixPane.hidden = nextTab !== TAB_MATRIX;
+  ui.comboPane.hidden = nextTab !== TAB_COMBO;
   if (nextTab !== TAB_BATTLEBOX) {
     preview.hidePreview();
     sampleHand.hide();
@@ -504,14 +507,18 @@ function ensureShell() {
   const matrixPane = document.createElement('div');
   matrixPane.className = 'tab-pane tab-pane-matrix';
   matrixPane.id = 'tab-matrix';
+  const comboPane = document.createElement('div');
+  comboPane.className = 'tab-pane tab-pane-combo';
+  comboPane.id = 'tab-combo';
   const footer = document.createElement('div');
   footer.className = 'view-footer';
   footer.innerHTML = `
     <div class="tabbar">
       <button type="button" class="action-button tabbar-button" data-tab="life" aria-label="Life tab">❤️‍🩹</button>
-      <button type="button" class="action-button tabbar-button" data-tab="battlebox" aria-label="Battlebox tab">📚</button>
       <button type="button" class="action-button tabbar-button" data-tab="draft" aria-label="Draft tab">🏟️</button>
+      <button type="button" class="action-button tabbar-button" data-tab="battlebox" aria-label="Deck tab">📚</button>
       <button type="button" class="action-button tabbar-button" data-tab="matrix" aria-label="Winrate matrix tab">📊</button>
+      <button type="button" class="action-button tabbar-button" data-tab="combo" aria-label="Combo tab">🧪</button>
     </div>
   `;
 
@@ -527,6 +534,7 @@ function ensureShell() {
   body.appendChild(lifePane);
   body.appendChild(draftPane);
   body.appendChild(matrixPane);
+  body.appendChild(comboPane);
   shell.appendChild(header);
   shell.appendChild(body);
   shell.appendChild(footer);
@@ -540,6 +548,7 @@ function ensureShell() {
   ui.lifePane = lifePane;
   ui.draftPane = draftPane;
   ui.matrixPane = matrixPane;
+  ui.comboPane = comboPane;
 }
 
 function renderBattleboxPane(headerHtml, bodyHtml) {
@@ -618,6 +627,15 @@ async function route() {
     : null;
   const isCubeContext = currentBattleboxSlug === 'cube';
   const matrixTabEnabled = Boolean(currentBattlebox && currentBattlebox.matrix_tab_enabled !== false);
+  const currentBattleboxData = (parts.length > 0 && !isCubeContext)
+    ? await loadBattlebox(currentBattleboxSlug)
+    : null;
+  const comboTabEnabled = Boolean(
+    !isCubeContext
+    && currentBattleboxData
+    && Array.isArray(currentBattleboxData.combos)
+    && currentBattleboxData.combos.length > 0
+  );
 
   if (parts.length === 0) {
     renderHome();
@@ -645,6 +663,7 @@ async function route() {
     matrixRouteContext.selectedMatchupSlug = '';
     matrixRouteContext.enabled = false;
     setTabEnabled(TAB_MATRIX, false);
+    setTabEnabled(TAB_COMBO, false);
   } else {
     lobbyController.setPreferredDeckSlug('');
     matrixRouteContext.battlebox = currentBattlebox;
@@ -653,6 +672,7 @@ async function route() {
     matrixRouteContext.selectedMatchupSlug = matchupSlug;
     matrixRouteContext.enabled = matrixTabEnabled;
     setTabEnabled(TAB_MATRIX, matrixTabEnabled);
+    setTabEnabled(TAB_COMBO, comboTabEnabled);
   }
 
   if (ui.battleboxPane) {

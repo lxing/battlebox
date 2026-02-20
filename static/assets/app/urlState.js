@@ -4,8 +4,9 @@ export const TAB_BATTLEBOX = 'battlebox';
 export const TAB_LIFE = 'life';
 export const TAB_DRAFT = 'draft';
 export const TAB_MATRIX = 'matrix';
+export const TAB_COMBO = 'combo';
 
-const VALID_TABS = new Set([TAB_BATTLEBOX, TAB_LIFE, TAB_DRAFT, TAB_MATRIX]);
+const VALID_TABS = new Set([TAB_BATTLEBOX, TAB_LIFE, TAB_DRAFT, TAB_MATRIX, TAB_COMBO]);
 
 function buildSearchString(params) {
   const encoded = params.toString();
