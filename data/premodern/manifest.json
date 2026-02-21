@@ -46,7 +46,73 @@
         ],
         [
           "Seal of Cleansing",
-          "Stifle"
+          "Stifle",
+          "Chain of Vapor"
+        ]
+      ],
+      "text": ""
+    },
+    {
+      "id": "stasis",
+      "types": [
+        "engine"
+      ],
+      "cards": [
+        [
+          "Stasis"
+        ],
+        [
+          "Forsaken City",
+          "Gush",
+          "Thwart"
+        ]
+      ],
+      "text": ""
+    },
+    {
+      "id": "armageddon",
+      "types": [
+        "finisher"
+      ],
+      "cards": [
+        [
+          "Armageddon"
+        ],
+        [
+          "Mox Diamond",
+          "Gush"
+        ]
+      ],
+      "text": ""
+    },
+    {
+      "id": "landstill",
+      "types": [
+        "value"
+      ],
+      "cards": [
+        [
+          "Standstill"
+        ],
+        [
+          "Mishra's Factory",
+          "Faerie Conclave",
+          "Decree of Justice"
+        ]
+      ],
+      "text": ""
+    },
+    {
+      "id": "recurring-whale",
+      "types": [
+        "finisher"
+      ],
+      "cards": [
+        [
+          "Recurring Nightmare"
+        ],
+        [
+          "Great Whale"
         ]
       ],
       "text": ""

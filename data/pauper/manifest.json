@@ -12,7 +12,56 @@
           "Brainstorm"
         ],
         [
-          "Lórien Revealed"
+          "Lórien Revealed",
+          "Squadron Hawk"
+        ]
+      ],
+      "text": ""
+    },
+    {
+      "id": "brainscour",
+      "types": [
+        "value"
+      ],
+      "cards": [
+        [
+          "Brainstorm"
+        ],
+        [
+          "Thought Scour",
+          "Mental Note"
+        ]
+      ],
+      "text": ""
+    },
+    {
+      "id": "scour-away",
+      "types": [
+        "value"
+      ],
+      "cards": [
+        [
+          "Deem Inferior"
+        ],
+        [
+          "Thought Scour"
+        ]
+      ],
+      "text": ""
+    },
+    {
+      "id": "sneaky-grabber",
+      "types": [
+        "value"
+      ],
+      "cards": [
+        [
+          "Sneaky Snacker"
+        ],
+        [
+          "Highway Robbery",
+          "Grab the Prize",
+          "Faithless Looting"
         ]
       ],
       "text": ""
