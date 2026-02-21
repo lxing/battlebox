@@ -50,6 +50,82 @@
         ]
       ],
       "text": ""
+    },
+    {
+      "id": "kamahlgeddon",
+      "types": [
+        "finisher"
+      ],
+      "cards": [
+        [
+          "Kamahl, Fist of Krosa"
+        ],
+        [
+          "Masticore",
+          "Goblin Sharpshooter"
+        ]
+      ],
+      "text": ""
+    },
+    {
+      "id": "elfball-mana",
+      "types": [
+        "value"
+      ],
+      "cards": [
+        [
+          "Quirion Ranger"
+        ],
+        [
+          "Priest of Titania"
+        ]
+      ],
+      "text": ""
+    },
+    {
+      "id": "elfball-cards",
+      "types": [
+        "value"
+      ],
+      "cards": [
+        [
+          "Wirewood Symbiote"
+        ],
+        [
+          "Multani's Acolyte"
+        ]
+      ],
+      "text": ""
+    },
+    {
+      "id": "goblin-grenade",
+      "types": [
+        "finisher"
+      ],
+      "cards": [
+        [
+          "Goblin Sharpshooter"
+        ],
+        [
+          "Skirk Prospector"
+        ]
+      ],
+      "text": ""
+    },
+    {
+      "id": "gush-tog",
+      "types": [
+        "value"
+      ],
+      "cards": [
+        [
+          "Gush"
+        ],
+        [
+          "Psychatog"
+        ]
+      ],
+      "text": ""
     }
   ]
 }

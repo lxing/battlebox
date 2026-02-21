@@ -1,4 +1,222 @@
 {
   "name": "💳 Pauper",
-  "description": "Poverty breeds ingenuity as you wield the worst common-rarity design mistakes in R&D history."
+  "description": "Poverty breeds ingenuity as you wield the worst common-rarity design mistakes in R&D history.",
+  "combos": [
+    {
+      "id": "brainstorm-shuffle",
+      "types": [
+        "value"
+      ],
+      "cards": [
+        [
+          "Brainstorm"
+        ],
+        [
+          "Lórien Revealed"
+        ]
+      ],
+      "text": ""
+    },
+    {
+      "id": "kenku-bridge",
+      "types": [
+        "value"
+      ],
+      "cards": [
+        [
+          "Kenku Artificer"
+        ],
+        [
+          "Drossforge Bridge",
+          "Mistvault Bridge"
+        ]
+      ],
+      "text": ""
+    },
+    {
+      "id": "toxic-krark",
+      "types": [
+        "finisher"
+      ],
+      "cards": [
+        [
+          "Krark-Clan Shaman"
+        ],
+        [
+          "Toxin Analysis",
+          "Hunter's Blowgun"
+        ]
+      ],
+      "text": ""
+    },
+    {
+      "id": "ephemerate",
+      "types": [
+        "value"
+      ],
+      "cards": [
+        [
+          "Ephemerate"
+        ],
+        [
+          "Archaeomancer",
+          "Augur of Bolas",
+          "Dawnbringer Cleric",
+          "Mulldrifter",
+          "Stonehorn Dignitary"
+        ]
+      ],
+      "text": ""
+    },
+    {
+      "id": "elfball",
+      "types": [
+        "engine"
+      ],
+      "cards": [
+        [
+          "Quirion Ranger"
+        ],
+        [
+          "Priest of Titania",
+          "Wellwisher"
+        ]
+      ],
+      "text": ""
+    },
+    {
+      "id": "sky-inspector",
+      "types": [
+        "value"
+      ],
+      "cards": [
+        [
+          "Kor Skyfisher"
+        ],
+        [
+          "Thraben Inspector",
+          "Novice Inspector"
+        ]
+      ],
+      "text": ""
+    },
+    {
+      "id": "trinket-bargain",
+      "types": [
+        "engine"
+      ],
+      "cards": [
+        [
+          "Reckoner's Bargain",
+          "Fanatical Offering",
+          "Eviscerator's Insight"
+        ],
+        [
+          "Ichor Wellspring",
+          "Lembas",
+          "Tithing Blade / Consuming Sepulcher"
+        ]
+      ],
+      "text": ""
+    },
+    {
+      "id": "broodscale",
+      "types": [
+        "finisher"
+      ],
+      "cards": [
+        [
+          "Basking Broodscale"
+        ],
+        [
+          "Sadistic Glee"
+        ],
+        [
+          "Nadier's Nightblade"
+        ]
+      ],
+      "text": ""
+    },
+    {
+      "id": "wildfire-bridge",
+      "types": [
+        "value"
+      ],
+      "cards": [
+        [
+          "Cleansing Wildfire"
+        ],
+        [
+          "Rustvale Bridge",
+          "Silverbluff Bridge"
+        ]
+      ],
+      "text": ""
+    },
+    {
+      "id": "white-madness",
+      "types": [
+        "value"
+      ],
+      "cards": [
+        [
+          "Raffine's Informant",
+          "The Modern Age / Vector Glider"
+        ],
+        [
+          "Prismatic Strands",
+          "Battle Screech"
+        ]
+      ],
+      "text": ""
+    },
+    {
+      "id": "glint-blade",
+      "types": [
+        "value"
+      ],
+      "cards": [
+        [
+          "Glint Hawk"
+        ],
+        [
+          "Lembas",
+          "Tithing Blade / Consuming Sepulcher"
+        ]
+      ],
+      "text": ""
+    },
+    {
+      "id": "eldrazi-party",
+      "types": [
+        "value"
+      ],
+      "cards": [
+        [
+          "Writhing Chrysalis"
+        ],
+        [
+          "Eldrazi Repurposer",
+          "Malevolent Rumble"
+        ]
+      ],
+      "text": ""
+    },
+    {
+      "id": "wild-arbor",
+      "types": [
+        "value"
+      ],
+      "cards": [
+        [
+          "Arbor Elf"
+        ],
+        [
+          "Wild Growth",
+          "Utopia Sprawl"
+        ]
+      ],
+      "text": ""
+    }
+  ]
 }
