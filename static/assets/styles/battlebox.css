@@ -957,7 +957,7 @@ details.collapsible[open] summary::after {
 }
 
 .guide-plan-col {
-  background: var(--color-surface);
+  background: var(--color-black);
   border-radius: var(--radius-md);
   padding: 0.5rem 0.6rem;
 }
@@ -978,6 +978,7 @@ details.collapsible[open] summary::after {
 
 .guide-plan-list li {
   margin: 0.25rem 0;
+  font-size: 0.74rem;
 }
 
 .guide-plan-none {

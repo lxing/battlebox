@@ -116,7 +116,7 @@
 }
 
 .matrix-row-selected > .matrix-row-head {
-  background: var(--color-gray);
+  background: var(--color-blue);
 }
 
 .matrix-row-selected > .matrix-cell {

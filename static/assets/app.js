@@ -525,8 +525,8 @@ function ensureShell() {
       <button type="button" class="action-button tabbar-button" data-tab="life" aria-label="Life tab">❤️‍🩹</button>
       <button type="button" class="action-button tabbar-button" data-tab="draft" aria-label="Draft tab">🏟️</button>
       <button type="button" class="action-button tabbar-button" data-tab="battlebox" aria-label="Deck tab">📚</button>
-      <button type="button" class="action-button tabbar-button" data-tab="matrix" aria-label="Winrate matrix tab">📊</button>
       <button type="button" class="action-button tabbar-button" data-tab="combo" aria-label="Combo tab">🧪</button>
+      <button type="button" class="action-button tabbar-button" data-tab="matrix" aria-label="Winrate matrix tab">📊</button>
     </div>
   `;
 
