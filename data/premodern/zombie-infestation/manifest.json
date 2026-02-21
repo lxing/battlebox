@@ -1,0 +1,44 @@
+{
+  "name": "Zombie Infestation",
+  "source_url": "https://www.mtggoldfish.com/deck/7637757",
+  "colors": "ub",
+  "tags": [
+    "control",
+    "combo"
+  ],
+  "cards": [
+    { "name": "Accumulated Knowledge", "qty": 4 },
+    { "name": "Cabal Therapy", "qty": 1 },
+    { "name": "Chain of Vapor", "qty": 1 },
+    { "name": "Counterspell", "qty": 4 },
+    { "name": "Deep Analysis", "qty": 1 },
+    { "name": "Duress", "qty": 4 },
+    { "name": "Foil", "qty": 3 },
+    { "name": "Forbid", "qty": 1 },
+    { "name": "Gush", "qty": 4 },
+    { "name": "Intuition", "qty": 2 },
+    { "name": "Krovikan Horror", "qty": 1 },
+    { "name": "Polluted Delta", "qty": 4 },
+    { "name": "Portent", "qty": 4 },
+    { "name": "Smother", "qty": 2 },
+    { "name": "Island", "qty": 9 },
+    { "name": "Swamp", "qty": 2 },
+    { "name": "Squee, Goblin Nabob", "qty": 4 },
+    { "name": "Underground River", "qty": 4 },
+    { "name": "Wonder", "qty": 1 },
+    { "name": "Zombie Infestation", "qty": 4 }
+  ],
+  "sideboard": [
+    { "name": "Annul", "qty": 2 },
+    { "name": "Blue Elemental Blast", "qty": 2 },
+    { "name": "Chain of Vapor", "qty": 1 },
+    { "name": "Engineered Plague", "qty": 3 },
+    { "name": "Hibernation", "qty": 2 },
+    { "name": "Hydroblast", "qty": 2 },
+    { "name": "Masticore", "qty": 1 },
+    { "name": "Tsabo's Web", "qty": 2 }
+  ],
+  "difficulty_tags": [
+    "expert"
+  ]
+}
