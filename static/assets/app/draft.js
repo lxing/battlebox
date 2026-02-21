@@ -102,7 +102,8 @@ function formatSeatLabel(zeroBasedSeat, seatTotal) {
 
 function formatPickButtonLabel(expectedPicks) {
   const picks = normalizePositiveInt(expectedPicks);
-  return `Pick ${picks > 0 ? picks : 1}`;
+  const count = picks > 0 ? picks : 1;
+  return count === 1 ? 'Pick 1 Card' : `Pick ${count} Cards`;
 }
 
 function normalizeDraftSlug(value) {
@@ -1330,7 +1331,7 @@ export function createDraftController({
               <div id="draft-waiting-label" class="draft-pack-pick" hidden>Waiting...</div>
             </div>
             <button type="button" class="action-button button-standard draft-pick-confirm-button" id="draft-pick-submit" disabled>
-              Pick 1
+              Pick 1 Card
             </button>
           </div>
           <div id="draft-pack-cards">
