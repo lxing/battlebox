@@ -137,7 +137,10 @@ func Main() {
 		}
 
 		// Fetch missing card data from Scryfall.
-		fetchMissingCardMeta(allCards)
+		if err := fetchMissingCardMeta(allCards); err != nil {
+			fmt.Fprintf(os.Stderr, "Error fetching card metadata: %v\n", err)
+			os.Exit(1)
+		}
 		saveCardCache()
 
 		// Second pass: rebuild changed battleboxes.

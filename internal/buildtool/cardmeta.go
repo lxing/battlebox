@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
+	"io"
 	"net/http"
 	"os"
 	"sort"
@@ -57,7 +58,7 @@ func saveCardCache() {
 	os.WriteFile(cacheFile, data, 0644)
 }
 
-func fetchMissingCardMeta(cards []Card) {
+func fetchMissingCardMeta(cards []Card) error {
 	// Collect unique printings missing cache data
 	needed := map[string]bool{}
 	for _, c := range cards {
@@ -71,7 +72,7 @@ func fetchMissingCardMeta(cards []Card) {
 	}
 
 	if len(needed) == 0 {
-		return
+		return nil
 	}
 
 	fmt.Printf("Fetching %d card entries from Scryfall...\n", len(needed))
@@ -96,18 +97,29 @@ func fetchMissingCardMeta(cards []Card) {
 		req := ScryfallRequest{Identifiers: batch}
 		body, _ := json.Marshal(req)
 
-		resp, err := http.Post(
-			"https://api.scryfall.com/cards/collection",
-			"application/json",
-			bytes.NewReader(body),
-		)
+		httpReq, err := http.NewRequest(http.MethodPost, "https://api.scryfall.com/cards/collection", bytes.NewReader(body))
 		if err != nil {
-			fmt.Fprintf(os.Stderr, "Scryfall request failed: %v\n", err)
-			continue
+			return fmt.Errorf("building Scryfall request: %w", err)
+		}
+		httpReq.Header.Set("Content-Type", "application/json")
+		httpReq.Header.Set("Accept", "application/json")
+		httpReq.Header.Set("User-Agent", "battlebox-build/1.0 (+https://github.com/lxing/battlebox)")
+
+		resp, err := http.DefaultClient.Do(httpReq)
+		if err != nil {
+			return fmt.Errorf("Scryfall request failed: %w", err)
+		}
+		if resp.StatusCode < 200 || resp.StatusCode >= 300 {
+			errBody, _ := io.ReadAll(io.LimitReader(resp.Body, 1024))
+			resp.Body.Close()
+			return fmt.Errorf("Scryfall request failed: status=%d body=%s", resp.StatusCode, strings.TrimSpace(string(errBody)))
 		}
 
 		var result ScryfallResponse
-		json.NewDecoder(resp.Body).Decode(&result)
+		if err := json.NewDecoder(resp.Body).Decode(&result); err != nil {
+			resp.Body.Close()
+			return fmt.Errorf("decoding Scryfall response: %w", err)
+		}
 		resp.Body.Close()
 
 		for _, card := range result.Data {
@@ -131,6 +143,8 @@ func fetchMissingCardMeta(cards []Card) {
 			time.Sleep(100 * time.Millisecond)
 		}
 	}
+
+	return nil
 }
 
 func resolveCardType(printing, scryfallTypeLine string) string {

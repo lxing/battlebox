@@ -1,0 +1,119 @@
+{
+  "name": "Black Midrange",
+  "source_url": "https://www.mtggoldfish.com/deck/7639674",
+  "colors": "b",
+  "tags": [
+    "midrange"
+  ],
+  "cards": [
+    {
+      "name": "Bane of the Living",
+      "qty": 2
+    },
+    {
+      "name": "Barren Moor",
+      "qty": 2
+    },
+    {
+      "name": "Cabal Therapy",
+      "qty": 4
+    },
+    {
+      "name": "Dark Ritual",
+      "qty": 4
+    },
+    {
+      "name": "Diabolic Edict",
+      "qty": 1
+    },
+    {
+      "name": "Duress",
+      "qty": 3
+    },
+    {
+      "name": "Graveborn Muse",
+      "qty": 1
+    },
+    {
+      "name": "Hypnotic Specter",
+      "qty": 4
+    },
+    {
+      "name": "Mishra's Factory",
+      "qty": 4
+    },
+    {
+      "name": "Nantuko Shade",
+      "qty": 3
+    },
+    {
+      "name": "Phyrexian Arena",
+      "qty": 3
+    },
+    {
+      "name": "Ravenous Rats",
+      "qty": 4
+    },
+    {
+      "name": "Smother",
+      "qty": 3
+    },
+    {
+      "name": "Snuff Out",
+      "qty": 1
+    },
+    {
+      "name": "Swamp",
+      "qty": 14
+    },
+    {
+      "name": "Wasteland",
+      "qty": 3
+    },
+    {
+      "name": "Withered Wretch",
+      "qty": 4
+    }
+  ],
+  "sideboard": [
+    {
+      "name": "Bane of the Living",
+      "qty": 1
+    },
+    {
+      "name": "Drain Life",
+      "qty": 2
+    },
+    {
+      "name": "Duress",
+      "qty": 1
+    },
+    {
+      "name": "Engineered Plague",
+      "qty": 4
+    },
+    {
+      "name": "Graveborn Muse",
+      "qty": 1
+    },
+    {
+      "name": "Powder Keg",
+      "qty": 2
+    },
+    {
+      "name": "Spinning Darkness",
+      "qty": 1
+    },
+    {
+      "name": "Tormod's Crypt",
+      "qty": 1
+    },
+    {
+      "name": "Zuran Orb",
+      "qty": 2
+    }
+  ],
+  "difficulty_tags": [
+    "beginner"
+  ]
+}
