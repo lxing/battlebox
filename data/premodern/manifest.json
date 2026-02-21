@@ -35,7 +35,7 @@
       "text": ""
     },
     {
-      "id": "parallax-stack",
+      "id": "parallax",
       "types": [
         "finisher"
       ],
@@ -65,6 +65,22 @@
           "Forsaken City",
           "Gush",
           "Thwart"
+        ]
+      ],
+      "text": ""
+    },
+    {
+      "id": "wayfarer",
+      "types": [
+        "value"
+      ],
+      "cards": [
+        [
+          "Weathered Wayfarer"
+        ],
+        [
+          "Wasteland",
+          "Windswept Heath"
         ]
       ],
       "text": ""
@@ -103,7 +119,7 @@
       "text": ""
     },
     {
-      "id": "recurring-whale",
+      "id": "whale-nightmare",
       "types": [
         "finisher"
       ],
@@ -113,6 +129,25 @@
         ],
         [
           "Great Whale"
+        ]
+      ],
+      "text": ""
+    },
+    {
+      "id": "recurring-toolbox",
+      "types": [
+        "engine"
+      ],
+      "cards": [
+        [
+          "Recurring Nightmare"
+        ],
+        [
+          "Deranged Hermit",
+          "Bone Shredder",
+          "Yavimaya Elder",
+          "Ghitu Slinger",
+          "Avalanche Riders"
         ]
       ],
       "text": ""

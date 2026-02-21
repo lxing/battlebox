@@ -87,7 +87,6 @@ const comboRouteContext = {
   battleboxData: null,
   battleboxSlug: '',
   selectedDeckSlug: '',
-  filterDeckSlug: '',
   enabled: false,
 };
 
@@ -636,6 +635,26 @@ function buildComboDeckNameMap(battleboxData) {
   return bySlug;
 }
 
+function buildComboDeckCardNameSetForSlug(battleboxData, selectedSlug) {
+  const slug = normalizeName(selectedSlug || '');
+  if (!slug) return null;
+  const decks = Array.isArray(battleboxData?.decks) ? battleboxData.decks : [];
+  const deck = decks.find((entry) => normalizeName(entry?.slug || '') === slug);
+  if (!deck) return null;
+  const names = new Set();
+  const mainCards = Array.isArray(deck?.cards) ? deck.cards : [];
+  const sideboardCards = Array.isArray(deck?.sideboard) ? deck.sideboard : [];
+  mainCards.forEach((card) => {
+    const key = normalizeName(card?.name || '');
+    if (key) names.add(key);
+  });
+  sideboardCards.forEach((card) => {
+    const key = normalizeName(card?.name || '');
+    if (key) names.add(key);
+  });
+  return names;
+}
+
 function escapeHtml(value) {
   return String(value || '')
     .replaceAll('&', '&amp;')
@@ -649,10 +668,13 @@ function escapeAttr(value) {
     .replaceAll("'", '&#39;');
 }
 
-function renderComboPieceGroups(comboCards) {
+function renderComboPieceGroups(comboCards, selectedDeckCardNames) {
   const groups = Array.isArray(comboCards) ? comboCards : [];
   return groups.map((group, groupIdx) => {
-    const options = Array.isArray(group) ? group : [];
+    const rawOptions = Array.isArray(group) ? group : [];
+    const options = selectedDeckCardNames
+      ? rawOptions.filter((option) => selectedDeckCardNames.has(normalizeName(option?.name || '')))
+      : rawOptions;
     const optionsHtml = options.map((option) => {
       const name = String(option?.name || '').trim();
       const printing = String(option?.printing || '').trim();
@@ -688,11 +710,8 @@ function renderComboPane() {
 
   const combos = Array.isArray(battleboxData.combos) ? battleboxData.combos.slice() : [];
   const deckNameBySlug = buildComboDeckNameMap(battleboxData);
-  const deckOptions = [...deckNameBySlug.entries()]
-    .sort((a, b) => a[1].localeCompare(b[1]));
-
-  const selectedFilter = normalizeComboDeckFilter(comboRouteContext.filterDeckSlug, battleboxData);
-  comboRouteContext.filterDeckSlug = selectedFilter;
+  const selectedFilter = normalizeComboDeckFilter(comboRouteContext.selectedDeckSlug, battleboxData);
+  const selectedDeckCardNames = buildComboDeckCardNameSetForSlug(battleboxData, selectedFilter);
 
   combos.sort((a, b) => String(a?.id || '').localeCompare(String(b?.id || '')));
   const filtered = combos.filter((combo) => {
@@ -712,24 +731,22 @@ function renderComboPane() {
       .filter((slug) => slug && deckNameBySlug.has(slug))
       .sort((a, b) => deckNameBySlug.get(a).localeCompare(deckNameBySlug.get(b)));
     const badgesHtml = comboDecks.length
-      ? comboDecks.map((slug) => {
-          const selectedClass = selectedFilter && slug === selectedFilter ? ' is-selected' : '';
-          return `<span class="combo-deck-badge${selectedClass}">${escapeHtml(deckNameBySlug.get(slug))}</span>`;
-        }).join('')
+      ? comboDecks.map((slug) => `<span class="combo-deck-badge">${escapeHtml(deckNameBySlug.get(slug))}</span>`).join('')
       : '<span class="combo-deck-badge combo-deck-badge-empty">No matching decks</span>';
 
-    const pieceGroupsHtml = renderComboPieceGroups(combo?.cards);
+    const pieceGroupsHtml = renderComboPieceGroups(combo?.cards, selectedDeckCardNames);
     const typeTagsHtml = comboTypes.length
       ? `<span class="combo-type-tags">${comboTypes.map((type) => `<span class="combo-type-tag">${escapeHtml(type)}</span>`).join('')}</span>`
       : '';
+    const openAttr = selectedFilter ? ' open' : '';
     return `
-      <details class="combo-card">
+      <details class="combo-card"${openAttr}>
         <summary class="combo-card-summary">
           <span class="combo-card-title">${escapeHtml(comboID)}</span>
           ${typeTagsHtml}
         </summary>
         <div class="combo-card-body">
-          <div class="combo-deck-badges">${badgesHtml}</div>
+          ${selectedFilter ? '' : `<div class="combo-deck-badges">${badgesHtml}</div>`}
           ${comboText ? `<div class="combo-explainer">${escapeHtml(comboText)}</div>` : ''}
           <div class="combo-piece-line-scroll">
             <div class="combo-piece-line">${pieceGroupsHtml}</div>
@@ -739,31 +756,14 @@ function renderComboPane() {
     `;
   }).join('') : '<div class="aux-empty">No combos match this deck filter.</div>';
 
-  const filterOptionsHtml = [
-    '<option value="">All decks</option>',
-    ...deckOptions.map(([slug, name]) => `<option value="${escapeAttr(slug)}">${escapeHtml(name)}</option>`),
-  ].join('');
-
   ui.comboPane.innerHTML = `
     <div class="combo-panel">
-      <div class="panel-title combo-library-header">Combo Library</div>
-      <div class="combo-controls">
-        <select id="combo-deck-filter" class="combo-filter-select" aria-label="Filter combos by deck">
-          ${filterOptionsHtml}
-        </select>
+      <div class="combo-header-row">
+        <div class="panel-title combo-library-header">Combo Library</div>
       </div>
       <div class="combo-list">${cardsHtml}</div>
     </div>
   `;
-
-  const filterSelect = ui.comboPane.querySelector('#combo-deck-filter');
-  if (filterSelect) {
-    filterSelect.value = selectedFilter;
-    filterSelect.addEventListener('change', () => {
-      comboRouteContext.filterDeckSlug = normalizeComboDeckFilter(filterSelect.value, battleboxData);
-      renderComboPane();
-    });
-  }
 }
 
 async function route() {
@@ -822,7 +822,6 @@ async function route() {
     comboRouteContext.battleboxData = null;
     comboRouteContext.battleboxSlug = currentBattleboxSlug;
     comboRouteContext.selectedDeckSlug = '';
-    comboRouteContext.filterDeckSlug = '';
     comboRouteContext.enabled = false;
     setTabEnabled(TAB_MATRIX, false);
     setTabEnabled(TAB_COMBO, false);
@@ -834,16 +833,10 @@ async function route() {
     matrixRouteContext.selectedMatchupSlug = matchupSlug;
     matrixRouteContext.enabled = matrixTabEnabled;
     const normalizedDeckSlug = normalizeName(currentDeckSlug || '');
-    const battleboxChanged = comboRouteContext.battleboxSlug !== currentBattleboxSlug;
     comboRouteContext.battleboxData = currentBattleboxData;
     comboRouteContext.battleboxSlug = currentBattleboxSlug;
     comboRouteContext.selectedDeckSlug = normalizedDeckSlug;
     comboRouteContext.enabled = comboTabEnabled;
-    if (battleboxChanged) {
-      comboRouteContext.filterDeckSlug = normalizedDeckSlug;
-    } else if (normalizedDeckSlug) {
-      comboRouteContext.filterDeckSlug = normalizedDeckSlug;
-    }
     setTabEnabled(TAB_MATRIX, matrixTabEnabled);
     setTabEnabled(TAB_COMBO, comboTabEnabled);
   }

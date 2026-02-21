@@ -140,11 +140,15 @@
       ],
       "cards": [
         [
+          "Thraben Inspector",
+          "Novice Inspector",
           "Kor Skyfisher"
         ],
         [
-          "Thraben Inspector",
-          "Novice Inspector"
+          "Inspiring Overseer",
+          "Refurbished Familiar",
+          "Lembas",
+          "Tithing Blade / Consuming Sepulcher"
         ]
       ],
       "text": ""
@@ -158,7 +162,8 @@
         [
           "Reckoner's Bargain",
           "Fanatical Offering",
-          "Eviscerator's Insight"
+          "Eviscerator's Insight",
+          "Deadly Dispute"
         ],
         [
           "Ichor Wellspring",
@@ -203,7 +208,7 @@
       "text": ""
     },
     {
-      "id": "white-madness",
+      "id": "white-flashback",
       "types": [
         "value"
       ],
@@ -214,7 +219,8 @@
         ],
         [
           "Prismatic Strands",
-          "Battle Screech"
+          "Battle Screech",
+          "Sacred Cat"
         ]
       ],
       "text": ""
@@ -229,6 +235,7 @@
           "Glint Hawk"
         ],
         [
+          "Refurbished Familiar",
           "Lembas",
           "Tithing Blade / Consuming Sepulcher"
         ]
