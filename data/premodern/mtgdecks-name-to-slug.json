@@ -13,10 +13,13 @@
     "Oath Ponza": "oath",
     "Survival": "recsur",
     "Replenish": "replenish",
+    "Mono Black": "black-midrange",
     "Burn": "sligh",
     "Stasis": "stasis",
     "Stiflenought": "stiflenought",
     "Terrageddon": "terrageddon",
-    "The Rock": "the-rock"
+    "The Rock": "the-rock",
+    "White Weenie": "white-weenie",
+    "Zombie Infestation": "zombie-infestation"
   }
 }
