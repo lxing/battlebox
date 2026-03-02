@@ -1,0 +1,103 @@
+{
+  "name": "White Weenie",
+  "source_url": "https://www.mtggoldfish.com/deck/7655753",
+  "colors": "w",
+  "tags": [
+    "aggro"
+  ],
+  "cards": [
+    {
+      "name": "Battle Screech",
+      "qty": 4
+    },
+    {
+      "name": "Eagles of the North",
+      "qty": 2
+    },
+    {
+      "name": "Guardians' Pledge",
+      "qty": 3
+    },
+    {
+      "name": "Idyllic Grange",
+      "qty": 2
+    },
+    {
+      "name": "Journey to Nowhere",
+      "qty": 2
+    },
+    {
+      "name": "Kor Skyfisher",
+      "qty": 4
+    },
+    {
+      "name": "Lunarch Veteran",
+      "qty": 4
+    },
+    {
+      "name": "Militia Bugler",
+      "qty": 2
+    },
+    {
+      "name": "Novice Inspector",
+      "qty": 4
+    },
+    {
+      "name": "Palace Sentinels",
+      "qty": 1
+    },
+    {
+      "name": "Plains",
+      "qty": 17
+    },
+    {
+      "name": "Prismatic Strands",
+      "qty": 4
+    },
+    {
+      "name": "Raffine's Informant",
+      "qty": 4
+    },
+    {
+      "name": "Thraben Charm",
+      "qty": 3
+    },
+    {
+      "name": "Thraben Inspector",
+      "qty": 4
+    }
+  ],
+  "sideboard": [
+    {
+      "name": "Dust to Dust",
+      "qty": 4
+    },
+    {
+      "name": "Goliath Paladin",
+      "qty": 1
+    },
+    {
+      "name": "Holy Light",
+      "qty": 2
+    },
+    {
+      "name": "Journey to Nowhere",
+      "qty": 2
+    },
+    {
+      "name": "Martyr of Sands",
+      "qty": 3
+    },
+    {
+      "name": "Ramosian Rally",
+      "qty": 2
+    },
+    {
+      "name": "Thraben Charm",
+      "qty": 1
+    }
+  ],
+  "difficulty_tags": [
+    "beginner"
+  ]
+}

@@ -39,8 +39,10 @@ def derive_current_path(staging_path: Path) -> Path:
             "unable to derive current manifest path: staging path must start with 'staging/'"
         )
     tail = parts[1:]
-    if len(tail) >= 2 and tail[0] == tail[1]:
-        tail = tail[1:]
+    if len(tail) < 3:
+        raise SystemExit(
+            "unable to derive current manifest path: expected staging/<battlebox>/<deck>/manifest.json"
+        )
     return Path("data", *tail)
 
 
@@ -134,7 +136,7 @@ def main() -> int:
     parser.add_argument(
         "--staging",
         required=True,
-        help="Path to staging manifest, for example staging/pauper/pauper/caw-gates/manifest.json",
+        help="Path to staging manifest, for example staging/pauper/caw-gates/manifest.json",
     )
     parser.add_argument(
         "--current",
