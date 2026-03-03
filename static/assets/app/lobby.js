@@ -1,77 +1,24 @@
-import { normalizeName } from './utils.js';
 import {
   escapeHtml,
   formatPickProgressLabel,
   formatProgressLabel,
+  normalizeName,
   normalizeNonNegativeInt,
   normalizePositiveInt,
-} from './util.js';
+} from './utils.js';
 import {
   appendDeviceIDToUrl,
+  createDraftRoom,
+  deleteDraftRoom,
   fetchDraftRooms,
   getStableDeviceID,
-} from './draftApi.js';
+} from './api.js';
 import {
-  buildDefaultPassPattern,
   buildOpenRoomContext,
   buildPresetByConfig,
   parseDraftPresets,
   resolveRoomTotals,
 } from './draftRoomContext.js';
-
-function buildDraftDeckNames(deck) {
-  const names = [];
-  (Array.isArray(deck?.cards) ? deck.cards : []).forEach((card) => {
-    const qty = Number.parseInt(String(card?.qty), 10) || 0;
-    const name = String(card?.name || '').trim();
-    if (!name || qty <= 0) return;
-    for (let i = 0; i < qty; i += 1) names.push(name);
-  });
-  return names;
-}
-
-async function createDraftRoom(deck, preset, deviceID) {
-  const deckNames = buildDraftDeckNames(deck);
-  const seatCount = Number.parseInt(String(preset?.seat_count), 10) || 0;
-  const packCount = Number.parseInt(String(preset?.pack_count), 10) || 0;
-  const packSize = Number.parseInt(String(preset?.pack_size), 10) || 0;
-  let passPattern = buildDefaultPassPattern(packSize);
-  if (Array.isArray(preset?.pass_pattern)) {
-    const parsed = preset.pass_pattern.map((value) => Number.parseInt(String(value), 10));
-    if (!parsed.every((value) => Number.isFinite(value) && value > 0)) {
-      throw new Error('Invalid draft preset');
-    }
-    passPattern = parsed;
-  }
-  if (seatCount <= 0 || packCount <= 0 || packSize <= 0) {
-    throw new Error('Invalid draft preset');
-  }
-  if (passPattern.length === 0) {
-    throw new Error('Invalid draft preset');
-  }
-  const res = await fetch(appendDeviceIDToUrl('/api/draft/rooms', deviceID), {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      'X-Device-ID': String(deviceID || ''),
-    },
-    body: JSON.stringify({
-      deck: deckNames,
-      deck_slug: deck?.slug || '',
-      seat_count: seatCount,
-      pack_count: packCount,
-      pack_size: packSize,
-      pass_pattern: passPattern,
-    }),
-  });
-  if (!res.ok) {
-    const text = (await res.text()).trim();
-    throw new Error(text || `Failed to create room (${res.status})`);
-  }
-  const payload = await res.json();
-  if (!payload || !payload.room_id) throw new Error('Missing room id');
-  return payload;
-}
 
 function formatPresetOptionLabel(preset) {
   const seatCount = normalizePositiveInt(preset?.seat_count);
@@ -98,21 +45,6 @@ function formatPresetOptionLabel(preset) {
     patternParts.push(`🚮${burnCount}`);
   }
   return `${seatLabel}${divider}${packCount}${divider}${patternParts.join(',')}`;
-}
-
-async function deleteDraftRoom(roomID, deviceID) {
-  const id = String(roomID || '').trim();
-  if (!id) throw new Error('Missing room id');
-  const res = await fetch(appendDeviceIDToUrl(`/api/draft/rooms?room_id=${encodeURIComponent(id)}`, deviceID), {
-    method: 'DELETE',
-    headers: {
-      'X-Device-ID': String(deviceID || ''),
-    },
-  });
-  if (!res.ok) {
-    const text = (await res.text()).trim();
-    throw new Error(text || `Failed to delete room (${res.status})`);
-  }
 }
 
 export function createLobbyController({

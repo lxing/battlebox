@@ -7,6 +7,7 @@ import {
   renderDifficultyTags,
   renderDeckSelectionTags,
   capitalize,
+  escapeHtml,
   normalizeName,
   buildDoubleFacedMap,
   scryfallImageUrlByPrinting,
@@ -36,7 +37,7 @@ import {
 import {
   fetchDraftRooms,
   getStableDeviceID,
-} from './app/draftApi.js';
+} from './app/api.js';
 import {
   buildCubeDeckBySlug,
   buildOpenRoomContext,
@@ -653,13 +654,6 @@ function buildComboDeckCardNameSetForSlug(battleboxData, selectedSlug) {
     if (key) names.add(key);
   });
   return names;
-}
-
-function escapeHtml(value) {
-  return String(value || '')
-    .replaceAll('&', '&amp;')
-    .replaceAll('<', '&lt;')
-    .replaceAll('>', '&gt;');
 }
 
 function escapeAttr(value) {

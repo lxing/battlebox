@@ -1,5 +1,4 @@
-import { buildDoubleFacedMap, normalizeName } from './utils.js';
-import { normalizePositiveInt } from './util.js';
+import { buildDoubleFacedMap, normalizeName, normalizePositiveInt } from './utils.js';
 
 export function buildDefaultPassPattern(packSize) {
   const size = Number.parseInt(String(packSize), 10) || 0;

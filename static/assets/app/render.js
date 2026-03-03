@@ -1,5 +1,4 @@
-import { normalizeName } from './utils.js';
-import { escapeHtml } from './util.js';
+import { escapeHtml, normalizeName } from './utils.js';
 
 const manaSymbolFiles = (() => {
   const out = {};

@@ -1,4 +1,4 @@
-import { normalizeNonNegativeInt } from './util.js';
+import { normalizeNonNegativeInt } from './utils.js';
 
 export const TAB_BATTLEBOX = 'battlebox';
 export const TAB_LIFE = 'life';

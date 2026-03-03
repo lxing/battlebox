@@ -1,5 +1,4 @@
-import { scryfallImageUrlByPrinting } from './utils.js';
-import { escapeHtml } from './util.js';
+import { escapeHtml, scryfallImageUrlByPrinting } from './utils.js';
 
 export function cardFaceImageUrl(printing, showBack = false) {
   return scryfallImageUrlByPrinting(printing, showBack ? 'back' : 'front');

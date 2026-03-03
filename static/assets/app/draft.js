@@ -1,13 +1,15 @@
 import { cardFaceImageUrl, dfcFlipControlMarkup } from './cardFaces.js';
 import { renderDecklistGrid as renderSharedDecklistGrid } from './decklist.js';
-import { isDoubleFacedCard, normalizeName, scryfallImageUrlByName } from './utils.js';
 import {
   escapeHtml,
   formatPickProgressLabel,
   formatProgressLabel,
+  isDoubleFacedCard,
+  normalizeName,
   normalizeNonNegativeInt,
   normalizePositiveInt,
-} from './util.js';
+  scryfallImageUrlByName,
+} from './utils.js';
 
 const DRAFT_PICK_ZONE_MAINBOARD = 'mainboard';
 const DRAFT_PICK_ZONE_SIDEBOARD = 'sideboard';

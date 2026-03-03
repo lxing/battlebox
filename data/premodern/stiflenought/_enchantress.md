@@ -1,8 +1,9 @@
 +3 [[Annul]]
-+1 [[Chain of Vapor]]
++3 [[Parallax Tide]]
 +1 [[Powder Keg]]
--2 [[Vision Charm]]
+-3 [[Daze]]
 -2 [[Opt]]
 -1 [[Portent]]
+-1 [[Foil]]
 
-<AI-generated placeholder. Probably nonsense>
+Play the typical gameplan, plus blow up their lands.
