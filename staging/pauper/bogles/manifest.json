@@ -1,0 +1,123 @@
+{
+  "name": "Bogles",
+  "source_url": "https://www.mtggoldfish.com/deck/7658002#paper",
+  "colors": "wg",
+  "tags": [
+    "aggro"
+  ],
+  "cards": [
+    {
+      "name": "Abundant Growth",
+      "qty": 4
+    },
+    {
+      "name": "Ancestral Mask",
+      "qty": 3
+    },
+    {
+      "name": "Armadillo Cloak",
+      "qty": 4
+    },
+    {
+      "name": "Bannerhide Krushok",
+      "qty": 2
+    },
+    {
+      "name": "Eagles of the North",
+      "qty": 2
+    },
+    {
+      "name": "Ethereal Armor",
+      "qty": 4
+    },
+    {
+      "name": "Forest",
+      "qty": 11
+    },
+    {
+      "name": "Generous Ent",
+      "qty": 1
+    },
+    {
+      "name": "Gladecover Scout",
+      "qty": 4
+    },
+    {
+      "name": "Malevolent Rumble",
+      "qty": 4
+    },
+    {
+      "name": "Nyxborn Hydra",
+      "qty": 2
+    },
+    {
+      "name": "Plains",
+      "qty": 2
+    },
+    {
+      "name": "Radiant Grove",
+      "qty": 1
+    },
+    {
+      "name": "Rancor",
+      "qty": 2
+    },
+    {
+      "name": "Sheltering Landscape",
+      "qty": 3
+    },
+    {
+      "name": "Silhana Ledgewalker",
+      "qty": 2
+    },
+    {
+      "name": "Slippery Bogle",
+      "qty": 4
+    },
+    {
+      "name": "Utopia Sprawl",
+      "qty": 4
+    },
+    {
+      "name": "Wild Growth",
+      "qty": 1
+    }
+  ],
+  "sideboard": [
+    {
+      "name": "Aura Gnarlid",
+      "qty": 1
+    },
+    {
+      "name": "Avenging Hunter",
+      "qty": 3
+    },
+    {
+      "name": "Breath Weapon",
+      "qty": 2
+    },
+    {
+      "name": "Llanowar Visionary",
+      "qty": 2
+    },
+    {
+      "name": "Mountain",
+      "qty": 1
+    },
+    {
+      "name": "Spirit Link",
+      "qty": 1
+    },
+    {
+      "name": "Standard Bearer",
+      "qty": 2
+    },
+    {
+      "name": "Writhing Chrysalis",
+      "qty": 3
+    }
+  ],
+  "difficulty_tags": [
+    "beginner"
+  ]
+}
