@@ -39,7 +39,7 @@
         "matches": 16,
         "wr": 0.56
       },
-      "madness": {
+      "ug-madness": {
         "ci_high": 1.0,
         "ci_low": 0.42,
         "matches": 7,
@@ -143,7 +143,7 @@
         "matches": 15,
         "wr": 0.53
       },
-      "madness": {
+      "ug-madness": {
         "ci_high": 0.99,
         "ci_low": 0.19,
         "matches": 4,
@@ -247,7 +247,7 @@
         "matches": 8,
         "wr": 1.0
       },
-      "madness": {
+      "ug-madness": {
         "ci_high": 0.97,
         "ci_low": 0.4,
         "matches": 9,
@@ -351,7 +351,7 @@
         "matches": 21,
         "wr": 0.81
       },
-      "madness": {
+      "ug-madness": {
         "ci_high": 0.98,
         "ci_low": 0.48,
         "matches": 11,
@@ -455,7 +455,7 @@
         "matches": 33,
         "wr": 0.58
       },
-      "madness": {
+      "ug-madness": {
         "ci_high": 0.77,
         "ci_low": 0.28,
         "matches": 17,
@@ -559,7 +559,7 @@
         "matches": 5,
         "wr": 0.4
       },
-      "madness": {
+      "ug-madness": {
         "ci_high": 1.0,
         "ci_low": 0.29,
         "matches": 3,
@@ -657,7 +657,7 @@
         "matches": 5,
         "wr": 0.6
       },
-      "madness": {
+      "ug-madness": {
         "ci_high": 0.88,
         "ci_low": 0.26,
         "matches": 10,
@@ -724,7 +724,7 @@
         "wr": 0.0
       }
     },
-    "madness": {
+    "ug-madness": {
       "black-midrange": {
         "ci_high": 0.58,
         "ci_low": 0.0,
@@ -865,7 +865,7 @@
         "matches": 11,
         "wr": 0.55
       },
-      "madness": {
+      "ug-madness": {
         "ci_high": 0.96,
         "ci_low": 0.22,
         "matches": 6,
@@ -963,7 +963,7 @@
         "matches": 8,
         "wr": 0.5
       },
-      "madness": {
+      "ug-madness": {
         "ci_high": 0.93,
         "ci_low": 0.07,
         "matches": 4,
@@ -1061,7 +1061,7 @@
         "matches": 18,
         "wr": 0.5
       },
-      "madness": {
+      "ug-madness": {
         "ci_high": 0.99,
         "ci_low": 0.19,
         "matches": 4,
@@ -1159,7 +1159,7 @@
         "matches": 24,
         "wr": 0.54
       },
-      "madness": {
+      "ug-madness": {
         "ci_high": 0.77,
         "ci_low": 0.28,
         "matches": 17,
@@ -1263,7 +1263,7 @@
         "matches": 9,
         "wr": 0.44
       },
-      "madness": {
+      "ug-madness": {
         "ci_high": 0.96,
         "ci_low": 0.22,
         "matches": 6,
@@ -1361,7 +1361,7 @@
         "matches": 38,
         "wr": 0.58
       },
-      "madness": {
+      "ug-madness": {
         "ci_high": 0.93,
         "ci_low": 0.48,
         "matches": 16,
@@ -1465,7 +1465,7 @@
         "matches": 13,
         "wr": 0.77
       },
-      "madness": {
+      "ug-madness": {
         "ci_high": 0.96,
         "ci_low": 0.22,
         "matches": 6,
@@ -1569,7 +1569,7 @@
         "matches": 11,
         "wr": 0.45
       },
-      "madness": {
+      "ug-madness": {
         "ci_high": 0.99,
         "ci_low": 0.19,
         "matches": 4,
@@ -1667,7 +1667,7 @@
         "matches": 10,
         "wr": 0.3
       },
-      "madness": {
+      "ug-madness": {
         "ci_high": 0.93,
         "ci_low": 0.07,
         "matches": 4,
@@ -1816,7 +1816,7 @@
       "wins": 107,
       "wr": 0.4263
     },
-    "madness": {
+    "ug-madness": {
       "matches": 128,
       "wins": 42,
       "wr": 0.3281
