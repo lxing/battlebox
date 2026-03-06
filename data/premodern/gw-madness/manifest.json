@@ -1,0 +1,119 @@
+{
+  "name": "GW Madness",
+  "source_url": "https://www.mtggoldfish.com/deck/7660592",
+  "colors": "wg",
+  "tags": [
+    "aggro"
+  ],
+  "cards": [
+    {
+      "name": "Arrogant Wurm",
+      "qty": 4
+    },
+    {
+      "name": "Basking Rootwalla",
+      "qty": 4
+    },
+    {
+      "name": "Brushland",
+      "qty": 4
+    },
+    {
+      "name": "Call of the Herd",
+      "qty": 3
+    },
+    {
+      "name": "Cursed Scroll",
+      "qty": 2
+    },
+    {
+      "name": "Forest",
+      "qty": 3
+    },
+    {
+      "name": "Gaea's Cradle",
+      "qty": 1
+    },
+    {
+      "name": "Glory",
+      "qty": 3
+    },
+    {
+      "name": "Mishra's Factory",
+      "qty": 4
+    },
+    {
+      "name": "Patrol Hound",
+      "qty": 4
+    },
+    {
+      "name": "Plains",
+      "qty": 4
+    },
+    {
+      "name": "Savannah Lions",
+      "qty": 4
+    },
+    {
+      "name": "Swords to Plowshares",
+      "qty": 4
+    },
+    {
+      "name": "Sylvan Library",
+      "qty": 2
+    },
+    {
+      "name": "Tireless Tribe",
+      "qty": 4
+    },
+    {
+      "name": "Wasteland",
+      "qty": 2
+    },
+    {
+      "name": "Wild Mongrel",
+      "qty": 4
+    },
+    {
+      "name": "Windswept Heath",
+      "qty": 4
+    }
+  ],
+  "sideboard": [
+    {
+      "name": "Absolute Law",
+      "qty": 2
+    },
+    {
+      "name": "Crumble",
+      "qty": 1
+    },
+    {
+      "name": "Naturalize",
+      "qty": 1
+    },
+    {
+      "name": "Orim's Chant",
+      "qty": 3
+    },
+    {
+      "name": "Prismatic Strands",
+      "qty": 2
+    },
+    {
+      "name": "Reprisal",
+      "qty": 1
+    },
+    {
+      "name": "Tormod's Crypt",
+      "qty": 2
+    },
+    {
+      "name": "Tranquil Domain",
+      "qty": 3
+    }
+  ],
+  "difficulty_tags": [
+    "intermediate"
+  ]
+}

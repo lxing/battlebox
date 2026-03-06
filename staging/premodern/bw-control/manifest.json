@@ -1,0 +1,119 @@
+{
+  "name": "BW Control",
+  "source_url": "https://www.mtggoldfish.com/deck/7623303",
+  "colors": "wb",
+  "tags": [
+    "control"
+  ],
+  "cards": [
+    {
+      "name": "Barren Moor",
+      "qty": 1
+    },
+    {
+      "name": "Cabal Therapy",
+      "qty": 2
+    },
+    {
+      "name": "Caves of Koilos",
+      "qty": 4
+    },
+    {
+      "name": "Decree of Justice",
+      "qty": 4
+    },
+    {
+      "name": "Decree of Pain",
+      "qty": 1
+    },
+    {
+      "name": "Duress",
+      "qty": 4
+    },
+    {
+      "name": "Dust Bowl",
+      "qty": 2
+    },
+    {
+      "name": "Eternal Dragon",
+      "qty": 3
+    },
+    {
+      "name": "Gerrard's Verdict",
+      "qty": 4
+    },
+    {
+      "name": "Phyrexian Furnace",
+      "qty": 1
+    },
+    {
+      "name": "Plains",
+      "qty": 8
+    },
+    {
+      "name": "Secluded Steppe",
+      "qty": 1
+    },
+    {
+      "name": "Skeletal Scrying",
+      "qty": 3
+    },
+    {
+      "name": "Smother",
+      "qty": 1
+    },
+    {
+      "name": "Swamp",
+      "qty": 9
+    },
+    {
+      "name": "Swords to Plowshares",
+      "qty": 4
+    },
+    {
+      "name": "Undead Gladiator",
+      "qty": 2
+    },
+    {
+      "name": "Vindicate",
+      "qty": 4
+    },
+    {
+      "name": "Wrath of God",
+      "qty": 2
+    }
+  ],
+  "sideboard": [
+    {
+      "name": "Aura of Silence",
+      "qty": 2
+    },
+    {
+      "name": "Circle of Protection: Red",
+      "qty": 4
+    },
+    {
+      "name": "Engineered Plague",
+      "qty": 2
+    },
+    {
+      "name": "Phyrexian Arena",
+      "qty": 2
+    },
+    {
+      "name": "Phyrexian Furnace",
+      "qty": 1
+    },
+    {
+      "name": "Seal of Cleansing",
+      "qty": 2
+    },
+    {
+      "name": "Tormod's Crypt",
+      "qty": 2
+    }
+  ],
+  "difficulty_tags": [
+    "intermediate"
+  ]
+}
