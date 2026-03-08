@@ -1,0 +1,111 @@
+{
+  "name": "Ramp",
+  "source_url": "https://www.mtggoldfish.com/deck/7666130",
+  "colors": "rg",
+  "tags": [
+    "midrange"
+  ],
+  "cards": [
+    {
+      "name": "Arbor Elf",
+      "qty": 4
+    },
+    {
+      "name": "Avenging Hunter",
+      "qty": 4
+    },
+    {
+      "name": "Bannerhide Krushok",
+      "qty": 2
+    },
+    {
+      "name": "Boarding Party",
+      "qty": 3
+    },
+    {
+      "name": "Eldrazi Repurposer",
+      "qty": 4
+    },
+    {
+      "name": "Evolution Witness",
+      "qty": 1
+    },
+    {
+      "name": "Forest",
+      "qty": 14
+    },
+    {
+      "name": "Jewel Thief",
+      "qty": 4
+    },
+    {
+      "name": "Malevolent Rumble",
+      "qty": 4
+    },
+    {
+      "name": "Mountain",
+      "qty": 2
+    },
+    {
+      "name": "Nyxborn Hydra",
+      "qty": 3
+    },
+    {
+      "name": "Ram Through",
+      "qty": 3
+    },
+    {
+      "name": "Sagu Wildling",
+      "qty": 2
+    },
+    {
+      "name": "Utopia Sprawl",
+      "qty": 4
+    },
+    {
+      "name": "Wild Growth",
+      "qty": 3
+    },
+    {
+      "name": "Writhing Chrysalis",
+      "qty": 4
+    }
+  ],
+  "sideboard": [
+    {
+      "name": "Breath Weapon",
+      "qty": 3
+    },
+    {
+      "name": "Cast into the Fire",
+      "qty": 1
+    },
+    {
+      "name": "Deglamer",
+      "qty": 2
+    },
+    {
+      "name": "Faerie Macabre",
+      "qty": 2
+    },
+    {
+      "name": "Horrific Assault",
+      "qty": 1
+    },
+    {
+      "name": "Ram Through",
+      "qty": 1
+    },
+    {
+      "name": "Relic of Progenitus",
+      "qty": 2
+    },
+    {
+      "name": "Weather the Storm",
+      "qty": 3
+    }
+  ],
+  "difficulty_tags": [
+    "beginner"
+  ]
+}
