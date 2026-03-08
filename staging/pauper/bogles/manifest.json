@@ -1,6 +1,6 @@
 {
   "name": "Bogles",
-  "source_url": "https://www.mtggoldfish.com/deck/7658002#paper",
+  "source_url": "https://www.mtggoldfish.com/deck/7666126",
   "colors": "wg",
   "tags": [
     "aggro"
@@ -24,7 +24,7 @@
     },
     {
       "name": "Eagles of the North",
-      "qty": 2
+      "qty": 1
     },
     {
       "name": "Ethereal Armor",
@@ -36,7 +36,7 @@
     },
     {
       "name": "Generous Ent",
-      "qty": 1
+      "qty": 2
     },
     {
       "name": "Gladecover Scout",
