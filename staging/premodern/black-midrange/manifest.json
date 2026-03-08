@@ -1,0 +1,119 @@
+{
+  "name": "Black Midrange",
+  "source_url": "https://www.mtggoldfish.com/deck/7669087",
+  "colors": "b",
+  "tags": [
+    "midrange"
+  ],
+  "cards": [
+    {
+      "name": "Cabal Therapy",
+      "qty": 4
+    },
+    {
+      "name": "Chainer's Edict",
+      "qty": 1
+    },
+    {
+      "name": "Cursed Scroll",
+      "qty": 3
+    },
+    {
+      "name": "Dark Ritual",
+      "qty": 4
+    },
+    {
+      "name": "Diabolic Edict",
+      "qty": 1
+    },
+    {
+      "name": "Duress",
+      "qty": 4
+    },
+    {
+      "name": "Graveborn Muse",
+      "qty": 1
+    },
+    {
+      "name": "Hypnotic Specter",
+      "qty": 4
+    },
+    {
+      "name": "Mishra's Factory",
+      "qty": 4
+    },
+    {
+      "name": "Nantuko Shade",
+      "qty": 3
+    },
+    {
+      "name": "Ravenous Rats",
+      "qty": 4
+    },
+    {
+      "name": "Smother",
+      "qty": 2
+    },
+    {
+      "name": "Snuff Out",
+      "qty": 1
+    },
+    {
+      "name": "Spawning Pool",
+      "qty": 1
+    },
+    {
+      "name": "Swamp",
+      "qty": 16
+    },
+    {
+      "name": "Wasteland",
+      "qty": 3
+    },
+    {
+      "name": "Withered Wretch",
+      "qty": 4
+    }
+  ],
+  "sideboard": [
+    {
+      "name": "Diabolic Edict",
+      "qty": 1
+    },
+    {
+      "name": "Drain Life",
+      "qty": 1
+    },
+    {
+      "name": "Dystopia",
+      "qty": 3
+    },
+    {
+      "name": "Engineered Plague",
+      "qty": 4
+    },
+    {
+      "name": "Funeral Charm",
+      "qty": 1
+    },
+    {
+      "name": "Gloom",
+      "qty": 2
+    },
+    {
+      "name": "Graveborn Muse",
+      "qty": 1
+    },
+    {
+      "name": "Powder Keg",
+      "qty": 1
+    },
+    {
+      "name": "Tormod's Crypt",
+      "qty": 1
+    }
+  ],
+  "difficulty_tags": [
+    "beginner"
+  ]
+}
