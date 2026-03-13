@@ -10,10 +10,6 @@
       "qty": 4
     },
     {
-      "name": "Eagles of the North",
-      "qty": 3
-    },
-    {
       "name": "Guardians' Pledge",
       "qty": 3
     },
@@ -22,12 +18,12 @@
       "qty": 2
     },
     {
-      "name": "Journey to Nowhere",
-      "qty": 1
-    },
-    {
       "name": "Kor Skyfisher",
       "qty": 4
+    },
+    {
+      "name": "Leonardo, Big Brother",
+      "qty": 3
     },
     {
       "name": "Lunarch Veteran / Luminous Phantom",
@@ -35,7 +31,7 @@
     },
     {
       "name": "Militia Bugler",
-      "qty": 4
+      "qty": 3
     },
     {
       "name": "Novice Inspector",
@@ -43,7 +39,7 @@
     },
     {
       "name": "Plains",
-      "qty": 17
+      "qty": 19
     },
     {
       "name": "Prismatic Strands",

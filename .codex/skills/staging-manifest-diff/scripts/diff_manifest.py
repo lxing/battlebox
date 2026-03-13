@@ -62,16 +62,12 @@ def zone_to_map(entries: Iterable[dict]) -> Tuple[Dict[str, int], Dict[str, str]
     return qty_by_key, name_by_key
 
 
-def zone_diff_lines(
-    label: str, current: dict, staging: dict
-) -> Tuple[list[str], list[str], list[str]]:
+def zone_diff_lines(label: str, current: dict, staging: dict) -> list[str]:
     c_qty, c_name = zone_to_map(current.get(label, []))
     s_qty, s_name = zone_to_map(staging.get(label, []))
     keys = sorted(set(c_qty) | set(s_qty))
 
-    added_lines: list[str] = []
-    changed_lines: list[str] = []
-    removed_lines: list[str] = []
+    lines: list[str] = []
 
     for key in keys:
         cq = c_qty.get(key, 0)
@@ -79,16 +75,11 @@ def zone_diff_lines(
         if cq == sq:
             continue
         name = s_name.get(key) or c_name.get(key) or key
-        if cq == 0 and sq > 0:
-            added_lines.append(f"+ {sq} {name}")
-        elif sq == 0 and cq > 0:
-            removed_lines.append(f"- {cq} {name}")
-        else:
-            delta = sq - cq
-            delta_str = f"+{delta}" if delta > 0 else str(delta)
-            changed_lines.append(f"~ {name}: {cq} -> {sq} ({delta_str})")
+        delta = sq - cq
+        sign = "+" if delta > 0 else "-"
+        lines.append(f"{sign}{abs(delta)} {name} ({cq} -> {sq})")
 
-    return added_lines, changed_lines, removed_lines
+    return lines
 
 
 def list_or_none(value) -> list:
@@ -116,21 +107,6 @@ def metadata_diff_lines(current: dict, staging: dict) -> list[str]:
     return lines
 
 
-def print_symbol_blocks(added: list[str], changed: list[str], removed: list[str]) -> None:
-    if added:
-        print("  + Added")
-        for line in added:
-            print(f"    {line}")
-    if changed:
-        print("  ~ Changed")
-        for line in changed:
-            print(f"    {line}")
-    if removed:
-        print("  - Removed")
-        for line in removed:
-            print(f"    {line}")
-
-
 def main() -> int:
     parser = argparse.ArgumentParser(description="Diff staging manifest against current deck manifest.")
     parser.add_argument(
@@ -151,51 +127,46 @@ def main() -> int:
     current = load_manifest(current_path)
 
     metadata_lines = metadata_diff_lines(current, staging)
-    main_added_lines, main_changed_lines, main_removed_lines = zone_diff_lines("cards", current, staging)
-    side_added_lines, side_changed_lines, side_removed_lines = zone_diff_lines("sideboard", current, staging)
+    main_lines = zone_diff_lines("cards", current, staging)
+    side_lines = zone_diff_lines("sideboard", current, staging)
 
     print(f"staging: {staging_path}")
     print(f"current: {current_path}")
     print()
 
     if metadata_lines:
-        print("Metadata")
-        print("  ~ Changed")
+        print("metadata:")
         for line in metadata_lines:
-            print(f"    {line}")
+            print(f"  {line}")
         print()
 
-    if main_added_lines or main_changed_lines or main_removed_lines:
-        print("Mainboard")
-        print_symbol_blocks(main_added_lines, main_changed_lines, main_removed_lines)
+    if main_lines:
+        print("mainboard:")
+        for line in main_lines:
+            print(f"  {line}")
         print()
 
-    if side_added_lines or side_changed_lines or side_removed_lines:
-        print("Sideboard")
-        print_symbol_blocks(side_added_lines, side_changed_lines, side_removed_lines)
+    if side_lines:
+        print("sideboard:")
+        for line in side_lines:
+            print(f"  {line}")
         print()
 
     if (
         not metadata_lines
-        and not main_added_lines
-        and not main_changed_lines
-        and not main_removed_lines
-        and not side_added_lines
-        and not side_changed_lines
-        and not side_removed_lines
+        and not main_lines
+        and not side_lines
     ):
         print("No differences.")
     else:
-        main_added = len(main_added_lines)
-        main_removed = len(main_removed_lines)
-        main_changed = len(main_changed_lines)
-        side_added = len(side_added_lines)
-        side_removed = len(side_removed_lines)
-        side_changed = len(side_changed_lines)
+        main_added = sum(1 for line in main_lines if line.startswith("+"))
+        main_removed = sum(1 for line in main_lines if line.startswith("-"))
+        side_added = sum(1 for line in side_lines if line.startswith("+"))
+        side_removed = sum(1 for line in side_lines if line.startswith("-"))
         print(
             "Summary "
-            f"(main +{main_added} -{main_removed} ~{main_changed}, "
-            f"side +{side_added} -{side_removed} ~{side_changed}, "
+            f"(main +{main_added} -{main_removed}, "
+            f"side +{side_added} -{side_removed}, "
             f"meta {len(metadata_lines)})"
         )
 

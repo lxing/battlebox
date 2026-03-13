@@ -10,7 +10,7 @@ Use this skill to diff an experimental staged manifest against the current deck 
 ## Workflow
 1. Ensure the staged file exists, typically `staging/<battlebox>/<deck>/manifest.json`.
 2. Run the bundled diff script.
-3. Review metadata changes (`name`, `source_url`, `colors`, `tags`, `difficulty_tags`, `icon`) and card quantity deltas.
+3. Review metadata changes (`name`, `source_url`, `colors`, `tags`, `difficulty_tags`, `icon`) and compact card quantity deltas.
 
 ## Script
 Run:
@@ -30,6 +30,9 @@ python3 .codex/skills/staging-manifest-diff/scripts/diff_manifest.py \
 
 ## Notes
 - The script derives `--current` from `--staging` if omitted.
+- Zone output is intentionally compact:
+  - `mainboard:` / `sideboard:`
+  - one line per delta, for example `+1 Journey to Nowhere (1 -> 2)` or `-3 Eagles of the North (3 -> 0)`
 - Card-name comparison normalizes:
   - case and whitespace
   - diacritics (for example `Lórien` vs `Lorien`)
