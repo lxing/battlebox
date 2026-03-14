@@ -1,5 +1,6 @@
 {
   "name": "Delver",
+  "source_url": "https://www.mtggoldfish.com/deck/7680157",
   "colors": "u",
   "tags": [
     "tempo"
@@ -8,10 +9,6 @@
     {
       "name": "Brainstorm",
       "qty": 4
-    },
-    {
-      "name": "Consider",
-      "qty": 1
     },
     {
       "name": "Counterspell",
@@ -23,15 +20,23 @@
     },
     {
       "name": "Deem Inferior",
-      "qty": 4
+      "qty": 2
     },
     {
       "name": "Deep Analysis",
-      "qty": 2
+      "qty": 1
     },
     {
       "name": "Delver of Secrets / Insectile Aberration",
       "qty": 4
+    },
+    {
+      "name": "Dispel",
+      "qty": 3
+    },
+    {
+      "name": "Force Spike",
+      "qty": 1
     },
     {
       "name": "Island",
@@ -43,19 +48,15 @@
     },
     {
       "name": "Mental Note",
-      "qty": 3
-    },
-    {
-      "name": "Murmuring Mystic",
-      "qty": 1
+      "qty": 4
     },
     {
       "name": "Ponder",
-      "qty": 2
+      "qty": 3
     },
     {
-      "name": "Spell Pierce",
-      "qty": 3
+      "name": "Sleep of the Dead",
+      "qty": 2
     },
     {
       "name": "Thought Scour",
@@ -69,15 +70,11 @@
   "sideboard": [
     {
       "name": "Annul",
-      "qty": 3
+      "qty": 4
     },
     {
       "name": "Blue Elemental Blast",
-      "qty": 3
-    },
-    {
-      "name": "Dispel",
-      "qty": 2
+      "qty": 4
     },
     {
       "name": "Gut Shot",

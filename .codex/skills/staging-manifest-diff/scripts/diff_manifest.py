@@ -67,7 +67,8 @@ def zone_diff_lines(label: str, current: dict, staging: dict) -> list[str]:
     s_qty, s_name = zone_to_map(staging.get(label, []))
     keys = sorted(set(c_qty) | set(s_qty))
 
-    lines: list[str] = []
+    added_lines: list[str] = []
+    removed_lines: list[str] = []
 
     for key in keys:
         cq = c_qty.get(key, 0)
@@ -77,9 +78,13 @@ def zone_diff_lines(label: str, current: dict, staging: dict) -> list[str]:
         name = s_name.get(key) or c_name.get(key) or key
         delta = sq - cq
         sign = "+" if delta > 0 else "-"
-        lines.append(f"{sign}{abs(delta)} {name} ({cq} -> {sq})")
+        line = f"{sign}{abs(delta)} {name} ({cq} -> {sq})"
+        if delta > 0:
+            added_lines.append(line)
+        else:
+            removed_lines.append(line)
 
-    return lines
+    return added_lines + removed_lines
 
 
 def list_or_none(value) -> list:
