@@ -1,4 +1,5 @@
 import { escapeHtml, normalizeName } from './utils.js';
+import { totalGuideItemQty } from './guidePlan.js';
 
 const manaSymbolFiles = (() => {
   const out = {};
@@ -163,7 +164,6 @@ export function renderGuideContent(mdPlan, mdProse, guide, options = {}) {
   let outs = [];
   let prose = '';
   const editablePlan = options.editablePlan === true;
-  const countRe = /^(\d+)\s*x?\s+(.+)$/i;
   if (typeof guide === 'string') {
     prose = guide.trim();
   } else if (guide) {
@@ -172,15 +172,8 @@ export function renderGuideContent(mdPlan, mdProse, guide, options = {}) {
     prose = (guide.text || '').trim();
   }
   let html = '';
-  const totalQty = (items) => (Array.isArray(items) ? items : []).reduce((sum, item) => {
-    const text = String(item || '').trim();
-    const match = countRe.exec(text);
-    if (!match) return sum;
-    const qty = Number.parseInt(match[1], 10);
-    return sum + (Number.isFinite(qty) ? qty : 0);
-  }, 0);
-  const inTotal = totalQty(ins);
-  const outTotal = totalQty(outs);
+  const inTotal = totalGuideItemQty(ins);
+  const outTotal = totalGuideItemQty(outs);
 
   const renderItems = (items, zone) => items.map((item, idx) => {
     const attrs = editablePlan

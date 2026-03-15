@@ -50,6 +50,10 @@ import {
   renderGuideContent,
 } from './app/render.js';
 import { renderDecklistGrid as renderSharedDecklistGrid } from './app/decklist.js';
+import {
+  buildGuideCountMap,
+  parseGuideCountLine,
+} from './app/guidePlan.js';
 import { createCardPreview } from './app/preview.js';
 import { createLifeCounter } from './app/life.js';
 import { createSampleHandViewer } from './app/hand.js';
@@ -312,70 +316,31 @@ function guideToRawMarkdown(guide) {
   return lines.join('\n');
 }
 
-const GUIDE_COUNT_RE = /^(\d+)\s*x?\s+(.+)$/i;
-
-function extractGuideCardName(input) {
-  const raw = String(input || '').trim();
-  if (!raw) return '';
-  if (raw.startsWith('[[') && raw.endsWith(']]')) {
-    const inner = raw.slice(2, -2).trim();
-    if (!inner) return '';
-    const parts = inner.split('|');
-    return String(parts[parts.length - 1] || '').trim();
-  }
-  return raw;
-}
-
-function parseGuideCountLine(line) {
-  const text = String(line || '').trim();
-  if (!text) return null;
-  const match = GUIDE_COUNT_RE.exec(text);
-  if (!match) return null;
-  const qty = Number.parseInt(match[1], 10);
-  if (!Number.isFinite(qty) || qty < 1) return null;
-  const name = extractGuideCardName(match[2]);
-  const key = normalizeName(name);
-  if (!key) return null;
-  return { qty, name, key };
-}
-
-function buildGuideCountMap(lines) {
-  const out = {};
-  (Array.isArray(lines) ? lines : []).forEach((line) => {
-    const parsed = parseGuideCountLine(line);
-    if (!parsed) return;
-    out[parsed.key] = (out[parsed.key] || 0) + parsed.qty;
-  });
-  return out;
-}
-
-function cloneGuideCountMap(map) {
-  return { ...(map || {}) };
-}
-
 function buildDeckZoneMeta(cards) {
   const qtyByKey = {};
   const nameByKey = {};
-  const order = [];
+  const orderIndex = {};
+  let nextIndex = 0;
   (Array.isArray(cards) ? cards : []).forEach((card) => {
     const name = String(card?.name || '').trim();
     const key = normalizeName(name);
     if (!key) return;
     if (!Object.prototype.hasOwnProperty.call(qtyByKey, key)) {
-      order.push(key);
+      orderIndex[key] = nextIndex;
+      nextIndex += 1;
       nameByKey[key] = name;
       qtyByKey[key] = 0;
     }
     qtyByKey[key] += Number(card?.qty) || 0;
   });
-  return { qtyByKey, nameByKey, order };
+  return { qtyByKey, nameByKey, orderIndex };
 }
 
 function buildGuideZoneLines(countMap, zoneMeta) {
   const keys = Object.keys(countMap || {}).filter((key) => (countMap[key] || 0) > 0);
   keys.sort((a, b) => {
-    const aIdx = zoneMeta.order.indexOf(a);
-    const bIdx = zoneMeta.order.indexOf(b);
+    const aIdx = zoneMeta.orderIndex[a];
+    const bIdx = zoneMeta.orderIndex[b];
     if (aIdx >= 0 && bIdx >= 0) return aIdx - bIdx;
     if (aIdx >= 0) return -1;
     if (bIdx >= 0) return 1;
@@ -1366,7 +1331,7 @@ async function renderDeck(bbSlug, deckSlug, selectedGuide, sortMode, sortDirecti
   });
   const decklistOpenAttr = (currentCollapsedMask & 1) === 0 ? ' open' : '';
   const primerOpenAttr = (currentCollapsedMask & 2) === 0 ? ' open' : '';
-  const matchupOpenAttr = (currentCollapsedMask & 4) === 0 ? ' open' : '';
+  const matchupOpenAttr = currentCollapsedMask === 0 || (currentCollapsedMask & 4) === 0 ? ' open' : '';
   const matchupGuidesHtml = guideKeys.length ? `
     <details id="matchup-details" class="collapsible matchup-guides"${matchupOpenAttr}>
       <summary class="panel-title">Matchup Guides</summary>
@@ -1462,6 +1427,17 @@ async function renderDeck(bbSlug, deckSlug, selectedGuide, sortMode, sortDirecti
     if (primerDetails && !primerDetails.open) mask |= 2;
     if (matchupDetails && !matchupDetails.open) mask |= 4;
     return mask;
+  };
+  const bindCollapseSync = (detailsList, onToggle) => {
+    const syncCollapsedAndUrl = () => {
+      currentCollapsedMask = computeCollapsedMask();
+      if (typeof onToggle === 'function') onToggle();
+      updateDeckHashFromState();
+    };
+    detailsList.forEach((details) => {
+      if (!details) return;
+      details.addEventListener('toggle', syncCollapsedAndUrl);
+    });
   };
 
   const updateDeckHashFromState = () => {
@@ -1693,24 +1669,11 @@ async function renderDeck(bbSlug, deckSlug, selectedGuide, sortMode, sortDirecti
       });
     }
 
-    const syncCollapsedAndUrl = () => {
-      currentCollapsedMask = computeCollapsedMask();
+    bindCollapseSync([decklistDetails, primerDetails, matchupDetails], () => {
       updateOpponentLink(select.value);
-      updateDeckHashFromState();
-    };
-    [decklistDetails, primerDetails, matchupDetails].forEach((details) => {
-      if (!details) return;
-      details.addEventListener('toggle', syncCollapsedAndUrl);
     });
   } else {
-    const syncCollapsedAndUrl = () => {
-      currentCollapsedMask = computeCollapsedMask();
-      updateDeckHashFromState();
-    };
-    [decklistDetails, primerDetails].forEach((details) => {
-      if (!details) return;
-      details.addEventListener('toggle', syncCollapsedAndUrl);
-    });
+    bindCollapseSync([decklistDetails, primerDetails]);
   }
 
   if (primerEditButton) {
