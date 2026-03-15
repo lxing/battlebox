@@ -27,10 +27,8 @@ func Main() {
 		fmt.Fprintf(os.Stderr, "Error reading data dir: %v\n", err)
 		os.Exit(1)
 	}
-	deckWarningAnnotations := map[string]map[string]deckWarningAnnotations{}
+	warnings, deckWarningAnnotations := validatePrintingsUsage(dataDir, projectPrintings, battleboxDirs)
 	if *validate {
-		var warnings []string
-		warnings, deckWarningAnnotations = validatePrintingsUsage(dataDir, projectPrintings, battleboxDirs)
 		for _, warning := range warnings {
 			fmt.Fprintf(os.Stderr, "Warning: %s\n", warning)
 		}

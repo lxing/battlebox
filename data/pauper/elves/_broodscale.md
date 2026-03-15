@@ -1,2 +1,2 @@
-- 4 [[Masked Vandal]]
++ 4 [[Heritage Reclamation]]
 - 4 [[Wellwisher]]

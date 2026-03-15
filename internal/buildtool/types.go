@@ -405,5 +405,5 @@ var cardTypeOverrideByPrinting = map[string]string{
 	"neo/66": "enchantment",
 }
 
-var validate = flag.Bool("validate", true, "run all build validations (sideboard plans + printing/reference coverage) as warnings")
+var validate = flag.Bool("validate", true, "emit build validation warnings to stderr (annotations in JSON are always generated)")
 var fullBuild = flag.Bool("full", false, "force full rebuild (ignore incremental cache)")
