@@ -31,9 +31,10 @@ python3 .codex/skills/staging-manifest-diff/scripts/diff_manifest.py \
 ## Notes
 - The script derives `--current` from `--staging` if omitted.
 - Zone output is intentionally compact:
-  - `mainboard:` / `sideboard:`
+  - `mainboard` / `sideboard`
   - one line per delta, for example `+1 Journey to Nowhere (1 -> 2)` or `-3 Eagles of the North (3 -> 0)`
   - within each zone, additions are listed before removals; each sign-group is alphabetized by card name
+  - lines are emitted as a plain block with no extra indentation
 - Card-name comparison normalizes:
   - case and whitespace
   - diacritics (for example `Lórien` vs `Lorien`)

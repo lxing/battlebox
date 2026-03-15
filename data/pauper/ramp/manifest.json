@@ -6,10 +6,6 @@
   ],
   "cards": [
     {
-      "name": "Annoyed Altisaur",
-      "qty": 4
-    },
-    {
       "name": "Arbor Elf",
       "qty": 4
     },
@@ -18,28 +14,28 @@
       "qty": 4
     },
     {
+      "name": "Bannerhide Krushok",
+      "qty": 2
+    },
+    {
       "name": "Boarding Party",
-      "qty": 4
+      "qty": 3
     },
     {
       "name": "Eldrazi Repurposer",
       "qty": 4
     },
     {
+      "name": "Evolution Witness",
+      "qty": 1
+    },
+    {
       "name": "Forest",
-      "qty": 15
+      "qty": 14
     },
     {
-      "name": "Generous Ent",
+      "name": "Jewel Thief",
       "qty": 4
-    },
-    {
-      "name": "Gorilla Shaman",
-      "qty": 1
-    },
-    {
-      "name": "Highland Forest",
-      "qty": 1
     },
     {
       "name": "Malevolent Rumble",
@@ -47,11 +43,19 @@
     },
     {
       "name": "Mountain",
-      "qty": 1
+      "qty": 2
     },
     {
-      "name": "Oliphaunt",
-      "qty": 1
+      "name": "Nyxborn Hydra",
+      "qty": 3
+    },
+    {
+      "name": "Ram Through",
+      "qty": 3
+    },
+    {
+      "name": "Sagu Wildling",
+      "qty": 2
     },
     {
       "name": "Utopia Sprawl",
@@ -59,15 +63,11 @@
     },
     {
       "name": "Wild Growth",
-      "qty": 4
+      "qty": 3
     },
     {
       "name": "Writhing Chrysalis",
       "qty": 4
-    },
-    {
-      "name": "You Meet in a Tavern",
-      "qty": 1
     }
   ],
   "sideboard": [

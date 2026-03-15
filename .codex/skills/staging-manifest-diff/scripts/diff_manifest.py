@@ -140,21 +140,21 @@ def main() -> int:
     print()
 
     if metadata_lines:
-        print("metadata:")
+        print("metadata")
         for line in metadata_lines:
-            print(f"  {line}")
+            print(line)
         print()
 
     if main_lines:
-        print("mainboard:")
+        print("mainboard")
         for line in main_lines:
-            print(f"  {line}")
+            print(line)
         print()
 
     if side_lines:
-        print("sideboard:")
+        print("sideboard")
         for line in side_lines:
-            print(f"  {line}")
+            print(line)
         print()
 
     if (
