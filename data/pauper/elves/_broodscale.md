@@ -1,5 +1,2 @@
-+2 [[Cast Down]]
-+2 [[Divest]]
-+4 [[Mesmeric Fiend]]
--4 [[Masked Vandal]]
--4 [[Wellwisher]]
+- 4 [[Masked Vandal]]
+- 4 [[Wellwisher]]

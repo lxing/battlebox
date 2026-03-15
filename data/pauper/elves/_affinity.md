@@ -1,2 +1,2 @@
-+2 [[Divest]]
--2 [[Wellwisher]]
++ 2 [[Heritage Reclamation]]
+- 2 [[Wellwisher]]

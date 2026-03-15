@@ -1,5 +1,3 @@
-+1 [[Relic of Progenitus]]
-+2 [[Weather the Storm]]
--1 [[You Meet in a Tavern]]
--1 [[Oliphaunt]]
--1 [[Eldrazi Repurposer]]
++ 1 [[Relic of Progenitus]]
++ 2 [[Weather the Storm]]
+- 1 [[Eldrazi Repurposer]]

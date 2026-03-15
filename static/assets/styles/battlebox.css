@@ -987,6 +987,15 @@ details.collapsible[open] summary::after {
   font-size: 0.74rem;
 }
 
+.guide-plan.is-editable .guide-plan-item.is-editable {
+  cursor: pointer;
+  user-select: none;
+}
+
+.guide-plan.is-editable .guide-plan-item.is-editable:hover {
+  color: var(--color-white);
+}
+
 .guide-plan-none {
   color: var(--color-gray);
   font-style: italic;
@@ -994,4 +1003,8 @@ details.collapsible[open] summary::after {
 
 .guide-prose p:first-child {
   margin-top: 0.25rem;
+}
+
+#decklist-body.decklist-edit-mode .card-row .card.card-ref {
+  cursor: pointer;
 }

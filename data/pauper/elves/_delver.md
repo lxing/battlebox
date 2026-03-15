@@ -1,2 +1,1 @@
-+2 [[Cast Down]]
--2 [[Masked Vandal]]
+- 2 [[Masked Vandal]]

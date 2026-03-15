@@ -293,7 +293,7 @@ export function renderDecklistGrid({
   const layout = computeDecklistLayout(viewMode, safeDeckView);
   const hasSecondColumn = layout.showSideboard || layout.showLandColumn;
   const sideboardHtml = layout.showSideboard ? `
-    <div class="decklist-col">
+    <div class="decklist-col" data-deck-zone="sideboard">
       <div class="card-list">
         ${renderCardGroup(
           safeDeckView.sideCards,
@@ -306,7 +306,7 @@ export function renderDecklistGrid({
     </div>
   ` : '';
   const landColumnHtml = layout.showLandColumn ? `
-    <div class="decklist-col">
+    <div class="decklist-col" data-deck-zone="lands">
       <div class="card-list">
         ${renderCardsByType(
           safeDeckView.mainCards,
@@ -321,7 +321,7 @@ export function renderDecklistGrid({
 
   return `
     <div class="decklist-grid${hasSecondColumn ? '' : ' single'}">
-      <div class="decklist-col">
+      <div class="decklist-col" data-deck-zone="mainboard">
         <div class="card-list">
           ${renderCardsByType(
             safeDeckView.mainCards,

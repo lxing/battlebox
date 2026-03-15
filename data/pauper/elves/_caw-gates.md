@@ -1,2 +1,1 @@
-+3 [[Hallow]]
--3 [[Masked Vandal]]
+- 3 [[Masked Vandal]]

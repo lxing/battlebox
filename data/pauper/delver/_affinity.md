@@ -1,4 +1,3 @@
-+3 [[Annul]]
-+2 [[Steel Sabotage]]
--4 [[Deem Inferior]]
--1 [[Spell Pierce]]
++ 3 [[Annul]]
+- 4 [[Deem Inferior]]
+- 1 [[Spell Pierce]]

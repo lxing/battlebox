@@ -158,10 +158,12 @@ export function createMarkdownRenderer(printingsList, doubleFacedList) {
   return md;
 }
 
-export function renderGuideContent(mdPlan, mdProse, guide) {
+export function renderGuideContent(mdPlan, mdProse, guide, options = {}) {
   let ins = [];
   let outs = [];
   let prose = '';
+  const editablePlan = options.editablePlan === true;
+  const countRe = /^(\d+)\s*x?\s+(.+)$/i;
   if (typeof guide === 'string') {
     prose = guide.trim();
   } else if (guide) {
@@ -170,18 +172,32 @@ export function renderGuideContent(mdPlan, mdProse, guide) {
     prose = (guide.text || '').trim();
   }
   let html = '';
+  const totalQty = (items) => (Array.isArray(items) ? items : []).reduce((sum, item) => {
+    const text = String(item || '').trim();
+    const match = countRe.exec(text);
+    if (!match) return sum;
+    const qty = Number.parseInt(match[1], 10);
+    return sum + (Number.isFinite(qty) ? qty : 0);
+  }, 0);
+  const inTotal = totalQty(ins);
+  const outTotal = totalQty(outs);
 
-  const renderItems = (items) => items.map(item => `<li>${mdPlan.renderInline(item)}</li>`).join('');
+  const renderItems = (items, zone) => items.map((item, idx) => {
+    const attrs = editablePlan
+      ? ` class="guide-plan-item is-editable" data-guide-zone="${zone}" data-guide-index="${idx}"`
+      : '';
+    return `<li${attrs}>${mdPlan.renderInline(item)}</li>`;
+  }).join('');
   const renderNone = () => `<li class="guide-plan-none">None</li>`;
   html += `
-    <div class="guide-plan">
+    <div class="guide-plan${editablePlan ? ' is-editable' : ''}">
       <div class="guide-plan-col">
-        <div class="guide-plan-title">In</div>
-        <ul class="guide-plan-list">${ins.length ? renderItems(ins) : renderNone()}</ul>
+        <div class="guide-plan-title">In (${inTotal})</div>
+        <ul class="guide-plan-list">${ins.length ? renderItems(ins, 'in') : renderNone()}</ul>
       </div>
       <div class="guide-plan-col">
-        <div class="guide-plan-title">Out</div>
-        <ul class="guide-plan-list">${outs.length ? renderItems(outs) : renderNone()}</ul>
+        <div class="guide-plan-title">Out (${outTotal})</div>
+        <ul class="guide-plan-list">${outs.length ? renderItems(outs, 'out') : renderNone()}</ul>
       </div>
     </div>
   `;

@@ -1,4 +1,3 @@
-+4 [[Hydroblast]]
-+1 [[Murmuring Mystic]]
--1 [[Consider]]
--4 [[Deem Inferior]]
++ 4 [[Hydroblast]]
+- 1 [[Consider]]
+- 4 [[Deem Inferior]]
