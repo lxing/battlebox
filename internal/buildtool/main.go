@@ -27,8 +27,11 @@ func Main() {
 		fmt.Fprintf(os.Stderr, "Error reading data dir: %v\n", err)
 		os.Exit(1)
 	}
+	deckWarningAnnotations := map[string]map[string]deckWarningAnnotations{}
 	if *validate {
-		for _, warning := range validatePrintingsUsage(dataDir, projectPrintings, battleboxDirs) {
+		var warnings []string
+		warnings, deckWarningAnnotations = validatePrintingsUsage(dataDir, projectPrintings, battleboxDirs)
+		for _, warning := range warnings {
 			fmt.Fprintf(os.Stderr, "Warning: %s\n", warning)
 		}
 	}
@@ -177,6 +180,19 @@ func Main() {
 				if err != nil {
 					fmt.Fprintf(os.Stderr, "Error processing deck %s/%s: %v\n", slug, deckDir.Name(), err)
 					os.Exit(1)
+				}
+				if battleboxWarnings, ok := deckWarningAnnotations[slug]; ok {
+					if deckWarnings, ok := battleboxWarnings[deckDir.Name()]; ok {
+						deck.PrimerWarnings = append([]string(nil), deckWarnings.Primer...)
+						for opponentSlug, guideWarnings := range deckWarnings.Guides {
+							guide, ok := deck.Guides[opponentSlug]
+							if !ok {
+								continue
+							}
+							guide.Warnings = append([]string(nil), guideWarnings...)
+							deck.Guides[opponentSlug] = guide
+						}
+					}
 				}
 
 				battlebox.Decks = append(battlebox.Decks, *deck)

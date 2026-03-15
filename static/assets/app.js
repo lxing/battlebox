@@ -1136,6 +1136,7 @@ async function renderDeck(bbSlug, deckSlug, selectedGuide, sortMode, sortDirecti
   const deckUI = resolveDeckUI(deck);
   const mdSelf = createMarkdownRenderer([deckPrintings], [deckDoubleFaced]);
   const primerHtml = deck.primer ? mdSelf.render(deck.primer) : '<em>No primer yet</em>';
+  const hasPrimerWarnings = Array.isArray(deck.primer_warnings) && deck.primer_warnings.length > 0;
   const bannedNames = Array.isArray(bb.banned) ? bb.banned : [];
   const bannedSet = new Set(bannedNames.map(normalizeName));
   const guideKeys = Object.keys(deck.guides || {});
@@ -1154,7 +1155,9 @@ async function renderDeck(bbSlug, deckSlug, selectedGuide, sortMode, sortDirecti
   const guideOptions = guideKeys.map(k => {
     const opponent = bb.decks.find(d => d.slug === k);
     const name = opponent ? opponent.name : k;
-    return `<option value="${k}">${name}</option>`;
+    const guideWarnings = Array.isArray(deck.guides?.[k]?.warnings) ? deck.guides[k].warnings : [];
+    const warningMark = guideWarnings.length ? ' \u26a0\ufe0f' : '';
+    return `<option value="${k}">${name}${warningMark}</option>`;
   }).join('');
 
   const decklistView = deckUI.decklist_view;
@@ -1235,7 +1238,7 @@ async function renderDeck(bbSlug, deckSlug, selectedGuide, sortMode, sortDirecti
     ${basicsPaneHtml}
 
     <details id="primer-details" class="collapsible"${primerOpenAttr}>
-      <summary class="panel-title">Primer</summary>
+      <summary class="panel-title">Primer${hasPrimerWarnings ? ' \u26a0\ufe0f' : ''}</summary>
       <div class="collapsible-body">
         <div class="primer">${primerHtml}</div>
       </div>

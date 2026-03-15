@@ -10,7 +10,7 @@
       "qty": 2
     },
     {
-      "name": "Birchlore Rangers",
+      "name": "Elvish Mystic",
       "qty": 4
     },
     {
@@ -18,24 +18,16 @@
       "qty": 13
     },
     {
-      "name": "Fyndhorn Elves",
-      "qty": 2
-    },
-    {
       "name": "Generous Ent",
       "qty": 4
     },
     {
-      "name": "Jaspera Sentinel",
+      "name": "Lead the Stampede",
       "qty": 4
     },
     {
-      "name": "Lead the Stampede",
-      "qty": 1
-    },
-    {
       "name": "Llanowar Elves",
-      "qty": 2
+      "qty": 4
     },
     {
       "name": "Masked Vandal",
@@ -54,6 +46,10 @@
       "qty": 4
     },
     {
+      "name": "Sagu Wildling",
+      "qty": 1
+    },
+    {
       "name": "Timberwatch Elf",
       "qty": 4
     },
@@ -68,24 +64,20 @@
   ],
   "sideboard": [
     {
-      "name": "Cast Down",
-      "qty": 2
-    },
-    {
-      "name": "Divest",
-      "qty": 2
-    },
-    {
       "name": "Essence Warden",
       "qty": 4
     },
     {
-      "name": "Hallow",
-      "qty": 3
+      "name": "Heritage Reclamation",
+      "qty": 4
     },
     {
-      "name": "Mesmeric Fiend",
+      "name": "Pulse of Murasa",
       "qty": 4
+    },
+    {
+      "name": "Vitu-Ghazi Inspector",
+      "qty": 3
     }
   ],
   "difficulty_tags": [

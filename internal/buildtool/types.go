@@ -155,6 +155,8 @@ type Deck struct {
 	Sideboard []Card `json:"sideboard,omitempty"`
 	// Primer markdown text.
 	Primer string `json:"primer"`
+	// Build-time primer warnings intended for frontend annotation.
+	PrimerWarnings []string `json:"primer_warnings,omitempty"`
 	// Matchup guides keyed by opponent deck slug.
 	Guides map[string]MatchupGuide `json:"guides,omitempty"`
 }
@@ -305,6 +307,8 @@ type MatchupGuide struct {
 	Out []string `json:"out,omitempty"`
 	// Freeform matchup prose below the in/out block.
 	Text string `json:"text,omitempty"`
+	// Build-time guide warnings intended for frontend annotation.
+	Warnings []string `json:"warnings,omitempty"`
 }
 
 // MissingPrinting tracks cards that lack merged printing mappings.

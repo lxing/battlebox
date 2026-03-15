@@ -48,6 +48,11 @@ type validationParseCache struct {
 	guides  map[string]guideParseCacheEntry
 }
 
+type deckWarningAnnotations struct {
+	Primer []string
+	Guides map[string][]string
+}
+
 var parseCache = validationParseCache{
 	primers: make(map[string]primerParseCacheEntry),
 	guides:  make(map[string]guideParseCacheEntry),
@@ -291,7 +296,51 @@ func loadGuideCached(path string) (string, MatchupGuide, []string, error) {
 	return entry.raw, entry.parsed, entry.proseRefs, entry.err
 }
 
-func validatePrintingsUsage(dataDir string, projectPrintings map[string]string, battleboxDirs []os.DirEntry) []string {
+func appendDeckWarningAnnotation(annotations map[string]map[string]*deckWarningAnnotations, bbSlug, deckSlug string) *deckWarningAnnotations {
+	decks, ok := annotations[bbSlug]
+	if !ok {
+		decks = make(map[string]*deckWarningAnnotations)
+		annotations[bbSlug] = decks
+	}
+	deckWarnings, ok := decks[deckSlug]
+	if !ok {
+		deckWarnings = &deckWarningAnnotations{Guides: make(map[string][]string)}
+		decks[deckSlug] = deckWarnings
+	}
+	if deckWarnings.Guides == nil {
+		deckWarnings.Guides = make(map[string][]string)
+	}
+	return deckWarnings
+}
+
+func finalizeDeckWarningAnnotations(raw map[string]map[string]*deckWarningAnnotations) map[string]map[string]deckWarningAnnotations {
+	if len(raw) == 0 {
+		return map[string]map[string]deckWarningAnnotations{}
+	}
+	out := make(map[string]map[string]deckWarningAnnotations, len(raw))
+	for bbSlug, decks := range raw {
+		bbOut := make(map[string]deckWarningAnnotations, len(decks))
+		for deckSlug, warnings := range decks {
+			if warnings == nil {
+				continue
+			}
+			deckOut := deckWarningAnnotations{
+				Primer: append([]string(nil), warnings.Primer...),
+			}
+			if len(warnings.Guides) > 0 {
+				deckOut.Guides = make(map[string][]string, len(warnings.Guides))
+				for opponentSlug, guideWarnings := range warnings.Guides {
+					deckOut.Guides[opponentSlug] = append([]string(nil), guideWarnings...)
+				}
+			}
+			bbOut[deckSlug] = deckOut
+		}
+		out[bbSlug] = bbOut
+	}
+	return out
+}
+
+func validatePrintingsUsage(dataDir string, projectPrintings map[string]string, battleboxDirs []os.DirEntry) ([]string, map[string]map[string]deckWarningAnnotations) {
 	type deckContext struct {
 		slug            string
 		path            string
@@ -303,6 +352,7 @@ func validatePrintingsUsage(dataDir string, projectPrintings map[string]string, 
 	}
 
 	var warnings []string
+	annotations := make(map[string]map[string]*deckWarningAnnotations)
 
 	for _, bbDir := range battleboxDirs {
 		if !bbDir.IsDir() {
@@ -399,10 +449,14 @@ func validatePrintingsUsage(dataDir string, projectPrintings map[string]string, 
 					}
 					if _, ok := ctx.deckCards[key]; !ok {
 						warnings = append(warnings, fmt.Sprintf("Primer missing printing (%s/%s): %s", bbSlug, ctx.slug, ref))
+						deckWarnings := appendDeckWarningAnnotation(annotations, bbSlug, ctx.slug)
+						deckWarnings.Primer = append(deckWarnings.Primer, ref)
 						continue
 					}
 					if _, ok := ctx.mergedPrintings[key]; !ok {
 						warnings = append(warnings, fmt.Sprintf("Primer missing printing (%s/%s): %s", bbSlug, ctx.slug, ref))
+						deckWarnings := appendDeckWarningAnnotation(annotations, bbSlug, ctx.slug)
+						deckWarnings.Primer = append(deckWarnings.Primer, ref)
 					}
 				}
 			}
@@ -418,6 +472,8 @@ func validatePrintingsUsage(dataDir string, projectPrintings map[string]string, 
 				}
 				if err := validateGuide(guide, ctx.mainboardIndex, ctx.sideboardIndex); err != nil {
 					warnings = append(warnings, fmt.Sprintf("Malformed sideboard plan (%s/%s -> %s): %v", bbSlug, ctx.slug, opponentSlug, err))
+					deckWarnings := appendDeckWarningAnnotation(annotations, bbSlug, ctx.slug)
+					deckWarnings.Guides[opponentSlug] = append(deckWarnings.Guides[opponentSlug], err.Error())
 				}
 
 				// Avoid duplicate noise with sideboard-plan validation:
@@ -436,13 +492,15 @@ func validatePrintingsUsage(dataDir string, projectPrintings map[string]string, 
 						}
 					}
 					warnings = append(warnings, fmt.Sprintf("Matchup guide missing printing (%s/%s -> %s): %s", bbSlug, ctx.slug, opponentSlug, ref))
+					deckWarnings := appendDeckWarningAnnotation(annotations, bbSlug, ctx.slug)
+					deckWarnings.Guides[opponentSlug] = append(deckWarnings.Guides[opponentSlug], ref)
 				}
 			}
 		}
 	}
 
 	sort.Strings(warnings)
-	return warnings
+	return warnings, finalizeDeckWarningAnnotations(annotations)
 }
 
 func expectedMainboardCount(battleboxSlug, deckSlug string) int {
