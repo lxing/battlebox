@@ -243,6 +243,10 @@ type DeckIndex struct {
 	UI DeckUIProfile `json:"ui"`
 	// Mainboard card count (sum of qty) for compact UI badges.
 	CardCount int `json:"card_count"`
+	// True when any matchup guide plan is empty.
+	HasEmptyGuideWarnings bool `json:"has_empty_guide_warnings,omitempty"`
+	// True when any matchup guide has a non-empty warning.
+	HasGuideWarnings bool `json:"has_guide_warnings,omitempty"`
 }
 
 // BattleboxIndex is the lightweight battlebox summary written to index.json.

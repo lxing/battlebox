@@ -176,6 +176,10 @@ func validateGuide(guide MatchupGuide, mainboard, sideboard map[string]guideCard
 	return nil
 }
 
+func isGuidePlanEmpty(guide MatchupGuide) bool {
+	return len(guide.In) == 0 && len(guide.Out) == 0
+}
+
 func validateCardRefs(battleboxes []Battlebox) error {
 	var issues []string
 
@@ -469,6 +473,11 @@ func validatePrintingsUsage(dataDir string, projectPrintings map[string]string, 
 				if err != nil {
 					warnings = append(warnings, fmt.Sprintf("Validator input error (%s/%s): %s", bbSlug, ctx.slug, filepath.Base(guideFile)))
 					continue
+				}
+				if isGuidePlanEmpty(guide) {
+					warnings = append(warnings, fmt.Sprintf("Empty sideboard plan (%s/%s -> %s)", bbSlug, ctx.slug, opponentSlug))
+					deckWarnings := appendDeckWarningAnnotation(annotations, bbSlug, ctx.slug)
+					deckWarnings.Guides[opponentSlug] = append(deckWarnings.Guides[opponentSlug], "empty")
 				}
 				if err := validateGuide(guide, ctx.mainboardIndex, ctx.sideboardIndex); err != nil {
 					warnings = append(warnings, fmt.Sprintf("Malformed sideboard plan (%s/%s -> %s): %v", bbSlug, ctx.slug, opponentSlug, err))

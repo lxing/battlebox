@@ -1061,9 +1061,10 @@ function renderBattlebox(bbSlug, initialSortMode, initialSortDirection) {
     <ul class="deck-list">
       ${bb.decks.map(d => {
         const deckUI = resolveDeckUI(d);
+        const deckWarningMarks = `${d.has_empty_guide_warnings ? ' \ud83d\udcdd' : ''}${d.has_guide_warnings ? ' \u26a0\ufe0f' : ''}`;
         return `
-          <li class="deck-item" data-slug="${d.slug}"><a class="deck-link" href="${buildDeckHash(bb.slug, d.slug, initialSort, initialDirection, undefined, 4)}">
-            <span class="deck-link-name">${d.icon ? `<span class="deck-link-icon">${d.icon}</span>` : ''}${d.name}</span>
+          <li class="deck-item" data-slug="${d.slug}"><a class="deck-link" href="${buildDeckHash(bb.slug, d.slug, initialSort, initialDirection, undefined, 0)}">
+            <span class="deck-link-name">${d.icon ? `<span class="deck-link-icon">${d.icon}</span>` : ''}${d.name}${deckWarningMarks}</span>
             <div class="deck-link-tags">${renderDeckSelectionTags(d.tags, d.difficulty_tags)}</div>
             <span class="colors">${renderDeckBadge(d, deckUI.deck_selection_badge)}</span>
           </a></li>
@@ -1134,7 +1135,7 @@ function renderBattlebox(bbSlug, initialSortMode, initialSortDirection) {
   const updateDeckLinks = () => {
     deckBySlug.forEach((link, slug) => {
       if (!link) return;
-      link.href = buildDeckHash(bb.slug, slug, sortMode, sortDirection, undefined, 4);
+      link.href = buildDeckHash(bb.slug, slug, sortMode, sortDirection, undefined, 0);
     });
   };
 
@@ -1208,10 +1209,10 @@ function renderBattlebox(bbSlug, initialSortMode, initialSortDirection) {
     const linkA = deckBySlug.get(deckA);
     const linkB = deckBySlug.get(deckB);
     if (linkA) {
-      linkA.href = buildDeckHash(bb.slug, deckA, sortMode, sortDirection, deckB, 4);
+      linkA.href = buildDeckHash(bb.slug, deckA, sortMode, sortDirection, deckB, 0);
     }
     if (linkB) {
-      linkB.href = buildDeckHash(bb.slug, deckB, sortMode, sortDirection, deckA, 4);
+      linkB.href = buildDeckHash(bb.slug, deckB, sortMode, sortDirection, deckA, 0);
     }
   };
 
@@ -1319,8 +1320,10 @@ async function renderDeck(bbSlug, deckSlug, selectedGuide, sortMode, sortDirecti
     const opponent = bb.decks.find(d => d.slug === k);
     const name = opponent ? opponent.name : k;
     const guideWarnings = Array.isArray(deck.guides?.[k]?.warnings) ? deck.guides[k].warnings : [];
-    const warningMark = guideWarnings.length ? ' \u26a0\ufe0f' : '';
-    return `<option value="${k}">${name}${warningMark}</option>`;
+    const hasEmptyWarning = guideWarnings.includes('empty');
+    const hasOtherWarnings = guideWarnings.some((warning) => warning !== 'empty');
+    const marks = `${hasEmptyWarning ? ' \ud83d\udcdd' : ''}${hasOtherWarnings ? ' \u26a0\ufe0f' : ''}`;
+    return `<option value="${k}">${name}${marks}</option>`;
   }).join('');
 
   const decklistView = deckUI.decklist_view;

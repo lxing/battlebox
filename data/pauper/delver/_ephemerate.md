@@ -1,5 +1,4 @@
 + 2 [[Dispel]]
 + 4 [[Hydroblast]]
-- 1 [[Consider]]
 - 2 [[Counterspell]]
 - 4 [[Deem Inferior]]

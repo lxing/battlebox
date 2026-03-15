@@ -1,3 +1,3 @@
-+ 1 [[Dispel]]
++ 2 [[Dispel]]
 - 1 [[Consider]]
-- 1 [[Ponder]]
+- 1 [[Deem Inferior]]

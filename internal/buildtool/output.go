@@ -11,7 +11,7 @@ import (
 	"strings"
 )
 
-func buildIndexOutput(dataDir string) (IndexOutput, error) {
+func buildIndexOutput(dataDir string, deckWarningAnnotations map[string]map[string]deckWarningAnnotations) (IndexOutput, error) {
 	var indexOutput IndexOutput
 
 	battleboxDirs, err := orderedBattleboxDirs(dataDir)
@@ -64,6 +64,22 @@ func buildIndexOutput(dataDir string) (IndexOutput, error) {
 			}
 			cardCount := countCards(manifest.Cards)
 
+			hasEmptyGuideWarnings := false
+			hasGuideWarnings := false
+			if battleboxWarnings, ok := deckWarningAnnotations[bbDir.Name()]; ok {
+				if deckWarnings, ok := battleboxWarnings[deckDir.Name()]; ok {
+					for _, guideWarnings := range deckWarnings.Guides {
+						for _, warning := range guideWarnings {
+							if warning == "empty" {
+								hasEmptyGuideWarnings = true
+								continue
+							}
+							hasGuideWarnings = true
+						}
+					}
+				}
+			}
+
 			indexEntry.Decks = append(indexEntry.Decks, DeckIndex{
 				Slug:           deckDir.Name(),
 				Name:           manifest.Name,
@@ -73,6 +89,8 @@ func buildIndexOutput(dataDir string) (IndexOutput, error) {
 				DifficultyTags: normalizeDifficultyTags(manifest.DifficultyTags),
 				UI:             uiProfile,
 				CardCount:      cardCount,
+				HasEmptyGuideWarnings: hasEmptyGuideWarnings,
+				HasGuideWarnings:      hasGuideWarnings,
 			})
 		}
 

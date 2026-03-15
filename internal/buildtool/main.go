@@ -249,7 +249,7 @@ func Main() {
 
 	// Index always reflects current source manifests; rewrite when data changed
 	// or when index is missing.
-	indexOutput, err := buildIndexOutput(dataDir)
+	indexOutput, err := buildIndexOutput(dataDir, deckWarningAnnotations)
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Error building index: %v\n", err)
 		os.Exit(1)
