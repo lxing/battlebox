@@ -1,2 +1,2 @@
-- 2 [[Nyxborn Hydra]]
-- 3 [[Wellwisher]]
++ 2 [[Vitu-Ghazi Inspector]]
+- 2 [[Wellwisher]]

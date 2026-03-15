@@ -110,9 +110,12 @@ func processDeck(deckPath, slug, battlebox string, printings map[string]string, 
 			continue
 		}
 		guidePath := filepath.Join(deckPath, name)
-		if guideRaw, guide, _, err := loadGuideCached(guidePath); err == nil && len(guideRaw) > 0 {
+		if _, guide, _, err := loadGuideCached(guidePath); err == nil {
 			opponentSlug := strings.TrimPrefix(strings.TrimSuffix(name, ".md"), "_")
 			if opponentSlug == "" {
+				continue
+			}
+			if opponentSlug == slug {
 				continue
 			}
 			deck.Guides[opponentSlug] = guide

@@ -1,2 +1,0 @@
-- 4 [[Masked Vandal]]
-- 1 [[Wellwisher]]

@@ -1,4 +1,3 @@
 + 4 [[Essence Warden]]
-- 1 [[Lead the Stampede]]
-- 2 [[Winding Way]]
-- 4 [[Nyxborn Hydra]]
+- 2 [[Avenging Hunter]]
+- 2 [[Nyxborn Hydra]]
