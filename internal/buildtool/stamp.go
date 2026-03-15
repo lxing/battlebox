@@ -29,11 +29,15 @@ func loadBuildStamp(path string) BuildStamp {
 	if err := json.Unmarshal(data, &stamp); err != nil {
 		return BuildStamp{
 			Battleboxes: map[string]string{},
+			Matrices:    map[string]string{},
 			FileCache:   map[string]FileFingerprint{},
 		}
 	}
 	if stamp.Battleboxes == nil {
 		stamp.Battleboxes = map[string]string{}
+	}
+	if stamp.Matrices == nil {
+		stamp.Matrices = map[string]string{}
 	}
 	if stamp.FileCache == nil {
 		stamp.FileCache = map[string]FileFingerprint{}
@@ -44,6 +48,9 @@ func loadBuildStamp(path string) BuildStamp {
 func saveBuildStamp(path string, stamp BuildStamp) error {
 	if stamp.Battleboxes == nil {
 		stamp.Battleboxes = map[string]string{}
+	}
+	if stamp.Matrices == nil {
+		stamp.Matrices = map[string]string{}
 	}
 	if stamp.FileCache == nil {
 		stamp.FileCache = map[string]FileFingerprint{}

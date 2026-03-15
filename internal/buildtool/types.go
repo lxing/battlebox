@@ -283,6 +283,8 @@ type BuildStamp struct {
 	GlobalHash string `json:"global_hash"`
 	// Per-battlebox input hash.
 	Battleboxes map[string]string `json:"battleboxes"`
+	// Per-battlebox matrix source hash.
+	Matrices map[string]string `json:"matrices,omitempty"`
 	// Per-file fingerprints used for size->mtime->hash short-circuiting.
 	FileCache map[string]FileFingerprint `json:"file_cache,omitempty"`
 }

@@ -42,6 +42,7 @@ func Main() {
 	}
 
 	battleboxHashes := make(map[string]string)
+	matrixHashes := make(map[string]string)
 	var battleboxSlugs []string
 	for _, bbDir := range battleboxDirs {
 		if !bbDir.IsDir() {
@@ -58,23 +59,34 @@ func Main() {
 	}
 
 	var dirtySlugs []string
+	var matrixDirtySlugs []string
 	for _, slug := range battleboxSlugs {
 		prevHash := stamp.Battleboxes[slug]
 		outPath := filepath.Join(outputDir, slug+".json")
 		matrixSourcePath := filepath.Join(dataDir, slug, "mtgdecks-winrate-matrix.json")
 		matrixOutputPath := filepath.Join(outputDir, slug, "winrate.json")
+		matrixHash, err := hashFiles([]string{matrixSourcePath}, stamp.FileCache)
+		if err != nil {
+			fmt.Fprintf(os.Stderr, "Error hashing matrix for %s: %v\n", slug, err)
+			os.Exit(1)
+		}
+		matrixHashes[slug] = matrixHash
 		matrixOutputDrifted := fileExists(matrixSourcePath) != fileExists(matrixOutputPath)
-		if *fullBuild || stamp.GlobalHash != globalHash || prevHash != battleboxHashes[slug] || !fileExists(outPath) || matrixOutputDrifted {
+		if *fullBuild || stamp.GlobalHash != globalHash || prevHash != battleboxHashes[slug] || !fileExists(outPath) {
 			dirtySlugs = append(dirtySlugs, slug)
+		}
+		if *fullBuild || stamp.GlobalHash != globalHash || stamp.Matrices[slug] != matrixHash || matrixOutputDrifted {
+			matrixDirtySlugs = append(matrixDirtySlugs, slug)
 		}
 	}
 
 	indexExists := fileExists(indexPath)
-	if len(dirtySlugs) == 0 && indexExists {
+	if len(dirtySlugs) == 0 && len(matrixDirtySlugs) == 0 && indexExists {
 		fmt.Println("No battlebox data changes detected; skipping JSON rebuild.")
 		nextStamp := BuildStamp{
 			GlobalHash:  globalHash,
 			Battleboxes: battleboxHashes,
+			Matrices:    matrixHashes,
 			FileCache:   stamp.FileCache,
 		}
 		if err := saveBuildStamp(stampFile, nextStamp); err != nil {
@@ -226,8 +238,11 @@ func Main() {
 		}
 		fmt.Printf("Written: %s (%d bytes), %s.gz (%d bytes)\n", bbPath, len(jsonData), bbPath, gzipSize)
 
-		if err := writeBattleboxMatrix(dataDir, outputDir, battlebox.Slug); err != nil {
-			fmt.Fprintf(os.Stderr, "Error writing matrix output for %s: %v\n", battlebox.Slug, err)
+	}
+
+	for _, slug := range matrixDirtySlugs {
+		if err := writeBattleboxMatrix(dataDir, outputDir, slug); err != nil {
+			fmt.Fprintf(os.Stderr, "Error writing matrix output for %s: %v\n", slug, err)
 			os.Exit(1)
 		}
 	}
@@ -258,6 +273,7 @@ func Main() {
 	nextStamp := BuildStamp{
 		GlobalHash:  globalHash,
 		Battleboxes: battleboxHashes,
+		Matrices:    matrixHashes,
 		FileCache:   stamp.FileCache,
 	}
 	if err := saveBuildStamp(stampFile, nextStamp); err != nil {
