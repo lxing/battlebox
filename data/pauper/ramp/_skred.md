@@ -5,5 +5,3 @@
 -1 [[Oliphaunt]]
 -1 [[Eldrazi Repurposer]]
 -1 [[Malevolent Rumble]]
-
-Lifegain buys time to land your big threats, and [[Relic of Progenitus]] keeps their graveyard in check.

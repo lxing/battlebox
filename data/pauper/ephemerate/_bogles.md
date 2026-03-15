@@ -6,5 +6,3 @@
 -2 [[Lightning Bolt]]
 -1 [[Cast into the Fire]]
 -3 [[Skred]]
-
-[[Standard Bearer]] steals their auras, then [[Dawnbringer Cleric]] goes nuts with [[Ephemerate]]. [[Stonehorn Dignitary]] completes the trifecta of humiliation. No fear.

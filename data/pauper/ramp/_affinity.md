@@ -9,5 +9,3 @@
 -1 [[Malevolent Rumble]]
 -1 [[Generous Ent]]
 -1 [[Gorilla Shaman]]
-
-Max out on artifact hate to keep their mana and big threats from taking over.

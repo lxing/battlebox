@@ -2,5 +2,3 @@
 +2 [[Journey to Nowhere]]
 -3 [[Guardians' Pledge]]
 -1 [[Eagles of the North]]
-
-<AI-generated placeholder. Probably nonsense>

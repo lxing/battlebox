@@ -1,1 +1,0 @@
-This matchup is abysmal. [[Writhing Chrysalis]] dominates [[Guardian of the Guildpact]] and their entire top-end has reach. Pray you can kill their mana dorks, counter their most dangerous plays, and disenchant their ramp.

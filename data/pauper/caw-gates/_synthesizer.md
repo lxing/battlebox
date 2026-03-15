@@ -3,5 +3,3 @@
 -2 [[Counterspell]]
 -2 [[Journey to Nowhere]]
 -2 [[Thraben Charm]]
-
-Standard red protocol. You have plenty of lifegain and [[Prismatic Strands]].

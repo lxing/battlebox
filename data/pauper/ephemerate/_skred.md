@@ -5,5 +5,3 @@
 -1 [[Cast into the Fire]]
 -1 [[Dawnbringer Cleric]]
 -1 [[Lightning Bolt]]
-
-Go toe-to-toe with them on blast spam. Things will quickly degenerate into blast wars.

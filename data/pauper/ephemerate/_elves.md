@@ -6,5 +6,3 @@
 -1 [[Dawnbringer Cleric]]
 -1 [[Union of the Third Path]]
 -1 [[Murmuring Mystic]]
-
-Sweep and spray removal everywhere. [[Standard Bearer]] blunts [[Nyxborn Hydra]] and [[Timberwatch Elf]]. [[Stonehorn Dignitary]] completely ****s them.

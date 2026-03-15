@@ -1,1 +1,0 @@
-They don't have a lot to stop you, play around countermagic and [[Breath Weapon]].

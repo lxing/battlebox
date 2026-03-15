@@ -4,5 +4,3 @@
 -1 [[Oliphaunt]]
 -1 [[Eldrazi Repurposer]]
 -1 [[Malevolent Rumble]]
-
-Sweepers and lifegain give you time to land your large threats.

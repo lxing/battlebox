@@ -5,5 +5,3 @@
 -4 [[Galvanic Blast]]
 -3 [[Krark-Clan Shaman]]
 -2 [[Toxin Analysis]]
-
-Blast away.

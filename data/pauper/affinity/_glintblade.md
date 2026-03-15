@@ -3,5 +3,3 @@
 -1 [[Galvanic Blast]]
 -3 [[Krark-Clan Shaman]]
 -2 [[Toxin Analysis]]
-
-Punish their artifact lands and Clue tokens.

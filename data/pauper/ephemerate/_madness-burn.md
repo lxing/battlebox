@@ -5,5 +5,3 @@
 -1 [[Murmuring Mystic]]
 -1 [[Cast into the Fire]]
 -2 [[Counterspell]]
-
-But time with [[Blue Elemental Blast]] and lifegain while until the value loop takes over.

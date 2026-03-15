@@ -1,1 +1,0 @@
-This will be a slow knife fight. They have tons of fodder and so do you. [[Squadron Hawk]] will help you win the Monarch / Initiative.

@@ -8,5 +8,3 @@
 -1 [[Generous Ent]]
 -1 [[Gorilla Shaman]]
 -1 [[Avenging Hunter]]
-
-Sweepers and artifact hate keep their fast board from snowballing.

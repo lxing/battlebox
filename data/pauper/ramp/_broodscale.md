@@ -4,5 +4,3 @@
 -1 [[Oliphaunt]]
 -1 [[Eldrazi Repurposer]]
 -1 [[Malevolent Rumble]]
-
-Sweepers plus graveyard hate keep their combo and token plan in check.

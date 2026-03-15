@@ -1,1 +1,0 @@
-Kill them as fast as possible before the elfball explodes. You must counter or remove [[Wellwisher]].

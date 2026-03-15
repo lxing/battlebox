@@ -34,6 +34,10 @@ type sourceGuideResponse struct {
 	Guide buildtool.MatchupGuide `json:"guide"`
 }
 
+type sourcePrimerResponse struct {
+	Raw string `json:"raw"`
+}
+
 func main() {
 	flag.Parse()
 	dev := os.Getenv("DEV") != ""
@@ -83,6 +87,7 @@ func main() {
 	// Serve deck JSON data
 	mux.HandleFunc("/api/decks/", handleDecks)
 	mux.HandleFunc("/api/source-guide", handleSourceGuide)
+	mux.HandleFunc("/api/source-primer", handleSourcePrimer)
 	mux.HandleFunc("/api/draft/rooms", draftHub.handleCreateRoom)
 	mux.HandleFunc("/api/draft/lobby/events", draftHub.handleLobbyEvents)
 	mux.HandleFunc("/api/draft/shared", draftHub.handleStartOrJoinSharedRoom)
@@ -166,10 +171,20 @@ func sourceGuidePath(battlebox, deck, opponent string) string {
 	return filepath.Join("data", battlebox, deck, "_"+opponent+".md")
 }
 
+func sourcePrimerPath(battlebox, deck string) string {
+	return filepath.Join("data", battlebox, deck, "primer.md")
+}
+
 func writeSourceGuideResponse(w http.ResponseWriter, status int, guide buildtool.MatchupGuide) {
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(status)
 	_ = json.NewEncoder(w).Encode(sourceGuideResponse{Guide: guide})
+}
+
+func writeSourcePrimerResponse(w http.ResponseWriter, status int, raw string) {
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(status)
+	_ = json.NewEncoder(w).Encode(sourcePrimerResponse{Raw: raw})
 }
 
 func handleSourceGuide(w http.ResponseWriter, r *http.Request) {
@@ -212,6 +227,49 @@ func handleSourceGuide(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 		writeSourceGuideResponse(w, http.StatusOK, buildtool.ParseGuideRaw(raw))
+		return
+	}
+}
+
+func handleSourcePrimer(w http.ResponseWriter, r *http.Request) {
+	if r.Method != http.MethodGet && r.Method != http.MethodPut {
+		w.Header().Set("Allow", "GET, PUT")
+		http.Error(w, "method not allowed", http.StatusMethodNotAllowed)
+		return
+	}
+
+	q := r.URL.Query()
+	battlebox := normalizeSlug(q.Get("bb"))
+	deck := normalizeSlug(q.Get("deck"))
+	if battlebox == "" || deck == "" {
+		http.Error(w, "invalid bb/deck query params", http.StatusBadRequest)
+		return
+	}
+
+	primerPath := sourcePrimerPath(battlebox, deck)
+	switch r.Method {
+	case http.MethodGet:
+		data, err := os.ReadFile(primerPath)
+		if err != nil {
+			http.Error(w, "primer not found", http.StatusNotFound)
+			return
+		}
+		raw := strings.TrimRight(strings.ReplaceAll(string(data), "\r\n", "\n"), "\n")
+		writeSourcePrimerResponse(w, http.StatusOK, raw)
+		return
+	case http.MethodPut:
+		defer r.Body.Close()
+		var req sourceGuideRequest
+		if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
+			http.Error(w, "invalid json body", http.StatusBadRequest)
+			return
+		}
+		raw := strings.TrimRight(strings.ReplaceAll(req.Raw, "\r\n", "\n"), "\n")
+		if err := os.WriteFile(primerPath, []byte(raw), 0o644); err != nil {
+			http.Error(w, "failed to write primer", http.StatusInternalServerError)
+			return
+		}
+		writeSourcePrimerResponse(w, http.StatusOK, raw)
 		return
 	}
 }

@@ -75,7 +75,7 @@ const qrUi = {
   overlay: null,
   canvas: null,
 };
-const guideEditorDrafts = new Map();
+const sourceEditorDrafts = new Map();
 const runtimeCacheBust = Date.now().toString(36);
 const matrixRouteContext = {
   battlebox: null,
@@ -322,6 +322,14 @@ function buildSourceGuideUrl(bbSlug, deckSlug, opponentSlug) {
   return `/api/source-guide?${params.toString()}`;
 }
 
+function buildSourcePrimerUrl(bbSlug, deckSlug) {
+  const params = new URLSearchParams({
+    bb: bbSlug,
+    deck: deckSlug,
+  });
+  return `/api/source-primer?${params.toString()}`;
+}
+
 async function fetchSourceGuide(bbSlug, deckSlug, opponentSlug) {
   const res = await fetch(buildSourceGuideUrl(bbSlug, deckSlug, opponentSlug), {
     method: 'GET',
@@ -347,8 +355,111 @@ async function saveSourceGuide(bbSlug, deckSlug, opponentSlug, raw) {
   return res.json();
 }
 
+async function fetchSourcePrimer(bbSlug, deckSlug) {
+  const res = await fetch(buildSourcePrimerUrl(bbSlug, deckSlug), {
+    method: 'GET',
+    cache: 'no-store',
+  });
+  if (!res.ok) {
+    const text = (await res.text()).trim();
+    throw new Error(text || `Failed to load primer source (${res.status})`);
+  }
+  return res.json();
+}
+
+async function saveSourcePrimer(bbSlug, deckSlug, raw) {
+  const res = await fetch(buildSourcePrimerUrl(bbSlug, deckSlug), {
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ raw }),
+  });
+  if (!res.ok) {
+    const text = (await res.text()).trim();
+    throw new Error(text || `Failed to save primer source (${res.status})`);
+  }
+  return res.json();
+}
+
 function buildGuideDraftKey(bbSlug, deckSlug, opponentSlug) {
   return `${bbSlug}/${deckSlug}->${opponentSlug}`;
+}
+
+function buildPrimerDraftKey(bbSlug, deckSlug) {
+  return `${bbSlug}/${deckSlug}::primer`;
+}
+
+async function openSourceTextEditor({ draftKey, title, fallbackRaw, loadRaw, saveRaw }) {
+  let sourceRaw = sourceEditorDrafts.has(draftKey) ? sourceEditorDrafts.get(draftKey) : fallbackRaw;
+  let loadWarning = '';
+
+  if (!sourceEditorDrafts.has(draftKey)) {
+    try {
+      sourceRaw = await loadRaw();
+    } catch (err) {
+      loadWarning = err && err.message ? err.message : 'Source load failed; using in-memory projection.';
+    }
+  }
+
+  const overlay = document.createElement('div');
+  overlay.className = 'guide-editor-overlay';
+  overlay.innerHTML = `
+    <div class="guide-editor-modal" role="dialog" aria-modal="true" aria-label="${title}">
+      <div class="guide-editor-head">${title}</div>
+      <textarea class="guide-editor-textarea" spellcheck="false"></textarea>
+      <div class="guide-editor-actions">
+        <button type="button" class="action-button button-standard guide-editor-cancel">Cancel</button>
+        <button type="button" class="action-button button-standard guide-editor-save">Save</button>
+      </div>
+      <div class="guide-editor-status" aria-live="polite"></div>
+    </div>
+  `;
+  document.body.appendChild(overlay);
+
+  const textarea = overlay.querySelector('.guide-editor-textarea');
+  const saveBtn = overlay.querySelector('.guide-editor-save');
+  const cancelBtn = overlay.querySelector('.guide-editor-cancel');
+  const statusEl = overlay.querySelector('.guide-editor-status');
+  textarea.value = sourceRaw;
+  textarea.addEventListener('input', () => {
+    sourceEditorDrafts.set(draftKey, textarea.value);
+  });
+  textarea.focus();
+  textarea.setSelectionRange(textarea.value.length, textarea.value.length);
+  if (loadWarning) {
+    statusEl.textContent = loadWarning;
+  }
+
+  const close = (persistDraft = true) => {
+    if (persistDraft) {
+      sourceEditorDrafts.set(draftKey, textarea.value);
+    }
+    document.removeEventListener('keydown', onKeydown);
+    overlay.remove();
+  };
+
+  const onKeydown = (event) => {
+    if (event.key === 'Escape') close();
+  };
+  document.addEventListener('keydown', onKeydown);
+
+  overlay.addEventListener('click', (event) => {
+    if (event.target === overlay) close();
+  });
+  cancelBtn.addEventListener('click', close);
+
+  saveBtn.addEventListener('click', async () => {
+    saveBtn.disabled = true;
+    statusEl.textContent = 'Saving...';
+    try {
+      await saveRaw(textarea.value);
+      statusEl.textContent = 'Saved. Refreshing...';
+      await clearBrowserCaches();
+      window.location.reload();
+    } catch (err) {
+      statusEl.textContent = err && err.message ? err.message : 'Save failed.';
+      saveBtn.disabled = false;
+    }
+  });
 }
 
 async function clearBrowserCaches() {
@@ -1240,6 +1351,11 @@ async function renderDeck(bbSlug, deckSlug, selectedGuide, sortMode, sortDirecti
     <details id="primer-details" class="collapsible"${primerOpenAttr}>
       <summary class="panel-title">Primer${hasPrimerWarnings ? ' \u26a0\ufe0f' : ''}</summary>
       <div class="collapsible-body">
+        <div class="primer-controls">
+          <button type="button" class="action-button button-standard primer-edit-button" id="primer-edit-button">
+            Edit
+          </button>
+        </div>
         <div class="primer">${primerHtml}</div>
       </div>
     </details>
@@ -1251,6 +1367,7 @@ async function renderDeck(bbSlug, deckSlug, selectedGuide, sortMode, sortDirecti
   const matchupDetails = ui.battleboxPane.querySelector('#matchup-details');
   const decklistBody = ui.battleboxPane.querySelector('#decklist-body');
   const sampleHandButton = ui.battleboxPane.querySelector('#sample-hand-open-button');
+  const primerEditButton = ui.battleboxPane.querySelector('#primer-edit-button');
 
   const computeCollapsedMask = () => {
     let mask = 0;
@@ -1349,85 +1466,28 @@ async function renderDeck(bbSlug, deckSlug, selectedGuide, sortMode, sortDirecti
       if (!key) return;
       const draftKey = buildGuideDraftKey(bb.slug, deck.slug, key);
       const fallbackRaw = guideToRawMarkdown(deck.guides[key]);
-      let sourceRaw = guideEditorDrafts.has(draftKey) ? guideEditorDrafts.get(draftKey) : fallbackRaw;
-      let loadWarning = '';
-
-      if (!guideEditorDrafts.has(draftKey)) {
-        if (editButton) editButton.disabled = true;
-        try {
-          const payload = await fetchSourceGuide(bb.slug, deck.slug, key);
-          if (payload && payload.guide && typeof payload.guide.raw === 'string') {
-            sourceRaw = payload.guide.raw;
+      await openSourceTextEditor({
+        draftKey,
+        title: `Edit guide: ${deck.name} -> ${key}`,
+        fallbackRaw,
+        loadRaw: async () => {
+          if (editButton) editButton.disabled = true;
+          try {
+            const payload = await fetchSourceGuide(bb.slug, deck.slug, key);
+            if (!payload || !payload.guide || typeof payload.guide.raw !== 'string') {
+              throw new Error('Invalid guide response');
+            }
+            return payload.guide.raw;
+          } finally {
+            if (editButton) editButton.disabled = false;
           }
-        } catch (err) {
-          loadWarning = err && err.message ? err.message : 'Source load failed; using in-memory projection.';
-        } finally {
-          if (editButton) editButton.disabled = false;
-        }
-      }
-
-      const overlay = document.createElement('div');
-      overlay.className = 'guide-editor-overlay';
-      overlay.innerHTML = `
-        <div class="guide-editor-modal" role="dialog" aria-modal="true" aria-label="Edit matchup guide">
-          <div class="guide-editor-head">Edit guide: ${deck.name} -> ${key}</div>
-          <textarea class="guide-editor-textarea" spellcheck="false"></textarea>
-          <div class="guide-editor-actions">
-            <button type="button" class="action-button button-standard guide-editor-cancel">Cancel</button>
-            <button type="button" class="action-button button-standard guide-editor-save">Save</button>
-          </div>
-          <div class="guide-editor-status" aria-live="polite"></div>
-        </div>
-      `;
-      document.body.appendChild(overlay);
-
-      const textarea = overlay.querySelector('.guide-editor-textarea');
-      const saveBtn = overlay.querySelector('.guide-editor-save');
-      const cancelBtn = overlay.querySelector('.guide-editor-cancel');
-      const statusEl = overlay.querySelector('.guide-editor-status');
-      textarea.value = sourceRaw;
-      textarea.addEventListener('input', () => {
-        guideEditorDrafts.set(draftKey, textarea.value);
-      });
-      textarea.focus();
-      textarea.setSelectionRange(textarea.value.length, textarea.value.length);
-      if (loadWarning) {
-        statusEl.textContent = loadWarning;
-      }
-
-      const close = (persistDraft = true) => {
-        if (persistDraft) {
-          guideEditorDrafts.set(draftKey, textarea.value);
-        }
-        document.removeEventListener('keydown', onKeydown);
-        overlay.remove();
-      };
-
-      const onKeydown = (event) => {
-        if (event.key === 'Escape') close();
-      };
-      document.addEventListener('keydown', onKeydown);
-
-      overlay.addEventListener('click', (event) => {
-        if (event.target === overlay) close();
-      });
-      cancelBtn.addEventListener('click', close);
-
-      saveBtn.addEventListener('click', async () => {
-        saveBtn.disabled = true;
-        statusEl.textContent = 'Saving...';
-        try {
-          const payload = await saveSourceGuide(bb.slug, deck.slug, key, textarea.value);
+        },
+        saveRaw: async (raw) => {
+          const payload = await saveSourceGuide(bb.slug, deck.slug, key, raw);
           if (!payload || !payload.guide) {
             throw new Error('Invalid save response');
           }
-          statusEl.textContent = 'Saved. Refreshing...';
-          await clearBrowserCaches();
-          window.location.reload();
-        } catch (err) {
-          statusEl.textContent = err && err.message ? err.message : 'Save failed.';
-          saveBtn.disabled = false;
-        }
+        },
       });
     };
     select.value = initialGuide;
@@ -1474,6 +1534,35 @@ async function renderDeck(bbSlug, deckSlug, selectedGuide, sortMode, sortDirecti
     [decklistDetails, primerDetails].forEach((details) => {
       if (!details) return;
       details.addEventListener('toggle', syncCollapsedAndUrl);
+    });
+  }
+
+  if (primerEditButton) {
+    primerEditButton.addEventListener('click', () => {
+      preview.hidePreview();
+      void openSourceTextEditor({
+        draftKey: buildPrimerDraftKey(bb.slug, deck.slug),
+        title: `Edit primer: ${deck.name}`,
+        fallbackRaw: deck.primer || '',
+        loadRaw: async () => {
+          primerEditButton.disabled = true;
+          try {
+            const payload = await fetchSourcePrimer(bb.slug, deck.slug);
+            if (!payload || typeof payload.raw !== 'string') {
+              throw new Error('Invalid primer response');
+            }
+            return payload.raw;
+          } finally {
+            primerEditButton.disabled = false;
+          }
+        },
+        saveRaw: async (raw) => {
+          const payload = await saveSourcePrimer(bb.slug, deck.slug, raw);
+          if (!payload || typeof payload.raw !== 'string') {
+            throw new Error('Invalid save response');
+          }
+        },
+      });
     });
   }
 

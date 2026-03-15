@@ -5,5 +5,3 @@
 -3 [[Thraben Charm]]
 -2 [[Prismatic Strands]]
 -1 [[Outlaw Medic]]
-
-[[Dust to Dust]] and [[Gorilla Shaman]] punish their artifact base heavily.

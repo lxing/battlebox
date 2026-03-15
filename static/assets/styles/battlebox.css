@@ -818,6 +818,12 @@ details.collapsible[open] summary::after {
   line-height: 1.4;
 }
 
+.primer-controls {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 0.5rem;
+}
+
 .guide-panel {
   padding: 0;
 }

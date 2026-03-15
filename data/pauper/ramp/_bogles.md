@@ -5,5 +5,3 @@
 -1 [[Eldrazi Repurposer]]
 -1 [[Malevolent Rumble]]
 -1 [[Gorilla Shaman]]
-
-[[Deglamer]] answers key auras, and extra lifegain helps you survive the race.

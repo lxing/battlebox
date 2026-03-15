@@ -6,5 +6,3 @@
 -1 [[Lightning Bolt]]
 -1 [[Destroy Evil]]
 -1 [[Thraben Charm]]
-
-Pack in as much lifegain as possible. Trim the board to nip [[Goblin Bushwhacker]] bursts in the bud.

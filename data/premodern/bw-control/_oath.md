@@ -5,5 +5,3 @@
 -1 [[Exalted Angel]]
 -1 [[Gerrard's Verdict]]
 -2 [[Wrath of God]]
-
-Shut off their entire artifact/enchantment suite. Keep hands with lots of lands, since you have no boardable defenses against their land destruction.

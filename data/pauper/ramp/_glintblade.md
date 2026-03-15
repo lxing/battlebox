@@ -7,5 +7,3 @@
 -1 [[Malevolent Rumble]]
 -1 [[Generous Ent]]
 -1 [[Gorilla Shaman]]
-
-Artifact hate keeps their bounce-and-draw engine from taking over the game.

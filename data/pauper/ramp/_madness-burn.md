@@ -6,5 +6,3 @@
 -1 [[Eldrazi Repurposer]]
 -1 [[Malevolent Rumble]]
 -1 [[Gorilla Shaman]]
-
-Lifegain and sweepers help you survive their early damage bursts.

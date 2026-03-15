@@ -6,5 +6,3 @@
 -1 [[Gerrard's Verdict]]
 -1 [[Phyrexian Furnace]]
 -1 [[Skeletal Scrying]]
-
-Exterminate all the little vermin. Keep hands that can deal with turn one [[Goblin Lackey]], unless you have a sweeper or [[Engineered Plague]] lined up.

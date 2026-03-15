@@ -1,1 +1,0 @@
-You are mostly racing. [[Toxin Analysis]] and [[Krark-Clan Shaman]] already do great work against hexproof creatures. Keep the [[Cast Down]] to fight [[Crimson Acolyte]].
