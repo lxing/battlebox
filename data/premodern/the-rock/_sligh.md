@@ -5,5 +5,3 @@
 -2 [[Duress]]
 -1 [[Naturalize]]
 -1 [[Krosan Tusker]]
-
-<AI-generated placeholder. Probably nonsense>

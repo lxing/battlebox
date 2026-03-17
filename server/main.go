@@ -14,6 +14,7 @@ import (
 	"strings"
 	"time"
 
+	"github.com/lxing/battlebox/internal/appenv"
 	"github.com/lxing/battlebox/internal/buildtool"
 )
 
@@ -40,7 +41,7 @@ type sourcePrimerResponse struct {
 
 func main() {
 	flag.Parse()
-	dev := os.Getenv("DEV") != ""
+	dev := appenv.IsDev()
 	draftStorePath := resolveDraftStorePath()
 
 	mux := http.NewServeMux()
@@ -86,8 +87,10 @@ func main() {
 
 	// Serve deck JSON data
 	mux.HandleFunc("/api/decks/", handleDecks)
-	mux.HandleFunc("/api/source-guide", handleSourceGuide)
-	mux.HandleFunc("/api/source-primer", handleSourcePrimer)
+	if dev {
+		mux.HandleFunc("/api/source-guide", handleSourceGuide)
+		mux.HandleFunc("/api/source-primer", handleSourcePrimer)
+	}
 	mux.HandleFunc("/api/draft/rooms", draftHub.handleCreateRoom)
 	mux.HandleFunc("/api/draft/lobby/events", draftHub.handleLobbyEvents)
 	mux.HandleFunc("/api/draft/shared", draftHub.handleStartOrJoinSharedRoom)
@@ -276,7 +279,7 @@ func handleSourcePrimer(w http.ResponseWriter, r *http.Request) {
 
 func handleDecks(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
-	if os.Getenv("DEV") != "" {
+	if appenv.IsDev() {
 		w.Header().Set("Cache-Control", "no-store")
 	} else {
 		w.Header().Set("Cache-Control", "public, max-age=3600")

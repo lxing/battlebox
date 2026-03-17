@@ -7,6 +7,4 @@
 -2 [[Fire / Ice]]
 -1 [[Daze]]
 -2 [[Psychatog]]
--1 [[Sleight of Hand]] 
-
-Load up on enchantment hate and [[Meddling Mage]] an enchantress effect. Break up the engine.
+-1 [[Sleight of Hand]]

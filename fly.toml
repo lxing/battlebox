@@ -6,6 +6,7 @@ primary_region = "sjc"
 [env]
   PORT = "8080"
   DB_PATH = "/data/db.sqlite"
+  APP_ENV = "prod"
 
 [http_service]
   internal_port = 8080

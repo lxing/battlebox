@@ -5,5 +5,3 @@
 -2 [[Daze]]
 -1 [[Wonder]]
 -1 [[Gilded Drake]]
-
-<AI-generated placeholder. Probably nonsense>

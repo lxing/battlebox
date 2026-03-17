@@ -6,5 +6,3 @@
 -1 [[Weathered Wayfarer]]
 -1 [[Sylvan Library]]
 -1 [[Nimble Mongoose]]
-
-<AI-generated placeholder. Probably nonsense>

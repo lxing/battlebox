@@ -1270,6 +1270,7 @@ function renderBattlebox(bbSlug, initialSortMode, initialSortDirection) {
 async function renderDeck(bbSlug, deckSlug, selectedGuide, sortMode, sortDirection, collapsedMask, applySideboard) {
   const bb = await loadBattlebox(bbSlug);
   if (!bb) return renderNotFound();
+  const isDevEnv = (data.index?.env || 'dev') === 'dev';
   const deck = bb.decks.find(d => d.slug === deckSlug);
   if (!deck) return renderNotFound();
   const currentSortMode = normalizeSortMode(sortMode);
@@ -1350,9 +1351,11 @@ async function renderDeck(bbSlug, deckSlug, selectedGuide, sortMode, sortDirecti
             </button>
           </div>
           <div class="guide-select guide-select-edit-row">
-            <button type="button" class="action-button button-standard guide-edit-button toggle-highlight-button" id="guide-edit-button">
-              Edit
-            </button>
+            ${isDevEnv ? `
+              <button type="button" class="action-button button-standard guide-edit-button toggle-highlight-button" id="guide-edit-button">
+                Edit
+              </button>
+            ` : ''}
           </div>
         </div>
         <div class="guide-box" id="guide-box"></div>
@@ -1406,11 +1409,13 @@ async function renderDeck(bbSlug, deckSlug, selectedGuide, sortMode, sortDirecti
     <details id="primer-details" class="collapsible"${primerOpenAttr}>
       <summary class="panel-title">Primer${hasPrimerWarnings ? ' \u26a0\ufe0f' : ''}</summary>
       <div class="collapsible-body">
-        <div class="primer-controls">
-          <button type="button" class="action-button button-standard primer-edit-button" id="primer-edit-button">
-            Edit
-          </button>
-        </div>
+        ${isDevEnv ? `
+          <div class="primer-controls">
+            <button type="button" class="action-button button-standard primer-edit-button" id="primer-edit-button">
+              Edit
+            </button>
+          </div>
+        ` : ''}
         <div class="primer">${primerHtml}</div>
       </div>
     </details>

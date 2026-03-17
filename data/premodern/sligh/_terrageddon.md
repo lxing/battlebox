@@ -5,5 +5,3 @@
 -2 [[Seal of Fire]]
 -1 [[Mogg Fanatic]]
 -1 [[Cursed Scroll]]
-
-<AI-generated placeholder. Probably nonsense>

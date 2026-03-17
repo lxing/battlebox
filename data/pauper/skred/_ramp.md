@@ -3,5 +3,3 @@
 -1 [[Azure Fleet Admiral]]
 -1 [[Crimson Fleet Commodore]]
 -1 [[Lose Focus]]
-
-<AI-generated placeholder. Probably nonsense>

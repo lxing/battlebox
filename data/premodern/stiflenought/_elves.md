@@ -4,5 +4,3 @@
 -2 [[Opt]]
 -2 [[Portent]]
 -1 [[Vision Charm]]
-
-<AI-generated placeholder. Probably nonsense>

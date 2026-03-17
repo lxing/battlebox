@@ -6,5 +6,3 @@
 -1 [[Sleight of Hand]]
 -1 [[Portent]]
 -1 [[Opt]]
-
-<AI-generated placeholder. Probably nonsense>

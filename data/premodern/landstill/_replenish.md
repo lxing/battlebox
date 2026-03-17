@@ -6,5 +6,3 @@
 -1 [[Swords to Plowshares]]
 -1 [[Humility]]
 -1 [[Stifle]]
-
-<AI-generated placeholder. Probably nonsense>

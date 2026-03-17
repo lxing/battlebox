@@ -2,5 +2,3 @@
 +2 [[Unable to Scream]]
 -2 [[Disrupt]]
 -2 [[Weather the Storm]]
-
-<AI-generated placeholder. Probably nonsense>

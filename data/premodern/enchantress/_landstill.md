@@ -5,5 +5,3 @@
 -1 [[Parallax Wave]]
 -1 [[Solitary Confinement]]
 -1 [[Worship]]
-
-Load up on hate and continue your gameplan.

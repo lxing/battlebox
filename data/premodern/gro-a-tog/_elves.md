@@ -3,5 +3,3 @@
 -2 [[Armageddon]]
 -1 [[Daze]]
 -1 [[Sleight of Hand]]
-
-<AI-generated placeholder. Probably nonsense>

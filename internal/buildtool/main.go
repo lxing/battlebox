@@ -9,6 +9,8 @@ import (
 	"sort"
 	"strconv"
 	"time"
+
+	"github.com/lxing/battlebox/internal/appenv"
 )
 
 func Main() {
@@ -27,8 +29,12 @@ func Main() {
 		fmt.Fprintf(os.Stderr, "Error reading data dir: %v\n", err)
 		os.Exit(1)
 	}
-	warnings, deckWarningAnnotations := validatePrintingsUsage(dataDir, projectPrintings, battleboxDirs)
-	if *validate {
+	warnings := []string{}
+	deckWarningAnnotations := map[string]map[string]deckWarningAnnotations{}
+	if appenv.IsDev() {
+		warnings, deckWarningAnnotations = validatePrintingsUsage(dataDir, projectPrintings, battleboxDirs)
+	}
+	if appenv.IsDev() && *validate {
 		for _, warning := range warnings {
 			fmt.Fprintf(os.Stderr, "Warning: %s\n", warning)
 		}
@@ -255,6 +261,7 @@ func Main() {
 		os.Exit(1)
 	}
 	indexOutput.BuildID = strconv.FormatInt(time.Now().UnixNano(), 36)
+	indexOutput.Env = appenv.Current()
 
 	jsonData, err := json.Marshal(indexOutput)
 	if err != nil {

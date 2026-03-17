@@ -2,5 +2,3 @@
 +1 [[Tormod's Crypt]]
 +1 [[Seal of Cleansing]]
 -4 [[Sphere of Resistance]]
-
-<AI-generated placeholder. Probably nonsense>

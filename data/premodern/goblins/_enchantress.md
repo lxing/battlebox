@@ -4,5 +4,3 @@
 -4 [[Gempalm Incinerator]]
 -1 [[Goblin Sharpshooter]]
 -1 [[Mogg Fanatic]]
-
-[[Tranquil Domain]] and [[Anarchy]] are incredible sideboard gas.

@@ -5,5 +5,3 @@
 -1 [[Forbid]]
 -1 [[Impulse]]
 -1 [[Standstill]]
-
-<AI-generated placeholder. Probably nonsense>

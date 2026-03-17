@@ -7,5 +7,3 @@
 -1 [[Mana Short]]
 -1 [[Impulse]]
 -1 [[Gush]]
-
-<AI-generated placeholder. Probably nonsense>

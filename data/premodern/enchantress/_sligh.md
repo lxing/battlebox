@@ -2,5 +2,3 @@
 -1 [[Opalescence]]
 -1 [[Mobilization]]
 -1 [[Mirri's Guile]]
-
-<AI-generated placeholder. Probably nonsense>

@@ -7,5 +7,3 @@
 -1 [[Phyrexian Furnace]]
 -1 [[Standstill]]
 -1 [[Forbid]]
-
-<AI-generated placeholder. Probably nonsense>

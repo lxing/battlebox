@@ -8,5 +8,3 @@
 -2 [[Deranged Hermit]]
 -2 [[Priest of Titania]]
 -1 [[Yavimaya Granger]]
-
-Load up on enchantment removal and mana suppression. [[Kamahl, Fist of Krosa]] + [[Goblin Sharpshooter]] is a juicy juke against their durdling.

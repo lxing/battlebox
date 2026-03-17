@@ -4,5 +4,3 @@
 -1 [[Stifle]]
 -1 [[Wrath of God]]
 -1 [[Impulse]]
-
-<AI-generated placeholder. Probably nonsense>

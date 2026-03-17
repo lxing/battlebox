@@ -4,5 +4,3 @@
 +1 [[Ray of Revelation]]
 -4 [[Sphere of Resistance]]
 -1 [[Winter's Grasp]]
-
-<AI-generated placeholder. Probably nonsense>

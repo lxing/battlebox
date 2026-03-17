@@ -3,5 +3,3 @@
 -2 [[Implement of Combustion]]
 -1 [[Fireblast]]
 -3 [[Chain Lightning]]
-
-<AI-generated placeholder. Probably nonsense>

@@ -5,5 +5,3 @@
 -1 [[Daze]]
 -1 [[Foil]]
 -1 [[Impulse]]
-
-<AI-generated placeholder. Probably nonsense>

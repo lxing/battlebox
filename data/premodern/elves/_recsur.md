@@ -3,5 +3,3 @@
 -1 [[Yavimaya Granger]]
 -1 [[Deranged Hermit]]
 -2 [[Llanowar Elves]]
-
-Kill [[Survival of the Fittest]] on sight. [[Shard Phoenix]] is their biggest threat, and they can rebuy it repeatedly.

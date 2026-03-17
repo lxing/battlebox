@@ -7,5 +7,3 @@
 -2 [[Daze]]
 -2 [[Impulse]]
 -1 [[Gush]]
-
-<AI-generated placeholder. Probably nonsense>

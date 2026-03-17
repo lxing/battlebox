@@ -1,3 +1,4 @@
 + 4 [[Hydroblast]]
 - 1 [[Consider]]
-- 4 [[Deem Inferior]]
+- 2 [[Deem Inferior]]
+- 1 [[Thought Scour]]

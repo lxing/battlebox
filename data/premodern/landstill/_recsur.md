@@ -4,5 +4,3 @@
 -1 [[Stifle]]
 -1 [[Standstill]]
 -1 [[Forbid]]
-
-<AI-generated placeholder. Probably nonsense>

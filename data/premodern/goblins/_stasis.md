@@ -9,5 +9,3 @@
 -1 [[Siege-Gang Commander]]
 -1 [[Goblin Matron]]
 -1 [[Gempalm Incinerator]]
-
-<AI-generated placeholder. Probably nonsense>

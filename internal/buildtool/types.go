@@ -277,6 +277,8 @@ type BattleboxIndex struct {
 type IndexOutput struct {
 	// Build id used for cache-busting data fetches.
 	BuildID string `json:"build_id,omitempty"`
+	// Build/runtime environment for frontend feature gating.
+	Env string `json:"env,omitempty"`
 	// All battlebox summaries emitted to index.json.
 	Battleboxes []BattleboxIndex `json:"battleboxes"`
 }

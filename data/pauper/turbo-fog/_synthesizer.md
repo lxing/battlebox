@@ -3,5 +3,3 @@
 -2 [[Disrupt]]
 -2 [[Arcane Denial]]
 -1 [[Stream of Thought]]
-
-<AI-generated placeholder. Probably nonsense>

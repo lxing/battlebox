@@ -4,5 +4,3 @@
 -3 [[Cast Down]]
 -3 [[Defile]]
 -2 [[Snuff Out]]
-
-Not great, you have minimal enchantment removal. You'll need to race them with your glacially slow creature base.

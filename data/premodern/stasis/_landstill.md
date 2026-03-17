@@ -3,5 +3,3 @@
 -1 [[Boomerang]]
 -1 [[Daze]]
 -1 [[Foil]]
-
-<AI-generated placeholder. Probably nonsense>

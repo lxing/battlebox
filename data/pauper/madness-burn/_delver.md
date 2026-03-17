@@ -5,5 +5,3 @@
 -1 [[Highway Robbery]]
 -1 [[Sneaky Snacker]]
 -1 [[Vampire's Kiss]]
-
-[[Pyroblast]], graveyard hate, sacrifice effects are pretty standard anti-Delver tech.

@@ -7,5 +7,3 @@
 -1 [[Swords to Plowshares]]
 -1 [[Forbid]]
 -1 [[Standstill]]
-
-<AI-generated placeholder. Probably nonsense>

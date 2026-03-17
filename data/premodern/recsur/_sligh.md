@@ -4,5 +4,3 @@
 -1 [[Great Whale]]
 -1 [[Phantom Nishoba]]
 -1 [[Krosan Tusker]]
-
-<AI-generated placeholder. Probably nonsense>

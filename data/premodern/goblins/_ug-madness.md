@@ -6,5 +6,3 @@
 -1 [[Goblin Sharpshooter]]
 -1 [[Siege-Gang Commander]]
 -1 [[Mogg Fanatic]]
-
-<AI-generated placeholder. Probably nonsense>

@@ -6,5 +6,3 @@
 -1 [[Mogg Fanatic]]
 -1 [[Cursed Scroll]]
 -1 [[Price of Progress]]
-
-<AI-generated placeholder. Probably nonsense>

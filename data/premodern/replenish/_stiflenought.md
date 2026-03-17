@@ -3,5 +3,3 @@
 -3 [[Swords to Plowshares]]
 -1 [[Mana Leak]]
 -1 [[Frantic Search]]
-
-<AI-generated placeholder. Probably nonsense>

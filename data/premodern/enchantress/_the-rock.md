@@ -5,5 +5,3 @@
 -1 [[Mirri's Guile]]
 -1 [[Seal of Cleansing]]
 -1 [[Worship]]
-
-<AI-generated placeholder. Probably nonsense>

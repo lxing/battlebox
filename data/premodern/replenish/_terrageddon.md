@@ -4,5 +4,3 @@
 -2 [[Mana Leak]]
 -2 [[Frantic Search]]
 -1 [[Attunement]]
-
-<AI-generated placeholder. Probably nonsense>

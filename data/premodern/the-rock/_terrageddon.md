@@ -6,5 +6,3 @@
 -1 [[Vendetta]]
 -1 [[Chainer's Edict]]
 -1 [[Naturalize]]
-
-<AI-generated placeholder. Probably nonsense>

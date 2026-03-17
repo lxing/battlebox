@@ -2,5 +2,3 @@
 +2 [[Fact or Fiction]]
 -2 [[Mana Leak]]
 -1 [[Attunement]]
-
-<AI-generated placeholder. Probably nonsense>

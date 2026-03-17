@@ -5,5 +5,3 @@
 -1 [[Phantom Nishoba]]
 -1 [[Krosan Tusker]]
 -1 [[Yavimaya Granger]]
-
-<AI-generated placeholder. Probably nonsense>

@@ -6,5 +6,3 @@
 -1 [[Chainer's Edict]]
 -1 [[Wall of Blossoms]]
 -1 [[Krosan Tusker]]
-
-<AI-generated placeholder. Probably nonsense>

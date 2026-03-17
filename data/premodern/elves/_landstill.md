@@ -8,5 +8,3 @@
 -1 [[Kamahl, Fist of Krosa]]
 -1 [[Deranged Hermit]]
 -2 [[Llanowar Elves]]
-
-Develop your board quickly to blunt [[Standstill]]. [[Naturalize]] is useless against [[Standstill]] but necessary against [[Humility]].

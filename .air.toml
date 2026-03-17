@@ -4,7 +4,7 @@ tmp_dir = "tmp"
 [build]
   cmd = "go run scripts/build.go -validate=false && go build -o ./tmp/main ./server"
   bin = "./tmp/main"
-  env = ["DEV=1"]
+  env = ["APP_ENV=dev"]
   args_bin = ["-ts"]
   delay = 1000
   exclude_dir = ["tmp", "vendor", "node_modules", "static/data"]

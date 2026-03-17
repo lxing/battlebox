@@ -5,5 +5,3 @@
 -1 [[Opalescence]]
 -1 [[Mirri's Guile]]
 -1 [[Seal of Cleansing]]
-
-<AI-generated placeholder. Probably nonsense>

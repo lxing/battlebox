@@ -7,5 +7,3 @@
 -1 [[Ravenous Baloth]]
 -1 [[Phantom Nishoba]]
 -1 [[Spike Feeder]]
-
-Use your toolbox to attack their hand, their manabase, their boardstate. Total war.

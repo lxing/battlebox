@@ -5,5 +5,3 @@
 -1 [[Lose Focus]]
 -1 [[Breath Weapon]]
 -1 [[Azure Fleet Admiral]]
-
-<AI-generated placeholder. Probably nonsense>

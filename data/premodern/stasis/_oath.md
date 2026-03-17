@@ -4,5 +4,3 @@
 -1 [[Daze]]
 -1 [[Foil]]
 -1 [[Mana Short]]
-
-<AI-generated placeholder. Probably nonsense>

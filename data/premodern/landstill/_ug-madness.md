@@ -5,5 +5,3 @@
 -1 [[Forbid]]
 -1 [[Standstill]]
 -1 [[Disenchant]]
-
-<AI-generated placeholder. Probably nonsense>

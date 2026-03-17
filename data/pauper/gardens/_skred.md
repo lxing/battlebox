@@ -1,1 +1,0 @@
-They have a similar game plan to yours, removal backed by Monarch enablers. Both of you will kill every creature on the board, so unfortunately their card selection and counters will pull ahead in securing the Monarch. Squeeze the most out of your [[Deadly Dispute]] + token engine.

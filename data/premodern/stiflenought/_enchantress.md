@@ -5,5 +5,3 @@
 -2 [[Opt]]
 -1 [[Portent]]
 -1 [[Foil]]
-
-Play the typical gameplan, plus blow up their lands.

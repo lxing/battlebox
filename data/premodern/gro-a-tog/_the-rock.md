@@ -4,5 +4,3 @@
 -1 [[Daze]]
 -1 [[Sleight of Hand]]
 -1 [[Portent]]
-
-<AI-generated placeholder. Probably nonsense>

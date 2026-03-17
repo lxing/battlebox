@@ -5,5 +5,3 @@
 -2 [[Fire / Ice]]
 -1 [[Daze]]
 -1 [[Armageddon]]
-
-<AI-generated placeholder. Probably nonsense>

@@ -1,1 +1,0 @@
-You need to be quick, [[Campfire]] is a pain in the ass. Sideboard against them is pretty barren.

@@ -9,5 +9,3 @@
 -1 [[Standstill]]
 -1 [[Phyrexian Furnace]]
 -1 [[Fact or Fiction]]
-
-<AI-generated placeholder. Probably nonsense>

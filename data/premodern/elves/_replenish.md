@@ -10,5 +10,3 @@
 -1 [[Yavimaya Granger]]
 -1 [[Nantuko Vigilante]]
 -2 [[Llanowar Elves]]
-
-Attack their mana and enchantments. Go straight for a [[Biorhythm]] kill.

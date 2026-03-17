@@ -4,5 +4,3 @@
 -3 [[Spell Pierce]]
 -1 [[Lose Focus]]
 -2 [[Breath Weapon]]
-
-<AI-generated placeholder. Probably nonsense>

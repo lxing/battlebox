@@ -7,5 +7,3 @@
 -1 [[Recurring Nightmare]]
 -1 [[Naturalize]]
 -1 [[Yavimaya Elder]]
-
-<AI-generated placeholder. Probably nonsense>

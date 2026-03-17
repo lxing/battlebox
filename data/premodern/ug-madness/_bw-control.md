@@ -1,1 +1,0 @@
-Sideboard is pretty thin against them.

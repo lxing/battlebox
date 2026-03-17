@@ -7,5 +7,3 @@
 -1 [[Humility]]
 -1 [[Phyrexian Furnace]]
 -1 [[Mana Leak]]
-
-<AI-generated placeholder. Probably nonsense>

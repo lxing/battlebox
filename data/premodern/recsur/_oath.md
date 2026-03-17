@@ -6,5 +6,3 @@
 -1 [[Great Whale]]
 -1 [[Phantom Nishoba]]
 -1 [[Spike Feeder]]
-
-<AI-generated placeholder. Probably nonsense>

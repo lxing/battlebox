@@ -8,5 +8,3 @@
 -1 [[Mogg Fanatic]]
 -1 [[Siege-Gang Commander]]
 -1 [[Gempalm Incinerator]]
-
-<AI-generated placeholder. Probably nonsense>
