@@ -39,6 +39,23 @@ type sourcePrimerResponse struct {
 	Raw string `json:"raw"`
 }
 
+type sourceFileStore interface {
+	ReadFile(name string) ([]byte, error)
+	WriteFile(name string, data []byte, perm os.FileMode) error
+}
+
+type osSourceFileStore struct{}
+
+func (osSourceFileStore) ReadFile(name string) ([]byte, error) {
+	return os.ReadFile(name)
+}
+
+func (osSourceFileStore) WriteFile(name string, data []byte, perm os.FileMode) error {
+	return os.WriteFile(name, data, perm)
+}
+
+var sourceFiles sourceFileStore = osSourceFileStore{}
+
 func main() {
 	flag.Parse()
 	dev := appenv.IsDev()
@@ -209,7 +226,7 @@ func handleSourceGuide(w http.ResponseWriter, r *http.Request) {
 	guidePath := sourceGuidePath(battlebox, deck, opponent)
 	switch r.Method {
 	case http.MethodGet:
-		data, err := os.ReadFile(guidePath)
+		data, err := sourceFiles.ReadFile(guidePath)
 		if err != nil {
 			http.Error(w, "guide not found", http.StatusNotFound)
 			return
@@ -226,7 +243,7 @@ func handleSourceGuide(w http.ResponseWriter, r *http.Request) {
 		}
 		raw := strings.TrimRight(strings.ReplaceAll(req.Raw, "\r\n", "\n"), "\n")
 		normalizedRaw, guide := buildtool.NormalizeGuideRawForSave(raw)
-		if err := os.WriteFile(guidePath, []byte(normalizedRaw), 0o644); err != nil {
+		if err := sourceFiles.WriteFile(guidePath, []byte(normalizedRaw), 0o644); err != nil {
 			http.Error(w, "failed to write guide", http.StatusInternalServerError)
 			return
 		}
@@ -253,7 +270,7 @@ func handleSourcePrimer(w http.ResponseWriter, r *http.Request) {
 	primerPath := sourcePrimerPath(battlebox, deck)
 	switch r.Method {
 	case http.MethodGet:
-		data, err := os.ReadFile(primerPath)
+		data, err := sourceFiles.ReadFile(primerPath)
 		if err != nil {
 			http.Error(w, "primer not found", http.StatusNotFound)
 			return
@@ -269,7 +286,7 @@ func handleSourcePrimer(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 		raw := strings.TrimRight(strings.ReplaceAll(req.Raw, "\r\n", "\n"), "\n")
-		if err := os.WriteFile(primerPath, []byte(raw), 0o644); err != nil {
+		if err := sourceFiles.WriteFile(primerPath, []byte(raw), 0o644); err != nil {
 			http.Error(w, "failed to write primer", http.StatusInternalServerError)
 			return
 		}

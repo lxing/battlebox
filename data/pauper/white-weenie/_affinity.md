@@ -1,3 +1,3 @@
 + 4 [[Dust to Dust]]
-- 1 [[Battle Screech]]
-- 3 [[Guardians' Pledge]]
+- 3 [[Militia Bugler]]
+- 1 [[Prismatic Strands]]

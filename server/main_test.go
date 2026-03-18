@@ -5,30 +5,41 @@ import (
 	"net/http"
 	"net/http/httptest"
 	"os"
-	"path/filepath"
 	"strings"
 	"testing"
 
 	"github.com/lxing/battlebox/internal/buildtool"
 )
 
+type memorySourceFileStore struct {
+	files map[string][]byte
+}
+
+func (m *memorySourceFileStore) ReadFile(name string) ([]byte, error) {
+	data, ok := m.files[name]
+	if !ok {
+		return nil, os.ErrNotExist
+	}
+	return append([]byte(nil), data...), nil
+}
+
+func (m *memorySourceFileStore) WriteFile(name string, data []byte, _ os.FileMode) error {
+	if m.files == nil {
+		m.files = map[string][]byte{}
+	}
+	m.files[name] = append([]byte(nil), data...)
+	return nil
+}
+
 func TestHandleSourceGuidePutPromotesEmptyPlanToNoSideboard(t *testing.T) {
-	tempDir := t.TempDir()
-	oldWD, err := os.Getwd()
-	if err != nil {
-		t.Fatalf("getwd: %v", err)
-	}
-	if err := os.Chdir(tempDir); err != nil {
-		t.Fatalf("chdir temp dir: %v", err)
-	}
+	oldStore := sourceFiles
+	store := &memorySourceFileStore{files: map[string][]byte{}}
+	sourceFiles = store
 	t.Cleanup(func() {
-		_ = os.Chdir(oldWD)
+		sourceFiles = oldStore
 	})
 
-	guidePath := filepath.Join("data", "pauper", "elves", "_delver.md")
-	if err := os.MkdirAll(filepath.Dir(guidePath), 0o755); err != nil {
-		t.Fatalf("mkdir guide dir: %v", err)
-	}
+	guidePath := sourceGuidePath("pauper", "elves", "delver")
 
 	req := httptest.NewRequest(http.MethodPut, "/api/source-guide?bb=pauper&deck=elves&opponent=delver", strings.NewReader(`{"raw":"No swaps needed."}`))
 	req.Header.Set("Content-Type", "application/json")
@@ -48,12 +59,46 @@ func TestHandleSourceGuidePutPromotesEmptyPlanToNoSideboard(t *testing.T) {
 		t.Fatalf("expected response status %q, got %q", buildtool.GuideStatusNoSideboard, resp.Guide.Status)
 	}
 
-	written, err := os.ReadFile(guidePath)
+	written, err := store.ReadFile(guidePath)
 	if err != nil {
 		t.Fatalf("read written guide: %v", err)
 	}
 	expected := "<!-- guide_status: no_sideboard -->\n\nNo swaps needed."
 	if string(written) != expected {
 		t.Fatalf("expected written guide %q, got %q", expected, string(written))
+	}
+}
+
+func TestHandleSourceGuideGetReadsFromMemoryStore(t *testing.T) {
+	oldStore := sourceFiles
+	guidePath := sourceGuidePath("pauper", "elves", "delver")
+	store := &memorySourceFileStore{
+		files: map[string][]byte{
+			guidePath: []byte("<!-- guide_status: no_sideboard -->\n\nNo swaps needed."),
+		},
+	}
+	sourceFiles = store
+	t.Cleanup(func() {
+		sourceFiles = oldStore
+	})
+
+	req := httptest.NewRequest(http.MethodGet, "/api/source-guide?bb=pauper&deck=elves&opponent=delver", nil)
+	rec := httptest.NewRecorder()
+
+	handleSourceGuide(rec, req)
+
+	if rec.Code != http.StatusOK {
+		t.Fatalf("expected status 200, got %d", rec.Code)
+	}
+
+	var resp sourceGuideResponse
+	if err := json.NewDecoder(rec.Body).Decode(&resp); err != nil {
+		t.Fatalf("decode response: %v", err)
+	}
+	if resp.Guide.Status != buildtool.GuideStatusNoSideboard {
+		t.Fatalf("expected response status %q, got %q", buildtool.GuideStatusNoSideboard, resp.Guide.Status)
+	}
+	if resp.Guide.Text != "No swaps needed." {
+		t.Fatalf("expected prose to round-trip, got %q", resp.Guide.Text)
 	}
 }
