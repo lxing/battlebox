@@ -1,6 +1,6 @@
 {
   "name": "White Weenie",
-  "source_url": "https://www.mtggoldfish.com/deck/7670375",
+  "source_url": "https://www.mtggoldfish.com/deck/7681616",
   "colors": "w",
   "tags": [
     "aggro"
@@ -11,12 +11,16 @@
       "qty": 4
     },
     {
+      "name": "Boros Garrison",
+      "qty": 3
+    },
+    {
       "name": "Guardians' Pledge",
-      "qty": 2
+      "qty": 3
     },
     {
       "name": "Idyllic Grange",
-      "qty": 2
+      "qty": 1
     },
     {
       "name": "Kor Skyfisher",
@@ -24,15 +28,15 @@
     },
     {
       "name": "Leonardo, Big Brother",
-      "qty": 4
+      "qty": 3
     },
     {
-      "name": "Lunarch Veteran",
+      "name": "Lunarch Veteran / Luminous Phantom",
       "qty": 4
     },
     {
       "name": "Militia Bugler",
-      "qty": 3
+      "qty": 4
     },
     {
       "name": "Novice Inspector",
@@ -40,19 +44,15 @@
     },
     {
       "name": "Plains",
-      "qty": 19
+      "qty": 16
     },
     {
       "name": "Prismatic Strands",
-      "qty": 3
+      "qty": 2
     },
     {
       "name": "Raffine's Informant",
       "qty": 4
-    },
-    {
-      "name": "Ramosian Rally",
-      "qty": 1
     },
     {
       "name": "Thraben Charm",
@@ -65,10 +65,6 @@
   ],
   "sideboard": [
     {
-      "name": "Destroy Evil",
-      "qty": 1
-    },
-    {
       "name": "Dust to Dust",
       "qty": 4
     },
@@ -78,18 +74,18 @@
     },
     {
       "name": "Journey to Nowhere",
-      "qty": 2
+      "qty": 4
     },
     {
-      "name": "Martyr of Sands",
-      "qty": 3
-    },
-    {
-      "name": "Revoke Existence",
+      "name": "Palace Sentinels",
       "qty": 1
     },
     {
-      "name": "Standard Bearer",
+      "name": "Prismatic Strands",
+      "qty": 2
+    },
+    {
+      "name": "Ramosian Rally",
       "qty": 2
     }
   ],
