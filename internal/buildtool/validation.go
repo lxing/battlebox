@@ -474,7 +474,7 @@ func validatePrintingsUsage(dataDir string, projectPrintings map[string]string, 
 					warnings = append(warnings, fmt.Sprintf("Validator input error (%s/%s): %s", bbSlug, ctx.slug, filepath.Base(guideFile)))
 					continue
 				}
-				if isGuidePlanEmpty(guide) {
+				if guide.Status != GuideStatusNoSideboard && isGuidePlanEmpty(guide) {
 					warnings = append(warnings, fmt.Sprintf("Empty sideboard plan (%s/%s -> %s)", bbSlug, ctx.slug, opponentSlug))
 					deckWarnings := appendDeckWarningAnnotation(annotations, bbSlug, ctx.slug)
 					deckWarnings.Guides[opponentSlug] = append(deckWarnings.Guides[opponentSlug], "empty")

@@ -1576,9 +1576,15 @@ async function renderDeck(bbSlug, deckSlug, selectedGuide, sortMode, sortDirecti
         if (!payload || !payload.guide) {
           throw new Error('Invalid save response');
         }
+        const nextWarnings = Array.isArray(baseGuide?.warnings) ? [...baseGuide.warnings] : [];
+        if (payload.guide.status && payload.guide.status !== 'todo') {
+          const filteredWarnings = nextWarnings.filter((warning) => warning !== 'empty');
+          nextWarnings.length = 0;
+          nextWarnings.push(...filteredWarnings);
+        }
         deck.guides[currentMatchupSlug] = {
           ...payload.guide,
-          warnings: Array.isArray(baseGuide?.warnings) ? [...baseGuide.warnings] : [],
+          warnings: nextWarnings,
         };
         discardGuideEditState();
         if (editButton) {

@@ -225,11 +225,12 @@ func handleSourceGuide(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 		raw := strings.TrimRight(strings.ReplaceAll(req.Raw, "\r\n", "\n"), "\n")
-		if err := os.WriteFile(guidePath, []byte(raw), 0o644); err != nil {
+		normalizedRaw, guide := buildtool.NormalizeGuideRawForSave(raw)
+		if err := os.WriteFile(guidePath, []byte(normalizedRaw), 0o644); err != nil {
 			http.Error(w, "failed to write guide", http.StatusInternalServerError)
 			return
 		}
-		writeSourceGuideResponse(w, http.StatusOK, buildtool.ParseGuideRaw(raw))
+		writeSourceGuideResponse(w, http.StatusOK, guide)
 		return
 	}
 }
