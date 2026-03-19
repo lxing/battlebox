@@ -1,6 +1,6 @@
 {
   "name": "Affinity",
-  "source_url": "https://www.mtggoldfish.com/deck/7601225",
+  "source_url": "https://www.mtggoldfish.com/deck/7684512",
   "colors": "ubr",
   "tags": [
     "midrange"
@@ -15,16 +15,8 @@
       "qty": 2
     },
     {
-      "name": "Cryogen Relic",
-      "qty": 1
-    },
-    {
       "name": "Drossforge Bridge",
       "qty": 4
-    },
-    {
-      "name": "Fanatical Offering",
-      "qty": 2
     },
     {
       "name": "Galvanic Blast",
@@ -32,19 +24,11 @@
     },
     {
       "name": "Great Furnace",
-      "qty": 3
-    },
-    {
-      "name": "Hunter's Blowgun",
-      "qty": 1
+      "qty": 4
     },
     {
       "name": "Ichor Wellspring",
       "qty": 4
-    },
-    {
-      "name": "Island",
-      "qty": 1
     },
     {
       "name": "Krark-Clan Shaman",
@@ -64,7 +48,7 @@
     },
     {
       "name": "Nihil Spellbomb",
-      "qty": 3
+      "qty": 2
     },
     {
       "name": "Reckoner's Bargain",
@@ -79,6 +63,10 @@
       "qty": 2
     },
     {
+      "name": "Sewer-veillance Cam",
+      "qty": 2
+    },
+    {
       "name": "Silverbluff Bridge",
       "qty": 2
     },
@@ -88,6 +76,10 @@
     },
     {
       "name": "Toxin Analysis",
+      "qty": 3
+    },
+    {
+      "name": "Utrom Monitor",
       "qty": 2
     },
     {
@@ -101,20 +93,24 @@
       "qty": 2
     },
     {
-      "name": "Breath Weapon",
-      "qty": 1
-    },
-    {
-      "name": "Duress",
-      "qty": 3
+      "name": "Extract a Confession",
+      "qty": 2
     },
     {
       "name": "Hydroblast",
       "qty": 4
     },
     {
+      "name": "Krark-Clan Shaman",
+      "qty": 1
+    },
+    {
       "name": "Pyroblast",
       "qty": 4
+    },
+    {
+      "name": "Red Elemental Blast",
+      "qty": 1
     },
     {
       "name": "Unexpected Fangs",
