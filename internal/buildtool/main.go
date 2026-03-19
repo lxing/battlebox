@@ -111,7 +111,7 @@ func Main() {
 		for _, slug := range dirtySlugs {
 			bbPath := filepath.Join(dataDir, slug)
 			bbPrintings := mergePrintings(projectPrintings, loadPrintings(filepath.Join(bbPath, printingsFileName)))
-			deckDirs, _ := os.ReadDir(bbPath)
+			deckDirs, _ := buildFiles.ReadDir(bbPath)
 
 			for _, deckDir := range deckDirs {
 				if !deckDir.IsDir() {
@@ -121,7 +121,7 @@ func Main() {
 				deckPath := filepath.Join(bbPath, deckDir.Name())
 				deckPrintings := mergePrintings(bbPrintings, loadPrintings(filepath.Join(deckPath, printingsFileName)))
 				manifestPath := filepath.Join(deckPath, "manifest.json")
-				manifestData, err := os.ReadFile(manifestPath)
+				manifestData, err := buildFiles.ReadFile(manifestPath)
 				if err != nil {
 					continue
 				}
@@ -183,7 +183,7 @@ func Main() {
 			}
 
 			bbPrintings := mergePrintings(projectPrintings, loadPrintings(filepath.Join(bbPath, printingsFileName)))
-			deckDirs, _ := os.ReadDir(bbPath)
+			deckDirs, _ := buildFiles.ReadDir(bbPath)
 
 			for _, deckDir := range deckDirs {
 				if !deckDir.IsDir() {

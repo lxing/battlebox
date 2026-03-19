@@ -1,4 +1,3 @@
 + 4 [[Deglamer]]
-+ 1 [[Nylea's Disciple]]
-- 1 [[Eldrazi Repurposer]]
-- 1 [[Malevolent Rumble]]
+- 1 [[Avenging Hunter]]
+- 3 [[Ram Through]]

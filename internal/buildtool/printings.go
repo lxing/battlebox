@@ -2,7 +2,6 @@ package buildtool
 
 import (
 	"encoding/json"
-	"os"
 	"strings"
 )
 
@@ -11,7 +10,7 @@ func normalizeName(name string) string {
 }
 
 func loadPrintings(path string) map[string]string {
-	data, err := os.ReadFile(path)
+	data, err := buildFiles.ReadFile(path)
 	if err != nil {
 		return map[string]string{}
 	}
@@ -27,7 +26,7 @@ func loadPrintings(path string) map[string]string {
 }
 
 func loadBanned(path string) []string {
-	data, err := os.ReadFile(path)
+	data, err := buildFiles.ReadFile(path)
 	if err != nil {
 		return nil
 	}
@@ -46,7 +45,7 @@ func loadBanned(path string) []string {
 }
 
 func loadBattleboxManifest(path string) BattleboxManifest {
-	data, err := os.ReadFile(path)
+	data, err := buildFiles.ReadFile(path)
 	if err != nil {
 		return BattleboxManifest{}
 	}

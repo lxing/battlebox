@@ -14,7 +14,7 @@ import (
 )
 
 func loadCardCache() {
-	data, err := os.ReadFile(cacheFile)
+	data, err := buildFiles.ReadFile(cacheFile)
 	if err != nil {
 		return
 	}
@@ -52,7 +52,7 @@ func saveCardCache() {
 		Cards:   cardCache,
 	}
 	data, _ := json.MarshalIndent(payload, "", "  ")
-	if existing, err := os.ReadFile(cacheFile); err == nil && bytes.Equal(existing, data) {
+	if existing, err := buildFiles.ReadFile(cacheFile); err == nil && bytes.Equal(existing, data) {
 		return
 	}
 	os.WriteFile(cacheFile, data, 0644)

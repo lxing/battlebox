@@ -3,6 +3,7 @@ package buildtool
 import (
 	"encoding/json"
 	"fmt"
+	"io/fs"
 	"os"
 	"path/filepath"
 	"sort"
@@ -12,14 +13,15 @@ import (
 const topLevelBattleboxesManifestFileName = "manifest.json"
 
 func orderedBattleboxDirs(dataDir string) ([]os.DirEntry, error) {
-	entries, err := os.ReadDir(dataDir)
+	entries, err := buildFiles.ReadDir(dataDir)
 	if err != nil {
 		return nil, err
 	}
+	osEntries := dirEntriesToOS(entries)
 
 	dirBySlug := make(map[string]os.DirEntry)
 	unlisted := make([]string, 0)
-	for _, entry := range entries {
+	for _, entry := range osEntries {
 		if !entry.IsDir() {
 			continue
 		}
@@ -37,7 +39,7 @@ func orderedBattleboxDirs(dataDir string) ([]os.DirEntry, error) {
 		return nil, err
 	}
 	if len(orderedSlugs) == 0 {
-		return filterAndSortDirEntries(entries), nil
+		return filterAndSortDirEntries(osEntries), nil
 	}
 
 	out := make([]os.DirEntry, 0, len(dirBySlug))
@@ -66,7 +68,7 @@ func orderedBattleboxDirs(dataDir string) ([]os.DirEntry, error) {
 }
 
 func loadTopLevelBattleboxOrder(path string) ([]string, error) {
-	data, err := os.ReadFile(path)
+	data, err := buildFiles.ReadFile(path)
 	if err != nil {
 		if os.IsNotExist(err) {
 			return nil, nil
@@ -100,5 +102,16 @@ func filterAndSortDirEntries(entries []os.DirEntry) []os.DirEntry {
 	sort.Slice(out, func(i, j int) bool {
 		return out[i].Name() < out[j].Name()
 	})
+	return out
+}
+
+func dirEntriesToOS(entries []fs.DirEntry) []os.DirEntry {
+	if len(entries) == 0 {
+		return nil
+	}
+	out := make([]os.DirEntry, 0, len(entries))
+	for _, entry := range entries {
+		out = append(out, entry)
+	}
 	return out
 }

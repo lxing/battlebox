@@ -38,7 +38,7 @@ func buildIndexOutput(dataDir string, deckWarningAnnotations map[string]map[stri
 			Decks:                   []DeckIndex{},
 		}
 
-		deckDirs, err := os.ReadDir(bbPath)
+		deckDirs, err := buildFiles.ReadDir(bbPath)
 		if err != nil {
 			return indexOutput, fmt.Errorf("reading decks for %s: %w", bbDir.Name(), err)
 		}
@@ -47,7 +47,7 @@ func buildIndexOutput(dataDir string, deckWarningAnnotations map[string]map[stri
 				continue
 			}
 			manifestPath := filepath.Join(bbPath, deckDir.Name(), "manifest.json")
-			manifestData, err := os.ReadFile(manifestPath)
+			manifestData, err := buildFiles.ReadFile(manifestPath)
 			if err != nil {
 				return indexOutput, fmt.Errorf("reading manifest %s: %w", manifestPath, err)
 			}
@@ -81,14 +81,14 @@ func buildIndexOutput(dataDir string, deckWarningAnnotations map[string]map[stri
 			}
 
 			indexEntry.Decks = append(indexEntry.Decks, DeckIndex{
-				Slug:           deckDir.Name(),
-				Name:           manifest.Name,
-				Icon:           manifest.Icon,
-				Colors:         manifest.Colors,
-				Tags:           normalizeDeckTags(manifest.Tags),
-				DifficultyTags: normalizeDifficultyTags(manifest.DifficultyTags),
-				UI:             uiProfile,
-				CardCount:      cardCount,
+				Slug:                  deckDir.Name(),
+				Name:                  manifest.Name,
+				Icon:                  manifest.Icon,
+				Colors:                manifest.Colors,
+				Tags:                  normalizeDeckTags(manifest.Tags),
+				DifficultyTags:        normalizeDifficultyTags(manifest.DifficultyTags),
+				UI:                    uiProfile,
+				CardCount:             cardCount,
 				HasEmptyGuideWarnings: hasEmptyGuideWarnings,
 				HasGuideWarnings:      hasGuideWarnings,
 			})
@@ -150,7 +150,7 @@ func writeBattleboxMatrix(dataDir, outputDir, slug string) error {
 		return nil
 	}
 
-	srcData, err := os.ReadFile(srcPath)
+	srcData, err := buildFiles.ReadFile(srcPath)
 	if err != nil {
 		return fmt.Errorf("reading source matrix %s: %w", srcPath, err)
 	}

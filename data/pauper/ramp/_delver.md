@@ -1,2 +1,2 @@
 + 1 [[Relic of Progenitus]]
-- 1 [[Eldrazi Repurposer]]
+- 1 [[Avenging Hunter]]

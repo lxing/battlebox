@@ -274,7 +274,7 @@ func loadPrimerCached(path string) (string, []string, error) {
 		return entry.raw, entry.refs, entry.err
 	}
 
-	data, err := os.ReadFile(path)
+	data, err := buildFiles.ReadFile(path)
 	entry := primerParseCacheEntry{err: err}
 	if err == nil {
 		entry.raw = string(data)
@@ -289,7 +289,7 @@ func loadGuideCached(path string) (string, MatchupGuide, []string, error) {
 		return entry.raw, entry.parsed, entry.proseRefs, entry.err
 	}
 
-	data, err := os.ReadFile(path)
+	data, err := buildFiles.ReadFile(path)
 	entry := guideParseCacheEntry{err: err}
 	if err == nil {
 		entry.raw = string(data)
@@ -367,16 +367,17 @@ func validatePrintingsUsage(dataDir string, projectPrintings map[string]string, 
 		bbPrintings := loadPrintings(filepath.Join(bbPath, printingsFileName))
 		mergedBattleboxPrintings := mergePrintings(projectPrintings, bbPrintings)
 
-		deckDirs, err := os.ReadDir(bbPath)
+		deckDirs, err := buildFiles.ReadDir(bbPath)
 		if err != nil {
 			warnings = append(warnings, fmt.Sprintf("Validator input error (%s): %v", bbSlug, err))
 			continue
 		}
+		deckDirEntries := dirEntriesToOS(deckDirs)
 
 		decks := make(map[string]deckContext)
 		battleboxUsedCards := make(map[string]struct{})
 
-		for _, deckDir := range deckDirs {
+		for _, deckDir := range deckDirEntries {
 			if !deckDir.IsDir() {
 				continue
 			}
@@ -522,7 +523,7 @@ func expectedMainboardCount(battleboxSlug, deckSlug string) int {
 }
 
 func loadManifestSource(path string) (Manifest, error) {
-	data, err := os.ReadFile(path)
+	data, err := buildFiles.ReadFile(path)
 	if err != nil {
 		return Manifest{}, err
 	}
@@ -562,7 +563,7 @@ func checkDeckCardPrinting(warnings *[]string, battlebox, deck, name string, mer
 }
 
 func listGuideFiles(deckPath string) []string {
-	entries, err := os.ReadDir(deckPath)
+	entries, err := buildFiles.ReadDir(deckPath)
 	if err != nil {
 		return nil
 	}

@@ -1,3 +1,4 @@
-+ 1 [[Relic of Progenitus]]
-+ 2 [[Deglamer]]
-- 1 [[Eldrazi Repurposer]]
++ 3 [[Breath Weapon]]
+- 1 [[Avenging Hunter]]
+- 1 [[Evolution Witness]]
+- 1 [[Ram Through]]

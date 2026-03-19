@@ -3,14 +3,13 @@ package buildtool
 import (
 	"encoding/json"
 	"fmt"
-	"os"
 	"path/filepath"
 	"strings"
 )
 
 func processDeck(deckPath, slug, battlebox string, printings map[string]string, bbManifest BattleboxManifest) (*Deck, error) {
 	manifestPath := filepath.Join(deckPath, "manifest.json")
-	manifestData, err := os.ReadFile(manifestPath)
+	manifestData, err := buildFiles.ReadFile(manifestPath)
 	if err != nil {
 		return nil, fmt.Errorf("reading manifest: %w", err)
 	}
@@ -98,7 +97,7 @@ func processDeck(deckPath, slug, battlebox string, printings map[string]string, 
 	}
 
 	// Read sideboard guides
-	entries, _ := os.ReadDir(deckPath)
+	entries, _ := buildFiles.ReadDir(deckPath)
 	for _, entry := range entries {
 		name := entry.Name()
 		if name == "primer.md" || name == "manifest.json" || !strings.HasSuffix(name, ".md") {

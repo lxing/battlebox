@@ -13,12 +13,12 @@ import (
 )
 
 func fileExists(path string) bool {
-	info, err := os.Stat(path)
+	info, err := buildFiles.Stat(path)
 	return err == nil && !info.IsDir()
 }
 
 func loadBuildStamp(path string) BuildStamp {
-	data, err := os.ReadFile(path)
+	data, err := buildFiles.ReadFile(path)
 	if err != nil {
 		return BuildStamp{
 			Battleboxes: map[string]string{},
@@ -59,7 +59,7 @@ func saveBuildStamp(path string, stamp BuildStamp) error {
 	if err != nil {
 		return err
 	}
-	if existing, err := os.ReadFile(path); err == nil && bytes.Equal(existing, data) {
+	if existing, err := buildFiles.ReadFile(path); err == nil && bytes.Equal(existing, data) {
 		return nil
 	}
 	if err := os.MkdirAll(filepath.Dir(path), 0755); err != nil {
@@ -86,7 +86,7 @@ func computeGlobalInputHash(dataDir string, fileCache map[string]FileFingerprint
 func collectBuildScriptSources() ([]string, error) {
 	paths := []string{filepath.Join("scripts", "build.go")}
 	internalRoot := filepath.Join("internal", "buildtool")
-	err := filepath.WalkDir(internalRoot, func(path string, d fs.DirEntry, err error) error {
+	err := fs.WalkDir(buildFiles, internalRoot, func(path string, d fs.DirEntry, err error) error {
 		if err != nil {
 			return err
 		}
@@ -107,7 +107,7 @@ func collectBuildScriptSources() ([]string, error) {
 
 func hashBattleboxInputs(bbPath string, fileCache map[string]FileFingerprint) (string, error) {
 	var files []string
-	if err := filepath.WalkDir(bbPath, func(path string, d fs.DirEntry, err error) error {
+	if err := fs.WalkDir(buildFiles, bbPath, func(path string, d fs.DirEntry, err error) error {
 		if err != nil {
 			return err
 		}
@@ -152,7 +152,7 @@ func hashFiles(paths []string, fileCache map[string]FileFingerprint) (string, er
 // - same size + different mtime: compute hash to verify content
 // - different size: compute hash
 func hashFileWithCache(path string, fileCache map[string]FileFingerprint) (string, error) {
-	stat, err := os.Stat(path)
+	stat, err := buildFiles.Stat(path)
 	if err != nil {
 		if os.IsNotExist(err) {
 			if fileCache != nil {
@@ -175,7 +175,7 @@ func hashFileWithCache(path string, fileCache map[string]FileFingerprint) (strin
 		return prev.Hash, nil
 	}
 
-	data, err := os.ReadFile(path)
+	data, err := buildFiles.ReadFile(path)
 	if err != nil {
 		return "", err
 	}
