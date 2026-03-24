@@ -1,3 +1,3 @@
-+ 3 [[Standard Bearer]]
-+ 2 [[Lone Missionary]]
-- 3 [[Guardians' Pledge]]
++ 2 [[Journey to Nowhere]]
+- 1 [[Battle Screech]]
+- 1 [[Raffine's Informant]]

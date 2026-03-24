@@ -1,3 +1,4 @@
 + 4 [[Dust to Dust]]
-- 3 [[Militia Bugler]]
+- 2 [[Militia Bugler]]
 - 1 [[Prismatic Strands]]
+- 1 [[Thraben Charm]]

@@ -1,0 +1,95 @@
+{
+  "name": "Synthesizer",
+  "source_url": "https://www.mtggoldfish.com/deck/7694935",
+  "colors": "r",
+  "tags": [
+    "aggro"
+  ],
+  "cards": [
+    {
+      "name": "Burning-Tree Emissary",
+      "qty": 4
+    },
+    {
+      "name": "Chain Lightning",
+      "qty": 2
+    },
+    {
+      "name": "Clockwork Percussionist",
+      "qty": 4
+    },
+    {
+      "name": "End the Festivities",
+      "qty": 1
+    },
+    {
+      "name": "Experimental Synthesizer",
+      "qty": 3
+    },
+    {
+      "name": "Galvanic Blast",
+      "qty": 4
+    },
+    {
+      "name": "Goblin Bushwhacker",
+      "qty": 4
+    },
+    {
+      "name": "Goblin Tomb Raider",
+      "qty": 4
+    },
+    {
+      "name": "Great Furnace",
+      "qty": 4
+    },
+    {
+      "name": "Lightning Bolt",
+      "qty": 4
+    },
+    {
+      "name": "Mountain",
+      "qty": 14
+    },
+    {
+      "name": "Rally at the Hornburg",
+      "qty": 4
+    },
+    {
+      "name": "Reckless Impulse",
+      "qty": 4
+    },
+    {
+      "name": "Voldaren Epicure",
+      "qty": 4
+    }
+  ],
+  "sideboard": [
+    {
+      "name": "Cast into the Fire",
+      "qty": 4
+    },
+    {
+      "name": "End the Festivities",
+      "qty": 2
+    },
+    {
+      "name": "Flaring Pain",
+      "qty": 1
+    },
+    {
+      "name": "Red Elemental Blast",
+      "qty": 3
+    },
+    {
+      "name": "Relic of Progenitus",
+      "qty": 3
+    },
+    {
+      "name": "Searing Blaze",
+      "qty": 2
+    }
+  ],
+  "difficulty_tags": [
+    "beginner"
+  ]
+}

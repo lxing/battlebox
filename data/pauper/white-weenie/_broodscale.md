@@ -1,2 +1,5 @@
-+ 2 [[Journey to Nowhere]]
-+ 1 [[Prismatic Strands]]
++ 3 [[Revoke Existence]]
++ 3 [[Standard Bearer]]
+- 1 [[Guardians' Pledge]]
+- 2 [[Lunarch Veteran / Luminous Phantom]]
+- 3 [[Prismatic Strands]]
