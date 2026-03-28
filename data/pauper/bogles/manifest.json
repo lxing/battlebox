@@ -11,7 +11,7 @@
     },
     {
       "name": "Ancestral Mask",
-      "qty": 4
+      "qty": 3
     },
     {
       "name": "Armadillo Cloak",
@@ -19,10 +19,10 @@
     },
     {
       "name": "Ash Barrens",
-      "qty": 3
+      "qty": 1
     },
     {
-      "name": "Cartouche of Solidarity",
+      "name": "Bannerhide Krushok",
       "qty": 2
     },
     {
@@ -30,8 +30,16 @@
       "qty": 4
     },
     {
+      "name": "Eagles of the North",
+      "qty": 1
+    },
+    {
       "name": "Forest",
       "qty": 11
+    },
+    {
+      "name": "Generous Ent",
+      "qty": 2
     },
     {
       "name": "Gladecover Scout",
@@ -42,24 +50,28 @@
       "qty": 4
     },
     {
-      "name": "Plains",
-      "qty": 3
+      "name": "Nyxborn Hydra",
+      "qty": 2
     },
     {
-      "name": "Ram Through",
+      "name": "Plains",
+      "qty": 2
+    },
+    {
+      "name": "Radiant Grove",
       "qty": 1
     },
     {
       "name": "Rancor",
-      "qty": 4
+      "qty": 2
     },
     {
-      "name": "Sentinel's Eyes",
-      "qty": 1
+      "name": "Sheltering Landscape",
+      "qty": 2
     },
     {
       "name": "Silhana Ledgewalker",
-      "qty": 3
+      "qty": 2
     },
     {
       "name": "Slippery Bogle",
@@ -68,32 +80,48 @@
     {
       "name": "Utopia Sprawl",
       "qty": 4
+    },
+    {
+      "name": "Wild Growth",
+      "qty": 1
     }
   ],
   "sideboard": [
     {
-      "name": "Blighted Agent",
-      "qty": 4
+      "name": "Aura Gnarlid",
+      "qty": 1
     },
     {
-      "name": "Crimson Acolyte",
+      "name": "Avenging Hunter",
       "qty": 3
     },
     {
-      "name": "Glistener Elf",
-      "qty": 4
+      "name": "Breath Weapon",
+      "qty": 2
     },
     {
-      "name": "Island",
-      "qty": 1
+      "name": "Crimson Acolyte",
+      "qty": 2
     },
     {
       "name": "Lifelink",
       "qty": 1
     },
     {
-      "name": "Tamiyo's Safekeeping",
+      "name": "Llanowar Visionary",
       "qty": 2
+    },
+    {
+      "name": "Mountain",
+      "qty": 1
+    },
+    {
+      "name": "Standard Bearer",
+      "qty": 2
+    },
+    {
+      "name": "Writhing Chrysalis",
+      "qty": 1
     }
   ],
   "difficulty_tags": [
