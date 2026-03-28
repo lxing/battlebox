@@ -1,0 +1,91 @@
+{
+  "name": "Sligh",
+  "source_url": "https://www.mtggoldfish.com/deck/7702971",
+  "colors": "r",
+  "tags": [
+    "aggro"
+  ],
+  "cards": [
+    {
+      "name": "Ball Lightning",
+      "qty": 4
+    },
+    {
+      "name": "Barbarian Ring",
+      "qty": 3
+    },
+    {
+      "name": "Bloodstained Mire",
+      "qty": 4
+    },
+    {
+      "name": "Cursed Scroll",
+      "qty": 3
+    },
+    {
+      "name": "Fireblast",
+      "qty": 4
+    },
+    {
+      "name": "Goblin Cadets",
+      "qty": 4
+    },
+    {
+      "name": "Grim Lavamancer",
+      "qty": 4
+    },
+    {
+      "name": "Incinerate",
+      "qty": 4
+    },
+    {
+      "name": "Jackal Pup",
+      "qty": 4
+    },
+    {
+      "name": "Lightning Bolt",
+      "qty": 4
+    },
+    {
+      "name": "Mishra's Factory",
+      "qty": 2
+    },
+    {
+      "name": "Mogg Fanatic",
+      "qty": 4
+    },
+    {
+      "name": "Mountain",
+      "qty": 8
+    },
+    {
+      "name": "Seal of Fire",
+      "qty": 4
+    },
+    {
+      "name": "Wooded Foothills",
+      "qty": 4
+    }
+  ],
+  "sideboard": [
+    {
+      "name": "Earthquake",
+      "qty": 3
+    },
+    {
+      "name": "Flame Rift",
+      "qty": 4
+    },
+    {
+      "name": "Overload",
+      "qty": 4
+    },
+    {
+      "name": "Pyroblast",
+      "qty": 4
+    }
+  ],
+  "difficulty_tags": [
+    "beginner"
+  ]
+}
