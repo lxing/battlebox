@@ -1,3 +1,5 @@
+<!-- Archival note: this prose matchup guide is kept only as historical reference from the older guide format, before the project switched to sideboard-plan-focused matchup guides. -->
+
 ## Bogles
 
 You are mostly racing. [[Toxin Analysis]] and [[Krark-Clan Shaman]] already do great work against hexproof creatures. Keep the [[Cast Down]] to fight [[Crimson Acolyte]].

@@ -1,6 +1,0 @@
-+4 [[Blighted Agent]]
-+4 [[Glistener Elf]]
-+1 [[Island]]
--1 [[Armadillo Cloak]]
--4 [[Gladecover Scout]]
--4 [[Slippery Bogle]]
