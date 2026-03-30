@@ -1,10 +1,10 @@
-Stick a protected creature, then stack dumb enchantments to end the game quickly.
+Stick a protected creature, then stack dumb enchantments to end the game quickly. In postboard games, use a transformative sideboard with acceleration plus big midrange creatures to juke your opponents as they side out removal.
 
 ### Early game
-Mulligan toward a hexproof creature plus a couple of auras or fixing. Use [[Utopia Sprawl]] and [[Abundant Growth]] to smooth mana and keep the spells flowing, then land a threat before you start piling on enchantments.
+Mulligan for a hexproof creature plus a couple of auras or fixing. Accelerate with [[Utopia Sprawl]] and [[Wild Growth]].
 
 ### Midgame
-Stack your best damage auras first and prioritize evasion. [[Armadillo Cloak]] will win you any damage race, while [[Cartouche of Solidarity]] and [[Malevolent Rumble]] provide some extra fodder against sacrifice effects.
+Stack your best auras and go to town. [[Armadillo Cloak]] will win you any damage race. [[Malevolent Rumble]] provides extra fodder against sacrifice effects.
 
 ### Endgame
-[[Ancestral Mask]]. Hulk Smash.
+Keep juicing up your fatty. Finish with [[Ancestral Mask]].

@@ -64,7 +64,7 @@
   ],
   "sideboard": [
     {
-      "name": "Essence Warden",
+      "name": "Monstrous Emergence",
       "qty": 4
     },
     {
@@ -73,11 +73,11 @@
     },
     {
       "name": "Pulse of Murasa",
-      "qty": 4
+      "qty": 3
     },
     {
       "name": "Vitu-Ghazi Inspector",
-      "qty": 3
+      "qty": 4
     }
   ],
   "difficulty_tags": [
