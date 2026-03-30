@@ -1,11 +1,12 @@
 {
+  "Burning-Tree Emissary": "2x2/374",
   "Chain Lightning": "dmr/113",
   "Clockwork Percussionist": "dsk/130",
   "Experimental Synthesizer": "neo/138",
-  "Fireblast": "dmr/319",
-  "Goblin Blast-Runner": "bro/137",
+  "Flaring Pain": "jud/89",
   "Goblin Bushwhacker": "spg/78",
-  "Implement of Combustion": "aer/155",
-  "Kuldotha Rebirth": "som/96",
-  "Dwarven Forge-Chanter": "bro/131"
+  "Rally at the Hornburg": "ltr/142",
+  "Raze": "usg/207",
+  "Smash to Smithereens": "ori/163",
+  "Wrenn's Resolve": "mom/173"
 }
