@@ -1,3 +1,2 @@
-+3 [[Dwarven Forge-Chanter]]
--2 [[Implement of Combustion]]
--1 [[Fireblast]]
++ 2 [[End the Festivities]]
+- 2 [[Experimental Synthesizer]]

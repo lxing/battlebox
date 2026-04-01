@@ -1,10 +1,10 @@
-Synthesizer is a mono‑red aggro deck built around cheap artifacts and explosive token turns. [[Experimental Synthesizer]] and [[Implement of Combustion]] provide card flow while stocking artifacts for [[Kuldotha Rebirth]]. The deck converts those tokens into fast damage with [[Goblin Bushwhacker]] and uses burn to finish.
+Aggro built around light artifact synergy and explosive token turns.
 
 ### Early game
-Establish a board quickly with low‑cost creatures and artifacts. [[Voldaren Epicure]] and [[Clockwork Percussionist]] provide early pressure and artifact fodder, while [[Goblin Blast-Runner]] and [[Goblin Tomb Raider]] scale up with your artifact count. Look for early Rebirth turns to go wide.
+Establish a board quickly with low‑cost creatures and artifacts. [[Voldaren Epicure]] and [[Clockwork Percussionist]] provide early pressure and artifact fodder. You MUST mulligan for a fast opening.
 
 ### Midgame
-Leverage burst damage. [[Goblin Bushwhacker]] turns a board of tokens into a lethal attack, and burn spells like [[Lightning Bolt]], [[Chain Lightning]], and [[Galvanic Blast]] clear blockers or go to the face. [[Experimental Synthesizer]] keeps the cards coming through your cheap spells.
+Vomit out a wide board with [[Rally at the Hornburg]] and [[Burning-Tree Emissary]]. Convert to huge strikes with [[Goblin Bushwhacker]].
 
 ### Endgame
-Finish by chaining burn and a final wide attack. Even if the board stalls, direct damage and sacrificed artifacts keep pressure high, and a late Bushwhacker often supplies the last points.
+Finish by positioning for alpha strikes and sending burn to the face. In protracted stalemates, [[Experimental Synthesizer]] and [[Wrenn's Resolve]] can dig out the last few points of damage from your library.

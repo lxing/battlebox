@@ -1,2 +1,1 @@
-+2 [[Relic of Progenitus]]
--2 [[Implement of Combustion]]
+<!-- guide_status: no_sideboard -->

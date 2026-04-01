@@ -1,4 +1,4 @@
-Big mana shenanigans. Ascend the mana ladder then cascade into huge threats. 
+Stomp around with big mana shenanigans. Ascend the mana ladder then cascade into huge threats, featuring a lot of Eldrazi.
 
 ### Early game
 Focus on ramping. Stick a [[Utopia Sprawl]] or [[Wild Growth]] early and pair with [[Arbor Elf]] for up to 4 mana on turn 2. Your goal is to jump from setup turns into fast 4+ drops.
