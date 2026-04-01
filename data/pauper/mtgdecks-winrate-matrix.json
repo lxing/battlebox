@@ -722,6 +722,7 @@
         "wr": 0.42
       }
     },
+    "pizza": {},
     "ramp": {
       "affinity": {
         "ci_high": 0.68,
@@ -1174,6 +1175,11 @@
       "matches": 1035,
       "wins": 466,
       "wr": 0.4502
+    },
+    "pizza": {
+      "matches": 0,
+      "wins": 0,
+      "wr": 0
     },
     "ramp": {
       "matches": 778,

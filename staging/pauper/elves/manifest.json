@@ -1,22 +1,34 @@
 {
   "name": "Elves",
-  "source_url": "https://www.mtggoldfish.com/deck/7269703",
+  "source_url": "https://www.mtggoldfish.com/deck/7695996",
   "colors": "g",
   "tags": [
     "tribal"
   ],
   "cards": [
     {
+      "name": "Avenging Hunter",
+      "qty": 4
+    },
+    {
+      "name": "Elvish Mystic",
+      "qty": 1
+    },
+    {
       "name": "Forest",
       "qty": 13
     },
     {
-      "name": "Elvish Mystic",
+      "name": "Fyndhorn Elves",
       "qty": 4
     },
     {
       "name": "Generous Ent",
       "qty": 4
+    },
+    {
+      "name": "Gingerbread Cabin",
+      "qty": 1
     },
     {
       "name": "Lead the Stampede",
@@ -44,15 +56,11 @@
     },
     {
       "name": "Sagu Wildling",
-      "qty": 4
+      "qty": 1
     },
     {
       "name": "Timberwatch Elf",
       "qty": 4
-    },
-    {
-      "name": "Wellwisher",
-      "qty": 3
     },
     {
       "name": "Winding Way",
@@ -61,16 +69,20 @@
   ],
   "sideboard": [
     {
-      "name": "Heritage Reclamation",
-      "qty": 4
-    },
-    {
-      "name": "Pulse of Murasa",
-      "qty": 4
-    },
-    {
-      "name": "Scattershot Archer",
+      "name": "Faerie Macabre",
       "qty": 3
+    },
+    {
+      "name": "Monstrous Emergence",
+      "qty": 4
+    },
+    {
+      "name": "Primordial Pachyderm",
+      "qty": 2
+    },
+    {
+      "name": "Viridian Longbow",
+      "qty": 2
     },
     {
       "name": "Vitu-Ghazi Inspector",

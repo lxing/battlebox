@@ -1,0 +1,127 @@
+{
+  "name": "Pizza",
+  "source_url": "https://www.mtggoldfish.com/deck/7696007",
+  "colors": "urg",
+  "tags": [
+    "combo"
+  ],
+  "cards": [
+    {
+      "name": "Abundant Growth",
+      "qty": 4
+    },
+    {
+      "name": "Banishing Knack",
+      "qty": 1
+    },
+    {
+      "name": "Bountiful Landscape",
+      "qty": 4
+    },
+    {
+      "name": "Brainstorm",
+      "qty": 1
+    },
+    {
+      "name": "Cryogen Relic",
+      "qty": 4
+    },
+    {
+      "name": "Devoted Druid",
+      "qty": 4
+    },
+    {
+      "name": "Dispel",
+      "qty": 2
+    },
+    {
+      "name": "Forest",
+      "qty": 2
+    },
+    {
+      "name": "Guac & Marshmallow Pizza",
+      "qty": 3
+    },
+    {
+      "name": "Island",
+      "qty": 6
+    },
+    {
+      "name": "Khalni Garden",
+      "qty": 4
+    },
+    {
+      "name": "Lórien Revealed",
+      "qty": 2
+    },
+    {
+      "name": "Mountain",
+      "qty": 1
+    },
+    {
+      "name": "Mystical Teachings",
+      "qty": 2
+    },
+    {
+      "name": "Negate",
+      "qty": 3
+    },
+    {
+      "name": "Perilous Research",
+      "qty": 4
+    },
+    {
+      "name": "Preordain",
+      "qty": 4
+    },
+    {
+      "name": "Retraction Helix",
+      "qty": 2
+    },
+    {
+      "name": "Tamiyo's Safekeeping",
+      "qty": 1
+    },
+    {
+      "name": "Tangled Islet",
+      "qty": 1
+    },
+    {
+      "name": "Volatile Fjord",
+      "qty": 1
+    },
+    {
+      "name": "Writhing Chrysalis",
+      "qty": 4
+    }
+  ],
+  "sideboard": [
+    {
+      "name": "Blue Elemental Blast",
+      "qty": 2
+    },
+    {
+      "name": "Breath Weapon",
+      "qty": 3
+    },
+    {
+      "name": "Hydroblast",
+      "qty": 4
+    },
+    {
+      "name": "Negate",
+      "qty": 1
+    },
+    {
+      "name": "Pyroblast",
+      "qty": 2
+    },
+    {
+      "name": "Weather the Storm",
+      "qty": 3
+    }
+  ],
+  "difficulty_tags": [
+    "expert"
+  ]
+}
