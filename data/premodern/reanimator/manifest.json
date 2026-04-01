@@ -1,0 +1,91 @@
+{
+  "name": "Reanimator",
+  "source_url": "https://www.mtggoldfish.com/deck/7710341",
+  "colors": "b",
+  "tags": [
+    "combo"
+  ],
+  "cards": [
+    {
+      "name": "Akroma, Angel of Wrath",
+      "qty": 4
+    },
+    {
+      "name": "Animate Dead",
+      "qty": 2
+    },
+    {
+      "name": "Cabal Therapy",
+      "qty": 4
+    },
+    {
+      "name": "Dark Ritual",
+      "qty": 4
+    },
+    {
+      "name": "Duress",
+      "qty": 3
+    },
+    {
+      "name": "Exhume",
+      "qty": 4
+    },
+    {
+      "name": "Life / Death",
+      "qty": 2
+    },
+    {
+      "name": "Putrid Imp",
+      "qty": 4
+    },
+    {
+      "name": "Reanimate",
+      "qty": 4
+    },
+    {
+      "name": "Rorix Bladewing",
+      "qty": 4
+    },
+    {
+      "name": "Swamp",
+      "qty": 14
+    },
+    {
+      "name": "Unmask",
+      "qty": 4
+    },
+    {
+      "name": "Verdant Force",
+      "qty": 4
+    },
+    {
+      "name": "Zombie Infestation",
+      "qty": 4
+    }
+  ],
+  "sideboard": [
+    {
+      "name": "Duress",
+      "qty": 1
+    },
+    {
+      "name": "Multani, Maro-Sorcerer",
+      "qty": 4
+    },
+    {
+      "name": "Null Rod",
+      "qty": 2
+    },
+    {
+      "name": "Phantom Nishoba",
+      "qty": 4
+    },
+    {
+      "name": "Snuff Out",
+      "qty": 4
+    }
+  ],
+  "difficulty_tags": [
+    "expert"
+  ]
+}
