@@ -1,10 +1,10 @@
-Pizza is a Temur combo deck built around cheap artifacts, bounce effects, and [[Devoted Druid]]. [[Banishing Knack]] or [[Retraction Helix]] turns a creature into a repeatable bounce engine, while cards like [[Guac & Marshmallow Pizza]] and [[Cryogen Relic]] make those loops profitable instead of just cute.
+Assemble the combo of [[Devoted Druid]] + [[Retraction Helix]] + [[Guac & Marshmallow Pizza]], generating infinite mana and an infinitely large Druid. Then you may bounce the opponent's board and rumble in for lethal damage.
 
 ### Early game
-Spend the first turns fixing mana and setting up material. [[Abundant Growth]], [[Preordain]], [[Lórien Revealed]], and the cycling lands help you hit colors, while [[Devoted Druid]] and token makers like [[Khalni Garden]] give you bodies that can carry the combo pieces later.
+Spend the first turns fixing mana and setting up materiel. [[Abundant Growth]], [[Preordain]], [[Lórien Revealed]], and the cycling lands help you hit colors. Be cautious and treat [[Devoted Druid]] as a combo piece, not acceleration.
 
 ### Midgame
-Assemble a bounce effect plus a cheap permanent that rewards being replayed. [[Guac & Marshmallow Pizza]] is the cleanest engine card because it both untaps and pumps, while [[Cryogen Relic]] and [[Perilous Research]] let you turn loops into fresh cards. [[Mystical Teachings]] helps find whichever interaction or combo piece you are missing.
+Angle for an opening to drop the combo. Since it spans two turns, as you need to untap with [[Devoted Druid]], stock up countermagic and protection. The combo itself is deterministic and infinite so all that matters is pulling it off. Feel free to drop [[Writhing Chrysalis]], a one-Eldrazi army on its own, to apply pressure and divert removal.
 
 ### Endgame
-Most kills come from snowballing one turn into a massive attacker or overwhelming card advantage. [[Writhing Chrysalis]] gives the deck a strong fair backup plan, so do not force the combo if a clean midrange game will already win.
+If your opponent is playing a waiting game with removal, or if your combo gets disrupted, you'll need to grind out card advantage. [[Perilous Research]] and [[Cryogen Relic]] plays a cute facsimile of the typically black synergy shell, which you should stack with [[Lórien Revealed]] to churn through your deck.

@@ -1,0 +1,6 @@
++ 2 [[Cast Down]]
++ 4 [[Red Elemental Blast]]
+- 2 [[Black Mage's Rod]]
+- 1 [[Blood Fountain]]
+- 1 [[Makeshift Munitions]]
+- 2 [[Nihil Spellbomb]]

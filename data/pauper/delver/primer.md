@@ -1,4 +1,4 @@
-Chain cheap cantrips to deploy oversized threats quickly. [[Delver|Delver of Secrets / Insectile Aberration]] provides early pressure, while [[Tolarian Terror]] and [[Cryptic Serpent]] are effectively free once your graveyard is stocked with instants and sorceries.
+Chain cheap cantrips to deploy oversized threats quickly. [[Delver|Delver of Secrets / Insectile Aberration]] provides early pressure until [[Tolarian Terror]] and [[Cryptic Serpent]] come online once your graveyard is stocked with instants and sorceries.
 
 Although a "tempo" deck, Delver is very aggressive and you should play as such. Use cantrips proactively to dig for big snakes and go for the kill.
 

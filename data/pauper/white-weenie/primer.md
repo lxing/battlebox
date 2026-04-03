@@ -1,10 +1,10 @@
-White Weenie is a mono-white aggro deck that wins by going wide with efficient creatures and token makers, then pushing through a big combat step. The core plan revolves around cheap bodies like [[Thraben Inspector]] and [[Novice Inspector]], value bounce with [[Kor Skyfisher]], and a burst finisher from [[Battle Screech]] plus [[Guardians' Pledge]].
+Classic white aggro that wins by going wide with cheap creatures and token generators, then pushing through a huge combat step. The eight-pack of Inpsectors, [[Militia Bugler]], and [[Kor Skyfisher]] provide a ton of card advantage, and [[Raffine's Informant]] gives a very light discard subtheme with Flashback cards. A recent steroid injection is [[Leonardo, Big Brother]], who synergizes with the numerous fliers to deliver a devastating knockout punch on stalled boards.
 
 ### Early game
-Curve out with your one- and two-drops, then use [[Thraben Inspector]] and [[Novice Inspector]] to generate Clues that keep your hand full. [[Raffine's Informant]] and [[Militia Bugler]] help smooth draws, and [[Eagles of the North]] can be cycled early to hit land drops.
+Curve out with your one- and two-drops, stocking [[Thraben Inspector]] and [[Novice Inspector]] Clues. Between these and [[Raffine's Informant]], try to hit every land drop and spend all your mana each turn.
 
 ### Midgame
-Start building a wide board and protect it. [[Prismatic Strands]] lets you blank combat steps, and [[Thraben Charm]] provides flexible interaction. [[Kor Skyfisher]] reuses your ETB value while adding to your flying pressure.
+Build as wide a board as you can within reason, accounting for sweepers. Start nibbling away at your opponent's life total, using [[Prismatic Strands]] for tempo swings and [[Thraben Charm]] as spot removal. Your Clue engine should be in full swing providing nonstop cards.
 
 ### Endgame
-Close with a decisive attack: [[Battle Screech]] supplies evasive bodies and [[Guardians' Pledge]] turns a crowded board into lethal damage. [[Idyllic Grange]] can add another point of pressure when you need to push through the last damage.
+Position for a lethal alpha strike using [[Guardians' Pledge]] or [[Leonardo, Big Brother]].

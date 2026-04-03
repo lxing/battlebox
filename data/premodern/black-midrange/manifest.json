@@ -77,10 +77,6 @@
   ],
   "sideboard": [
     {
-      "name": "Bane of the Living",
-      "qty": 1
-    },
-    {
       "name": "Drain Life",
       "qty": 2
     },
@@ -97,8 +93,12 @@
       "qty": 1
     },
     {
-      "name": "Powder Keg",
+      "name": "Gloom",
       "qty": 2
+    },
+    {
+      "name": "Powder Keg",
+      "qty": 1
     },
     {
       "name": "Spinning Darkness",
