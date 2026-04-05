@@ -1,0 +1,6 @@
++ 2 [[Duress]]
++ 2 [[Okiba-Gang Shinobi]]
++ 3 [[Revoke Existence]]
+- 4 [[Refurbished Familiar]]
+- 2 [[Suffocating Fumes]]
+- 1 [[Tithing Blade / Consuming Sepulcher]]

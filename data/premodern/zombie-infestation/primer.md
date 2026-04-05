@@ -1,10 +1,12 @@
-Zombie Infestation is a draw-go control deck that eventually turns excess cards into an army. [[Zombie Infestation]] plus [[Squee, Goblin Nabob]] is the core engine, with [[Wonder]] providing evasion and blue interaction buying enough time to take over.
+A curious draw-go control deck doesn't pack typical control finishers, but instead uses [[Zombie Infestation]] to spam the board with Zombies. To fuel this engine, it packs a full complement of [[Squee, Goblin Nabob]] plus [[Krovikan Horror]] to spawn three Zombies per turn in steady state. This discard-heavy strategy feeds into other core synergies like [[Intuition]], [[Forbid]], [[Foil]], [[Deep Analysis]]...typical blue shenanigans.
 
 ### Early game
-Spend the first turns sculpting your hand with [[Portent]], [[Accumulated Knowledge]], and discard. Protect yourself with [[Counterspell]] and [[Duress]], and do not rush [[Zombie Infestation]] into open mana unless it will immediately generate value.
+Spend the opening turns sculpting your hand with cantrips while defending with [[Counterspell]] and removal; a typical control buildup. If you have an opening, drop [[Zombie Infestation]] as it is less susceptible to removal than other control finishers, and can immediately generate value with a [[Squee|Squee, Goblin Nabob]] or two.
 
 ### Midgame
-Once [[Zombie Infestation]] sticks, start converting extra cards into pressure. [[Squee, Goblin Nabob]] turns every turn cycle into free material, while [[Gush]], [[Deep Analysis]], and [[Intuition]] keep your hand full. Play patiently; the deck is strongest when it can make tokens while still holding up countermagic.
+Use the unique properties of [[Zombie Infestation]] to play defense and offense at the same time. The removal suite is fairly light because you can use tokens to stall out typical aggro beaters and instead focus on the chunky threats.
+
+On the proactive end, cast [[Intuition]] to dig out three [[Squee|Squee, Goblin Nabob]]s or an [[Accumulated Knowledge]] card advantage bomb. Pull ahead and make land drops to gain traditional control air superiority.
 
 ### Endgame
-The finish is usually straightforward: overwhelm the board with Zombies and let [[Wonder]] make blocking impossible. [[Krovikan Horror]] and your recursive card flow help you keep grinding even after removal-heavy exchanges.
+Overwhelm the board with Zombies and dig out a [[Wonder]] to kill your opponent. Truly, among the more hilarious finishers in the format.

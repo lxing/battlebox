@@ -1,5 +1,4 @@
-+ 2 [[Gorilla Shaman]]
 + 2 [[Cast into the Fire]]
-+ 2 [[Deglamer]]
-- 1 [[Eldrazi Repurposer]]
-- 1 [[Malevolent Rumble]]
++ 2 [[Gorilla Shaman]]
+- 1 [[Bannerhide Krushok]]
+- 3 [[Ram Through]]

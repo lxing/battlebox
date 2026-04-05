@@ -1,4 +1,4 @@
-The more direct, aggressive counterpart to GW Madness. Spam discard synergies and swamp your opponents with a stream of efficient beaters. 
+The more direct, aggressive counterpart to UG Madness. Spam discard synergies and swamp your opponents with a stream of efficient beaters. Compared to the classic UG, [[Glory]] gives you a very strong board finisher, and the abundance of creatures is stronger against other aggressive strategies. However no countermagic makes you a bit of a dog against dedicated combo.
 
 ### Early game
 Mulligan for a one-drop or Madness enabler. 

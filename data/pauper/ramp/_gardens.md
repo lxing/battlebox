@@ -1,3 +1,1 @@
-+ 1 [[Relic of Progenitus]]
-+ 2 [[Weather the Storm]]
-- 1 [[Eldrazi Repurposer]]
+<!-- guide_status: no_sideboard -->

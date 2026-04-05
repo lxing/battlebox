@@ -1,7 +1,7 @@
-Black Midrange attacks from both the hand and the battlefield. It combines discard-heavy openings with efficient creatures, then leans on repeatable threats like [[Nantuko Shade]], [[Mishra's Factory]], and [[Phyrexian Arena]] to stay ahead.
+Also referred to as "Moneyball Black", this deck doesn't have a lot of bombs, but instead plays almost like an efficient white weenie deck 
 
 ### Early game
-Use [[Duress]] and [[Cabal Therapy]] to break up the opponent's hand, then deploy pressure quickly. [[Dark Ritual]] enables your strongest starts, especially into [[Hypnotic Specter]] or multiple disruptive spells.
+Your single best opening is [[Dark Ritual]] into [[Hypnotic Specter]] or [[Phyrexian Arena]]; absolute evil.
 
 ### Midgame
 This is where the deck snowballs. [[Ravenous Rats]] and [[Withered Wretch]] keep the board relevant while [[Smother]], [[Diabolic Edict]], and [[Snuff Out]] punish creature decks. [[Phyrexian Arena]] is your best card in longer games, so protect your life total when it is active.

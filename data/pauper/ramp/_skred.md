@@ -1,5 +1,2 @@
-+ 2 [[Weather the Storm]]
-+ 1 [[Nylea's Disciple]]
 + 1 [[Relic of Progenitus]]
-- 1 [[Eldrazi Repurposer]]
-- 1 [[Malevolent Rumble]]
+- 1 [[Ram Through]]
