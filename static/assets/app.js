@@ -97,6 +97,10 @@ const comboRouteContext = {
 
 function getCardTarget(event) {
   if (!event.target || !event.target.closest) return null;
+  const decklistEditRoot = event.target.closest('#decklist-body.decklist-edit-mode');
+  if (decklistEditRoot) {
+    return null;
+  }
   const draftSwapModeCard = event.target.closest('#draft-picks-cards .card');
   if (draftSwapModeCard) {
     const draftPane = event.target.closest('#tab-draft');

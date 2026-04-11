@@ -6,6 +6,10 @@
   ],
   "cards": [
     {
+      "name": "Anchovy & Banana Pizza",
+      "qty": 1
+    },
+    {
       "name": "Ancient Den",
       "qty": 3
     },
@@ -18,6 +22,10 @@
       "qty": 4
     },
     {
+      "name": "Eviscerator's Insight",
+      "qty": 4
+    },
+    {
       "name": "Glint Hawk",
       "qty": 4
     },
@@ -26,8 +34,8 @@
       "qty": 4
     },
     {
-      "name": "Inspiring Overseer",
-      "qty": 4
+      "name": "Grim Bauble",
+      "qty": 1
     },
     {
       "name": "Kor Skyfisher",
@@ -38,16 +46,28 @@
       "qty": 4
     },
     {
-      "name": "Novice Inspector",
-      "qty": 4
+      "name": "Leonardo, Big Brother",
+      "qty": 2
     },
     {
-      "name": "Orzhov Basilica",
+      "name": "Mukotai Ambusher",
+      "qty": 1
+    },
+    {
+      "name": "Omen of the Dead",
+      "qty": 1
+    },
+    {
+      "name": "Oroku Saki, Shredder Rising",
       "qty": 3
     },
     {
+      "name": "Orzhov Basilica",
+      "qty": 4
+    },
+    {
       "name": "Plains",
-      "qty": 5
+      "qty": 2
     },
     {
       "name": "Refurbished Familiar",
@@ -55,11 +75,15 @@
     },
     {
       "name": "Suffocating Fumes",
-      "qty": 2
+      "qty": 1
+    },
+    {
+      "name": "Swamp",
+      "qty": 1
     },
     {
       "name": "Thraben Charm",
-      "qty": 2
+      "qty": 1
     },
     {
       "name": "Thraben Inspector",
@@ -67,7 +91,7 @@
     },
     {
       "name": "Tithing Blade / Consuming Sepulcher",
-      "qty": 4
+      "qty": 2
     },
     {
       "name": "Vault of Whispers",
@@ -81,23 +105,31 @@
     },
     {
       "name": "Duress",
-      "qty": 2
-    },
-    {
-      "name": "Dust to Dust",
       "qty": 4
     },
     {
-      "name": "Lone Missionary",
-      "qty": 2
-    },
-    {
-      "name": "Okiba-Gang Shinobi",
-      "qty": 2
-    },
-    {
-      "name": "Revoke Existence",
+      "name": "Dust to Dust",
       "qty": 3
+    },
+    {
+      "name": "Grim Bauble",
+      "qty": 1
+    },
+    {
+      "name": "Mukotai Ambusher",
+      "qty": 1
+    },
+    {
+      "name": "Suffocating Fumes",
+      "qty": 1
+    },
+    {
+      "name": "Thraben Charm",
+      "qty": 1
+    },
+    {
+      "name": "Tithing Blade / Consuming Sepulcher",
+      "qty": 2
     }
   ],
   "difficulty_tags": [

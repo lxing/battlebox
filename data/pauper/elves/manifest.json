@@ -7,7 +7,7 @@
   "cards": [
     {
       "name": "Avenging Hunter",
-      "qty": 2
+      "qty": 3
     },
     {
       "name": "Elvish Mystic",
@@ -20,6 +20,10 @@
     {
       "name": "Generous Ent",
       "qty": 4
+    },
+    {
+      "name": "Gingerbread Cabin",
+      "qty": 1
     },
     {
       "name": "Lead the Stampede",
@@ -55,7 +59,7 @@
     },
     {
       "name": "Wellwisher",
-      "qty": 4
+      "qty": 2
     },
     {
       "name": "Winding Way",
@@ -69,11 +73,15 @@
     },
     {
       "name": "Heritage Reclamation",
-      "qty": 4
+      "qty": 3
     },
     {
-      "name": "Pulse of Murasa",
-      "qty": 3
+      "name": "Primordial Pachyderm",
+      "qty": 2
+    },
+    {
+      "name": "Viridian Longbow",
+      "qty": 2
     },
     {
       "name": "Vitu-Ghazi Inspector",

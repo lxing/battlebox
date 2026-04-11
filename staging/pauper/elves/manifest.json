@@ -12,15 +12,15 @@
     },
     {
       "name": "Elvish Mystic",
+      "qty": 4
+    },
+    {
+      "name": "Fyndhorn Elves",
       "qty": 1
     },
     {
       "name": "Forest",
       "qty": 13
-    },
-    {
-      "name": "Fyndhorn Elves",
-      "qty": 4
     },
     {
       "name": "Generous Ent",

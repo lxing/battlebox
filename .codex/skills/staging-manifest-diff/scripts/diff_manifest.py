@@ -62,7 +62,7 @@ def zone_to_map(entries: Iterable[dict]) -> Tuple[Dict[str, int], Dict[str, str]
     return qty_by_key, name_by_key
 
 
-def zone_diff_lines(label: str, current: dict, staging: dict) -> list[str]:
+def zone_diff_lines(label: str, current: dict, staging: dict) -> tuple[list[str], list[str]]:
     c_qty, c_name = zone_to_map(current.get(label, []))
     s_qty, s_name = zone_to_map(staging.get(label, []))
     keys = sorted(set(c_qty) | set(s_qty))
@@ -77,39 +77,14 @@ def zone_diff_lines(label: str, current: dict, staging: dict) -> list[str]:
             continue
         name = s_name.get(key) or c_name.get(key) or key
         delta = sq - cq
-        sign = "+" if delta > 0 else "-"
-        line = f"{sign}{abs(delta)} {name} ({cq} -> {sq})"
         if delta > 0:
+            line = f"+{abs(delta)} {name} ({cq} -> {sq})"
             added_lines.append(line)
         else:
+            line = f"-{abs(delta)} {name} ({cq} -> {sq})"
             removed_lines.append(line)
 
-    return added_lines + removed_lines
-
-
-def list_or_none(value) -> list:
-    if value is None:
-        return []
-    if isinstance(value, list):
-        return value
-    return [value]
-
-
-def metadata_diff_lines(current: dict, staging: dict) -> list[str]:
-    tracked = ["name", "source_url", "colors", "tags", "difficulty_tags", "icon"]
-    lines: list[str] = []
-    for field in tracked:
-        c_val = current.get(field)
-        s_val = staging.get(field)
-        if field in ("tags", "difficulty_tags"):
-            c_val = sorted(str(v).strip() for v in list_or_none(c_val) if str(v).strip())
-            s_val = sorted(str(v).strip() for v in list_or_none(s_val) if str(v).strip())
-        else:
-            c_val = "" if c_val is None else str(c_val).strip()
-            s_val = "" if s_val is None else str(s_val).strip()
-        if c_val != s_val:
-            lines.append(f"~ {field}: {c_val!r} -> {s_val!r}")
-    return lines
+    return added_lines, removed_lines
 
 
 def main() -> int:
@@ -131,48 +106,37 @@ def main() -> int:
     staging = load_manifest(staging_path)
     current = load_manifest(current_path)
 
-    metadata_lines = metadata_diff_lines(current, staging)
-    main_lines = zone_diff_lines("cards", current, staging)
-    side_lines = zone_diff_lines("sideboard", current, staging)
+    main_added_lines, main_removed_lines = zone_diff_lines("cards", current, staging)
+    side_added_lines, side_removed_lines = zone_diff_lines("sideboard", current, staging)
 
     print(f"staging: {staging_path}")
     print(f"current: {current_path}")
     print()
 
-    if metadata_lines:
-        print("metadata")
-        for line in metadata_lines:
+    if main_added_lines or main_removed_lines:
+        print("mainboard")
+        for line in main_added_lines + main_removed_lines:
             print(line)
         print()
 
-    if main_lines:
-        print("mainboard diff")
-        for line in main_lines:
-            print(line)
-        print()
-
-    if side_lines:
-        print("sideboard diff")
-        for line in side_lines:
+    if side_added_lines or side_removed_lines:
+        print("sideboard")
+        for line in side_added_lines + side_removed_lines:
             print(line)
         print()
 
     if (
-        not metadata_lines
-        and not main_lines
-        and not side_lines
+        not main_added_lines
+        and not main_removed_lines
+        and not side_added_lines
+        and not side_removed_lines
     ):
         print("No differences.")
     else:
-        main_added = sum(1 for line in main_lines if line.startswith("+"))
-        main_removed = sum(1 for line in main_lines if line.startswith("-"))
-        side_added = sum(1 for line in side_lines if line.startswith("+"))
-        side_removed = sum(1 for line in side_lines if line.startswith("-"))
         print(
             "Summary "
-            f"(main +{main_added} -{main_removed}, "
-            f"side +{side_added} -{side_removed}, "
-            f"meta {len(metadata_lines)})"
+            f"(main +{len(main_added_lines)} -{len(main_removed_lines)}, "
+            f"side +{len(side_added_lines)} -{len(side_removed_lines)})"
         )
 
     return 0
