@@ -18,10 +18,6 @@
       "qty": 2
     },
     {
-      "name": "Kenku Artificer",
-      "qty": 1
-    },
-    {
       "name": "Drossforge Bridge",
       "qty": 4
     },
@@ -52,10 +48,6 @@
     {
       "name": "Mistvault Bridge",
       "qty": 4
-    },
-    {
-      "name": "Hunter's Blowgun",
-      "qty": 1
     },
     {
       "name": "Myr Enforcer",
@@ -91,6 +83,10 @@
     },
     {
       "name": "Toxin Analysis",
+      "qty": 2
+    },
+    {
+      "name": "Utrom Monitor",
       "qty": 2
     },
     {

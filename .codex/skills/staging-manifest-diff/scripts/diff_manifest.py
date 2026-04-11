@@ -146,13 +146,13 @@ def main() -> int:
         print()
 
     if main_lines:
-        print("mainboard")
+        print("mainboard diff")
         for line in main_lines:
             print(line)
         print()
 
     if side_lines:
-        print("sideboard")
+        print("sideboard diff")
         for line in side_lines:
             print(line)
         print()
