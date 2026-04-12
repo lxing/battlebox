@@ -1,0 +1,130 @@
+{
+  "name": "Faeries",
+  "colors": "ub",
+  "tags": [
+    "tempo"
+  ],
+  "cards": [
+    {
+      "name": "Augur of Bolas",
+      "qty": 4
+    },
+    {
+      "name": "Bojuka Bog",
+      "qty": 2
+    },
+    {
+      "name": "Brainstorm",
+      "qty": 4
+    },
+    {
+      "name": "Cast Down",
+      "qty": 3
+    },
+    {
+      "name": "Contaminated Aquifer",
+      "qty": 4
+    },
+    {
+      "name": "Counterspell",
+      "qty": 4
+    },
+    {
+      "name": "Dispel",
+      "qty": 1
+    },
+    {
+      "name": "Extract a Confession",
+      "qty": 1
+    },
+    {
+      "name": "Faerie Seer",
+      "qty": 4
+    },
+    {
+      "name": "Foreboding Landscape",
+      "qty": 1
+    },
+    {
+      "name": "Island",
+      "qty": 10
+    },
+    {
+      "name": "Lórien Revealed",
+      "qty": 4
+    },
+    {
+      "name": "Moon-Circuit Hacker",
+      "qty": 1
+    },
+    {
+      "name": "Mukotai Ambusher",
+      "qty": 1
+    },
+    {
+      "name": "Ninja of the Deep Hours",
+      "qty": 2
+    },
+    {
+      "name": "Sewer-veillance Cam",
+      "qty": 1
+    },
+    {
+      "name": "Snuff Out",
+      "qty": 4
+    },
+    {
+      "name": "Spell Pierce",
+      "qty": 1
+    },
+    {
+      "name": "Spellstutter Sprite",
+      "qty": 4
+    },
+    {
+      "name": "Suffocating Fumes",
+      "qty": 1
+    },
+    {
+      "name": "Swamp",
+      "qty": 1
+    },
+    {
+      "name": "Thorn of the Black Rose",
+      "qty": 2
+    }
+  ],
+  "sideboard": [
+    {
+      "name": "Annul",
+      "qty": 3
+    },
+    {
+      "name": "Arms of Hadar",
+      "qty": 2
+    },
+    {
+      "name": "Blue Elemental Blast",
+      "qty": 4
+    },
+    {
+      "name": "Hydroblast",
+      "qty": 2
+    },
+    {
+      "name": "Mukotai Ambusher",
+      "qty": 1
+    },
+    {
+      "name": "Murmuring Mystic",
+      "qty": 1
+    },
+    {
+      "name": "Relic of Progenitus",
+      "qty": 2
+    }
+  ],
+  "difficulty_tags": [
+    "expert"
+  ]
+}
