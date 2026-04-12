@@ -101,6 +101,10 @@ function getCardTarget(event) {
   if (decklistEditRoot) {
     return null;
   }
+  const guideEditRoot = event.target.closest('.guide-plan.is-editable');
+  if (guideEditRoot) {
+    return null;
+  }
   const draftSwapModeCard = event.target.closest('#draft-picks-cards .card');
   if (draftSwapModeCard) {
     const draftPane = event.target.closest('#tab-draft');
@@ -1555,10 +1559,11 @@ async function renderDeck(bbSlug, deckSlug, selectedGuide, sortMode, sortDirecti
       if (!isGuideEditActive() || !key) return;
       const normalizedZone = zone === 'in' ? 'in' : 'out';
       const zoneMeta = normalizedZone === 'in' ? deckGuideMeta.sideboard : deckGuideMeta.mainboard;
-      if (!Object.prototype.hasOwnProperty.call(zoneMeta.qtyByKey, key)) return;
       const targetCounts = normalizedZone === 'in' ? guideEditState.inCounts : guideEditState.outCounts;
       const currentQty = Number(targetCounts[key] || 0);
-      const maxQty = Number(zoneMeta.qtyByKey[key] || 0);
+      const hasCurrentCard = Object.prototype.hasOwnProperty.call(zoneMeta.qtyByKey, key);
+      if (!hasCurrentCard && delta > 0) return;
+      const maxQty = hasCurrentCard ? Number(zoneMeta.qtyByKey[key] || 0) : currentQty;
       const nextQty = Math.max(0, Math.min(maxQty, currentQty + delta));
       if (nextQty === currentQty) return;
       if (nextQty > 0) {

@@ -1,2 +1,5 @@
-+ 4 [[Heritage Reclamation]]
-- 4 [[Wellwisher]]
++ 4 [[Monstrous Emergence]]
++ 3 [[Heritage Reclamation]]
+- 1 [[Lead the Stampede]]
+- 4 [[Masked Vandal]]
+- 2 [[Wellwisher]]

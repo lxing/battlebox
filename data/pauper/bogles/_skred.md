@@ -6,3 +6,5 @@
 - 4 [[Gladecover Scout]]
 - 2 [[Silhana Ledgewalker]]
 - 4 [[Slippery Bogle]]
+
+Bogles has a transformative midrange sideboard that is totally optional. Side in the midrange creatures if you suspect your opponent will sideboard out removal.
