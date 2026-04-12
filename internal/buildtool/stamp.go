@@ -107,20 +107,33 @@ func collectBuildScriptSources() ([]string, error) {
 
 func hashBattleboxInputs(bbPath string, fileCache map[string]FileFingerprint) (string, error) {
 	var files []string
-	if err := fs.WalkDir(buildFiles, bbPath, func(path string, d fs.DirEntry, err error) error {
-		if err != nil {
+	collectFiles := func(root string) error {
+		if _, err := buildFiles.Stat(root); err != nil {
+			if os.IsNotExist(err) {
+				return nil
+			}
 			return err
 		}
-		if d.IsDir() {
+		return fs.WalkDir(buildFiles, root, func(path string, d fs.DirEntry, err error) error {
+			if err != nil {
+				return err
+			}
+			if d.IsDir() {
+				return nil
+			}
+			ext := strings.ToLower(filepath.Ext(path))
+			if ext != ".json" && ext != ".md" {
+				return nil
+			}
+			files = append(files, path)
 			return nil
-		}
-		ext := strings.ToLower(filepath.Ext(path))
-		if ext != ".json" && ext != ".md" {
-			return nil
-		}
-		files = append(files, path)
-		return nil
-	}); err != nil {
+		})
+	}
+	if err := collectFiles(bbPath); err != nil {
+		return "", err
+	}
+	stagingPath := filepath.Join("staging", filepath.Base(bbPath))
+	if err := collectFiles(stagingPath); err != nil {
 		return "", err
 	}
 	return hashFiles(files, fileCache)

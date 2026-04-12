@@ -1,17 +1,17 @@
 {
   "name": "Affinity",
-  "source_url": "https://www.mtggoldfish.com/deck/7684512",
+  "source_url": "https://www.mtggoldfish.com/deck/7695997",
   "colors": "ubr",
   "tags": [
     "midrange"
   ],
   "cards": [
     {
-      "name": "Black Mage's Rod",
+      "name": "Blood Fountain",
       "qty": 2
     },
     {
-      "name": "Blood Fountain",
+      "name": "Chromatic Star",
       "qty": 2
     },
     {
@@ -19,12 +19,16 @@
       "qty": 4
     },
     {
+      "name": "Fanatical Offering",
+      "qty": 3
+    },
+    {
       "name": "Galvanic Blast",
       "qty": 4
     },
     {
       "name": "Great Furnace",
-      "qty": 4
+      "qty": 3
     },
     {
       "name": "Ichor Wellspring",
@@ -40,7 +44,7 @@
     },
     {
       "name": "Mistvault Bridge",
-      "qty": 4
+      "qty": 3
     },
     {
       "name": "Myr Enforcer",
@@ -52,7 +56,7 @@
     },
     {
       "name": "Reckoner's Bargain",
-      "qty": 4
+      "qty": 3
     },
     {
       "name": "Refurbished Familiar",
@@ -60,15 +64,15 @@
     },
     {
       "name": "Seat of the Synod",
-      "qty": 2
-    },
-    {
-      "name": "Sewer-veillance Cam",
-      "qty": 2
+      "qty": 3
     },
     {
       "name": "Silverbluff Bridge",
       "qty": 2
+    },
+    {
+      "name": "Swamp",
+      "qty": 1
     },
     {
       "name": "Thoughtcast",
@@ -76,7 +80,7 @@
     },
     {
       "name": "Toxin Analysis",
-      "qty": 3
+      "qty": 2
     },
     {
       "name": "Utrom Monitor",
@@ -84,37 +88,41 @@
     },
     {
       "name": "Vault of Whispers",
-      "qty": 3
+      "qty": 4
     }
   ],
   "sideboard": [
     {
+      "name": "Arms of Hadar",
+      "qty": 1
+    },
+    {
       "name": "Blue Elemental Blast",
-      "qty": 2
+      "qty": 4
+    },
+    {
+      "name": "Envelop",
+      "qty": 1
     },
     {
       "name": "Extract a Confession",
       "qty": 2
     },
     {
-      "name": "Hydroblast",
-      "qty": 4
-    },
-    {
-      "name": "Krark-Clan Shaman",
+      "name": "Gorilla Shaman",
       "qty": 1
     },
     {
-      "name": "Pyroblast",
-      "qty": 4
+      "name": "Negate",
+      "qty": 1
+    },
+    {
+      "name": "Nihil Spellbomb",
+      "qty": 1
     },
     {
       "name": "Red Elemental Blast",
-      "qty": 1
-    },
-    {
-      "name": "Unexpected Fangs",
-      "qty": 1
+      "qty": 4
     }
   ],
   "difficulty_tags": [

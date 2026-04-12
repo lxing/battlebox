@@ -12,7 +12,7 @@ export function normalizeSortDirection(direction) {
 export function normalizeCollapsedMask(mask) {
   const parsed = Number.parseInt(mask, 10);
   if (Number.isNaN(parsed) || parsed < 0) return 0;
-  return parsed & 7;
+  return parsed & 15;
 }
 
 export function normalizeApplySideboard(value) {

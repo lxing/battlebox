@@ -1287,12 +1287,20 @@ async function renderDeck(bbSlug, deckSlug, selectedGuide, sortMode, sortDirecti
 
   const deckPrintings = deck.printings || {};
   const deckDoubleFaced = buildDoubleFacedMap(deck);
+  const deckDiff = deck.diff && typeof deck.diff === 'object' ? deck.diff : null;
+  const diffPrintings = deckDiff && deckDiff.printings && typeof deckDiff.printings === 'object'
+    ? { ...deckPrintings, ...deckDiff.printings }
+    : deckPrintings;
+  const diffDoubleFaced = deckDiff && deckDiff.double_faced && typeof deckDiff.double_faced === 'object'
+    ? { ...deckDoubleFaced, ...deckDiff.double_faced }
+    : deckDoubleFaced;
   const deckGuideMeta = {
     mainboard: buildDeckZoneMeta(deck.cards),
     sideboard: buildDeckZoneMeta(deck.sideboard),
   };
   const deckUI = resolveDeckUI(deck);
   const mdSelf = createMarkdownRenderer([deckPrintings], [deckDoubleFaced]);
+  const mdDiff = createMarkdownRenderer([diffPrintings], [diffDoubleFaced]);
   const primerHtml = deck.primer ? mdSelf.render(deck.primer) : '<em>No primer yet</em>';
   const hasPrimerWarnings = Array.isArray(deck.primer_warnings) && deck.primer_warnings.length > 0;
   const bannedNames = Array.isArray(bb.banned) ? bb.banned : [];
@@ -1344,6 +1352,7 @@ async function renderDeck(bbSlug, deckSlug, selectedGuide, sortMode, sortDirecti
   const decklistOpenAttr = (currentCollapsedMask & 1) === 0 ? ' open' : '';
   const primerOpenAttr = (currentCollapsedMask & 2) === 0 ? ' open' : '';
   const matchupOpenAttr = currentCollapsedMask === 0 || (currentCollapsedMask & 4) === 0 ? ' open' : '';
+  const diffOpenAttr = currentCollapsedMask === 0 || (currentCollapsedMask & 8) === 0 ? ' open' : '';
   const matchupGuidesHtml = guideKeys.length ? `
     <details id="matchup-details" class="collapsible matchup-guides"${matchupOpenAttr}>
       <summary class="panel-title">Matchup Guides</summary>
@@ -1367,6 +1376,21 @@ async function renderDeck(bbSlug, deckSlug, selectedGuide, sortMode, sortDirecti
           </div>
         </div>
         <div class="guide-box" id="guide-box"></div>
+      </div>
+    </details>
+  ` : '';
+  const diffHtml = deckDiff ? `
+    <details id="diff-details" class="collapsible deck-diff"${diffOpenAttr}>
+      <summary class="panel-title">Diff</summary>
+      <div class="collapsible-body diff-panel">
+        <div class="diff-section">
+          <div class="diff-section-title">Mainboard</div>
+          <div class="guide-box">${renderGuideContent(mdDiff, mdDiff, deckDiff.mainboard || {})}</div>
+        </div>
+        <div class="diff-section">
+          <div class="diff-section-title">Sideboard</div>
+          <div class="guide-box">${renderGuideContent(mdDiff, mdDiff, deckDiff.sideboard || {})}</div>
+        </div>
       </div>
     </details>
   ` : '';
@@ -1427,12 +1451,15 @@ async function renderDeck(bbSlug, deckSlug, selectedGuide, sortMode, sortDirecti
         <div class="primer">${primerHtml}</div>
       </div>
     </details>
+
+    ${diffHtml}
   `;
   renderBattleboxPane(headerHtml, bodyHtml);
 
   const decklistDetails = ui.battleboxPane.querySelector('#decklist-details');
   const primerDetails = ui.battleboxPane.querySelector('#primer-details');
   const matchupDetails = ui.battleboxPane.querySelector('#matchup-details');
+  const diffDetails = ui.battleboxPane.querySelector('#diff-details');
   const decklistBody = ui.battleboxPane.querySelector('#decklist-body');
   const sampleHandButton = ui.battleboxPane.querySelector('#sample-hand-open-button');
   const primerEditButton = ui.battleboxPane.querySelector('#primer-edit-button');
@@ -1442,6 +1469,7 @@ async function renderDeck(bbSlug, deckSlug, selectedGuide, sortMode, sortDirecti
     if (decklistDetails && !decklistDetails.open) mask |= 1;
     if (primerDetails && !primerDetails.open) mask |= 2;
     if (matchupDetails && !matchupDetails.open) mask |= 4;
+    if (diffDetails && !diffDetails.open) mask |= 8;
     return mask;
   };
   const bindCollapseSync = (detailsList, onToggle) => {
@@ -1692,11 +1720,11 @@ async function renderDeck(bbSlug, deckSlug, selectedGuide, sortMode, sortDirecti
       });
     }
 
-    bindCollapseSync([decklistDetails, primerDetails, matchupDetails], () => {
+    bindCollapseSync([decklistDetails, primerDetails, matchupDetails, diffDetails], () => {
       updateOpponentLink(select.value);
     });
   } else {
-    bindCollapseSync([decklistDetails, primerDetails]);
+    bindCollapseSync([decklistDetails, primerDetails, diffDetails]);
   }
 
   if (primerEditButton) {

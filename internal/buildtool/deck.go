@@ -1,7 +1,6 @@
 package buildtool
 
 import (
-	"encoding/json"
 	"fmt"
 	"path/filepath"
 	"strings"
@@ -9,17 +8,10 @@ import (
 
 func processDeck(deckPath, slug, battlebox string, printings map[string]string, bbManifest BattleboxManifest) (*Deck, error) {
 	manifestPath := filepath.Join(deckPath, "manifest.json")
-	manifestData, err := buildFiles.ReadFile(manifestPath)
+	manifest, err := loadManifest(manifestPath)
 	if err != nil {
 		return nil, fmt.Errorf("reading manifest: %w", err)
 	}
-
-	var manifest Manifest
-	if err := json.Unmarshal(manifestData, &manifest); err != nil {
-		return nil, fmt.Errorf("parsing manifest: %w", err)
-	}
-	manifest.Icon = strings.TrimSpace(manifest.Icon)
-	manifest.UIProfile = strings.TrimSpace(manifest.UIProfile)
 	draftPresetRefs := append([]string(nil), manifest.DraftPresets...)
 	for _, presetID := range draftPresetRefs {
 		if _, ok := bbManifest.Presets[presetID]; !ok {
@@ -32,30 +24,7 @@ func processDeck(deckPath, slug, battlebox string, printings map[string]string, 
 		return nil, err
 	}
 
-	applyPrintings(manifest.Cards, printings, battlebox, slug, nil)
-	applyPrintings(manifest.Sideboard, printings, battlebox, slug, nil)
-
-	// Add types to cards
-	for i := range manifest.Cards {
-		meta := cardCache[manifest.Cards[i].Printing]
-		manifest.Cards[i].Type = resolveCardType(manifest.Cards[i].Printing, meta.Type)
-		manifest.Cards[i].ManaCost = meta.ManaCost
-		manifest.Cards[i].ManaValue = meta.ManaValue
-		if meta.DoubleFaced != nil {
-			manifest.Cards[i].DoubleFaced = *meta.DoubleFaced
-		}
-	}
-	for i := range manifest.Sideboard {
-		meta := cardCache[manifest.Sideboard[i].Printing]
-		manifest.Sideboard[i].Type = resolveCardType(manifest.Sideboard[i].Printing, meta.Type)
-		manifest.Sideboard[i].ManaCost = meta.ManaCost
-		manifest.Sideboard[i].ManaValue = meta.ManaValue
-		if meta.DoubleFaced != nil {
-			manifest.Sideboard[i].DoubleFaced = *meta.DoubleFaced
-		}
-	}
-	applyCubeLandSubtypes(manifest.Cards, battlebox, bbManifest.LandSubtypes)
-	applyCubeLandSubtypes(manifest.Sideboard, battlebox, bbManifest.LandSubtypes)
+	enrichManifestCards(&manifest, battlebox, slug, printings, bbManifest.LandSubtypes, nil)
 	cardCount := countCards(manifest.Cards)
 
 	deck := &Deck{
@@ -89,6 +58,15 @@ func processDeck(deckPath, slug, battlebox string, printings map[string]string, 
 		}
 	}
 	addBasicLandPrintings(deck.Printings, printings)
+
+	stagedManifest, hasStagedManifest, err := loadStagedManifest(battlebox, slug)
+	if err != nil {
+		return nil, err
+	}
+	if hasStagedManifest {
+		enrichManifestCards(&stagedManifest, battlebox, slug, printings, bbManifest.LandSubtypes, nil)
+		deck.Diff = buildDeckDiff(manifest, stagedManifest)
+	}
 
 	// Read primer
 	primerPath := filepath.Join(deckPath, "primer.md")

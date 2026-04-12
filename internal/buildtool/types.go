@@ -159,6 +159,8 @@ type Deck struct {
 	PrimerWarnings []string `json:"primer_warnings,omitempty"`
 	// Matchup guides keyed by opponent deck slug.
 	Guides map[string]MatchupGuide `json:"guides,omitempty"`
+	// Optional staged manifest diff shown in the deck UI.
+	Diff *DeckDiff `json:"diff,omitempty"`
 }
 
 // BattleboxManifest models a battlebox's source manifest.json file.
@@ -319,6 +321,26 @@ type MatchupGuide struct {
 	Text string `json:"text,omitempty"`
 	// Build-time guide warnings intended for frontend annotation.
 	Warnings []string `json:"warnings,omitempty"`
+}
+
+// DeckDiffPlan stores one zone's staged-vs-current additions and removals.
+type DeckDiffPlan struct {
+	// Cards added in the staged manifest relative to current source.
+	In []string `json:"in,omitempty"`
+	// Cards removed from the staged manifest relative to current source.
+	Out []string `json:"out,omitempty"`
+}
+
+// DeckDiff stores a build-time manifest diff between current and staged source.
+type DeckDiff struct {
+	// Mainboard additions/removals.
+	Mainboard DeckDiffPlan `json:"mainboard"`
+	// Sideboard additions/removals.
+	Sideboard DeckDiffPlan `json:"sideboard"`
+	// Printing map used by frontend card refs in diff entries.
+	Printings map[string]string `json:"printings,omitempty"`
+	// Double-faced lookup used by frontend card previews in diff entries.
+	DoubleFaced map[string]bool `json:"double_faced,omitempty"`
 }
 
 // MissingPrinting tracks cards that lack merged printing mappings.

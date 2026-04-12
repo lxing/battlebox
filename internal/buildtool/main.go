@@ -110,6 +110,7 @@ func Main() {
 		// First pass: collect cards for changed battleboxes only.
 		for _, slug := range dirtySlugs {
 			bbPath := filepath.Join(dataDir, slug)
+			bbManifest := loadBattleboxManifest(filepath.Join(bbPath, "manifest.json"))
 			bbPrintings := mergePrintings(projectPrintings, loadPrintings(filepath.Join(bbPath, printingsFileName)))
 			deckDirs, _ := buildFiles.ReadDir(bbPath)
 
@@ -121,20 +122,15 @@ func Main() {
 				deckPath := filepath.Join(bbPath, deckDir.Name())
 				deckPrintings := mergePrintings(bbPrintings, loadPrintings(filepath.Join(deckPath, printingsFileName)))
 				manifestPath := filepath.Join(deckPath, "manifest.json")
-				manifestData, err := buildFiles.ReadFile(manifestPath)
+				manifest, err := loadManifest(manifestPath)
 				if err != nil {
 					continue
 				}
 
-				var manifest Manifest
-				if err := json.Unmarshal(manifestData, &manifest); err != nil {
-					continue
-				}
-
-				applyPrintings(manifest.Cards, deckPrintings, slug, deckDir.Name(), &missing)
-				applyPrintings(manifest.Sideboard, deckPrintings, slug, deckDir.Name(), &missing)
+				enrichManifestCards(&manifest, slug, deckDir.Name(), deckPrintings, bbManifest.LandSubtypes, &missing)
 				allCards = append(allCards, manifest.Cards...)
 				allCards = append(allCards, manifest.Sideboard...)
+
 			}
 		}
 
