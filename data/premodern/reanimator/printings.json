@@ -1,7 +1,6 @@
 {
   "Akroma, Angel of Wrath": "lgn/1",
   "Animate Dead": "5ed/140",
-  "Dark Ritual": "usg/127",
   "Exhume": "usg/134",
   "Life / Death": "apc/130",
   "Putrid Imp": "tor/77",
@@ -9,9 +8,6 @@
   "Rorix Bladewing": "ons/224",
   "Unmask": "mmq/168",
   "Verdant Force": "tmp/263",
-  "Zombie Infestation": "ody/170",
   "Multani, Maro-Sorcerer": "ulg/107",
-  "Null Rod": "wth/154",
-  "Phantom Nishoba": "dmr/361",
-  "Snuff Out": "mmq/162"
+  "Null Rod": "wth/154"
 }

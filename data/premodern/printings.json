@@ -50,6 +50,7 @@
   "Armageddon": "p02/12",
   "City of Brass": "7ed/327",
   "Counterspell": "dmr/281",
+  "Dark Ritual": "usg/127",
   "Living Wish": "jud/124",
   "Daze": "nem/30",
   "Flooded Strand": "mh3/436",
@@ -99,6 +100,7 @@
   "Mana Short": "7ed/86",
   "Powder Keg": "uds/136",
   "Flash of Insight": "jud/40",
+  "Phantom Nishoba": "dmr/361",
   "Tranquil Thicket": "ons/326",
   "Spiritmonger": "dmr/370",
   "Pernicious Deed": "apc/114",
@@ -119,5 +121,7 @@
   "Glory": "dmr/264",
   "Wonder": "jud/54",
   "Cursed Scroll": "tmp/281",
-  "Silver Knight": "scg/23"
+  "Silver Knight": "scg/23",
+  "Snuff Out": "mmq/162",
+  "Zombie Infestation": "ody/170"
 }

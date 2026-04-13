@@ -53,6 +53,10 @@ def parse_args() -> argparse.Namespace:
         action="store_true",
         help="Prune mirror matchup cells from existing output files without fetching.",
     )
+    parser.add_argument(
+        "--update-slug",
+        help="Point-update a single slug row and its reverse cells from the fetched matrix.",
+    )
     return parser.parse_args()
 
 
@@ -103,6 +107,10 @@ def load_format_config(repo_root: Path, fmt: str) -> FormatConfig:
     if not alias_path.exists():
         raise SystemExit(f"Alias map missing for {fmt}: {alias_path}")
     return FormatConfig(name=fmt, alias_path=alias_path, output_path=output_path)
+
+
+def load_alias_doc(config: FormatConfig) -> Dict[str, object]:
+    return json.loads(config.alias_path.read_text())
 
 
 def enforce_one_to_one(name_to_slug: Dict[str, str], fmt: str) -> None:
@@ -209,7 +217,7 @@ def build_matrix(config: FormatConfig, fetched_at: str) -> Dict[str, object]:
             "  python3 -m pip install cloudscraper beautifulsoup4 lxml"
         ) from exc
 
-    alias_doc = json.loads(config.alias_path.read_text())
+    alias_doc = load_alias_doc(config)
     source = alias_doc["source"]
     name_to_slug = alias_doc["name_to_slug"]
 
@@ -270,8 +278,107 @@ def build_matrix(config: FormatConfig, fetched_at: str) -> Dict[str, object]:
     }
 
 
+def coerce_matchups(
+    raw_matchups: object,
+) -> Dict[str, Dict[str, Dict[str, float | int]]]:
+    if not isinstance(raw_matchups, dict):
+        return {}
+
+    matchups: Dict[str, Dict[str, Dict[str, float | int]]] = {}
+    for from_slug, row in raw_matchups.items():
+        if not isinstance(from_slug, str) or not isinstance(row, dict):
+            continue
+        next_row = {
+            to_slug: cell
+            for to_slug, cell in row.items()
+            if isinstance(to_slug, str) and isinstance(cell, dict)
+        }
+        if next_row:
+            matchups[from_slug] = next_row
+    return matchups
+
+
+def merge_point_update(
+    config: FormatConfig,
+    existing_payload: Dict[str, object],
+    fresh_payload: Dict[str, object],
+    target_slug: str,
+) -> Dict[str, object]:
+    alias_doc = load_alias_doc(config)
+    name_to_slug = alias_doc["name_to_slug"]
+    slugs = sorted(set(name_to_slug.values()))
+    if target_slug not in slugs:
+        raise SystemExit(
+            f"Unknown slug for {config.name}: {target_slug!r}. "
+            f"Add it to {config.alias_path} first."
+        )
+
+    existing_matchups = coerce_matchups(existing_payload.get("matchups"))
+    if not existing_matchups:
+        raise SystemExit(
+            f"Cannot point-update {target_slug!r} for {config.name}: "
+            f"existing matrix missing or empty at {config.output_path}. "
+            "Run a full refresh first."
+        )
+
+    fresh_matchups = coerce_matchups(fresh_payload.get("matchups"))
+    fresh_target_row = fresh_matchups.get(target_slug, {})
+    fresh_incoming = {
+        from_slug: row[target_slug]
+        for from_slug, row in fresh_matchups.items()
+        if from_slug != target_slug and target_slug in row
+    }
+    if not fresh_target_row and not fresh_incoming:
+        raise SystemExit(
+            f"Fetched matrix for {config.name} does not contain any data for slug "
+            f"{target_slug!r}; refusing to clobber the existing point-in-time row."
+        )
+
+    merged_matchups = {from_slug: dict(row) for from_slug, row in existing_matchups.items()}
+
+    if fresh_target_row:
+        merged_matchups[target_slug] = dict(fresh_target_row)
+    else:
+        merged_matchups.pop(target_slug, None)
+
+    all_other_rows = set(merged_matchups) | set(fresh_matchups)
+    all_other_rows.discard(target_slug)
+    for from_slug in all_other_rows:
+        merged_row = dict(merged_matchups.get(from_slug, {}))
+        fresh_cell = fresh_matchups.get(from_slug, {}).get(target_slug)
+        if fresh_cell is None:
+            merged_row.pop(target_slug, None)
+        else:
+            merged_row[target_slug] = fresh_cell
+
+        if merged_row:
+            merged_matchups[from_slug] = merged_row
+        else:
+            merged_matchups.pop(from_slug, None)
+
+    merged_matchups = prune_mirror_matchups(merged_matchups)
+    merged_matchups = {slug: row for slug, row in merged_matchups.items() if row}
+
+    payload = dict(existing_payload)
+    payload["format"] = fresh_payload.get("format", config.name)
+    payload["source"] = fresh_payload.get("source", alias_doc["source"])
+    payload["matchups"] = merged_matchups
+    payload["totals"] = compute_totals(merged_matchups, slugs)
+
+    point_updates = payload.get("point_updates")
+    if not isinstance(point_updates, dict):
+        point_updates = {}
+    point_updates[target_slug] = fresh_payload.get("fetched_at")
+    payload["point_updates"] = dict(sorted(point_updates.items()))
+
+    if "fetched_at" not in payload and fresh_payload.get("fetched_at"):
+        payload["fetched_at"] = fresh_payload["fetched_at"]
+
+    return payload
+
+
 def prune_existing_matrix(config: FormatConfig, dry_run: bool) -> tuple[int, int]:
-    alias_doc = json.loads(config.alias_path.read_text())
+    alias_doc = load_alias_doc(config)
     name_to_slug = alias_doc["name_to_slug"]
     slugs = sorted(set(name_to_slug.values()))
 
@@ -279,19 +386,7 @@ def prune_existing_matrix(config: FormatConfig, dry_run: bool) -> tuple[int, int
         raise SystemExit(f"Output matrix missing for {config.name}: {config.output_path}")
 
     payload = json.loads(config.output_path.read_text())
-    raw_matchups = payload.get("matchups", {})
-    if not isinstance(raw_matchups, dict):
-        raise SystemExit(f"Invalid matchups payload in {config.output_path}")
-
-    matchups: Dict[str, Dict[str, Dict[str, float | int]]] = {}
-    for from_slug, row in raw_matchups.items():
-        if not isinstance(row, dict):
-            continue
-        matchups[from_slug] = {
-            to_slug: cell
-            for to_slug, cell in row.items()
-            if isinstance(cell, dict)
-        }
+    matchups = coerce_matchups(payload.get("matchups"))
 
     matchups = prune_mirror_matchups(matchups)
     payload["matchups"] = matchups
@@ -310,6 +405,11 @@ def main() -> int:
     repo_root = args.repo_root or find_repo_root(Path(__file__).resolve())
     formats = args.formats or ["pauper", "premodern"]
 
+    if args.prune_existing and args.update_slug:
+        raise SystemExit("--prune-existing cannot be combined with --update-slug.")
+    if args.update_slug and len(formats) != 1:
+        raise SystemExit("--update-slug requires exactly one target format.")
+
     fetched_at = (
         datetime.now(timezone.utc).replace(microsecond=0).isoformat().replace("+00:00", "Z")
     )
@@ -322,6 +422,40 @@ def main() -> int:
             continue
 
         payload = build_matrix(config, fetched_at)
+
+        if args.update_slug:
+            if not config.output_path.exists():
+                raise SystemExit(
+                    f"Cannot point-update {args.update_slug!r} for {fmt}: "
+                    f"existing matrix not found at {config.output_path}. "
+                    "Run a full refresh first."
+                )
+            existing_payload = json.loads(config.output_path.read_text())
+            payload = merge_point_update(config, existing_payload, payload, args.update_slug)
+            rows = len(payload["matchups"])
+            cells = sum(len(v) for v in payload["matchups"].values())
+            touched_rows = sum(
+                1
+                for from_slug, row in payload["matchups"].items()
+                if from_slug == args.update_slug or args.update_slug in row
+            )
+            touched_cells = sum(
+                1
+                for from_slug, row in payload["matchups"].items()
+                for to_slug in row
+                if from_slug == args.update_slug or to_slug == args.update_slug
+            )
+
+            if not args.dry_run:
+                config.output_path.write_text(json.dumps(payload, indent=2, sort_keys=True) + "\n")
+
+            print(
+                f"{fmt}: point-update slug={args.update_slug} rows={rows} cells={cells} "
+                f"touched_rows={touched_rows} touched_cells={touched_cells} "
+                f"output={config.output_path}"
+            )
+            continue
+
         rows = len(payload["matchups"])
         cells = sum(len(v) for v in payload["matchups"].values())
 
