@@ -1,0 +1,98 @@
+{
+  "name": "Black Sacrifice",
+  "colors": "b",
+  "tags": [
+    "combo"
+  ],
+  "cards": [
+    {
+      "name": "Accursed Marauder",
+      "qty": 2
+    },
+    {
+      "name": "Bloodthrone Vampire",
+      "qty": 4
+    },
+    {
+      "name": "Carrion Feeder",
+      "qty": 4
+    },
+    {
+      "name": "Infestation Sage",
+      "qty": 4
+    },
+    {
+      "name": "Mortician Beetle",
+      "qty": 4
+    },
+    {
+      "name": "Nested Shambler",
+      "qty": 4
+    },
+    {
+      "name": "Nezumi Linkbreaker",
+      "qty": 4
+    },
+    {
+      "name": "Rite of Consumption",
+      "qty": 3
+    },
+    {
+      "name": "Sadistic Glee",
+      "qty": 2
+    },
+    {
+      "name": "Shambling Ghast",
+      "qty": 2
+    },
+    {
+      "name": "Snuff Out",
+      "qty": 3
+    },
+    {
+      "name": "Supernatural Stamina",
+      "qty": 4
+    },
+    {
+      "name": "Swamp",
+      "qty": 17
+    },
+    {
+      "name": "Unearth",
+      "qty": 3
+    }
+  ],
+  "sideboard": [
+    {
+      "name": "Accursed Marauder",
+      "qty": 2
+    },
+    {
+      "name": "Drown in Sorrow",
+      "qty": 2
+    },
+    {
+      "name": "Mesmeric Fiend",
+      "qty": 2
+    },
+    {
+      "name": "Mutagenic Growth",
+      "qty": 2
+    },
+    {
+      "name": "Nihil Spellbomb",
+      "qty": 1
+    },
+    {
+      "name": "Rotten Reunion",
+      "qty": 2
+    },
+    {
+      "name": "Tragic Slip",
+      "qty": 4
+    }
+  ],
+  "difficulty_tags": [
+    "intermediate"
+  ]
+}

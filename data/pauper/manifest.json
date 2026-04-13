@@ -67,38 +67,6 @@
       "text": ""
     },
     {
-      "id": "kenku-bridge",
-      "types": [
-        "value"
-      ],
-      "cards": [
-        [
-          "Kenku Artificer"
-        ],
-        [
-          "Drossforge Bridge",
-          "Mistvault Bridge"
-        ]
-      ],
-      "text": ""
-    },
-    {
-      "id": "toxic-krark",
-      "types": [
-        "finisher"
-      ],
-      "cards": [
-        [
-          "Krark-Clan Shaman"
-        ],
-        [
-          "Toxin Analysis",
-          "Hunter's Blowgun"
-        ]
-      ],
-      "text": ""
-    },
-    {
       "id": "ephemerate",
       "types": [
         "value"
@@ -129,26 +97,6 @@
         [
           "Priest of Titania",
           "Wellwisher"
-        ]
-      ],
-      "text": ""
-    },
-    {
-      "id": "sky-inspector",
-      "types": [
-        "value"
-      ],
-      "cards": [
-        [
-          "Thraben Inspector",
-          "Novice Inspector",
-          "Kor Skyfisher"
-        ],
-        [
-          "Inspiring Overseer",
-          "Refurbished Familiar",
-          "Lembas",
-          "Tithing Blade / Consuming Sepulcher"
         ]
       ],
       "text": ""
