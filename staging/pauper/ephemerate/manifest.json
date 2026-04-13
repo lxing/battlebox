@@ -1,34 +1,34 @@
 {
   "name": "Ephemerate",
-  "source_url": "https://www.mtggoldfish.com/deck/7232863",
+  "source_url": "https://www.mtggoldfish.com/deck/7728906",
   "colors": "wur",
   "tags": [
     "control"
   ],
   "cards": [
     {
+      "name": "Alpine Meadow",
+      "qty": 1
+    },
+    {
       "name": "Archaeomancer",
       "qty": 2
     },
     {
       "name": "Augur of Bolas",
-      "qty": 3
+      "qty": 4
+    },
+    {
+      "name": "Bender's Waterskin",
+      "qty": 2
     },
     {
       "name": "Brainstorm",
-      "qty": 4
-    },
-    {
-      "name": "Cleansing Wildfire",
-      "qty": 4
+      "qty": 1
     },
     {
       "name": "Counterspell",
       "qty": 4
-    },
-    {
-      "name": "Destroy Evil",
-      "qty": 1
     },
     {
       "name": "Dispel",
@@ -36,10 +36,10 @@
     },
     {
       "name": "Ephemerate",
-      "qty": 3
+      "qty": 4
     },
     {
-      "name": "Fire / Ice",
+      "name": "Ethereal Haze",
       "qty": 1
     },
     {
@@ -47,40 +47,40 @@
       "qty": 1
     },
     {
+      "name": "Late to Dinner",
+      "qty": 1
+    },
+    {
       "name": "Lightning Bolt",
       "qty": 2
     },
     {
-      "name": "Lorien Revealed",
+      "name": "Lórien Revealed",
       "qty": 4
     },
     {
       "name": "Mulldrifter",
-      "qty": 3
+      "qty": 4
     },
     {
       "name": "Murmuring Mystic",
-      "qty": 2
+      "qty": 1
     },
     {
       "name": "Perilous Landscape",
-      "qty": 2
-    },
-    {
-      "name": "Rustvale Bridge",
       "qty": 4
     },
     {
-      "name": "Silverbluff Bridge",
-      "qty": 4
-    },
-    {
-      "name": "Skred",
+      "name": "Preordain",
       "qty": 3
     },
     {
+      "name": "Skred",
+      "qty": 4
+    },
+    {
       "name": "Snow-Covered Island",
-      "qty": 6
+      "qty": 7
     },
     {
       "name": "Snow-Covered Mountain",
@@ -100,37 +100,37 @@
     },
     {
       "name": "Volatile Fjord",
-      "qty": 1
+      "qty": 4
     }
   ],
   "sideboard": [
     {
       "name": "Annul",
-      "qty": 2
+      "qty": 1
     },
     {
-      "name": "Breath Weapon",
-      "qty": 2
+      "name": "Cast into the Fire",
+      "qty": 3
+    },
+    {
+      "name": "Cleansing Wildfire",
+      "qty": 1
     },
     {
       "name": "Envelop",
-      "qty": 2
+      "qty": 1
+    },
+    {
+      "name": "Ethereal Haze",
+      "qty": 1
     },
     {
       "name": "Hydroblast",
-      "qty": 3
+      "qty": 4
     },
     {
       "name": "Pyroblast",
       "qty": 4
-    },
-    {
-      "name": "Stonehorn Dignitary",
-      "qty": 1
-    },
-    {
-      "name": "Union of the Third Path",
-      "qty": 1
     }
   ],
   "difficulty_tags": [

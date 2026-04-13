@@ -1,0 +1,134 @@
+{
+  "name": "Tron",
+  "colors": "rg",
+  "tags": [
+    "control"
+  ],
+  "cards": [
+    {
+      "name": "Ancient Stirrings",
+      "qty": 2
+    },
+    {
+      "name": "Bojuka Bog",
+      "qty": 1
+    },
+    {
+      "name": "Boulderbranch Golem",
+      "qty": 4
+    },
+    {
+      "name": "Bramble Wurm",
+      "qty": 4
+    },
+    {
+      "name": "Candy Trail",
+      "qty": 4
+    },
+    {
+      "name": "Crop Rotation",
+      "qty": 2
+    },
+    {
+      "name": "Crystal Grotto",
+      "qty": 2
+    },
+    {
+      "name": "Expedition Map",
+      "qty": 4
+    },
+    {
+      "name": "Fang Dragon",
+      "qty": 2
+    },
+    {
+      "name": "Forest",
+      "qty": 2
+    },
+    {
+      "name": "Generous Ent",
+      "qty": 3
+    },
+    {
+      "name": "Maelstrom Colossus",
+      "qty": 4
+    },
+    {
+      "name": "Pinnacle Kill-Ship",
+      "qty": 4
+    },
+    {
+      "name": "Prophetic Prism",
+      "qty": 2
+    },
+    {
+      "name": "Relic of Progenitus",
+      "qty": 3
+    },
+    {
+      "name": "Unfathomable Truths",
+      "qty": 2
+    },
+    {
+      "name": "Urza's Mine",
+      "qty": 4
+    },
+    {
+      "name": "Urza's Power Plant",
+      "qty": 4
+    },
+    {
+      "name": "Urza's Tower",
+      "qty": 4
+    },
+    {
+      "name": "Wooded Ridgeline",
+      "qty": 1
+    },
+    {
+      "name": "Wretched Gryff",
+      "qty": 2
+    }
+  ],
+  "sideboard": [
+    {
+      "name": "Deglamer",
+      "qty": 3
+    },
+    {
+      "name": "Disturbed Burial",
+      "qty": 1
+    },
+    {
+      "name": "Fiery Cannonade",
+      "qty": 2
+    },
+    {
+      "name": "Kaervek's Torch",
+      "qty": 1
+    },
+    {
+      "name": "Monstrous Emergence",
+      "qty": 3
+    },
+    {
+      "name": "Relic of Progenitus",
+      "qty": 1
+    },
+    {
+      "name": "Serene Heart",
+      "qty": 2
+    },
+    {
+      "name": "Staunch Throneguard",
+      "qty": 1
+    },
+    {
+      "name": "Whispersilk Cloak",
+      "qty": 1
+    }
+  ],
+  "difficulty_tags": [
+    "beginner"
+  ]
+}
