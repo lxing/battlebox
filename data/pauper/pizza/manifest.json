@@ -1,5 +1,6 @@
 {
   "name": "Pizza",
+  "sleeve_color": "Great Wave",
   "source_url": "https://www.mtggoldfish.com/deck/7696007",
   "colors": "urg",
   "tags": [
@@ -9,10 +10,6 @@
     {
       "name": "Abundant Growth",
       "qty": 4
-    },
-    {
-      "name": "Banishing Knack",
-      "qty": 1
     },
     {
       "name": "Bountiful Landscape",
@@ -76,7 +73,7 @@
     },
     {
       "name": "Retraction Helix",
-      "qty": 2
+      "qty": 3
     },
     {
       "name": "Tamiyo's Safekeeping",
