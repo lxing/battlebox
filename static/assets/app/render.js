@@ -20,17 +20,17 @@ const manaSymbolFiles = (() => {
 
 function renderManaTokenSymbol(token) {
   if (/^[0-9]$/.test(token)) {
-    return `<img class="mana-cost-symbol" src="/assets/mana/${token}.svg" alt="{${token}}" loading="lazy" decoding="async">`;
+    return `<img class="mana-cost-symbol" src="/assets/mana/${token}.svg" alt="{${token}}">`;
   }
   if (token === 'X') {
-    return `<img class="mana-cost-symbol" src="/assets/mana/x.svg" alt="{X}" loading="lazy" decoding="async">`;
+    return `<img class="mana-cost-symbol" src="/assets/mana/x.svg" alt="{X}">`;
   }
   if (token === 'W' || token === 'U' || token === 'B' || token === 'R' || token === 'G') {
-    return `<img class="mana-cost-symbol" src="/assets/mana/${token.toLowerCase()}.svg" alt="{${token}}" loading="lazy" decoding="async">`;
+    return `<img class="mana-cost-symbol" src="/assets/mana/${token.toLowerCase()}.svg" alt="{${token}}">`;
   }
   const symbolFile = manaSymbolFiles[token];
   if (symbolFile) {
-    return `<img class="mana-cost-symbol" src="/assets/mana/${symbolFile}.svg" alt="{${token}}" loading="lazy" decoding="async">`;
+    return `<img class="mana-cost-symbol" src="/assets/mana/${symbolFile}.svg" alt="{${token}}">`;
   }
   return '';
 }
