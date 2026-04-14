@@ -1,0 +1,5 @@
++ 4 [[Relic of Progenitus]]
+- 1 [[Blood Fountain]]
+- 1 [[Campfire]]
+- 1 [[Cast Down]]
+- 1 [[Thorn of the Black Rose]]

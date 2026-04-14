@@ -1,4 +1,4 @@
-1 + 1 + 1 = 7. Use this crime against math to outmuscle every other fair deck. There are many ways to build Tron, including flicker loops and sacrifice combos, but in the interest of time this variant packs chunky creatures to smash face. Short of combo decks, your endgame is unstoppable.
+1 + 1 + 1 = 7. Use this crime against math to outmuscle every other fair deck. There are many ways to build Tron, including flicker loops and sacrifice combos, but in the interest of time and fun this variant packs chunky creatures to smash face. Short of combo decks, your endgame is unstoppable.
 
 ### Early game
 Asssemble Tron. [[Expedition Map]], [[Ancient Stirrings]], and [[Crop Rotation]] are your best openers, and [[Candy Trail]] helps keep sketchy hands functional. Use [[Relic of Progenitus]] and [[Bojuka Bog]] proactively when they matter, but most games are about hitting Tron first.

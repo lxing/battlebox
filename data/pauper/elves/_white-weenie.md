@@ -1,3 +1,4 @@
-+ 4 [[Essence Warden]]
-- 2 [[Avenging Hunter]]
-- 4 [[Masked Vandal]]
++ 2 [[Viridian Longbow]]
++ 4 [[Vitu-Ghazi Inspector]]
+- 3 [[Avenging Hunter]]
+- 3 [[Masked Vandal]]

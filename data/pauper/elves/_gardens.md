@@ -1,2 +1,1 @@
-+ 2 [[Pulse of Murasa]]
-- 2 [[Masked Vandal]]
+<!-- guide_status: no_sideboard -->

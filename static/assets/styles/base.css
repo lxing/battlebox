@@ -119,8 +119,7 @@ body {
 }
 
 .tab-pane-matrix {
-  overflow-y: auto;
-  overflow-x: auto;
+  overflow: hidden;
   padding-bottom: var(--pane-gap);
 }
 
