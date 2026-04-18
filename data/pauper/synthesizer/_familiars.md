@@ -1,0 +1,6 @@
++ 4 [[Red Elemental Blast]]
++ 2 [[Relic of Progenitus]]
+- 1 [[Burning-Tree Emissary]]
+- 1 [[End the Festivities]]
+- 3 [[Experimental Synthesizer]]
+- 1 [[Rally at the Hornburg]]

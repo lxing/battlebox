@@ -1,0 +1,5 @@
++ 2 [[End the Festivities]]
++ 4 [[Red Elemental Blast]]
+- 1 [[Burning-Tree Emissary]]
+- 2 [[Chain Lightning]]
+- 3 [[Experimental Synthesizer]]
