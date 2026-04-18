@@ -1,7 +1,7 @@
 {
   "name": "Black Midrange",
   "sleeve_color": "Black",
-  "source_url": "https://www.mtggoldfish.com/deck/7639674",
+  "source_url": "https://www.mtggoldfish.com/deck/7734065",
   "colors": "b",
   "tags": [
     "midrange"
@@ -9,15 +9,19 @@
   "cards": [
     {
       "name": "Bane of the Living",
-      "qty": 2
-    },
-    {
-      "name": "Barren Moor",
-      "qty": 2
+      "qty": 1
     },
     {
       "name": "Cabal Therapy",
       "qty": 4
+    },
+    {
+      "name": "Chainer's Edict",
+      "qty": 1
+    },
+    {
+      "name": "Cursed Scroll",
+      "qty": 2
     },
     {
       "name": "Dark Ritual",
@@ -29,7 +33,7 @@
     },
     {
       "name": "Duress",
-      "qty": 3
+      "qty": 4
     },
     {
       "name": "Graveborn Muse",
@@ -45,31 +49,31 @@
     },
     {
       "name": "Nantuko Shade",
-      "qty": 3
-    },
-    {
-      "name": "Phyrexian Arena",
-      "qty": 3
-    },
-    {
-      "name": "Ravenous Rats",
       "qty": 4
     },
     {
-      "name": "Smother",
+      "name": "Ravenous Rats",
       "qty": 3
+    },
+    {
+      "name": "Smother",
+      "qty": 2
     },
     {
       "name": "Snuff Out",
       "qty": 1
     },
     {
+      "name": "Spawning Pool",
+      "qty": 1
+    },
+    {
       "name": "Swamp",
-      "qty": 14
+      "qty": 17
     },
     {
       "name": "Wasteland",
-      "qty": 3
+      "qty": 2
     },
     {
       "name": "Withered Wretch",
@@ -78,12 +82,20 @@
   ],
   "sideboard": [
     {
-      "name": "Drain Life",
-      "qty": 2
+      "name": "Cursed Scroll",
+      "qty": 1
     },
     {
-      "name": "Duress",
+      "name": "Diabolic Edict",
       "qty": 1
+    },
+    {
+      "name": "Drain Life",
+      "qty": 1
+    },
+    {
+      "name": "Dystopia",
+      "qty": 4
     },
     {
       "name": "Engineered Plague",
@@ -94,15 +106,7 @@
       "qty": 1
     },
     {
-      "name": "Gloom",
-      "qty": 2
-    },
-    {
-      "name": "Powder Keg",
-      "qty": 1
-    },
-    {
-      "name": "Spinning Darkness",
+      "name": "Plaguebearer",
       "qty": 1
     },
     {
@@ -110,8 +114,8 @@
       "qty": 1
     },
     {
-      "name": "Zuran Orb",
-      "qty": 2
+      "name": "Vendetta",
+      "qty": 1
     }
   ],
   "difficulty_tags": [

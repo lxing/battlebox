@@ -1,7 +1,6 @@
 {
   "name": "Landstill",
   "source_url": "https://www.mtggoldfish.com/deck/7736608",
-  "sleeve_color": "Turquoise",
   "colors": "wu",
   "tags": [
     "control"
@@ -57,7 +56,7 @@
     },
     {
       "name": "Mana Leak",
-      "qty": 4
+      "qty": 3
     },
     {
       "name": "Mishra's Factory",
@@ -74,6 +73,10 @@
     {
       "name": "Powder Keg",
       "qty": 2
+    },
+    {
+      "name": "Prohibit",
+      "qty": 1
     },
     {
       "name": "Standstill",

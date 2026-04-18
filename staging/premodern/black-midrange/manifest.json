@@ -1,11 +1,15 @@
 {
   "name": "Black Midrange",
-  "source_url": "https://www.mtggoldfish.com/deck/7669087",
+  "source_url": "https://www.mtggoldfish.com/deck/7734065",
   "colors": "b",
   "tags": [
     "midrange"
   ],
   "cards": [
+    {
+      "name": "Bane of the Living",
+      "qty": 1
+    },
     {
       "name": "Cabal Therapy",
       "qty": 4
@@ -16,7 +20,7 @@
     },
     {
       "name": "Cursed Scroll",
-      "qty": 3
+      "qty": 2
     },
     {
       "name": "Dark Ritual",
@@ -44,11 +48,11 @@
     },
     {
       "name": "Nantuko Shade",
-      "qty": 3
+      "qty": 4
     },
     {
       "name": "Ravenous Rats",
-      "qty": 4
+      "qty": 3
     },
     {
       "name": "Smother",
@@ -64,11 +68,11 @@
     },
     {
       "name": "Swamp",
-      "qty": 16
+      "qty": 17
     },
     {
       "name": "Wasteland",
-      "qty": 3
+      "qty": 2
     },
     {
       "name": "Withered Wretch",
@@ -76,6 +80,10 @@
     }
   ],
   "sideboard": [
+    {
+      "name": "Cursed Scroll",
+      "qty": 1
+    },
     {
       "name": "Diabolic Edict",
       "qty": 1
@@ -86,30 +94,26 @@
     },
     {
       "name": "Dystopia",
-      "qty": 3
+      "qty": 4
     },
     {
       "name": "Engineered Plague",
       "qty": 4
     },
     {
-      "name": "Funeral Charm",
-      "qty": 1
-    },
-    {
-      "name": "Gloom",
-      "qty": 2
-    },
-    {
       "name": "Graveborn Muse",
       "qty": 1
     },
     {
-      "name": "Powder Keg",
+      "name": "Plaguebearer",
       "qty": 1
     },
     {
       "name": "Tormod's Crypt",
+      "qty": 1
+    },
+    {
+      "name": "Vendetta",
       "qty": 1
     }
   ],

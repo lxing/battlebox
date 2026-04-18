@@ -1,0 +1,111 @@
+{
+  "name": "Stiflenought",
+  "source_url": "https://www.mtggoldfish.com/deck/7738063",
+  "colors": "u",
+  "tags": [
+    "tempo"
+  ],
+  "cards": [
+    {
+      "name": "Chain of Vapor",
+      "qty": 1
+    },
+    {
+      "name": "Counterspell",
+      "qty": 4
+    },
+    {
+      "name": "Daze",
+      "qty": 2
+    },
+    {
+      "name": "Flash of Insight",
+      "qty": 2
+    },
+    {
+      "name": "Foil",
+      "qty": 4
+    },
+    {
+      "name": "Gush",
+      "qty": 4
+    },
+    {
+      "name": "Impulse",
+      "qty": 2
+    },
+    {
+      "name": "Island",
+      "qty": 17
+    },
+    {
+      "name": "Misdirection",
+      "qty": 1
+    },
+    {
+      "name": "Opt",
+      "qty": 4
+    },
+    {
+      "name": "Peek",
+      "qty": 1
+    },
+    {
+      "name": "Phyrexian Dreadnought",
+      "qty": 4
+    },
+    {
+      "name": "Portent",
+      "qty": 4
+    },
+    {
+      "name": "Powder Keg",
+      "qty": 1
+    },
+    {
+      "name": "Stifle",
+      "qty": 4
+    },
+    {
+      "name": "Thwart",
+      "qty": 1
+    },
+    {
+      "name": "Vision Charm",
+      "qty": 4
+    }
+  ],
+  "sideboard": [
+    {
+      "name": "Annul",
+      "qty": 3
+    },
+    {
+      "name": "Blue Elemental Blast",
+      "qty": 2
+    },
+    {
+      "name": "Brain Freeze",
+      "qty": 2
+    },
+    {
+      "name": "Chain of Vapor",
+      "qty": 1
+    },
+    {
+      "name": "Essence Flare",
+      "qty": 3
+    },
+    {
+      "name": "Hydroblast",
+      "qty": 2
+    },
+    {
+      "name": "Tsabo's Web",
+      "qty": 2
+    }
+  ],
+  "difficulty_tags": [
+    "expert"
+  ]
+}

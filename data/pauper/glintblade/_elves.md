@@ -1,2 +1,5 @@
-+2 [[Arms of Hadar]]
--2 [[Thraben Charm]]
++ 2 [[Arms of Hadar]]
++ 1 [[Suffocating Fumes]]
+- 1 [[Mukotai Ambusher]]
+- 1 [[Omen of the Dead]]
+- 1 [[Thraben Charm]]

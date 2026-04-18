@@ -1,17 +1,17 @@
 {
   "name": "Affinity",
-  "source_url": "https://www.mtggoldfish.com/deck/7695997",
+  "source_url": "https://www.mtggoldfish.com/deck/7737663",
   "colors": "ubr",
   "tags": [
     "midrange"
   ],
   "cards": [
     {
-      "name": "Blood Fountain",
+      "name": "Black Mage's Rod",
       "qty": 2
     },
     {
-      "name": "Chromatic Star",
+      "name": "Blood Fountain",
       "qty": 2
     },
     {
@@ -19,16 +19,12 @@
       "qty": 4
     },
     {
-      "name": "Fanatical Offering",
-      "qty": 3
-    },
-    {
       "name": "Galvanic Blast",
       "qty": 4
     },
     {
       "name": "Great Furnace",
-      "qty": 3
+      "qty": 2
     },
     {
       "name": "Ichor Wellspring",
@@ -44,7 +40,11 @@
     },
     {
       "name": "Mistvault Bridge",
-      "qty": 3
+      "qty": 4
+    },
+    {
+      "name": "Mountain",
+      "qty": 1
     },
     {
       "name": "Myr Enforcer",
@@ -56,7 +56,7 @@
     },
     {
       "name": "Reckoner's Bargain",
-      "qty": 3
+      "qty": 4
     },
     {
       "name": "Refurbished Familiar",
@@ -64,15 +64,15 @@
     },
     {
       "name": "Seat of the Synod",
-      "qty": 3
+      "qty": 2
+    },
+    {
+      "name": "Sewer-veillance Cam",
+      "qty": 2
     },
     {
       "name": "Silverbluff Bridge",
       "qty": 2
-    },
-    {
-      "name": "Swamp",
-      "qty": 1
     },
     {
       "name": "Thoughtcast",
@@ -93,36 +93,32 @@
   ],
   "sideboard": [
     {
-      "name": "Arms of Hadar",
-      "qty": 1
-    },
-    {
       "name": "Blue Elemental Blast",
-      "qty": 4
-    },
-    {
-      "name": "Envelop",
-      "qty": 1
+      "qty": 2
     },
     {
       "name": "Extract a Confession",
       "qty": 2
     },
     {
-      "name": "Gorilla Shaman",
+      "name": "Hydroblast",
+      "qty": 4
+    },
+    {
+      "name": "Krark-Clan Shaman",
       "qty": 1
     },
     {
-      "name": "Negate",
-      "qty": 1
-    },
-    {
-      "name": "Nihil Spellbomb",
-      "qty": 1
+      "name": "Pyroblast",
+      "qty": 4
     },
     {
       "name": "Red Elemental Blast",
-      "qty": 4
+      "qty": 1
+    },
+    {
+      "name": "Unexpected Fangs",
+      "qty": 1
     }
   ],
   "difficulty_tags": [

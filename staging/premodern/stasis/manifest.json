@@ -1,0 +1,107 @@
+{
+  "name": "Stasis",
+  "source_url": "https://www.mtggoldfish.com/deck/7734088",
+  "colors": "u",
+  "tags": [
+    "control"
+  ],
+  "cards": [
+    {
+      "name": "Black Vise",
+      "qty": 4
+    },
+    {
+      "name": "Chain of Vapor",
+      "qty": 4
+    },
+    {
+      "name": "Counterspell",
+      "qty": 4
+    },
+    {
+      "name": "Daze",
+      "qty": 2
+    },
+    {
+      "name": "Fire / Ice",
+      "qty": 4
+    },
+    {
+      "name": "Forsaken City",
+      "qty": 4
+    },
+    {
+      "name": "Gush",
+      "qty": 4
+    },
+    {
+      "name": "Impulse",
+      "qty": 3
+    },
+    {
+      "name": "Island",
+      "qty": 14
+    },
+    {
+      "name": "Mana Short",
+      "qty": 2
+    },
+    {
+      "name": "Portent",
+      "qty": 4
+    },
+    {
+      "name": "Shivan Reef",
+      "qty": 4
+    },
+    {
+      "name": "Stasis",
+      "qty": 4
+    },
+    {
+      "name": "Thwart",
+      "qty": 3
+    }
+  ],
+  "sideboard": [
+    {
+      "name": "Annul",
+      "qty": 3
+    },
+    {
+      "name": "Blue Elemental Blast",
+      "qty": 1
+    },
+    {
+      "name": "Cursed Totem",
+      "qty": 1
+    },
+    {
+      "name": "Gaea's Blessing",
+      "qty": 2
+    },
+    {
+      "name": "Hydroblast",
+      "qty": 1
+    },
+    {
+      "name": "Mana Short",
+      "qty": 1
+    },
+    {
+      "name": "Overload",
+      "qty": 3
+    },
+    {
+      "name": "Pyroclasm",
+      "qty": 2
+    },
+    {
+      "name": "Tsabo's Web",
+      "qty": 1
+    }
+  ],
+  "difficulty_tags": [
+    "expert"
+  ]
+}

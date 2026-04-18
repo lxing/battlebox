@@ -1,6 +1,6 @@
 {
   "name": "White Weenie",
-  "source_url": "https://www.mtggoldfish.com/deck/7639452",
+  "source_url": "https://www.mtggoldfish.com/deck/7704352",
   "colors": "w",
   "tags": [
     "aggro"
@@ -69,6 +69,10 @@
   ],
   "sideboard": [
     {
+      "name": "Absolute Grace",
+      "qty": 2
+    },
+    {
       "name": "Absolute Law",
       "qty": 2
     },
@@ -86,18 +90,10 @@
     },
     {
       "name": "Seal of Cleansing",
-      "qty": 1
+      "qty": 3
     },
     {
       "name": "Sphere of Law",
-      "qty": 2
-    },
-    {
-      "name": "Tormod's Crypt",
-      "qty": 2
-    },
-    {
-      "name": "Wrath of God",
       "qty": 2
     }
   ],

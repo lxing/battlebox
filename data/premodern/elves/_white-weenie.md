@@ -1,0 +1,7 @@
++ 1 [[Caller of the Claw]]
++ 1 [[Elvish Champion]]
++ 1 [[Goblin Sharpshooter]]
++ 1 [[Uktabi Orangutan]]
++ 1 [[Wellwisher]]
+- 1 [[Fyndhorn Elves]]
+- 4 [[Tangle Wire]]

@@ -1,11 +1,20 @@
 {
   "name": "BW Control",
+  "source_url": "https://www.mtggoldfish.com/deck/7623303",
   "sleeve_color": "Yellow",
   "colors": "wb",
   "tags": [
     "control"
   ],
   "cards": [
+    {
+      "name": "Barren Moor",
+      "qty": 1
+    },
+    {
+      "name": "Cabal Therapy",
+      "qty": 2
+    },
     {
       "name": "Caves of Koilos",
       "qty": 4
@@ -15,7 +24,7 @@
       "qty": 4
     },
     {
-      "name": "Disenchant",
+      "name": "Decree of Pain",
       "qty": 1
     },
     {
@@ -31,10 +40,6 @@
       "qty": 3
     },
     {
-      "name": "Exalted Angel",
-      "qty": 4
-    },
-    {
       "name": "Gerrard's Verdict",
       "qty": 4
     },
@@ -44,15 +49,19 @@
     },
     {
       "name": "Plains",
-      "qty": 9
+      "qty": 8
     },
     {
-      "name": "Reflecting Pool",
-      "qty": 2
+      "name": "Secluded Steppe",
+      "qty": 1
     },
     {
       "name": "Skeletal Scrying",
       "qty": 3
+    },
+    {
+      "name": "Smother",
+      "qty": 1
     },
     {
       "name": "Swamp",
@@ -61,6 +70,10 @@
     {
       "name": "Swords to Plowshares",
       "qty": 4
+    },
+    {
+      "name": "Undead Gladiator",
+      "qty": 2
     },
     {
       "name": "Vindicate",
