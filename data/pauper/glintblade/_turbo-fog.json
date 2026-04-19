@@ -2,11 +2,12 @@
   "status": "plan",
   "plan": {
     "in": {
-      "Duress": 2,
-      "Okiba-Gang Shinobi": 2
+      "Duress": 4,
+      "Thraben Charm": 1
     },
     "out": {
-      "Cast Down": 4
+      "Cast Down": 4,
+      "Grim Bauble": 1
     }
   }
 }

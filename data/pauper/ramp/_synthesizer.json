@@ -3,13 +3,14 @@
   "plan": {
     "in": {
       "Breath Weapon": 3,
-      "Cast into the Fire": 2,
-      "Gorilla Shaman": 2
+      "Cast into the Fire": 1,
+      "Nylea's Disciple": 1,
+      "Weather the Storm": 2
     },
     "out": {
-      "Avenging Hunter": 1,
-      "Eldrazi Repurposer": 1,
-      "Malevolent Rumble": 1
+      "Avenging Hunter": 2,
+      "Bannerhide Krushok": 2,
+      "Ram Through": 3
     }
   }
 }

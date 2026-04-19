@@ -1,7 +1,11 @@
 {
-  "status": "todo",
+  "status": "plan",
   "plan": {
-    "in": {},
-    "out": {}
+    "in": {
+      "Prismatic Strands": 1
+    },
+    "out": {
+      "Militia Bugler": 1
+    }
   }
 }

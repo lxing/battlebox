@@ -1,7 +1,12 @@
 {
-  "status": "todo",
+  "status": "plan",
   "plan": {
-    "in": {},
-    "out": {}
+    "in": {
+      "Negate": 2,
+      "Stonehorn Dignitary": 2
+    },
+    "out": {
+      "God-Pharaoh's Faithful": 1
+    }
   }
 }

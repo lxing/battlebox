@@ -1,7 +1,13 @@
 {
-  "status": "todo",
+  "status": "plan",
   "plan": {
-    "in": {},
-    "out": {}
+    "in": {
+      "End the Festivities": 3,
+      "Pyroblast": 2
+    },
+    "out": {
+      "Sneaky Snacker": 1,
+      "Vampire's Kiss": 4
+    }
   }
 }

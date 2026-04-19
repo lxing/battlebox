@@ -2,13 +2,14 @@
   "status": "plan",
   "plan": {
     "in": {
-      "Duress": 2,
-      "Okiba-Gang Shinobi": 2,
-      "Revoke Existence": 3
+      "Duress": 4,
+      "Thraben Charm": 1
     },
     "out": {
-      "Refurbished Familiar": 4,
-      "Suffocating Fumes": 2,
+      "Anchovy \u0026 Banana Pizza": 1,
+      "Mukotai Ambusher": 1,
+      "Omen of the Dead": 1,
+      "Suffocating Fumes": 1,
       "Tithing Blade / Consuming Sepulcher": 1
     }
   }

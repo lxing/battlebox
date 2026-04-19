@@ -2,12 +2,13 @@
   "status": "plan",
   "plan": {
     "in": {
-      "Duress": 2,
-      "Okiba-Gang Shinobi": 1
+      "Duress": 4
     },
     "out": {
-      "Inspiring Overseer": 1,
-      "Suffocating Fumes": 2
+      "Cast Down": 1,
+      "Grim Bauble": 1,
+      "Mukotai Ambusher": 1,
+      "Suffocating Fumes": 1
     }
   }
 }

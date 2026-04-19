@@ -1,7 +1,12 @@
 {
-  "status": "todo",
+  "status": "plan",
   "plan": {
-    "in": {},
-    "out": {}
+    "in": {
+      "Cast into the Fire": 4
+    },
+    "out": {
+      "Chain Lightning": 1,
+      "Experimental Synthesizer": 3
+    }
   }
 }

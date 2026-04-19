@@ -1,10 +1,10 @@
-1 + 1 + 1 = 7. Use this crime against math to outmuscle every other fair deck. There are many ways to build Tron, including flicker loops and sacrifice combos, but in the interest of time and fun this variant packs chunky creatures to smash face. Short of combo decks, your endgame is unstoppable.
+1 + 1 + 1 = 7, an eldritch spell from the depths of Magic history. Use this crime against math to outmuscle every other fair deck with an avalanche of huge spells. There are many ways to build Tron, including flicker loops and sacrifice combos, but in the interest of time and fun this variant packs chunky creatures to smash face. Short of combo decks, your endgame is unstoppable.
 
 ### Early game
-Asssemble Tron. [[Expedition Map]], [[Ancient Stirrings]], and [[Crop Rotation]] are your best openers, and [[Candy Trail]] helps keep sketchy hands functional. Use [[Relic of Progenitus]] and [[Bojuka Bog]] proactively when they matter, but most games are about hitting Tron first.
+Asssemble Tron. [[Expedition Map]], [[Ancient Stirrings]], and [[Crop Rotation]] are your best openers to build your manabase. Mulligan aggressively for these, as your disruption is minimal and the midgame relies more on catching up to early aggression rather than matching tit-for-tat. Grab some mana fixing from [[Prophetic Prism]] when you can.
 
 ### Midgame
-Start stabilizing with big bodies. [[Boulderbranch Golem]] and [[Bramble Wurm]] buy time immediately, while [[Prophetic Prism]] and [[Crystal Grotto]] keep the colored mana flowing for your splash cards. You are happy to trade resources here as long as your mana engine stays intact.
+This assumes you've achieved Tron. Stabilize with [[Pinnacle Kill-Ship]], [[Fang Dragon]], and your 11-pack of lifegain creatures. Next, begin burying your opponent with repeated haymakers like [[Maelstrom Colossus]] and [[Unfathomable Truths]].
 
 ### Endgame
-Your top end quickly overwhelms fair decks. [[Maelstrom Colossus]], [[Pinnacle Kill-Ship]], [[Fang Dragon]], and [[Wretched Gryff]] all punish opponents who let the game go long, and sideboard cards like [[Kaervek's Torch]] or [[Whispersilk Cloak]] give you clean ways to finish stalled games.
+There is not a lot of pure card advantage outside of [[Maelstrom Colossus]], but your creatures are so dominant that just sticking one confers immense card advantage. As mentioned above, the only thing that can harm you at this point is pure burn (lifegain) or combo degeneracy. Since most Pauper combos or heavy synergies like elves are creature-based, fight these with your sorcery-speed removal.

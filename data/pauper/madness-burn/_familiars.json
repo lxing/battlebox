@@ -1,7 +1,14 @@
 {
-  "status": "todo",
+  "status": "plan",
   "plan": {
-    "in": {},
-    "out": {}
+    "in": {
+      "Pyroblast": 2,
+      "Relic of Progenitus": 1,
+      "Trespasser's Curse": 3
+    },
+    "out": {
+      "Alms of the Vein": 2,
+      "Sneaky Snacker": 4
+    }
   }
 }

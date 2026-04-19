@@ -1,7 +1,13 @@
 {
-  "status": "todo",
+  "status": "plan",
   "plan": {
-    "in": {},
-    "out": {}
+    "in": {
+      "Disturbed Burial": 1,
+      "Staunch Throneguard": 1,
+      "Whispersilk Cloak": 1
+    },
+    "out": {
+      "Relic of Progenitus": 3
+    }
   }
 }

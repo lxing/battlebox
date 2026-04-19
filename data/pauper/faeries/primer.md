@@ -1,10 +1,10 @@
 Faeries and Ninjas team up for a pretty mean tempo game. Get in with small evasive beaters in the air, generate lots of incremental card advantage, and annoy your opponent to death.
 
 ### Early game
-Lead with [[Faerie Seer]] and cantrips to smooth your draws, then keep mana open. [[Spell Pierce]], [[Dispel]], and [[Counterspell]] punish opponents for tapping low, while [[Snuff Out]] lets you protect your tempo even when shields are technically down.
+Lead with cantrips and small creatures, then keep mana open for continued disruption. You can grab big tempo swings with [[Spellstutter Sprite]] and [[Snuff Out]], giving you a disproportionate board presence.
 
 ### Midgame
-Turn small fliers into real card advantage. Ninjutsu from [[Ninja of the Deep Hours]] and [[Moon-Circuit Hacker]] keeps the cards flowing, and [[Spellstutter Sprite]] scales naturally as your Faerie count grows. [[Augur of Bolas]] helps you keep chaining interaction without running out of gas.
+Start grabbing card advantage with ninjas and, later, [[Thorn of the Black Rose]]. These all synergize terrifically with your 12-pack of faeries and [[Augur of Bolas]], weaving together attrition with card selection and disruption.
 
 ### Endgame
-If the game drags, pivot from tempo into attrition. [[Thorn of the Black Rose]] gives you a real long-game engine, and extra value from [[Lórien Revealed]] plus flash threats means the opponent still has to respect your mana every turn. Sideboard cards like [[Murmuring Mystic]] and the extra [[Mukotai Ambusher]] let you get bigger when pure chip damage is not enough.
+There is no killer blow here, mainly you want to maintain the board advantage and disrupt your opponent enough to kill them in the midgame. Your swarm of small fliers should be sufficient to win a protracted board stall.

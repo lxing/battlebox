@@ -2,11 +2,10 @@
   "status": "plan",
   "plan": {
     "in": {
-      "Deglamer": 2,
       "Relic of Progenitus": 1
     },
     "out": {
-      "Eldrazi Repurposer": 1
+      "Ram Through": 1
     }
   }
 }

@@ -3,11 +3,15 @@
   "plan": {
     "in": {
       "Arms of Hadar": 2,
-      "Okiba-Gang Shinobi": 1
+      "Grim Bauble": 1,
+      "Suffocating Fumes": 1,
+      "Thraben Charm": 1
     },
     "out": {
-      "Cast Down": 2,
-      "Tithing Blade / Consuming Sepulcher": 1
+      "Anchovy \u0026 Banana Pizza": 1,
+      "Cast Down": 1,
+      "Oroku Saki, Shredder Rising": 1,
+      "Tithing Blade / Consuming Sepulcher": 2
     }
   }
 }

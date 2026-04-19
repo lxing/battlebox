@@ -1,7 +1,12 @@
 {
-  "status": "todo",
+  "status": "plan",
   "plan": {
-    "in": {},
-    "out": {}
+    "in": {
+      "Tithing Blade / Consuming Sepulcher": 2
+    },
+    "out": {
+      "Grim Bauble": 1,
+      "Suffocating Fumes": 1
+    }
   }
 }

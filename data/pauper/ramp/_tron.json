@@ -1,7 +1,12 @@
 {
-  "status": "todo",
+  "status": "plan",
   "plan": {
-    "in": {},
-    "out": {}
+    "in": {
+      "Cast into the Fire": 2,
+      "Deglamer": 1
+    },
+    "out": {
+      "Ram Through": 3
+    }
   }
 }

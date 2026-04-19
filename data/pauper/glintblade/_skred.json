@@ -2,12 +2,14 @@
   "status": "plan",
   "plan": {
     "in": {
-      "Duress": 2,
-      "Okiba-Gang Shinobi": 2
+      "Duress": 3,
+      "Tithing Blade / Consuming Sepulcher": 2
     },
     "out": {
-      "Inspiring Overseer": 2,
-      "Suffocating Fumes": 2
+      "Anchovy \u0026 Banana Pizza": 1,
+      "Cast Down": 2,
+      "Grim Bauble": 1,
+      "Suffocating Fumes": 1
     }
   }
 }

@@ -1,7 +1,14 @@
 {
-  "status": "todo",
+  "status": "plan",
   "plan": {
-    "in": {},
-    "out": {}
+    "in": {
+      "Thraben Charm": 1,
+      "Tithing Blade / Consuming Sepulcher": 2
+    },
+    "out": {
+      "Grim Bauble": 1,
+      "Mukotai Ambusher": 1,
+      "Suffocating Fumes": 1
+    }
   }
 }

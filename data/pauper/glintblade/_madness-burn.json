@@ -2,10 +2,12 @@
   "status": "plan",
   "plan": {
     "in": {
-      "Lone Missionary": 2
+      "Mukotai Ambusher": 1,
+      "Thraben Charm": 1
     },
     "out": {
-      "Cast Down": 2
+      "Anchovy \u0026 Banana Pizza": 1,
+      "Suffocating Fumes": 1
     }
   }
 }

@@ -1,7 +1,13 @@
 {
-  "status": "todo",
+  "status": "plan",
   "plan": {
-    "in": {},
-    "out": {}
+    "in": {
+      "Journey to Nowhere": 2,
+      "Standard Bearer": 3
+    },
+    "out": {
+      "Militia Bugler": 3,
+      "Prismatic Strands": 2
+    }
   }
 }

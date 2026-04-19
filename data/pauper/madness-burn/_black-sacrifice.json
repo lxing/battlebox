@@ -1,7 +1,14 @@
 {
-  "status": "todo",
+  "status": "plan",
   "plan": {
-    "in": {},
-    "out": {}
+    "in": {
+      "End the Festivities": 3,
+      "Relic of Progenitus": 1,
+      "Trespasser's Curse": 3
+    },
+    "out": {
+      "Sneaky Snacker": 4,
+      "Vampire's Kiss": 3
+    }
   }
 }
