@@ -1,0 +1,13 @@
+{
+  "status": "plan",
+  "plan": {
+    "in": {
+      "Powder Keg": 3
+    },
+    "out": {
+      "Boomerang": 1,
+      "Foil": 1,
+      "Mana Short": 1
+    }
+  }
+}

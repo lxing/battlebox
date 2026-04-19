@@ -1,0 +1,12 @@
+{
+  "status": "plan",
+  "plan": {
+    "in": {
+      "Relic of Progenitus": 3
+    },
+    "out": {
+      "Campfire": 1,
+      "Crypt Rats": 2
+    }
+  }
+}

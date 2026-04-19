@@ -1,0 +1,16 @@
+{
+  "status": "plan",
+  "plan": {
+    "in": {
+      "Blue Elemental Blast": 3,
+      "Dispel": 1,
+      "Union of the Third Path": 1
+    },
+    "out": {
+      "Cast into the Fire": 1,
+      "Counterspell": 2,
+      "Destroy Evil": 1,
+      "Murmuring Mystic": 1
+    }
+  }
+}

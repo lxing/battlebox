@@ -1,5 +1,0 @@
-+ 2 [[Breath Weapon]]
-+ 4 [[Relic of Progenitus]]
-- 1 [[Cast Down]]
-- 2 [[Snuff Out]]
-- 3 [[Tithing Blade / Consuming Sepulcher]]

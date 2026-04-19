@@ -1,0 +1,16 @@
+{
+  "status": "plan",
+  "plan": {
+    "in": {
+      "Circle of Protection: Red": 2,
+      "Decree of Justice": 1,
+      "Wrath of God": 1
+    },
+    "out": {
+      "Forbid": 1,
+      "Impulse": 1,
+      "Standstill": 1,
+      "Stifle": 1
+    }
+  }
+}

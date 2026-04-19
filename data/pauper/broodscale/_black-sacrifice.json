@@ -1,0 +1,12 @@
+{
+  "status": "plan",
+  "plan": {
+    "in": {
+      "Drown in Sorrow": 4
+    },
+    "out": {
+      "Duress": 2,
+      "Wizard's Rockets": 2
+    }
+  }
+}

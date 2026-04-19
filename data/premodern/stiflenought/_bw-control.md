@@ -1,6 +1,0 @@
-+2 [[Misdirection]]
-+3 [[Parallax Tide]]
--1 [[Chain of Vapor]]
--1 [[Opt]]
--1 [[Portent]]
--2 [[Vision Charm]]

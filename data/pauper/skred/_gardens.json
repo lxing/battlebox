@@ -1,0 +1,12 @@
+{
+  "status": "plan",
+  "plan": {
+    "in": {
+      "Hydroblast": 2
+    },
+    "out": {
+      "Azure Fleet Admiral": 1,
+      "Crimson Fleet Commodore": 1
+    }
+  }
+}

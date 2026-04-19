@@ -1,0 +1,15 @@
+{
+  "status": "plan",
+  "plan": {
+    "in": {
+      "Disenchant": 2,
+      "Last Breath": 1,
+      "Reprisal": 1
+    },
+    "out": {
+      "Call of the Herd": 1,
+      "Naturalize": 2,
+      "Weathered Wayfarer": 1
+    }
+  }
+}

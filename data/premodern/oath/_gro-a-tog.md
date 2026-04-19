@@ -1,5 +1,0 @@
-+2 [[Cursed Totem]]
-+1 [[Tormod's Crypt]]
-+1 [[Seal of Cleansing]]
--2 [[Winter's Grasp]]
--2 [[Sphere of Resistance]]

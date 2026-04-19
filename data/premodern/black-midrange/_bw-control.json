@@ -1,0 +1,14 @@
+{
+  "status": "plan",
+  "plan": {
+    "in": {
+      "Duress": 1,
+      "Engineered Plague": 1,
+      "Graveborn Muse": 1
+    },
+    "out": {
+      "Bane of the Living": 2,
+      "Diabolic Edict": 1
+    }
+  }
+}

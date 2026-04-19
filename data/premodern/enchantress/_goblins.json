@@ -1,0 +1,13 @@
+{
+  "status": "plan",
+  "plan": {
+    "in": {
+      "Swords to Plowshares": 3
+    },
+    "out": {
+      "Mirri's Guile": 1,
+      "Mobilization": 1,
+      "Opalescence": 1
+    }
+  }
+}

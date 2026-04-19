@@ -1,0 +1,17 @@
+{
+  "status": "plan",
+  "plan": {
+    "in": {
+      "Bone Shredder": 1,
+      "Masticore": 1,
+      "Smother": 1,
+      "Withered Wretch": 1
+    },
+    "out": {
+      "Great Whale": 1,
+      "Krosan Tusker": 1,
+      "Phantom Nishoba": 1,
+      "Yavimaya Granger": 1
+    }
+  }
+}

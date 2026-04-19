@@ -1,0 +1,13 @@
+{
+  "status": "plan",
+  "plan": {
+    "in": {
+      "Aura of Silence": 1,
+      "Naturalize": 2,
+      "Seal of Cleansing": 1
+    },
+    "out": {
+      "Sphere of Resistance": 4
+    }
+  }
+}

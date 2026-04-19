@@ -1,0 +1,18 @@
+{
+  "status": "plan",
+  "plan": {
+    "in": {
+      "Akroma's Vengeance": 1,
+      "Aura of Silence": 2,
+      "Disenchant": 2,
+      "Engineered Plague": 2,
+      "Haunting Echoes": 1,
+      "Tormod's Crypt": 1
+    },
+    "out": {
+      "Decree of Justice": 3,
+      "Swords to Plowshares": 4,
+      "Wrath of God": 2
+    }
+  }
+}

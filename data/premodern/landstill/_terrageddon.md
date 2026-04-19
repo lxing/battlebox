@@ -1,7 +1,0 @@
-+2 [[Circle of Protection: Red]]
-+1 [[Wrath of God]]
-+1 [[Decree of Justice]]
--1 [[Stifle]]
--1 [[Forbid]]
--1 [[Impulse]]
--1 [[Standstill]]

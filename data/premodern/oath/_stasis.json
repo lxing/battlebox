@@ -1,0 +1,15 @@
+{
+  "status": "plan",
+  "plan": {
+    "in": {
+      "Aura of Silence": 1,
+      "Naturalize": 2,
+      "Ray of Revelation": 1,
+      "Seal of Cleansing": 1
+    },
+    "out": {
+      "Sphere of Resistance": 4,
+      "Winter's Grasp": 1
+    }
+  }
+}

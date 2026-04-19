@@ -1,0 +1,17 @@
+{
+  "status": "plan",
+  "plan": {
+    "in": {
+      "Annul": 2,
+      "Disenchant": 1,
+      "Phyrexian Furnace": 1,
+      "Seal of Cleansing": 1
+    },
+    "out": {
+      "Humility": 1,
+      "Stifle": 1,
+      "Swords to Plowshares": 1,
+      "Wrath of God": 2
+    }
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "status": "plan",
+  "plan": {
+    "in": {
+      "Cataclysm": 2,
+      "Disenchant": 2,
+      "Tormod's Crypt": 2
+    },
+    "out": {
+      "Call of the Herd": 1,
+      "Naturalize": 2,
+      "Nimble Mongoose": 1,
+      "Sylvan Library": 1,
+      "Weathered Wayfarer": 1
+    }
+  }
+}

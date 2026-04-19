@@ -1,0 +1,14 @@
+{
+  "status": "plan",
+  "plan": {
+    "in": {
+      "Druid Lyrist": 1,
+      "Naturalize": 3
+    },
+    "out": {
+      "Deranged Hermit": 1,
+      "Llanowar Elves": 2,
+      "Yavimaya Granger": 1
+    }
+  }
+}

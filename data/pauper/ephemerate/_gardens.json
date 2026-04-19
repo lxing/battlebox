@@ -1,0 +1,13 @@
+{
+  "status": "plan",
+  "plan": {
+    "in": {
+      "Annul": 1,
+      "Dispel": 1
+    },
+    "out": {
+      "Breath Weapon": 1,
+      "Cast into the Fire": 1
+    }
+  }
+}

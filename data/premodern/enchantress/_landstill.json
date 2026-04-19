@@ -1,0 +1,16 @@
+{
+  "status": "plan",
+  "plan": {
+    "in": {
+      "Aura of Silence": 2,
+      "Tsabo's Web": 2,
+      "Xantid Swarm": 3
+    },
+    "out": {
+      "Elephant Grass": 4,
+      "Parallax Wave": 1,
+      "Solitary Confinement": 1,
+      "Worship": 1
+    }
+  }
+}

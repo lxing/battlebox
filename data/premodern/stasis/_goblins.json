@@ -1,0 +1,18 @@
+{
+  "status": "plan",
+  "plan": {
+    "in": {
+      "Chill": 3,
+      "Hydroblast": 3,
+      "Powder Keg": 3
+    },
+    "out": {
+      "Boomerang": 1,
+      "Daze": 2,
+      "Foil": 2,
+      "Gush": 1,
+      "Impulse": 2,
+      "Mana Short": 1
+    }
+  }
+}

@@ -1,0 +1,15 @@
+{
+  "status": "plan",
+  "plan": {
+    "in": {
+      "Disenchant": 2,
+      "Haunting Echoes": 1,
+      "Infest": 2,
+      "Tormod's Crypt": 1
+    },
+    "out": {
+      "Decree of Justice": 2,
+      "Duress": 4
+    }
+  }
+}

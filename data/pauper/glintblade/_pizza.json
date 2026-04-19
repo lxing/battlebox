@@ -1,0 +1,15 @@
+{
+  "status": "plan",
+  "plan": {
+    "in": {
+      "Duress": 2,
+      "Okiba-Gang Shinobi": 2,
+      "Revoke Existence": 3
+    },
+    "out": {
+      "Refurbished Familiar": 4,
+      "Suffocating Fumes": 2,
+      "Tithing Blade / Consuming Sepulcher": 1
+    }
+  }
+}

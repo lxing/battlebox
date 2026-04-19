@@ -1,0 +1,11 @@
+{
+  "status": "plan",
+  "plan": {
+    "in": {
+      "Gut Shot": 3
+    },
+    "out": {
+      "Spell Pierce": 3
+    }
+  }
+}

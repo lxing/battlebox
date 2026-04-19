@@ -1,0 +1,13 @@
+{
+  "status": "plan",
+  "plan": {
+    "in": {
+      "Faerie Macabre": 2,
+      "Relic of Progenitus": 2
+    },
+    "out": {
+      "Respite": 2,
+      "Weather the Storm": 2
+    }
+  }
+}

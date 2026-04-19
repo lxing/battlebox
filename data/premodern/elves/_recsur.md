@@ -1,5 +1,0 @@
-+3 [[Naturalize]]
-+1 [[Druid Lyrist]]
--1 [[Yavimaya Granger]]
--1 [[Deranged Hermit]]
--2 [[Llanowar Elves]]

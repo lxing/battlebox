@@ -1,8 +1,0 @@
-+ 2 [[Cast into the Fire]]
-+ 4 [[Deglamer]]
-+ 2 [[Gorilla Shaman]]
-- 1 [[Avenging Hunter]]
-- 1 [[Bannerhide Krushok]]
-- 1 [[Eldrazi Repurposer]]
-- 2 [[Nyxborn Hydra]]
-- 3 [[Ram Through]]

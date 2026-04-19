@@ -1,0 +1,14 @@
+{
+  "status": "plan",
+  "plan": {
+    "in": {
+      "Blue Elemental Blast": 4,
+      "Breath Weapon": 2
+    },
+    "out": {
+      "Counterspell": 2,
+      "Journey to Nowhere": 2,
+      "Thraben Charm": 2
+    }
+  }
+}

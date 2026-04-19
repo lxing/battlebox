@@ -1,5 +1,0 @@
-+ 3 [[Annul]]
-+ 1 [[Dispel]]
-- 1 [[Consider]]
-- 2 [[Deep Analysis]]
-- 1 [[Murmuring Mystic]]

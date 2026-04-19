@@ -1,7 +1,0 @@
-+2 [[Winter Orb]]
-+1 [[Caller of the Claw]]
-+1 [[Genesis]]
--1 [[Masticore]]
--1 [[Wellwisher]]
--1 [[Deranged Hermit]]
--1 [[Yavimaya Granger]]

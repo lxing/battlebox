@@ -1,0 +1,14 @@
+{
+  "status": "plan",
+  "plan": {
+    "in": {
+      "Revoke Existence": 2,
+      "Standard Bearer": 3
+    },
+    "out": {
+      "Guardians' Pledge": 1,
+      "Militia Bugler": 3,
+      "Prismatic Strands": 1
+    }
+  }
+}

@@ -1,5 +1,0 @@
-+1 [[Wellwisher]]
-+1 [[Druid Lyrist]]
-+1 [[Caller of the Claw]]
-+1 [[Genesis]]
--4 [[Tangle Wire]]

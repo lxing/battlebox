@@ -1,0 +1,13 @@
+{
+  "status": "plan",
+  "plan": {
+    "in": {
+      "Gorilla Shaman": 3,
+      "Trespasser's Curse": 3
+    },
+    "out": {
+      "Sneaky Snacker": 2,
+      "Voldaren Epicure": 4
+    }
+  }
+}

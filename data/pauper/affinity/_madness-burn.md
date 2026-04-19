@@ -1,6 +1,0 @@
-+2 [[Cast into the Fire]]
-+2 [[Gorilla Shaman]]
-+2 [[Blue Elemental Blast]]
--1 [[Makeshift Munitions]]
--3 [[Krark-Clan Shaman]]
--2 [[Galvanic Blast]]

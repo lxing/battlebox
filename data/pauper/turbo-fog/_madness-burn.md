@@ -1,5 +1,0 @@
-+3 [[Blue Elemental Blast]]
-+3 [[Dispel]]
--2 [[Disrupt]]
--2 [[Arcane Denial]]
--2 [[Stream of Thought]]

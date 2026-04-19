@@ -28,11 +28,15 @@ const (
 )
 
 type sourceGuideRequest struct {
-	Raw string `json:"raw"`
+	Guide buildtool.MatchupGuide `json:"guide"`
 }
 
 type sourceGuideResponse struct {
 	Guide buildtool.MatchupGuide `json:"guide"`
+}
+
+type sourcePrimerRequest struct {
+	Raw string `json:"raw"`
 }
 
 type sourcePrimerResponse struct {
@@ -188,7 +192,7 @@ func normalizeSlug(raw string) string {
 }
 
 func sourceGuidePath(battlebox, deck, opponent string) string {
-	return filepath.Join("data", battlebox, deck, "_"+opponent+".md")
+	return filepath.Join("data", battlebox, deck, "_"+opponent+".json")
 }
 
 func sourcePrimerPath(battlebox, deck string) string {
@@ -231,8 +235,12 @@ func handleSourceGuide(w http.ResponseWriter, r *http.Request) {
 			http.Error(w, "guide not found", http.StatusNotFound)
 			return
 		}
-		raw := strings.TrimRight(strings.ReplaceAll(string(data), "\r\n", "\n"), "\n")
-		writeSourceGuideResponse(w, http.StatusOK, buildtool.ParseGuideRaw(raw))
+		guide, err := buildtool.ParseGuideJSON(string(data))
+		if err != nil {
+			http.Error(w, "invalid guide source", http.StatusInternalServerError)
+			return
+		}
+		writeSourceGuideResponse(w, http.StatusOK, guide)
 		return
 	case http.MethodPut:
 		defer r.Body.Close()
@@ -241,9 +249,14 @@ func handleSourceGuide(w http.ResponseWriter, r *http.Request) {
 			http.Error(w, "invalid json body", http.StatusBadRequest)
 			return
 		}
-		raw := strings.TrimRight(strings.ReplaceAll(req.Raw, "\r\n", "\n"), "\n")
-		normalizedRaw, guide := buildtool.NormalizeGuideRawForSave(raw)
-		if err := sourceFiles.WriteFile(guidePath, []byte(normalizedRaw), 0o644); err != nil {
+		guide := buildtool.NormalizeGuideForSave(req.Guide)
+		payload, err := buildtool.FormatGuideJSON(guide)
+		if err != nil {
+			http.Error(w, "failed to encode guide", http.StatusInternalServerError)
+			return
+		}
+		payload = append(payload, '\n')
+		if err := sourceFiles.WriteFile(guidePath, payload, 0o644); err != nil {
 			http.Error(w, "failed to write guide", http.StatusInternalServerError)
 			return
 		}
@@ -280,7 +293,7 @@ func handleSourcePrimer(w http.ResponseWriter, r *http.Request) {
 		return
 	case http.MethodPut:
 		defer r.Body.Close()
-		var req sourceGuideRequest
+		var req sourcePrimerRequest
 		if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
 			http.Error(w, "invalid json body", http.StatusBadRequest)
 			return

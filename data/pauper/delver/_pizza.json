@@ -1,0 +1,14 @@
+{
+  "status": "plan",
+  "plan": {
+    "in": {
+      "Annul": 3,
+      "Dispel": 1
+    },
+    "out": {
+      "Consider": 1,
+      "Deep Analysis": 2,
+      "Murmuring Mystic": 1
+    }
+  }
+}

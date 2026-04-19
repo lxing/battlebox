@@ -1,0 +1,13 @@
+{
+  "status": "plan",
+  "plan": {
+    "in": {
+      "Heritage Reclamation": 3,
+      "Viridian Longbow": 2
+    },
+    "out": {
+      "Timberwatch Elf": 3,
+      "Wellwisher": 2
+    }
+  }
+}

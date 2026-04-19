@@ -1,7 +1,0 @@
-+3 [[Annul]]
-+3 [[Parallax Tide]]
-+1 [[Powder Keg]]
--3 [[Daze]]
--2 [[Opt]]
--1 [[Portent]]
--1 [[Foil]]

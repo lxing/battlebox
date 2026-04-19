@@ -1,0 +1,12 @@
+{
+  "status": "plan",
+  "plan": {
+    "in": {
+      "Breath Weapon": 2
+    },
+    "out": {
+      "Counterspell": 1,
+      "Outlaw Medic": 1
+    }
+  }
+}

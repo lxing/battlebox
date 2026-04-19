@@ -1,0 +1,17 @@
+{
+  "status": "plan",
+  "plan": {
+    "in": {
+      "Call of the Herd": 3,
+      "Psychatog": 1,
+      "Winter Orb": 1
+    },
+    "out": {
+      "Daze": 1,
+      "Fire / Ice": 1,
+      "Opt": 1,
+      "Portent": 1,
+      "Sleight of Hand": 1
+    }
+  }
+}

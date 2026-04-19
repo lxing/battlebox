@@ -1,0 +1,14 @@
+{
+  "status": "plan",
+  "plan": {
+    "in": {
+      "Caller of the Claw": 1,
+      "Druid Lyrist": 1,
+      "Genesis": 1,
+      "Wellwisher": 1
+    },
+    "out": {
+      "Tangle Wire": 4
+    }
+  }
+}

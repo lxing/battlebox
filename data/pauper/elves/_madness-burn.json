@@ -1,0 +1,15 @@
+{
+  "status": "plan",
+  "plan": {
+    "in": {
+      "Primordial Pachyderm": 2,
+      "Vitu-Ghazi Inspector": 4
+    },
+    "out": {
+      "Avenging Hunter": 2,
+      "Masked Vandal": 2,
+      "Nyxborn Hydra": 1,
+      "Priest of Titania": 1
+    }
+  }
+}

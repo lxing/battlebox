@@ -1,0 +1,13 @@
+{
+  "status": "plan",
+  "plan": {
+    "in": {
+      "Blue Elemental Blast": 3,
+      "Dispel": 2
+    },
+    "out": {
+      "Respite": 3,
+      "Weather the Storm": 2
+    }
+  }
+}

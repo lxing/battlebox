@@ -1,0 +1,18 @@
+{
+  "status": "plan",
+  "plan": {
+    "in": {
+      "Gaea's Blessing": 2,
+      "Mana Short": 1,
+      "Powder Keg": 3
+    },
+    "out": {
+      "Boomerang": 1,
+      "Daze": 1,
+      "Foil": 1,
+      "Gush": 1,
+      "Impulse": 1,
+      "Mana Short": 1
+    }
+  }
+}

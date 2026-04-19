@@ -1,0 +1,15 @@
+{
+  "status": "plan",
+  "plan": {
+    "in": {
+      "Breath Weapon": 1,
+      "Cast into the Fire": 1,
+      "Dispel": 1,
+      "Stonehorn Dignitary": 1
+    },
+    "out": {
+      "Destroy Evil": 1,
+      "Skred": 3
+    }
+  }
+}

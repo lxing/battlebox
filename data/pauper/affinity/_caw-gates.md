@@ -1,6 +1,0 @@
-+4 [[Red Elemental Blast]]
-+1 [[Pyroblast]]
-+2 [[Cast into the Fire]]
--2 [[Cast Down]]
--3 [[Galvanic Blast]]
--2 [[Toxin Analysis]]

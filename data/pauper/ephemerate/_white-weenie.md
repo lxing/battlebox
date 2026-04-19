@@ -1,6 +1,0 @@
-+1 [[Breath Weapon]]
-+1 [[Cast into the Fire]]
-+1 [[Stonehorn Dignitary]]
-+1 [[Dispel]]
--1 [[Destroy Evil]]
--3 [[Skred]]

@@ -1,5 +1,0 @@
-+1 [[Annul]]
-+2 [[Standard Bearer]]
--1 [[Cast into the Fire]]
--1 [[Union of the Third Path]]
--1 [[Breath Weapon]]

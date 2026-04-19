@@ -1,6 +1,0 @@
-+1 [[Phyrexian Furnace]]
-+1 [[Disenchant]]
-+1 [[Seal of Cleansing]]
--1 [[Stifle]]
--1 [[Standstill]]
--1 [[Forbid]]

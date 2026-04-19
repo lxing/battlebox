@@ -1,0 +1,18 @@
+{
+  "status": "plan",
+  "plan": {
+    "in": {
+      "Aura Gnarlid": 1,
+      "Avenging Hunter": 3,
+      "Llanowar Visionary": 2,
+      "Mountain": 1,
+      "Writhing Chrysalis": 3
+    },
+    "out": {
+      "Gladecover Scout": 4,
+      "Silhana Ledgewalker": 2,
+      "Slippery Bogle": 4
+    }
+  },
+  "notes_md": "Bogles has a transformative midrange sideboard that is totally optional. Side in the midrange creatures if you suspect your opponent will sideboard out removal."
+}

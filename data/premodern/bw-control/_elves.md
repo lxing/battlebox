@@ -1,7 +1,0 @@
-+1 [[Akroma's Vengeance]]
-+1 [[Disenchant]]
-+2 [[Engineered Plague]]
-+2 [[Infest]]
--1 [[Decree of Justice]]
--4 [[Duress]]
--1 [[Phyrexian Furnace]]

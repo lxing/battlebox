@@ -1,7 +1,0 @@
-+1 [[Breath Weapon]]
-+3 [[Pyroblast]]
-+2 [[Standard Bearer]]
-+1 [[Stonehorn Dignitary]]
--1 [[Dawnbringer Cleric]]
--2 [[Lightning Bolt]]
--4 [[Counterspell]]

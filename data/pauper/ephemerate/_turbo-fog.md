@@ -1,6 +1,0 @@
-+1 [[Dispel]]
-+3 [[Pyroblast]]
-+1 [[Union of the Third Path]]
--1 [[Breath Weapon]]
--1 [[Cast into the Fire]]
--3 [[Skred]]

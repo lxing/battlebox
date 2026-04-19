@@ -1,0 +1,16 @@
+{
+  "status": "plan",
+  "plan": {
+    "in": {
+      "Akroma's Vengeance": 1,
+      "Disenchant": 1,
+      "Engineered Plague": 2,
+      "Infest": 2
+    },
+    "out": {
+      "Decree of Justice": 1,
+      "Duress": 4,
+      "Phyrexian Furnace": 1
+    }
+  }
+}

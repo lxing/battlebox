@@ -1,0 +1,14 @@
+{
+  "status": "plan",
+  "plan": {
+    "in": {
+      "Breath Weapon": 2,
+      "Relic of Progenitus": 4
+    },
+    "out": {
+      "Cast Down": 1,
+      "Snuff Out": 2,
+      "Tithing Blade / Consuming Sepulcher": 3
+    }
+  }
+}

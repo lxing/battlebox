@@ -1,0 +1,16 @@
+{
+  "status": "plan",
+  "plan": {
+    "in": {
+      "Bone Shredder": 1,
+      "Ravenous Baloth": 1,
+      "Smother": 1,
+      "Spiritmonger": 1
+    },
+    "out": {
+      "Duress": 2,
+      "Krosan Tusker": 1,
+      "Naturalize": 1
+    }
+  }
+}

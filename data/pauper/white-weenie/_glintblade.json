@@ -1,0 +1,13 @@
+{
+  "status": "plan",
+  "plan": {
+    "in": {
+      "Dust to Dust": 4,
+      "Revoke Existence": 3
+    },
+    "out": {
+      "Battle Screech": 1,
+      "Guardians' Pledge": 3
+    }
+  }
+}

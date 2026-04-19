@@ -1,0 +1,16 @@
+{
+  "status": "plan",
+  "plan": {
+    "in": {
+      "Swords to Plowshares": 3,
+      "Tormod's Crypt": 2
+    },
+    "out": {
+      "Mirri's Guile": 1,
+      "Mobilization": 1,
+      "Opalescence": 1,
+      "Seal of Cleansing": 1,
+      "Worship": 1
+    }
+  }
+}

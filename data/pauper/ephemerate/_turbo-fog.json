@@ -1,0 +1,15 @@
+{
+  "status": "plan",
+  "plan": {
+    "in": {
+      "Dispel": 1,
+      "Pyroblast": 3,
+      "Union of the Third Path": 1
+    },
+    "out": {
+      "Breath Weapon": 1,
+      "Cast into the Fire": 1,
+      "Skred": 3
+    }
+  }
+}

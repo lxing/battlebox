@@ -167,29 +167,54 @@ export function renderGuideContent(mdPlan, mdProse, guide, options = {}) {
   if (typeof guide === 'string') {
     prose = guide.trim();
   } else if (guide) {
-    ins = Array.isArray(guide.in) ? guide.in : [];
-    outs = Array.isArray(guide.out) ? guide.out : [];
-    prose = (guide.text || '').trim();
+    if (guide.plan && typeof guide.plan === 'object') {
+      const toSortedLines = (counts) => Object.entries(counts || {})
+        .map(([name, rawQty]) => {
+          const qty = Number.parseInt(String(rawQty), 10);
+          const trimmedName = String(name || '').trim();
+          if (!trimmedName || !Number.isFinite(qty) || qty < 1) return null;
+          return { name: trimmedName, qty };
+        })
+        .filter(Boolean)
+        .sort((a, b) => a.name.localeCompare(b.name))
+        .map(({ name, qty }) => ({ key: normalizeName(name), line: `${qty} [[${name}]]` }));
+      ins = toSortedLines(guide.plan.in);
+      outs = toSortedLines(guide.plan.out);
+    } else {
+      const toLegacyLines = (lines) => (Array.isArray(lines) ? lines : [])
+        .map((line) => ({ key: '', line }));
+      ins = toLegacyLines(guide.in);
+      outs = toLegacyLines(guide.out);
+    }
+    prose = (guide.notes_md || guide.text || '').trim();
   }
   let html = '';
-  const inTotal = totalGuideItemQty(ins);
-  const outTotal = totalGuideItemQty(outs);
+  const inTotal = guide?.plan ? totalGuideItemQty(guide.plan.in) : totalGuideItemQty({});
+  const outTotal = guide?.plan ? totalGuideItemQty(guide.plan.out) : totalGuideItemQty({});
+  const legacyInTotal = !guide?.plan ? ins.reduce((sum, entry) => {
+    const match = /^(\d+)/.exec(String(entry.line || '').trim());
+    return sum + (match ? Number.parseInt(match[1], 10) : 0);
+  }, 0) : inTotal;
+  const legacyOutTotal = !guide?.plan ? outs.reduce((sum, entry) => {
+    const match = /^(\d+)/.exec(String(entry.line || '').trim());
+    return sum + (match ? Number.parseInt(match[1], 10) : 0);
+  }, 0) : outTotal;
 
   const renderItems = (items, zone) => items.map((item, idx) => {
     const attrs = editablePlan
-      ? ` class="guide-plan-item is-editable" data-guide-zone="${zone}" data-guide-index="${idx}"`
+      ? ` class="guide-plan-item is-editable" data-guide-zone="${zone}" data-guide-index="${idx}" data-guide-key="${escapeHtml(item.key || '')}"`
       : '';
-    return `<li${attrs}>${mdPlan.renderInline(item)}</li>`;
+    return `<li${attrs}>${mdPlan.renderInline(item.line)}</li>`;
   }).join('');
   const renderNone = () => `<li class="guide-plan-none">None</li>`;
   html += `
     <div class="guide-plan${editablePlan ? ' is-editable' : ''}">
       <div class="guide-plan-col">
-        <div class="guide-plan-title">In (${inTotal})</div>
+        <div class="guide-plan-title">In (${guide?.plan ? inTotal : legacyInTotal})</div>
         <ul class="guide-plan-list">${ins.length ? renderItems(ins, 'in') : renderNone()}</ul>
       </div>
       <div class="guide-plan-col">
-        <div class="guide-plan-title">Out (${outTotal})</div>
+        <div class="guide-plan-title">Out (${guide?.plan ? outTotal : legacyOutTotal})</div>
         <ul class="guide-plan-list">${outs.length ? renderItems(outs, 'out') : renderNone()}</ul>
       </div>
     </div>

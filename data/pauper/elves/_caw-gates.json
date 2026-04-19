@@ -1,0 +1,12 @@
+{
+  "status": "plan",
+  "plan": {
+    "in": {
+      "Viridian Longbow": 2,
+      "Vitu-Ghazi Inspector": 2
+    },
+    "out": {
+      "Masked Vandal": 4
+    }
+  }
+}

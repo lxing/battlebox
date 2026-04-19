@@ -1,0 +1,18 @@
+{
+  "status": "plan",
+  "plan": {
+    "in": {
+      "Avalanche Riders": 1,
+      "Lobotomy": 2,
+      "Naturalize": 3
+    },
+    "out": {
+      "Bone Shredder": 1,
+      "Ghitu Slinger": 1,
+      "Masticore": 1,
+      "Phantom Nishoba": 1,
+      "Ravenous Baloth": 1,
+      "Spike Feeder": 1
+    }
+  }
+}

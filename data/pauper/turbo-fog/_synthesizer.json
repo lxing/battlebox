@@ -1,0 +1,14 @@
+{
+  "status": "plan",
+  "plan": {
+    "in": {
+      "Blue Elemental Blast": 3,
+      "Unable to Scream": 2
+    },
+    "out": {
+      "Arcane Denial": 2,
+      "Disrupt": 2,
+      "Stream of Thought": 1
+    }
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "status": "plan",
+  "plan": {
+    "in": {
+      "Lobotomy": 2,
+      "Masticore": 1,
+      "Tsabo's Web": 2
+    },
+    "out": {
+      "Ghitu Slinger": 1,
+      "Great Whale": 1,
+      "Shard Phoenix": 1,
+      "Spike Feeder": 1,
+      "Yavimaya Granger": 1
+    }
+  }
+}

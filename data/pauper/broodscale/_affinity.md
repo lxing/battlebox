@@ -1,5 +1,0 @@
-+2 [[Drown in Sorrow]]
-+2 [[Mesmeric Fiend]]
--1 [[Eviscerator's Insight]]
--1 [[Energy Refractor]]
--2 [[Wizard's Rockets]]

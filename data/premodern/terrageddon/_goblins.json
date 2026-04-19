@@ -1,0 +1,16 @@
+{
+  "status": "plan",
+  "plan": {
+    "in": {
+      "Circle of Protection: Red": 1,
+      "Warmth": 2,
+      "Zuran Orb": 2
+    },
+    "out": {
+      "Call of the Herd": 1,
+      "Naturalize": 2,
+      "Sylvan Library": 1,
+      "Weathered Wayfarer": 1
+    }
+  }
+}

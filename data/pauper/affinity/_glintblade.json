@@ -1,0 +1,14 @@
+{
+  "status": "plan",
+  "plan": {
+    "in": {
+      "Cast into the Fire": 2,
+      "Gorilla Shaman": 4
+    },
+    "out": {
+      "Galvanic Blast": 1,
+      "Krark-Clan Shaman": 3,
+      "Toxin Analysis": 2
+    }
+  }
+}

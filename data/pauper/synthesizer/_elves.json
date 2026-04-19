@@ -1,0 +1,14 @@
+{
+  "status": "plan",
+  "plan": {
+    "in": {
+      "Cast into the Fire": 4,
+      "End the Festivities": 2
+    },
+    "out": {
+      "Chain Lightning": 2,
+      "Experimental Synthesizer": 3,
+      "Wrenn's Resolve": 1
+    }
+  }
+}

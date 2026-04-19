@@ -1,0 +1,14 @@
+{
+  "status": "plan",
+  "plan": {
+    "in": {
+      "Overload": 3,
+      "Price of Progress": 2
+    },
+    "out": {
+      "Lava Dart": 2,
+      "Mogg Fanatic": 1,
+      "Seal of Fire": 2
+    }
+  }
+}

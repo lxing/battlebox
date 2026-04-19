@@ -1,0 +1,13 @@
+{
+  "status": "plan",
+  "plan": {
+    "in": {
+      "Fact or Fiction": 2,
+      "Swords to Plowshares": 1
+    },
+    "out": {
+      "Attunement": 1,
+      "Mana Leak": 2
+    }
+  }
+}

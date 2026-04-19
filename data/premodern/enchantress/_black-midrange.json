@@ -1,0 +1,12 @@
+{
+  "status": "plan",
+  "plan": {
+    "in": {
+      "Swords to Plowshares": 3
+    },
+    "out": {
+      "Enlightened Tutor": 1,
+      "Mirri's Guile": 2
+    }
+  }
+}

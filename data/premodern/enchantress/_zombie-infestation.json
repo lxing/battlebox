@@ -1,0 +1,13 @@
+{
+  "status": "plan",
+  "plan": {
+    "in": {
+      "Tormod's Crypt": 2,
+      "Xantid Swarm": 3
+    },
+    "out": {
+      "Elephant Grass": 4,
+      "Mirri's Guile": 1
+    }
+  }
+}

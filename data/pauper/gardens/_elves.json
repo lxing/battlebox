@@ -1,0 +1,12 @@
+{
+  "status": "plan",
+  "plan": {
+    "in": {
+      "Breath Weapon": 2
+    },
+    "out": {
+      "Blood Fountain": 1,
+      "Campfire": 1
+    }
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "status": "plan",
+  "plan": {
+    "in": {
+      "Cursed Totem": 2,
+      "Reprisal": 1,
+      "Tormod's Crypt": 2
+    },
+    "out": {
+      "Call of the Herd": 1,
+      "Naturalize": 2,
+      "Sylvan Library": 1,
+      "Weathered Wayfarer": 1
+    }
+  }
+}

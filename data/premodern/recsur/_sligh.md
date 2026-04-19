@@ -1,6 +1,0 @@
-+1 [[Spike Feeder]]
-+1 [[Masticore]]
-+1 [[Smother]]
--1 [[Great Whale]]
--1 [[Phantom Nishoba]]
--1 [[Krosan Tusker]]

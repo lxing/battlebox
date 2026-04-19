@@ -1,0 +1,17 @@
+{
+  "status": "plan",
+  "plan": {
+    "in": {
+      "Blue Elemental Blast": 3,
+      "Breath Weapon": 1,
+      "Cast into the Fire": 2,
+      "Union of the Third Path": 1
+    },
+    "out": {
+      "Counterspell": 4,
+      "Destroy Evil": 1,
+      "Lightning Bolt": 1,
+      "Thraben Charm": 1
+    }
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "status": "plan",
+  "plan": {
+    "in": {
+      "Druid Lyrist": 1,
+      "Naturalize": 4
+    },
+    "out": {
+      "Masticore": 1,
+      "Tangle Wire": 4
+    }
+  }
+}

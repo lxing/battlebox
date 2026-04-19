@@ -1,5 +1,0 @@
-+2 [[Mesmeric Fiend]]
-+4 [[Drown in Sorrow]]
--4 [[Snakeskin Veil]]
--1 [[Eviscerator's Insight]]
--1 [[Energy Refractor]]

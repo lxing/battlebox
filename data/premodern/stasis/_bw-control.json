@@ -1,0 +1,14 @@
+{
+  "status": "plan",
+  "plan": {
+    "in": {
+      "Gaea's Blessing": 2,
+      "Mana Short": 1
+    },
+    "out": {
+      "Boomerang": 1,
+      "Daze": 1,
+      "Foil": 1
+    }
+  }
+}

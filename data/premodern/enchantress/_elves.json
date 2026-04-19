@@ -1,0 +1,12 @@
+{
+  "status": "plan",
+  "plan": {
+    "in": {
+      "Swords to Plowshares": 3
+    },
+    "out": {
+      "Elephant Grass": 2,
+      "Mirri's Guile": 1
+    }
+  }
+}

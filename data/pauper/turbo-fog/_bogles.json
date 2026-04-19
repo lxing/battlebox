@@ -1,0 +1,11 @@
+{
+  "status": "plan",
+  "plan": {
+    "in": {
+      "Lose Focus": 2
+    },
+    "out": {
+      "Disrupt": 2
+    }
+  }
+}

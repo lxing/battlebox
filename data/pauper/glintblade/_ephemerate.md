@@ -1,7 +1,0 @@
-+ 3 [[Duress]]
-+ 2 [[Tithing Blade / Consuming Sepulcher]]
-- 1 [[Anchovy & Banana Pizza]]
-- 1 [[Lembas]]
-- 1 [[Mukotai Ambusher]]
-- 1 [[Oroku Saki, Shredder Rising]]
-- 1 [[Suffocating Fumes]]

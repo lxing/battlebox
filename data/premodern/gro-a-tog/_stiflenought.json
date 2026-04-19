@@ -1,0 +1,17 @@
+{
+  "status": "plan",
+  "plan": {
+    "in": {
+      "Annul": 2,
+      "Disenchant": 3,
+      "Winter Orb": 1
+    },
+    "out": {
+      "Armageddon": 2,
+      "Daze": 1,
+      "Opt": 1,
+      "Portent": 1,
+      "Sleight of Hand": 1
+    }
+  }
+}

@@ -1,0 +1,15 @@
+{
+  "status": "plan",
+  "plan": {
+    "in": {
+      "Chain of Vapor": 1,
+      "Parallax Tide": 3,
+      "Powder Keg": 1
+    },
+    "out": {
+      "Opt": 2,
+      "Portent": 2,
+      "Vision Charm": 1
+    }
+  }
+}

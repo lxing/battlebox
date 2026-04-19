@@ -1,0 +1,11 @@
+{
+  "status": "plan",
+  "plan": {
+    "in": {
+      "Pyroblast": 3
+    },
+    "out": {
+      "Counterspell": 3
+    }
+  }
+}

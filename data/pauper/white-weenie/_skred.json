@@ -1,0 +1,12 @@
+{
+  "status": "plan",
+  "plan": {
+    "in": {
+      "Lone Missionary": 2,
+      "Standard Bearer": 3
+    },
+    "out": {
+      "Guardians' Pledge": 3
+    }
+  }
+}

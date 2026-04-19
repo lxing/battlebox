@@ -1,0 +1,14 @@
+{
+  "status": "plan",
+  "plan": {
+    "in": {
+      "Cursed Totem": 2,
+      "Seal of Cleansing": 1,
+      "Tormod's Crypt": 1
+    },
+    "out": {
+      "Sphere of Resistance": 2,
+      "Winter's Grasp": 2
+    }
+  }
+}

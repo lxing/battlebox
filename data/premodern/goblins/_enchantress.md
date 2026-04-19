@@ -1,6 +1,0 @@
-+2 [[Tranquil Domain]]
-+2 [[Naturalize]]
-+2 [[Anarchy]]
--4 [[Gempalm Incinerator]]
--1 [[Goblin Sharpshooter]]
--1 [[Mogg Fanatic]]

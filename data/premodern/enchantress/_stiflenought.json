@@ -1,0 +1,16 @@
+{
+  "status": "plan",
+  "plan": {
+    "in": {
+      "Swords to Plowshares": 3,
+      "Xantid Swarm": 3
+    },
+    "out": {
+      "Elephant Grass": 2,
+      "Mirri's Guile": 1,
+      "Mobilization": 1,
+      "Opalescence": 1,
+      "Seal of Cleansing": 1
+    }
+  }
+}

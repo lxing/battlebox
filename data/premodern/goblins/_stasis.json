@@ -1,0 +1,20 @@
+{
+  "status": "plan",
+  "plan": {
+    "in": {
+      "Naturalize": 2,
+      "Pyroblast": 2,
+      "Red Elemental Blast": 1,
+      "Tranquil Domain": 2
+    },
+    "out": {
+      "Gempalm Incinerator": 1,
+      "Goblin King": 1,
+      "Goblin Matron": 1,
+      "Goblin Sharpshooter": 1,
+      "Mogg Fanatic": 1,
+      "Siege-Gang Commander": 1,
+      "Skirk Prospector": 1
+    }
+  }
+}

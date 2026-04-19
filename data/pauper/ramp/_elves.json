@@ -1,0 +1,14 @@
+{
+  "status": "plan",
+  "plan": {
+    "in": {
+      "Breath Weapon": 3,
+      "Cast into the Fire": 2
+    },
+    "out": {
+      "Eldrazi Repurposer": 1,
+      "Evolution Witness": 1,
+      "Ram Through": 3
+    }
+  }
+}

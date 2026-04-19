@@ -1,0 +1,13 @@
+{
+  "status": "plan",
+  "plan": {
+    "in": {
+      "Dispel": 2,
+      "Hydroblast": 4
+    },
+    "out": {
+      "Counterspell": 2,
+      "Deem Inferior": 4
+    }
+  }
+}

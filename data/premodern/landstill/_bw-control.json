@@ -1,0 +1,15 @@
+{
+  "status": "plan",
+  "plan": {
+    "in": {
+      "Decree of Justice": 1,
+      "Disenchant": 1,
+      "Phyrexian Furnace": 1
+    },
+    "out": {
+      "Impulse": 1,
+      "Stifle": 1,
+      "Wrath of God": 1
+    }
+  }
+}

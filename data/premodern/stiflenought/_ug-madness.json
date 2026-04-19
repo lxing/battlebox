@@ -1,0 +1,16 @@
+{
+  "status": "plan",
+  "plan": {
+    "in": {
+      "Chain of Vapor": 1,
+      "Flash of Insight": 1,
+      "Misdirection": 2,
+      "Powder Keg": 1
+    },
+    "out": {
+      "Opt": 2,
+      "Portent": 1,
+      "Vision Charm": 2
+    }
+  }
+}

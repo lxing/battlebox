@@ -1,0 +1,15 @@
+{
+  "status": "plan",
+  "plan": {
+    "in": {
+      "Blue Elemental Blast": 2,
+      "Hydroblast": 2,
+      "Powder Keg": 1
+    },
+    "out": {
+      "Opt": 2,
+      "Portent": 1,
+      "Vision Charm": 2
+    }
+  }
+}

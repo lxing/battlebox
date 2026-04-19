@@ -1,0 +1,13 @@
+{
+  "status": "plan",
+  "plan": {
+    "in": {
+      "Breath Weapon": 3,
+      "Nylea's Disciple": 1
+    },
+    "out": {
+      "Eldrazi Repurposer": 1,
+      "Malevolent Rumble": 1
+    }
+  }
+}

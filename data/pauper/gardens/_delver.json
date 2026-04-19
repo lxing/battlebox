@@ -1,0 +1,14 @@
+{
+  "status": "plan",
+  "plan": {
+    "in": {
+      "Relic of Progenitus": 4
+    },
+    "out": {
+      "Blood Fountain": 1,
+      "Campfire": 1,
+      "Defile": 1,
+      "Lembas": 1
+    }
+  }
+}

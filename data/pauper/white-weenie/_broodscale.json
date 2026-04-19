@@ -1,0 +1,14 @@
+{
+  "status": "plan",
+  "plan": {
+    "in": {
+      "Revoke Existence": 3,
+      "Standard Bearer": 3
+    },
+    "out": {
+      "Guardians' Pledge": 1,
+      "Lunarch Veteran / Luminous Phantom": 2,
+      "Prismatic Strands": 3
+    }
+  }
+}

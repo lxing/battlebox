@@ -1,5 +1,0 @@
-+1 [[Goblin Sharpshooter]]
-+1 [[Wellwisher]]
-+1 [[Caller of the Claw]]
-+1 [[Elvish Champion]]
--4 [[Tangle Wire]]

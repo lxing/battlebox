@@ -1,6 +1,0 @@
-+2 [[Disenchant]]
-+1 [[Haunting Echoes]]
-+2 [[Infest]]
-+1 [[Tormod's Crypt]]
--2 [[Decree of Justice]]
--4 [[Duress]]

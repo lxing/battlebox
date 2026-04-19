@@ -1,0 +1,14 @@
+{
+  "status": "plan",
+  "plan": {
+    "in": {
+      "Caller of the Claw": 1,
+      "Elvish Champion": 1,
+      "Goblin Sharpshooter": 1,
+      "Wellwisher": 1
+    },
+    "out": {
+      "Tangle Wire": 4
+    }
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "status": "plan",
+  "plan": {
+    "in": {
+      "Dust to Dust": 4
+    },
+    "out": {
+      "Militia Bugler": 2,
+      "Prismatic Strands": 1,
+      "Thraben Charm": 1
+    }
+  }
+}

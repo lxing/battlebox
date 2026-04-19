@@ -1,7 +1,0 @@
-+ 2 [[Annul]]
-+ 2 [[Cast into the Fire]]
-+ 2 [[Gorilla Shaman]]
-- 1 [[Azure Fleet Admiral]]
-- 1 [[Breath Weapon]]
-- 1 [[Lose Focus]]
-- 3 [[Spell Pierce]]

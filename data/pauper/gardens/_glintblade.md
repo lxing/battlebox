@@ -1,5 +1,0 @@
-+2 [[Ancient Grudge]]
-+2 [[Breath Weapon]]
--1 [[Campfire]]
--2 [[Snuff Out]]
--1 [[Spinning Darkness]]

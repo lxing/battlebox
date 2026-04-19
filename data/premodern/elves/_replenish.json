@@ -1,0 +1,21 @@
+{
+  "status": "plan",
+  "plan": {
+    "in": {
+      "Biorhythm": 2,
+      "Druid Lyrist": 1,
+      "Naturalize": 4,
+      "Winter Orb": 2
+    },
+    "out": {
+      "Caller of the Claw": 1,
+      "Deranged Hermit": 1,
+      "Kamahl, Fist of Krosa": 1,
+      "Llanowar Elves": 2,
+      "Masticore": 1,
+      "Nantuko Vigilante": 1,
+      "Wellwisher": 1,
+      "Yavimaya Granger": 1
+    }
+  }
+}

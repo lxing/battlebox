@@ -1,5 +1,0 @@
-+4 [[Naturalize]]
--1 [[Kamahl, Fist of Krosa]]
--1 [[Masticore]]
--1 [[Yavimaya Granger]]
--1 [[Priest of Titania]]

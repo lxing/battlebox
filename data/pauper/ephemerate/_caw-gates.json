@@ -1,0 +1,16 @@
+{
+  "status": "plan",
+  "plan": {
+    "in": {
+      "Breath Weapon": 1,
+      "Pyroblast": 3,
+      "Standard Bearer": 2,
+      "Stonehorn Dignitary": 1
+    },
+    "out": {
+      "Counterspell": 4,
+      "Dawnbringer Cleric": 1,
+      "Lightning Bolt": 2
+    }
+  }
+}

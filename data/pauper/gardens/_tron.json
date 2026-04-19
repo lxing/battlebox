@@ -1,0 +1,13 @@
+{
+  "status": "plan",
+  "plan": {
+    "in": {
+      "Ancient Grudge": 3,
+      "Troublemaker Ouphe": 1
+    },
+    "out": {
+      "Campfire": 1,
+      "Defile": 3
+    }
+  }
+}

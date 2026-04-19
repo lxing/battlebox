@@ -1,0 +1,15 @@
+{
+  "status": "plan",
+  "plan": {
+    "in": {
+      "Primordial Pachyderm": 2,
+      "Viridian Longbow": 2,
+      "Vitu-Ghazi Inspector": 4
+    },
+    "out": {
+      "Generous Ent": 3,
+      "Masked Vandal": 4,
+      "Wellwisher": 1
+    }
+  }
+}

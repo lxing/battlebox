@@ -1,5 +1,0 @@
-+ 1 [[Duress]]
-+ 1 [[Engineered Plague]]
-+ 1 [[Graveborn Muse]]
-- 2 [[Bane of the Living]]
-- 1 [[Diabolic Edict]]

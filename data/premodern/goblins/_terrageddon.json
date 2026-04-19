@@ -1,0 +1,15 @@
+{
+  "status": "plan",
+  "plan": {
+    "in": {
+      "Anarchy": 2,
+      "Pyrokinesis": 2
+    },
+    "out": {
+      "Goblin King": 1,
+      "Goblin Sharpshooter": 1,
+      "Mogg Fanatic": 1,
+      "Skirk Prospector": 1
+    }
+  }
+}

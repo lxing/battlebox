@@ -1,0 +1,12 @@
+{
+  "status": "plan",
+  "plan": {
+    "in": {
+      "Pyroblast": 4
+    },
+    "out": {
+      "Lose Focus": 1,
+      "Spell Pierce": 3
+    }
+  }
+}

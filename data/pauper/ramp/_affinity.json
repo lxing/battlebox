@@ -1,0 +1,17 @@
+{
+  "status": "plan",
+  "plan": {
+    "in": {
+      "Cast into the Fire": 2,
+      "Deglamer": 4,
+      "Gorilla Shaman": 2
+    },
+    "out": {
+      "Avenging Hunter": 1,
+      "Bannerhide Krushok": 1,
+      "Eldrazi Repurposer": 1,
+      "Nyxborn Hydra": 2,
+      "Ram Through": 3
+    }
+  }
+}

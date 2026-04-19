@@ -1,0 +1,15 @@
+{
+  "status": "plan",
+  "plan": {
+    "in": {
+      "Breath Weapon": 2,
+      "Troublemaker Ouphe": 2,
+      "Weather the Storm": 4
+    },
+    "out": {
+      "Cast Down": 3,
+      "Defile": 3,
+      "Snuff Out": 2
+    }
+  }
+}

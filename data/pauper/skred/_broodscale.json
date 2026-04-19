@@ -1,0 +1,11 @@
+{
+  "status": "plan",
+  "plan": {
+    "in": {
+      "Breath Weapon": 1
+    },
+    "out": {
+      "Lose Focus": 1
+    }
+  }
+}

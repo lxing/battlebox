@@ -1,0 +1,12 @@
+{
+  "status": "plan",
+  "plan": {
+    "in": {
+      "Heritage Reclamation": 3
+    },
+    "out": {
+      "Priest of Titania": 2,
+      "Winding Way": 1
+    }
+  }
+}

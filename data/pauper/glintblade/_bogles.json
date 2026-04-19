@@ -1,0 +1,13 @@
+{
+  "status": "plan",
+  "plan": {
+    "in": {
+      "Duress": 4,
+      "Thraben Charm": 1
+    },
+    "out": {
+      "Cast Down": 4,
+      "Suffocating Fumes": 1
+    }
+  }
+}

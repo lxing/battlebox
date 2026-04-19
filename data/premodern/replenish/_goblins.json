@@ -1,0 +1,15 @@
+{
+  "status": "plan",
+  "plan": {
+    "in": {
+      "Blue Elemental Blast": 2,
+      "Chill": 2,
+      "Swords to Plowshares": 1
+    },
+    "out": {
+      "Attunement": 1,
+      "Frantic Search": 2,
+      "Mana Leak": 2
+    }
+  }
+}

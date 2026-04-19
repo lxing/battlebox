@@ -1,0 +1,14 @@
+{
+  "status": "plan",
+  "plan": {
+    "in": {
+      "Primordial Pachyderm": 2,
+      "Vitu-Ghazi Inspector": 4
+    },
+    "out": {
+      "Avenging Hunter": 3,
+      "Lead the Stampede": 1,
+      "Priest of Titania": 2
+    }
+  }
+}

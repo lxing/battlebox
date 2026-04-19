@@ -1,5 +1,0 @@
-+ 2 [[Revoke Existence]]
-+ 3 [[Standard Bearer]]
-- 1 [[Guardians' Pledge]]
-- 3 [[Militia Bugler]]
-- 1 [[Prismatic Strands]]

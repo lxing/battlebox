@@ -1,0 +1,13 @@
+{
+  "status": "plan",
+  "plan": {
+    "in": {
+      "Caller of the Claw": 1,
+      "Genesis": 1
+    },
+    "out": {
+      "Priest of Titania": 1,
+      "Tangle Wire": 1
+    }
+  }
+}

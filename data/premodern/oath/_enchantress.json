@@ -1,0 +1,16 @@
+{
+  "status": "plan",
+  "plan": {
+    "in": {
+      "Aura of Silence": 1,
+      "Enlightened Tutor": 1,
+      "Naturalize": 2,
+      "Ray of Revelation": 1,
+      "Seal of Cleansing": 1
+    },
+    "out": {
+      "Oath of Druids": 2,
+      "Swords to Plowshares": 4
+    }
+  }
+}

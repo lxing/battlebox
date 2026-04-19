@@ -1,0 +1,13 @@
+{
+  "status": "plan",
+  "plan": {
+    "in": {
+      "Sacred Ground": 2,
+      "Xantid Swarm": 1
+    },
+    "out": {
+      "Elephant Grass": 2,
+      "Mirri's Guile": 1
+    }
+  }
+}

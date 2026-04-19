@@ -1,5 +1,0 @@
-+2 [[Engineered Plague]]
-+2 [[Pyroclasm]]
--2 [[Armageddon]]
--1 [[Daze]]
--1 [[Sleight of Hand]]

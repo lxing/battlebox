@@ -1,0 +1,12 @@
+{
+  "status": "plan",
+  "plan": {
+    "in": {
+      "Relic of Progenitus": 2
+    },
+    "out": {
+      "Campfire": 1,
+      "Fanatical Offering": 1
+    }
+  }
+}

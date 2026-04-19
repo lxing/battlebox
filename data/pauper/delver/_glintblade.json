@@ -1,0 +1,12 @@
+{
+  "status": "plan",
+  "plan": {
+    "in": {
+      "Annul": 3
+    },
+    "out": {
+      "Counterspell": 2,
+      "Deem Inferior": 1
+    }
+  }
+}

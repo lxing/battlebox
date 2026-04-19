@@ -1,6 +1,0 @@
-+ 4 [[Duress]]
-+ 1 [[Thraben Charm]]
-- 1 [[Anchovy & Banana Pizza]]
-- 1 [[Grim Bauble]]
-- 1 [[Suffocating Fumes]]
-- 2 [[Tithing Blade / Consuming Sepulcher]]

@@ -1,6 +1,0 @@
-+ 4 [[Red Elemental Blast]]
-+ 3 [[Relic of Progenitus]]
-- 1 [[Burning-Tree Emissary]]
-- 2 [[Chain Lightning]]
-- 1 [[End the Festivities]]
-- 3 [[Experimental Synthesizer]]

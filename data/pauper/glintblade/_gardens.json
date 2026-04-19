@@ -1,0 +1,13 @@
+{
+  "status": "plan",
+  "plan": {
+    "in": {
+      "Duress": 2,
+      "Okiba-Gang Shinobi": 1
+    },
+    "out": {
+      "Inspiring Overseer": 1,
+      "Suffocating Fumes": 2
+    }
+  }
+}

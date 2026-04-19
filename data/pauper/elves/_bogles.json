@@ -1,0 +1,13 @@
+{
+  "status": "plan",
+  "plan": {
+    "in": {
+      "Heritage Reclamation": 3
+    },
+    "out": {
+      "Avenging Hunter": 1,
+      "Llanowar Elves": 1,
+      "Priest of Titania": 1
+    }
+  }
+}

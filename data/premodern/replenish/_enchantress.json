@@ -1,0 +1,14 @@
+{
+  "status": "plan",
+  "plan": {
+    "in": {
+      "Meddling Mage": 3,
+      "Orim's Chant": 2
+    },
+    "out": {
+      "Frantic Search": 1,
+      "Mana Leak": 1,
+      "Swords to Plowshares": 3
+    }
+  }
+}

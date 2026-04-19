@@ -1,0 +1,15 @@
+{
+  "status": "plan",
+  "plan": {
+    "in": {
+      "Red Elemental Blast": 4,
+      "Relic of Progenitus": 3
+    },
+    "out": {
+      "Burning-Tree Emissary": 1,
+      "Chain Lightning": 2,
+      "End the Festivities": 1,
+      "Experimental Synthesizer": 3
+    }
+  }
+}

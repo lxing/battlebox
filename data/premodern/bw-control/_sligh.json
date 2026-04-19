@@ -1,0 +1,17 @@
+{
+  "status": "plan",
+  "plan": {
+    "in": {
+      "Circle of Protection: Red": 1,
+      "Engineered Plague": 2,
+      "Silver Knight": 2,
+      "Warmth": 1
+    },
+    "out": {
+      "Decree of Justice": 1,
+      "Disenchant": 1,
+      "Phyrexian Furnace": 1,
+      "Skeletal Scrying": 3
+    }
+  }
+}

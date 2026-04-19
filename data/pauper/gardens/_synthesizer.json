@@ -1,0 +1,17 @@
+{
+  "status": "plan",
+  "plan": {
+    "in": {
+      "Breath Weapon": 2,
+      "Troublemaker Ouphe": 2,
+      "Weather the Storm": 4
+    },
+    "out": {
+      "Blood Fountain": 1,
+      "Cast Down": 2,
+      "Eviscerator's Insight": 2,
+      "Nihil Spellbomb": 1,
+      "Snuff Out": 2
+    }
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "status": "plan",
+  "plan": {
+    "in": {
+      "Ancient Grudge": 2,
+      "Breath Weapon": 2
+    },
+    "out": {
+      "Campfire": 1,
+      "Snuff Out": 2,
+      "Spinning Darkness": 1
+    }
+  }
+}

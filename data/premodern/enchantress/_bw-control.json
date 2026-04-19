@@ -1,0 +1,13 @@
+{
+  "status": "plan",
+  "plan": {
+    "in": {
+      "Aura of Silence": 3,
+      "Tormod's Crypt": 2
+    },
+    "out": {
+      "Elephant Grass": 4,
+      "Mirri's Guile": 1
+    }
+  }
+}

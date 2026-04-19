@@ -1,0 +1,14 @@
+{
+  "status": "plan",
+  "plan": {
+    "in": {
+      "Fact or Fiction": 2,
+      "Meddling Mage": 3
+    },
+    "out": {
+      "Mana Leak": 1,
+      "Seal of Cleansing": 1,
+      "Swords to Plowshares": 3
+    }
+  }
+}

@@ -1,5 +1,0 @@
-+ 2 [[Arms of Hadar]]
-+ 1 [[Suffocating Fumes]]
-- 1 [[Anchovy & Banana Pizza]]
-- 1 [[Eviscerator's Insight]]
-- 1 [[Thraben Charm]]

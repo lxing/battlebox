@@ -1,0 +1,13 @@
+{
+  "status": "plan",
+  "plan": {
+    "in": {
+      "Pyroblast": 4
+    },
+    "out": {
+      "Azure Fleet Admiral": 1,
+      "Breath Weapon": 2,
+      "Crimson Fleet Commodore": 1
+    }
+  }
+}

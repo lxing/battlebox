@@ -1,8 +1,0 @@
-+ 4 [[Duress]]
-+ 1 [[Thraben Charm]]
-+ 2 [[Tithing Blade / Consuming Sepulcher]]
-- 1 [[Anchovy & Banana Pizza]]
-- 3 [[Cast Down]]
-- 1 [[Omen of the Dead]]
-- 1 [[Oroku Saki, Shredder Rising]]
-- 1 [[Suffocating Fumes]]

@@ -1,0 +1,19 @@
+{
+  "status": "plan",
+  "plan": {
+    "in": {
+      "Caller of the Claw": 1,
+      "Genesis": 1,
+      "Naturalize": 3,
+      "Winter Orb": 2
+    },
+    "out": {
+      "Deranged Hermit": 1,
+      "Kamahl, Fist of Krosa": 1,
+      "Llanowar Elves": 2,
+      "Masticore": 1,
+      "Wellwisher": 1,
+      "Yavimaya Granger": 1
+    }
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "status": "plan",
+  "plan": {
+    "in": {
+      "Phyrexian Furnace": 1,
+      "Stifle": 2
+    },
+    "out": {
+      "Disenchant": 1,
+      "Humility": 1,
+      "Wrath of God": 1
+    }
+  }
+}

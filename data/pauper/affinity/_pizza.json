@@ -1,0 +1,15 @@
+{
+  "status": "plan",
+  "plan": {
+    "in": {
+      "Cast Down": 2,
+      "Red Elemental Blast": 4
+    },
+    "out": {
+      "Black Mage's Rod": 2,
+      "Blood Fountain": 1,
+      "Makeshift Munitions": 1,
+      "Nihil Spellbomb": 2
+    }
+  }
+}

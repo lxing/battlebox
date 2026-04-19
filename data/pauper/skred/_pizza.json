@@ -1,0 +1,12 @@
+{
+  "status": "plan",
+  "plan": {
+    "in": {
+      "Annul": 2,
+      "Pyroblast": 4
+    },
+    "out": {
+      "Breath Weapon": 2
+    }
+  }
+}

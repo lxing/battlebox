@@ -6,7 +6,6 @@ import (
 	"os"
 	"path/filepath"
 	"sort"
-	"strconv"
 	"strings"
 )
 
@@ -86,85 +85,47 @@ func resetValidationCache() {
 	parseCache.guides = make(map[string]guideParseCacheEntry)
 }
 
-func parseGuideLine(line string) (int, string, error) {
-	line = strings.TrimSpace(line)
-	if line == "" {
-		return 0, "", nil
-	}
-	match := guideCountRE.FindStringSubmatch(line)
-	if match == nil {
-		return 0, "", fmt.Errorf("missing quantity: %s", line)
-	}
-	qty, err := strconv.Atoi(match[1])
-	if err != nil || qty <= 0 {
-		return 0, "", fmt.Errorf("invalid quantity: %s", line)
-	}
-	name := strings.TrimSpace(match[2])
-	if name == "" {
-		return 0, "", fmt.Errorf("missing card name: %s", line)
-	}
-	return qty, name, nil
-}
-
-func extractCardName(input string) string {
-	name := strings.TrimSpace(input)
-	if strings.HasPrefix(name, "[[") && strings.HasSuffix(name, "]]") {
-		inner := strings.TrimSuffix(strings.TrimPrefix(name, "[["), "]]")
-		return strings.TrimSpace(inner)
-	}
-	return name
-}
-
 func validateGuide(guide MatchupGuide, mainboard, sideboard map[string]guideCardInfo) error {
-	inCounts := map[string]int{}
-	outCounts := map[string]int{}
+	guide = normalizeGuide(guide)
+	inCounts := guide.Plan.In
+	outCounts := guide.Plan.Out
 
-	for _, entry := range guide.In {
-		qty, name, err := parseGuideLine(entry)
-		if err != nil {
-			return fmt.Errorf("IN line: %w", err)
+	switch guide.Status {
+	case GuideStatusTodo, GuideStatusNoChanges:
+		if len(inCounts) > 0 || len(outCounts) > 0 {
+			return fmt.Errorf("status %s cannot include plan entries", guide.Status)
 		}
-		name = extractCardName(name)
-		if name == "" {
-			continue
+		return nil
+	case GuideStatusPlan:
+		if len(inCounts) == 0 && len(outCounts) == 0 {
+			return fmt.Errorf("planned guide has empty plan")
 		}
-		key := normalizeName(name)
-		inCounts[key] += qty
-	}
-
-	for _, entry := range guide.Out {
-		qty, name, err := parseGuideLine(entry)
-		if err != nil {
-			return fmt.Errorf("OUT line: %w", err)
-		}
-		name = extractCardName(name)
-		if name == "" {
-			continue
-		}
-		key := normalizeName(name)
-		outCounts[key] += qty
+	default:
+		return fmt.Errorf("unknown guide status: %s", guide.Status)
 	}
 
 	inCount := 0
 	outCount := 0
 	for name, qty := range inCounts {
-		info, ok := sideboard[name]
+		key := normalizeName(name)
+		info, ok := sideboard[key]
 		if !ok {
-			return fmt.Errorf("IN card not in sideboard: %s", name)
+			return fmt.Errorf("IN card not in sideboard: %s", key)
 		}
 		if qty > info.Qty {
-			return fmt.Errorf("IN card exceeds sideboard count: %s (%d > %d)", name, qty, info.Qty)
+			return fmt.Errorf("IN card exceeds sideboard count: %s (%d > %d)", key, qty, info.Qty)
 		}
 		inCount += qty
 	}
 
 	for name, qty := range outCounts {
-		info, ok := mainboard[name]
+		key := normalizeName(name)
+		info, ok := mainboard[key]
 		if !ok {
-			return fmt.Errorf("OUT card not in mainboard: %s", name)
+			return fmt.Errorf("OUT card not in mainboard: %s", key)
 		}
 		if qty > info.Qty {
-			return fmt.Errorf("OUT card exceeds mainboard count: %s (%d > %d)", name, qty, info.Qty)
+			return fmt.Errorf("OUT card exceeds mainboard count: %s (%d > %d)", key, qty, info.Qty)
 		}
 		outCount += qty
 	}
@@ -177,7 +138,24 @@ func validateGuide(guide MatchupGuide, mainboard, sideboard map[string]guideCard
 }
 
 func isGuidePlanEmpty(guide MatchupGuide) bool {
-	return len(guide.In) == 0 && len(guide.Out) == 0
+	guide = normalizeGuide(guide)
+	return len(guide.Plan.In) == 0 && len(guide.Plan.Out) == 0
+}
+
+func collectGuideWarnings(guide MatchupGuide, battleboxSlug, deckSlug, opponentSlug string, mainboard, sideboard map[string]guideCardInfo) ([]string, []string) {
+	var warnings []string
+	var annotations []string
+
+	if guide.Status == GuideStatusTodo {
+		warnings = append(warnings, fmt.Sprintf("TODO sideboard guide (%s/%s -> %s)", battleboxSlug, deckSlug, opponentSlug))
+		annotations = append(annotations, "empty")
+	}
+	if err := validateGuide(guide, mainboard, sideboard); err != nil {
+		warnings = append(warnings, fmt.Sprintf("Malformed sideboard plan (%s/%s -> %s): %v", battleboxSlug, deckSlug, opponentSlug, err))
+		annotations = append(annotations, err.Error())
+	}
+
+	return warnings, annotations
 }
 
 func validateCardRefs(battleboxes []Battlebox) error {
@@ -208,7 +186,7 @@ func validateCardRefs(battleboxes []Battlebox) error {
 			}
 			for opponent, guide := range deck.Guides {
 				opponentSet := deckCards[opponent]
-				issues = append(issues, validateRefsForText(bb.Slug, deck.Slug, "guide:"+opponent, guide.Text, deckCards[deck.Slug], opponentSet)...)
+				issues = append(issues, validateRefsForText(bb.Slug, deck.Slug, "guide:"+opponent, guide.Notes, deckCards[deck.Slug], opponentSet)...)
 			}
 		}
 	}
@@ -293,8 +271,10 @@ func loadGuideCached(path string) (string, MatchupGuide, []string, error) {
 	entry := guideParseCacheEntry{err: err}
 	if err == nil {
 		entry.raw = string(data)
-		entry.parsed = parseGuide(entry.raw)
-		entry.proseRefs = extractCardRefs(entry.parsed.Text)
+		entry.parsed, entry.err = parseGuide(entry.raw)
+		if entry.err == nil {
+			entry.proseRefs = extractCardRefs(entry.parsed.Notes)
+		}
 	}
 	parseCache.guides[path] = entry
 	return entry.raw, entry.parsed, entry.proseRefs, entry.err
@@ -467,7 +447,7 @@ func validatePrintingsUsage(dataDir string, projectPrintings map[string]string, 
 			}
 
 			for _, guideFile := range ctx.guideFiles {
-				opponentSlug := strings.TrimPrefix(strings.TrimSuffix(filepath.Base(guideFile), ".md"), "_")
+				opponentSlug := strings.TrimPrefix(strings.TrimSuffix(filepath.Base(guideFile), ".json"), "_")
 				opponentCtx, hasOpponent := decks[opponentSlug]
 
 				_, guide, proseRefs, err := loadGuideCached(guideFile)
@@ -475,15 +455,11 @@ func validatePrintingsUsage(dataDir string, projectPrintings map[string]string, 
 					warnings = append(warnings, fmt.Sprintf("Validator input error (%s/%s): %s", bbSlug, ctx.slug, filepath.Base(guideFile)))
 					continue
 				}
-				if guide.Status != GuideStatusNoSideboard && isGuidePlanEmpty(guide) {
-					warnings = append(warnings, fmt.Sprintf("Empty sideboard plan (%s/%s -> %s)", bbSlug, ctx.slug, opponentSlug))
+				guideWarnings, guideAnnotations := collectGuideWarnings(guide, bbSlug, ctx.slug, opponentSlug, ctx.mainboardIndex, ctx.sideboardIndex)
+				warnings = append(warnings, guideWarnings...)
+				if len(guideAnnotations) > 0 {
 					deckWarnings := appendDeckWarningAnnotation(annotations, bbSlug, ctx.slug)
-					deckWarnings.Guides[opponentSlug] = append(deckWarnings.Guides[opponentSlug], "empty")
-				}
-				if err := validateGuide(guide, ctx.mainboardIndex, ctx.sideboardIndex); err != nil {
-					warnings = append(warnings, fmt.Sprintf("Malformed sideboard plan (%s/%s -> %s): %v", bbSlug, ctx.slug, opponentSlug, err))
-					deckWarnings := appendDeckWarningAnnotation(annotations, bbSlug, ctx.slug)
-					deckWarnings.Guides[opponentSlug] = append(deckWarnings.Guides[opponentSlug], err.Error())
+					deckWarnings.Guides[opponentSlug] = append(deckWarnings.Guides[opponentSlug], guideAnnotations...)
 				}
 
 				// Avoid duplicate noise with sideboard-plan validation:
@@ -573,7 +549,7 @@ func listGuideFiles(deckPath string) []string {
 			continue
 		}
 		name := entry.Name()
-		if !strings.HasPrefix(name, "_") || !strings.HasSuffix(name, ".md") {
+		if !strings.HasPrefix(name, "_") || !strings.HasSuffix(name, ".json") {
 			continue
 		}
 		out = append(out, filepath.Join(deckPath, name))

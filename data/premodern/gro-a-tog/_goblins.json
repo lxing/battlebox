@@ -1,0 +1,14 @@
+{
+  "status": "plan",
+  "plan": {
+    "in": {
+      "Engineered Plague": 2,
+      "Pyroclasm": 2
+    },
+    "out": {
+      "Armageddon": 2,
+      "Daze": 1,
+      "Sleight of Hand": 1
+    }
+  }
+}

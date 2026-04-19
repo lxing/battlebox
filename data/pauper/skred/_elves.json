@@ -1,0 +1,14 @@
+{
+  "status": "plan",
+  "plan": {
+    "in": {
+      "Breath Weapon": 1,
+      "Cast into the Fire": 2
+    },
+    "out": {
+      "Azure Fleet Admiral": 1,
+      "Crimson Fleet Commodore": 1,
+      "Lose Focus": 1
+    }
+  }
+}

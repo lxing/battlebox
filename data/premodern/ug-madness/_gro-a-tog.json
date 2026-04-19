@@ -1,0 +1,12 @@
+{
+  "status": "plan",
+  "plan": {
+    "in": {
+      "Naturalize": 3
+    },
+    "out": {
+      "Daze": 2,
+      "Gilded Drake": 1
+    }
+  }
+}

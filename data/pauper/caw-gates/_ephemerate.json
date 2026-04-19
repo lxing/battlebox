@@ -1,0 +1,13 @@
+{
+  "status": "plan",
+  "plan": {
+    "in": {
+      "Blue Elemental Blast": 1,
+      "Pyroblast": 3
+    },
+    "out": {
+      "Counterspell": 2,
+      "Prismatic Strands": 2
+    }
+  }
+}

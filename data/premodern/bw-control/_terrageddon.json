@@ -1,0 +1,11 @@
+{
+  "status": "plan",
+  "plan": {
+    "in": {
+      "Disenchant": 1
+    },
+    "out": {
+      "Decree of Justice": 1
+    }
+  }
+}

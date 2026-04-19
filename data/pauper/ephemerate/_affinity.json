@@ -1,0 +1,12 @@
+{
+  "status": "plan",
+  "plan": {
+    "in": {
+      "Cast into the Fire": 2
+    },
+    "out": {
+      "Dawnbringer Cleric": 1,
+      "Lightning Bolt": 1
+    }
+  }
+}

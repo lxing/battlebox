@@ -1,0 +1,14 @@
+{
+  "status": "plan",
+  "plan": {
+    "in": {
+      "Arms of Hadar": 2,
+      "Suffocating Fumes": 1
+    },
+    "out": {
+      "Mukotai Ambusher": 1,
+      "Omen of the Dead": 1,
+      "Thraben Charm": 1
+    }
+  }
+}

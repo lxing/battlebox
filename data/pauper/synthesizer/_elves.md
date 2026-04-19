@@ -1,5 +1,0 @@
-+ 2 [[End the Festivities]]
-+ 4 [[Cast into the Fire]]
-- 2 [[Chain Lightning]]
-- 3 [[Experimental Synthesizer]]
-- 1 [[Wrenn's Resolve]]

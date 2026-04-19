@@ -1,0 +1,16 @@
+{
+  "status": "plan",
+  "plan": {
+    "in": {
+      "Annul": 2,
+      "Disenchant": 3,
+      "Ray of Revelation": 1
+    },
+    "out": {
+      "Armageddon": 1,
+      "Daze": 1,
+      "Fire / Ice": 2,
+      "Swords to Plowshares": 2
+    }
+  }
+}

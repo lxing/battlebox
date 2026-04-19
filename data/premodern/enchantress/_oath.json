@@ -1,0 +1,16 @@
+{
+  "status": "plan",
+  "plan": {
+    "in": {
+      "Sacred Ground": 2,
+      "Swords to Plowshares": 3,
+      "Tsabo's Web": 2
+    },
+    "out": {
+      "Elephant Grass": 4,
+      "Exploration": 1,
+      "Mirri's Guile": 1,
+      "Parallax Wave": 1
+    }
+  }
+}

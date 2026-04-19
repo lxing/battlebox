@@ -1,0 +1,17 @@
+{
+  "status": "plan",
+  "plan": {
+    "in": {
+      "Dust Bowl": 1,
+      "Ravenous Baloth": 1,
+      "Spiritmonger": 1,
+      "Wasteland": 1
+    },
+    "out": {
+      "Chainer's Edict": 1,
+      "Naturalize": 1,
+      "Smother": 1,
+      "Vendetta": 1
+    }
+  }
+}

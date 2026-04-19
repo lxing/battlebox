@@ -1,0 +1,17 @@
+{
+  "status": "plan",
+  "plan": {
+    "in": {
+      "Anarchy": 2,
+      "Pyroblast": 2,
+      "Red Elemental Blast": 1
+    },
+    "out": {
+      "Goblin King": 1,
+      "Goblin Sharpshooter": 1,
+      "Mogg Fanatic": 1,
+      "Siege-Gang Commander": 1,
+      "Skirk Prospector": 1
+    }
+  }
+}

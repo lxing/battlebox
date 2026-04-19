@@ -1,0 +1,17 @@
+{
+  "status": "plan",
+  "plan": {
+    "in": {
+      "Overload": 3,
+      "Pyroblast": 3,
+      "Red Elemental Blast": 2
+    },
+    "out": {
+      "Cursed Scroll": 1,
+      "Lava Dart": 2,
+      "Mogg Fanatic": 1,
+      "Price of Progress": 2,
+      "Seal of Fire": 2
+    }
+  }
+}

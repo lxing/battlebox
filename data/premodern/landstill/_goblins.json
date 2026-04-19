@@ -1,0 +1,20 @@
+{
+  "status": "plan",
+  "plan": {
+    "in": {
+      "Blue Elemental Blast": 3,
+      "Circle of Protection: Red": 2,
+      "Hydroblast": 1,
+      "Wrath of God": 1
+    },
+    "out": {
+      "Fact or Fiction": 1,
+      "Forbid": 1,
+      "Impulse": 1,
+      "Mana Leak": 1,
+      "Phyrexian Furnace": 1,
+      "Standstill": 1,
+      "Stifle": 1
+    }
+  }
+}

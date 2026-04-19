@@ -1,6 +1,0 @@
-+ 2 [[Arms of Hadar]]
-+ 2 [[Duress]]
-+ 1 [[Suffocating Fumes]]
-- 1 [[Anchovy & Banana Pizza]]
-- 2 [[Oroku Saki, Shredder Rising]]
-- 2 [[Tithing Blade / Consuming Sepulcher]]

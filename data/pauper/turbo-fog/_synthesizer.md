@@ -1,5 +1,0 @@
-+3 [[Blue Elemental Blast]]
-+2 [[Unable to Scream]]
--2 [[Disrupt]]
--2 [[Arcane Denial]]
--1 [[Stream of Thought]]

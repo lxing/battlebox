@@ -1,0 +1,14 @@
+{
+  "status": "plan",
+  "plan": {
+    "in": {
+      "End the Festivities": 3,
+      "Tithing Blade / Consuming Sepulcher": 3
+    },
+    "out": {
+      "Fiery Temper": 2,
+      "Sneaky Snacker": 2,
+      "Voldaren Epicure": 2
+    }
+  }
+}

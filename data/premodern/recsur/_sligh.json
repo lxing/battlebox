@@ -1,0 +1,15 @@
+{
+  "status": "plan",
+  "plan": {
+    "in": {
+      "Masticore": 1,
+      "Smother": 1,
+      "Spike Feeder": 1
+    },
+    "out": {
+      "Great Whale": 1,
+      "Krosan Tusker": 1,
+      "Phantom Nishoba": 1
+    }
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "status": "plan",
+  "plan": {
+    "in": {
+      "Standard Bearer": 2
+    },
+    "out": {
+      "Lunarch Veteran / Luminous Phantom": 1,
+      "Militia Bugler": 1
+    }
+  }
+}

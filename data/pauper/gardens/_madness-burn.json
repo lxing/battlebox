@@ -1,0 +1,14 @@
+{
+  "status": "plan",
+  "plan": {
+    "in": {
+      "Relic of Progenitus": 2,
+      "Weather the Storm": 4
+    },
+    "out": {
+      "Blood Fountain": 1,
+      "Crypt Rats": 3,
+      "Snuff Out": 2
+    }
+  }
+}

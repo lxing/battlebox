@@ -1,0 +1,14 @@
+{
+  "status": "plan",
+  "plan": {
+    "in": {
+      "Heritage Reclamation": 3,
+      "Monstrous Emergence": 4
+    },
+    "out": {
+      "Masked Vandal": 4,
+      "Wellwisher": 2,
+      "Winding Way": 1
+    }
+  }
+}

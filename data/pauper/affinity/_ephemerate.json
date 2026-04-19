@@ -1,0 +1,13 @@
+{
+  "status": "plan",
+  "plan": {
+    "in": {
+      "Pyroblast": 1,
+      "Red Elemental Blast": 4
+    },
+    "out": {
+      "Krark-Clan Shaman": 3,
+      "Toxin Analysis": 2
+    }
+  }
+}

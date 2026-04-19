@@ -1,0 +1,12 @@
+{
+  "status": "plan",
+  "plan": {
+    "in": {
+      "Annul": 2,
+      "Dispel": 2
+    },
+    "out": {
+      "Deem Inferior": 4
+    }
+  }
+}

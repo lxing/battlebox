@@ -2,41 +2,71 @@ package buildtool
 
 import "testing"
 
-func TestParseGuideRawDefaultsEmptyGuideToTodo(t *testing.T) {
-	guide := ParseGuideRaw("")
+func TestParseGuideJSONDefaultsEmptyGuideToTodo(t *testing.T) {
+	guide, err := ParseGuideJSON("")
+	if err != nil {
+		t.Fatalf("unexpected parse error: %v", err)
+	}
 	if guide.Status != GuideStatusTodo {
 		t.Fatalf("expected empty guide status %q, got %q", GuideStatusTodo, guide.Status)
 	}
-}
-
-func TestParseGuideRawParsesNoSideboardMarker(t *testing.T) {
-	raw := "<!-- guide_status: no_sideboard -->\n\nNo swaps needed."
-	guide := ParseGuideRaw(raw)
-	if guide.Status != GuideStatusNoSideboard {
-		t.Fatalf("expected status %q, got %q", GuideStatusNoSideboard, guide.Status)
-	}
-	if guide.Text != "No swaps needed." {
-		t.Fatalf("expected prose to survive marker parsing, got %q", guide.Text)
+	if len(guide.Plan.In) != 0 || len(guide.Plan.Out) != 0 {
+		t.Fatalf("expected empty plan, got %#v", guide.Plan)
 	}
 }
 
-func TestNormalizeGuideRawForSavePromotesEmptyGuideToNoSideboard(t *testing.T) {
-	raw, guide := NormalizeGuideRawForSave("No swaps needed.")
-	if guide.Status != GuideStatusNoSideboard {
-		t.Fatalf("expected saved empty guide status %q, got %q", GuideStatusNoSideboard, guide.Status)
+func TestParseGuideJSONParsesNoChangesGuide(t *testing.T) {
+	raw := `{"status":"no_changes","plan":{"in":{},"out":{}},"notes_md":"No swaps needed."}`
+	guide, err := ParseGuideJSON(raw)
+	if err != nil {
+		t.Fatalf("unexpected parse error: %v", err)
 	}
-	expectedRaw := "<!-- guide_status: no_sideboard -->\n\nNo swaps needed."
-	if raw != expectedRaw {
-		t.Fatalf("expected normalized raw %q, got %q", expectedRaw, raw)
+	if guide.Status != GuideStatusNoChanges {
+		t.Fatalf("expected status %q, got %q", GuideStatusNoChanges, guide.Status)
+	}
+	if guide.Notes != "No swaps needed." {
+		t.Fatalf("expected prose to survive parsing, got %q", guide.Notes)
 	}
 }
 
-func TestNormalizeGuideRawForSaveKeepsPlannedGuideAsPlan(t *testing.T) {
-	raw, guide := NormalizeGuideRawForSave("+ 2 [[Dust to Dust]]\n- 2 [[Lone Missionary]]")
-	if guide.Status != GuideStatusPlan {
-		t.Fatalf("expected planned guide status %q, got %q", GuideStatusPlan, guide.Status)
+func TestParseGuideJSONRejectsMalformedJSON(t *testing.T) {
+	if _, err := ParseGuideJSON(`{"status":"plan","plan":`); err == nil {
+		t.Fatal("expected malformed guide json to fail parsing")
 	}
-	if raw != "+ 2 [[Dust to Dust]]\n- 2 [[Lone Missionary]]" {
-		t.Fatalf("unexpected normalized planned raw %q", raw)
+}
+
+func TestNormalizeGuideForSaveKeepsExplicitStatus(t *testing.T) {
+	guide := NormalizeGuideForSave(MatchupGuide{
+		Status: GuideStatusNoChanges,
+		Plan: GuidePlan{
+			In:  map[string]int{},
+			Out: map[string]int{},
+		},
+		Notes: "No swaps needed.",
+	})
+	if guide.Status != GuideStatusNoChanges {
+		t.Fatalf("expected guide status %q, got %q", GuideStatusNoChanges, guide.Status)
+	}
+}
+
+func TestFormatGuideJSONWritesStructuredPayload(t *testing.T) {
+	payload, err := FormatGuideJSON(MatchupGuide{
+		Status: GuideStatusPlan,
+		Plan: GuidePlan{
+			In: map[string]int{
+				"Dust to Dust": 2,
+			},
+			Out: map[string]int{
+				"Lone Missionary": 2,
+			},
+		},
+		Notes: "Become the control deck.",
+	})
+	if err != nil {
+		t.Fatalf("unexpected format error: %v", err)
+	}
+	expected := "{\n  \"status\": \"plan\",\n  \"plan\": {\n    \"in\": {\n      \"Dust to Dust\": 2\n    },\n    \"out\": {\n      \"Lone Missionary\": 2\n    }\n  },\n  \"notes_md\": \"Become the control deck.\"\n}"
+	if string(payload) != expected {
+		t.Fatalf("expected formatted payload %q, got %q", expected, string(payload))
 	}
 }

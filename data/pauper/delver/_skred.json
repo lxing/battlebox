@@ -1,0 +1,13 @@
+{
+  "status": "plan",
+  "plan": {
+    "in": {
+      "Hydroblast": 4
+    },
+    "out": {
+      "Consider": 1,
+      "Deem Inferior": 2,
+      "Thought Scour": 1
+    }
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "status": "plan",
+  "plan": {
+    "in": {
+      "Meddling Mage": 3
+    },
+    "out": {
+      "Mana Leak": 2,
+      "Seal of Cleansing": 1
+    }
+  }
+}

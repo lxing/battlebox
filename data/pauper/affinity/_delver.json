@@ -1,0 +1,14 @@
+{
+  "status": "plan",
+  "plan": {
+    "in": {
+      "Cast Down": 2,
+      "Pyroblast": 1,
+      "Red Elemental Blast": 4
+    },
+    "out": {
+      "Galvanic Blast": 4,
+      "Krark-Clan Shaman": 3
+    }
+  }
+}

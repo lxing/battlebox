@@ -1,5 +1,0 @@
-+4 [[Relic of Progenitus]]
--1 [[Blood Fountain]]
--1 [[Campfire]]
--1 [[Defile]]
--1 [[Lembas]]

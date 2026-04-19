@@ -1,6 +1,0 @@
-+ 2 [[Primordial Pachyderm]]
-+ 4 [[Vitu-Ghazi Inspector]]
-- 2 [[Avenging Hunter]]
-- 2 [[Masked Vandal]]
-- 1 [[Nyxborn Hydra]]
-- 1 [[Priest of Titania]]

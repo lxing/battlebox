@@ -1,0 +1,12 @@
+{
+  "status": "plan",
+  "plan": {
+    "in": {
+      "Sacred Ground": 2,
+      "Xantid Swarm": 2
+    },
+    "out": {
+      "Elephant Grass": 4
+    }
+  }
+}

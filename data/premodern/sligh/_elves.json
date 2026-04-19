@@ -1,0 +1,11 @@
+{
+  "status": "plan",
+  "plan": {
+    "in": {
+      "Pyrokinesis": 2
+    },
+    "out": {
+      "Lava Dart": 2
+    }
+  }
+}

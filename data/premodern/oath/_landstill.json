@@ -1,0 +1,13 @@
+{
+  "status": "plan",
+  "plan": {
+    "in": {
+      "Call of the Herd": 4,
+      "Seal of Cleansing": 1
+    },
+    "out": {
+      "Sphere of Resistance": 4,
+      "Winter's Grasp": 1
+    }
+  }
+}

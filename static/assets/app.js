@@ -52,7 +52,6 @@ import {
 import { renderDecklistGrid as renderSharedDecklistGrid } from './app/decklist.js';
 import {
   buildGuideCountMap,
-  parseGuideCountLine,
 } from './app/guidePlan.js';
 import { createCardPreview } from './app/preview.js';
 import { createLifeCounter } from './app/life.js';
@@ -300,30 +299,6 @@ function renderBasicsPane(deckPrintings) {
   `;
 }
 
-function guideToRawMarkdown(guide) {
-  if (!guide) return '';
-  if (typeof guide === 'string') return guide.trim();
-
-  const ins = Array.isArray(guide.in) ? guide.in : [];
-  const outs = Array.isArray(guide.out) ? guide.out : [];
-  const prose = (guide.text || '').trim();
-  const lines = [];
-
-  ins.forEach((line) => {
-    const value = String(line || '').trim();
-    if (value) lines.push(`+ ${value}`);
-  });
-  outs.forEach((line) => {
-    const value = String(line || '').trim();
-    if (value) lines.push(`- ${value}`);
-  });
-  if (prose) {
-    if (lines.length) lines.push('');
-    lines.push(prose);
-  }
-  return lines.join('\n');
-}
-
 function buildDeckZoneMeta(cards) {
   const qtyByKey = {};
   const nameByKey = {};
@@ -344,29 +319,29 @@ function buildDeckZoneMeta(cards) {
   return { qtyByKey, nameByKey, orderIndex };
 }
 
-function buildGuideZoneLines(countMap, zoneMeta) {
-  const keys = Object.keys(countMap || {}).filter((key) => (countMap[key] || 0) > 0);
-  keys.sort((a, b) => {
-    const aIdx = zoneMeta.orderIndex[a];
-    const bIdx = zoneMeta.orderIndex[b];
-    if (aIdx >= 0 && bIdx >= 0) return aIdx - bIdx;
-    if (aIdx >= 0) return -1;
-    if (bIdx >= 0) return 1;
-    return a.localeCompare(b);
-  });
-  return keys.map((key) => {
-    const qty = countMap[key];
+function buildGuidePlanCounts(countMap, zoneMeta) {
+  const out = {};
+  Object.keys(countMap || {}).forEach((key) => {
+    const qty = Number.parseInt(String(countMap[key]), 10);
+    if (!Number.isFinite(qty) || qty < 1) return;
     const name = zoneMeta.nameByKey[key] || key;
-    return `${qty} [[${name}]]`;
+    out[name] = qty;
   });
+  return out;
 }
 
 function buildEditedGuide(baseGuide, editState, deckGuideMeta) {
   const safeBase = baseGuide || {};
+  const nextPlan = {
+    in: buildGuidePlanCounts(editState?.inCounts, deckGuideMeta.sideboard),
+    out: buildGuidePlanCounts(editState?.outCounts, deckGuideMeta.mainboard),
+  };
+  const hasPlan = Object.keys(nextPlan.in).length > 0 || Object.keys(nextPlan.out).length > 0;
   return {
     ...safeBase,
-    in: buildGuideZoneLines(editState?.inCounts, deckGuideMeta.sideboard),
-    out: buildGuideZoneLines(editState?.outCounts, deckGuideMeta.mainboard),
+    // An explicit save with no swaps means "deliberately no changes", not "still unwritten".
+    status: hasPlan ? 'plan' : 'no_changes',
+    plan: nextPlan,
   };
 }
 
@@ -387,11 +362,11 @@ function buildSourcePrimerUrl(bbSlug, deckSlug) {
   return `/api/source-primer?${params.toString()}`;
 }
 
-async function saveSourceGuide(bbSlug, deckSlug, opponentSlug, raw) {
+async function saveSourceGuide(bbSlug, deckSlug, opponentSlug, guide) {
   const res = await fetch(buildSourceGuideUrl(bbSlug, deckSlug, opponentSlug), {
     method: 'PUT',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ raw }),
+    body: JSON.stringify({ guide }),
   });
   if (!res.ok) {
     const text = (await res.text()).trim();
@@ -1316,7 +1291,7 @@ async function renderDeck(bbSlug, deckSlug, selectedGuide, sortMode, sortDirecti
   let guideEditState = null;
   const getCurrentGuideBase = (slug = currentMatchupSlug) => {
     if (!slug) return null;
-    return deck.guides?.[slug] || { in: [], out: [], text: '', raw: '' };
+    return deck.guides?.[slug] || { status: 'todo', plan: { in: {}, out: {} }, notes_md: '' };
   };
   const isGuideEditActive = () => Boolean(guideEditState && guideEditState.matchupSlug === currentMatchupSlug);
   const getRenderedGuideData = (slug = currentMatchupSlug) => {
@@ -1607,9 +1582,8 @@ async function renderDeck(bbSlug, deckSlug, selectedGuide, sortMode, sortDirecti
       if (editButton) editButton.disabled = true;
       const baseGuide = getCurrentGuideBase(currentMatchupSlug);
       const nextGuide = buildEditedGuide(baseGuide, guideEditState, deckGuideMeta);
-      const raw = guideToRawMarkdown(nextGuide);
       try {
-        const payload = await saveSourceGuide(bb.slug, deck.slug, currentMatchupSlug, raw);
+        const payload = await saveSourceGuide(bb.slug, deck.slug, currentMatchupSlug, nextGuide);
         if (!payload || !payload.guide) {
           throw new Error('Invalid save response');
         }
@@ -1670,8 +1644,8 @@ async function renderDeck(bbSlug, deckSlug, selectedGuide, sortMode, sortDirecti
         const baseGuide = getCurrentGuideBase(select.value);
         guideEditState = {
           matchupSlug: select.value,
-          inCounts: buildGuideCountMap(baseGuide?.in),
-          outCounts: buildGuideCountMap(baseGuide?.out),
+          inCounts: buildGuideCountMap(baseGuide?.plan?.in),
+          outCounts: buildGuideCountMap(baseGuide?.plan?.out),
         };
         renderGuide(select.value);
         renderDecklistBody();
@@ -1707,16 +1681,11 @@ async function renderDeck(bbSlug, deckSlug, selectedGuide, sortMode, sortDirecti
         const itemEl = target.closest('.guide-plan-item.is-editable');
         if (!itemEl || !guideBox.contains(itemEl)) return;
         const zone = itemEl.getAttribute('data-guide-zone') || '';
-        const index = Number.parseInt(itemEl.getAttribute('data-guide-index') || '-1', 10);
-        if ((zone !== 'in' && zone !== 'out') || index < 0) return;
-        const guideData = getRenderedGuideData(currentMatchupSlug);
-        const lines = zone === 'in' ? guideData?.in : guideData?.out;
-        const line = Array.isArray(lines) ? lines[index] : '';
-        const parsed = parseGuideCountLine(line);
-        if (!parsed) return;
+        const key = normalizeName(itemEl.getAttribute('data-guide-key') || '');
+        if ((zone !== 'in' && zone !== 'out') || !key) return;
         event.preventDefault();
         event.stopPropagation();
-        adjustGuideCount(zone, parsed.key, -1);
+        adjustGuideCount(zone, key, -1);
       });
     }
 

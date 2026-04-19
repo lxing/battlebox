@@ -1,0 +1,15 @@
+{
+  "status": "plan",
+  "plan": {
+    "in": {
+      "Cast into the Fire": 2,
+      "Hydroblast": 4
+    },
+    "out": {
+      "Azure Fleet Admiral": 1,
+      "Crimson Fleet Commodore": 1,
+      "Lose Focus": 1,
+      "Spell Pierce": 3
+    }
+  }
+}

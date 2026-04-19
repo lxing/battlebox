@@ -1,6 +1,0 @@
-+ 3 [[Ancient Grudge]]
-+ 2 [[Troublemaker Ouphe]]
-- 1 [[Campfire]]
-- 1 [[Defile]]
-- 2 [[Snuff Out]]
-- 1 [[Spinning Darkness]]

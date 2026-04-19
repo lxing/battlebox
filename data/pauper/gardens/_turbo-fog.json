@@ -1,0 +1,13 @@
+{
+  "status": "plan",
+  "plan": {
+    "in": {
+      "Relic of Progenitus": 4,
+      "Troublemaker Ouphe": 2
+    },
+    "out": {
+      "Cast Down": 4,
+      "Snuff Out": 2
+    }
+  }
+}

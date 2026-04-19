@@ -1,0 +1,18 @@
+{
+  "status": "plan",
+  "plan": {
+    "in": {
+      "Caller of the Claw": 1,
+      "Druid Lyrist": 1,
+      "Elvish Champion": 1,
+      "Genesis": 1,
+      "Naturalize": 2
+    },
+    "out": {
+      "Anger": 1,
+      "Deranged Hermit": 1,
+      "Llanowar Elves": 2,
+      "Quirion Ranger": 2
+    }
+  }
+}

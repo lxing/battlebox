@@ -1,0 +1,16 @@
+{
+  "status": "plan",
+  "plan": {
+    "in": {
+      "Sacred Ground": 2,
+      "Swords to Plowshares": 3
+    },
+    "out": {
+      "Enlightened Tutor": 1,
+      "Mirri's Guile": 1,
+      "Mobilization": 1,
+      "Opalescence": 1,
+      "Seal of Cleansing": 1
+    }
+  }
+}

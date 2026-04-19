@@ -1,0 +1,16 @@
+{
+  "status": "plan",
+  "plan": {
+    "in": {
+      "Annul": 2,
+      "Cast into the Fire": 2,
+      "Gorilla Shaman": 2
+    },
+    "out": {
+      "Azure Fleet Admiral": 1,
+      "Breath Weapon": 1,
+      "Lose Focus": 1,
+      "Spell Pierce": 3
+    }
+  }
+}

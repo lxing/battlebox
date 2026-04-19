@@ -1,0 +1,19 @@
+{
+  "status": "plan",
+  "plan": {
+    "in": {
+      "Druid Lyrist": 1,
+      "Goblin Sharpshooter": 1,
+      "Naturalize": 4,
+      "Winter Orb": 2
+    },
+    "out": {
+      "Caller of the Claw": 1,
+      "Deranged Hermit": 2,
+      "Masticore": 1,
+      "Priest of Titania": 2,
+      "Wellwisher": 1,
+      "Yavimaya Granger": 1
+    }
+  }
+}

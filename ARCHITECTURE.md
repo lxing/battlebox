@@ -38,7 +38,7 @@ Battlebox manifest supports:
 
 - `data/<battlebox>/<deck>/manifest.json`: Deck metadata and card list.
 - `data/<battlebox>/<deck>/primer.md`: Primer markdown.
-- `data/<battlebox>/<deck>/_<opponent>.md`: Matchup guide markdown.
+- `data/<battlebox>/<deck>/_<opponent>.json`: Structured matchup guide source with explicit status, plan counts, and markdown notes.
 - `data/<battlebox>/<deck>/printings.json`: Deck-level printings overrides.
 
 Deck manifest supports:
@@ -76,7 +76,7 @@ Core flow in `internal/buildtool/Main()`:
   - `data/printings.json`
   - `data/manifest.json`
   - build pipeline sources (`scripts/build.go`, `internal/buildtool/*.go`)
-- Battlebox hash includes all `.json` and `.md` files under that battlebox directory.
+- Battlebox hash includes all `.json` files and `primer.md` files under that battlebox directory.
 - File hashing uses cached `(size, mtime, hash)` fingerprints for fast no-op builds.
 
 ### Validation Behavior
@@ -114,7 +114,7 @@ Server entrypoint: `server/main.go`.
 ### Runtime APIs
 
 - `GET/PUT /api/source-guide?bb=<slug>&deck=<slug>&opponent=<slug>`
-  - Reads/writes raw matchup guide source files in `data/.../_<opponent>.md`.
+  - Reads/writes structured matchup guide source files in `data/.../_<opponent>.json`.
   - Returns parsed guide JSON shape used by the editor UI.
 - Draft subsystem:
   - `GET/POST /api/draft/rooms`

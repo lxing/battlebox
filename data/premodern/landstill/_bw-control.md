@@ -1,6 +1,0 @@
-+1 [[Decree of Justice]]
-+1 [[Phyrexian Furnace]]
-+1 [[Disenchant]]
--1 [[Stifle]]
--1 [[Wrath of God]]
--1 [[Impulse]]

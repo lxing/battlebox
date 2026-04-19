@@ -1,0 +1,16 @@
+{
+  "status": "plan",
+  "plan": {
+    "in": {
+      "Masticore": 1,
+      "Spike Feeder": 1,
+      "Tsabo's Web": 2
+    },
+    "out": {
+      "Great Whale": 1,
+      "Krosan Tusker": 1,
+      "Phantom Nishoba": 1,
+      "Yavimaya Granger": 1
+    }
+  }
+}

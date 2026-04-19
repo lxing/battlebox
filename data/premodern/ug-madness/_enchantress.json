@@ -1,0 +1,13 @@
+{
+  "status": "plan",
+  "plan": {
+    "in": {
+      "Naturalize": 3
+    },
+    "out": {
+      "Gilded Drake": 1,
+      "Waterfront Bouncer": 1,
+      "Wonder": 1
+    }
+  }
+}

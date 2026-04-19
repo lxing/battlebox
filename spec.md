@@ -28,10 +28,10 @@ data/
   {battlebox}/
     printings.json         # battlebox-level printings
     {deck-slug}/
-      manifest.json    # deck metadata + cards
-      primer.md        # deck primer (markdown)
-      {opponent}.md    # sideboard guide vs opponent (markdown)
-      printings.json   # deck-level printings
+      manifest.json       # deck metadata + cards
+      primer.md           # deck primer (markdown)
+      _{opponent}.json    # sideboard guide vs opponent (structured JSON)
+      printings.json      # deck-level printings
 ```
 
 ## manifest.json
@@ -71,9 +71,9 @@ Resolution order (last wins):
 
 Decklists omit `printing`; the build script resolves printings via the printings files.
 
-## Markdown Files
+## Primer And Guides
 - `primer.md`: Deck strategy, key cards, combos
-- `{opponent-slug}.md`: Sideboard guide against that deck
+- `_{opponent-slug}.json`: Sideboard guide against that deck
 
 Use `[[Card Name]]` syntax for inline card references:
 ```markdown
@@ -82,6 +82,27 @@ Against control, bring in [[Red Elemental Blast]].
 ```
 
 Card references are resolved against the deck's card list to get the correct printing for Scryfall hover previews.
+
+Guide JSON shape:
+```json
+{
+  "status": "plan",
+  "plan": {
+    "in": {
+      "Dust to Dust": 2
+    },
+    "out": {
+      "Lone Missionary": 2
+    }
+  },
+  "notes_md": "Become the control deck."
+}
+```
+
+Guide status values:
+- `plan`: Explicit in/out plan is present
+- `no_changes`: Deliberately no sideboard changes
+- `todo`: Guide not yet written
 
 ## Scripts
 - `scripts/fetch_moxfield.py`: Import decks from Moxfield URLs

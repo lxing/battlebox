@@ -1,0 +1,16 @@
+{
+  "status": "plan",
+  "plan": {
+    "in": {
+      "Bone Shredder": 1,
+      "Tormod's Crypt": 2,
+      "Withered Wretch": 1
+    },
+    "out": {
+      "Chainer's Edict": 1,
+      "Krosan Tusker": 1,
+      "Smother": 1,
+      "Vendetta": 1
+    }
+  }
+}

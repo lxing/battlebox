@@ -1,5 +1,0 @@
-+ 2 [[Primordial Pachyderm]]
-+ 4 [[Vitu-Ghazi Inspector]]
-- 3 [[Avenging Hunter]]
-- 1 [[Lead the Stampede]]
-- 2 [[Priest of Titania]]

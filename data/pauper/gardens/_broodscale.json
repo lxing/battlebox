@@ -1,0 +1,12 @@
+{
+  "status": "plan",
+  "plan": {
+    "in": {
+      "Troublemaker Ouphe": 2
+    },
+    "out": {
+      "Blood Fountain": 1,
+      "Campfire": 1
+    }
+  }
+}

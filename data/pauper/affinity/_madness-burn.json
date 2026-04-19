@@ -1,0 +1,15 @@
+{
+  "status": "plan",
+  "plan": {
+    "in": {
+      "Blue Elemental Blast": 2,
+      "Cast into the Fire": 2,
+      "Gorilla Shaman": 2
+    },
+    "out": {
+      "Galvanic Blast": 2,
+      "Krark-Clan Shaman": 3,
+      "Makeshift Munitions": 1
+    }
+  }
+}

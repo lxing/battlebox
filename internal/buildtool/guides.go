@@ -1,137 +1,98 @@
 package buildtool
 
 import (
-	"regexp"
+	"encoding/json"
+	"sort"
 	"strings"
 )
 
 const (
-	GuideStatusPlan        = "plan"
-	GuideStatusTodo        = "todo"
-	GuideStatusNoSideboard = "no_sideboard"
+	GuideStatusPlan      = "plan"
+	GuideStatusTodo      = "todo"
+	GuideStatusNoChanges = "no_changes"
 )
-
-var guideStatusCommentRE = regexp.MustCompile(`^<!--\s*guide_status:\s*([a-z_]+)\s*-->$`)
 
 func normalizeGuideStatus(raw string) string {
 	switch strings.TrimSpace(strings.ToLower(raw)) {
 	case GuideStatusPlan:
 		return GuideStatusPlan
-	case GuideStatusNoSideboard:
-		return GuideStatusNoSideboard
+	case GuideStatusNoChanges:
+		return GuideStatusNoChanges
 	default:
 		return GuideStatusTodo
 	}
 }
 
-func parseGuideRawDetailed(raw string) (MatchupGuide, bool) {
-	text := strings.ReplaceAll(raw, "\r\n", "\n")
-	lines := strings.Split(text, "\n")
-
-	status := GuideStatusTodo
-	explicitStatus := false
-	start := 0
-	for start < len(lines) && strings.TrimSpace(lines[start]) == "" {
-		start++
-	}
-	if start < len(lines) {
-		match := guideStatusCommentRE.FindStringSubmatch(strings.TrimSpace(lines[start]))
-		if len(match) == 2 {
-			status = normalizeGuideStatus(match[1])
-			explicitStatus = true
-			start++
-		}
-	}
-
-	lines = lines[start:]
-
-	var ins []string
-	var outs []string
-	i := 0
-	for ; i < len(lines); i++ {
-		line := strings.TrimSpace(lines[i])
-		if line == "" {
-			i++
-			break
-		}
-		if strings.HasPrefix(line, "+") {
-			item := strings.TrimSpace(strings.TrimPrefix(line, "+"))
-			if item != "" {
-				ins = append(ins, item)
-			}
+func cloneGuideCounts(in map[string]int) map[string]int {
+	out := map[string]int{}
+	for name, qty := range in {
+		name = strings.TrimSpace(name)
+		if name == "" || qty <= 0 {
 			continue
 		}
-		if strings.HasPrefix(line, "-") {
-			item := strings.TrimSpace(strings.TrimPrefix(line, "-"))
-			if item != "" {
-				outs = append(outs, item)
-			}
-			continue
-		}
-		break
+		out[name] = qty
 	}
-
-	remaining := strings.TrimSpace(strings.Join(lines[i:], "\n"))
-	if len(ins) > 0 || len(outs) > 0 {
-		status = GuideStatusPlan
-	}
-
-	return MatchupGuide{
-		Raw:    raw,
-		Status: status,
-		In:     ins,
-		Out:    outs,
-		Text:   remaining,
-	}, explicitStatus
+	return out
 }
 
-func ParseGuideRaw(raw string) MatchupGuide {
-	guide, _ := parseGuideRawDetailed(raw)
+func normalizeGuide(guide MatchupGuide) MatchupGuide {
+	guide.Status = normalizeGuideStatus(guide.Status)
+	guide.Plan = GuidePlan{
+		In:  cloneGuideCounts(guide.Plan.In),
+		Out: cloneGuideCounts(guide.Plan.Out),
+	}
+	guide.Notes = strings.TrimSpace(guide.Notes)
 	return guide
 }
 
-func FormatGuideRaw(guide MatchupGuide) string {
-	lines := make([]string, 0, len(guide.In)+len(guide.Out)+3)
-	status := normalizeGuideStatus(guide.Status)
-	if status == GuideStatusNoSideboard {
-		lines = append(lines, "<!-- guide_status: no_sideboard -->")
+func ParseGuideJSON(raw string) (MatchupGuide, error) {
+	trimmed := strings.TrimSpace(raw)
+	if trimmed == "" {
+		return normalizeGuide(MatchupGuide{}), nil
 	}
-	for _, line := range guide.In {
-		value := strings.TrimSpace(line)
-		if value != "" {
-			lines = append(lines, "+ "+value)
-		}
+
+	var guide MatchupGuide
+	if err := json.Unmarshal([]byte(trimmed), &guide); err != nil {
+		return MatchupGuide{}, err
 	}
-	for _, line := range guide.Out {
-		value := strings.TrimSpace(line)
-		if value != "" {
-			lines = append(lines, "- "+value)
-		}
-	}
-	prose := strings.TrimSpace(guide.Text)
-	if prose != "" {
-		if len(lines) > 0 {
-			lines = append(lines, "")
-		}
-		lines = append(lines, prose)
-	}
-	return strings.Join(lines, "\n")
+	return normalizeGuide(guide), nil
 }
 
-func NormalizeGuideRawForSave(raw string) (string, MatchupGuide) {
-	guide, explicitStatus := parseGuideRawDetailed(raw)
-	if explicitStatus {
-		return FormatGuideRaw(guide), ParseGuideRaw(FormatGuideRaw(guide))
-	}
-	if len(guide.In) == 0 && len(guide.Out) == 0 {
-		guide.Status = GuideStatusNoSideboard
-	}
-	normalized := FormatGuideRaw(guide)
-	return normalized, ParseGuideRaw(normalized)
+func NormalizeGuideForSave(guide MatchupGuide) MatchupGuide {
+	return normalizeGuide(guide)
 }
 
-func parseGuide(raw string) MatchupGuide {
-	return ParseGuideRaw(raw)
+func formatGuideCounts(counts map[string]int) map[string]int {
+	out := map[string]int{}
+	keys := make([]string, 0, len(counts))
+	for name, qty := range counts {
+		if strings.TrimSpace(name) == "" || qty <= 0 {
+			continue
+		}
+		keys = append(keys, name)
+	}
+	sort.Strings(keys)
+	for _, name := range keys {
+		out[name] = counts[name]
+	}
+	return out
+}
+
+func FormatGuideJSON(guide MatchupGuide) ([]byte, error) {
+	normalized := normalizeGuide(guide)
+	payload := MatchupGuide{
+		Status: normalized.Status,
+		Plan: GuidePlan{
+			In:  formatGuideCounts(normalized.Plan.In),
+			Out: formatGuideCounts(normalized.Plan.Out),
+		},
+		Notes: normalized.Notes,
+	}
+	return json.MarshalIndent(payload, "", "  ")
+}
+
+func parseGuide(raw string) (MatchupGuide, error) {
+	return ParseGuideJSON(raw)
 }
 
 func indexCards(cards []Card) map[string]guideCardInfo {

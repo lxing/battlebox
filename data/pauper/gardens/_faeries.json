@@ -1,0 +1,12 @@
+{
+  "status": "plan",
+  "plan": {
+    "in": {
+      "Breath Weapon": 2
+    },
+    "out": {
+      "Cast Down": 1,
+      "Thorn of the Black Rose": 1
+    }
+  }
+}

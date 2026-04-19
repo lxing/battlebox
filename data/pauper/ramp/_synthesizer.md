@@ -1,6 +1,0 @@
-+ 2 [[Cast into the Fire]]
-+ 2 [[Gorilla Shaman]]
-+ 3 [[Breath Weapon]]
-- 1 [[Eldrazi Repurposer]]
-- 1 [[Malevolent Rumble]]
-- 1 [[Avenging Hunter]]

@@ -1,0 +1,12 @@
+{
+  "status": "plan",
+  "plan": {
+    "in": {
+      "Journey to Nowhere": 2
+    },
+    "out": {
+      "Battle Screech": 1,
+      "Raffine's Informant": 1
+    }
+  }
+}

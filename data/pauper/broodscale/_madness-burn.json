@@ -1,0 +1,12 @@
+{
+  "status": "plan",
+  "plan": {
+    "in": {
+      "Weather the Storm": 4
+    },
+    "out": {
+      "Energy Refractor": 2,
+      "Wizard's Rockets": 2
+    }
+  }
+}

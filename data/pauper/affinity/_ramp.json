@@ -1,0 +1,15 @@
+{
+  "status": "plan",
+  "plan": {
+    "in": {
+      "Blue Elemental Blast": 1,
+      "Cast Down": 2,
+      "Cast into the Fire": 2
+    },
+    "out": {
+      "Galvanic Blast": 2,
+      "Nihil Spellbomb": 2,
+      "Reckoner's Bargain": 1
+    }
+  }
+}

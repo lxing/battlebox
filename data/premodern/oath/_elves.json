@@ -1,0 +1,12 @@
+{
+  "status": "plan",
+  "plan": {
+    "in": {
+      "Cursed Totem": 2,
+      "Zuran Orb": 2
+    },
+    "out": {
+      "Sphere of Resistance": 4
+    }
+  }
+}

@@ -1,0 +1,15 @@
+{
+  "status": "plan",
+  "plan": {
+    "in": {
+      "Anarchy": 2,
+      "Naturalize": 2,
+      "Tranquil Domain": 2
+    },
+    "out": {
+      "Gempalm Incinerator": 4,
+      "Goblin Sharpshooter": 1,
+      "Mogg Fanatic": 1
+    }
+  }
+}

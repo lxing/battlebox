@@ -1,6 +1,0 @@
-+ 2 [[Primordial Pachyderm]]
-+ 2 [[Viridian Longbow]]
-+ 4 [[Vitu-Ghazi Inspector]]
-- 3 [[Generous Ent]]
-- 4 [[Masked Vandal]]
-- 1 [[Wellwisher]]

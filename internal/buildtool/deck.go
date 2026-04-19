@@ -78,25 +78,27 @@ func processDeck(deckPath, slug, battlebox string, printings map[string]string, 
 	entries, _ := buildFiles.ReadDir(deckPath)
 	for _, entry := range entries {
 		name := entry.Name()
-		if name == "primer.md" || name == "manifest.json" || !strings.HasSuffix(name, ".md") {
+		if name == "primer.md" || name == "manifest.json" || name == "printings.json" || !strings.HasSuffix(name, ".json") {
 			continue
 		}
-		// Matchup guides are stored as underscored files (e.g. _elves.md)
+		// Matchup guides are stored as underscored files (e.g. _elves.json)
 		// so guide files sort after manifest/primer in directory listings.
 		if !strings.HasPrefix(name, "_") {
 			continue
 		}
 		guidePath := filepath.Join(deckPath, name)
-		if _, guide, _, err := loadGuideCached(guidePath); err == nil {
-			opponentSlug := strings.TrimPrefix(strings.TrimSuffix(name, ".md"), "_")
-			if opponentSlug == "" {
-				continue
-			}
-			if opponentSlug == slug {
-				continue
-			}
-			deck.Guides[opponentSlug] = guide
+		_, guide, _, err := loadGuideCached(guidePath)
+		if err != nil {
+			return nil, fmt.Errorf("parsing guide %s: %w", guidePath, err)
 		}
+		opponentSlug := strings.TrimPrefix(strings.TrimSuffix(name, ".json"), "_")
+		if opponentSlug == "" {
+			continue
+		}
+		if opponentSlug == slug {
+			continue
+		}
+		deck.Guides[opponentSlug] = guide
 	}
 
 	return deck, nil

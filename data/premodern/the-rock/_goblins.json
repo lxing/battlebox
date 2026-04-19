@@ -1,0 +1,18 @@
+{
+  "status": "plan",
+  "plan": {
+    "in": {
+      "Bone Shredder": 1,
+      "Engineered Plague": 2,
+      "Ravenous Baloth": 1,
+      "Smother": 1
+    },
+    "out": {
+      "Krosan Tusker": 1,
+      "Naturalize": 1,
+      "Recurring Nightmare": 1,
+      "Spiritmonger": 1,
+      "Yavimaya Elder": 1
+    }
+  }
+}

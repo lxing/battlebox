@@ -1,0 +1,15 @@
+{
+  "status": "plan",
+  "plan": {
+    "in": {
+      "Breath Weapon": 3,
+      "Cast into the Fire": 2,
+      "Gorilla Shaman": 2
+    },
+    "out": {
+      "Avenging Hunter": 1,
+      "Eldrazi Repurposer": 1,
+      "Malevolent Rumble": 1
+    }
+  }
+}

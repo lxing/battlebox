@@ -1,0 +1,14 @@
+{
+  "status": "plan",
+  "plan": {
+    "in": {
+      "Misdirection": 2,
+      "Parallax Tide": 3
+    },
+    "out": {
+      "Opt": 2,
+      "Portent": 1,
+      "Vision Charm": 2
+    }
+  }
+}

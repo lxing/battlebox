@@ -1,35 +1,13 @@
 import { normalizeName } from './utils.js';
 
-const guideCountRE = /^(\d+)\s*x?\s+(.+)$/i;
-
-function extractGuideCardName(input) {
-  const raw = String(input || '').trim();
-  if (!raw) return '';
-  if (raw.startsWith('[[') && raw.endsWith(']]')) {
-    const inner = raw.slice(2, -2).trim();
-    if (!inner) return '';
-    const parts = inner.split('|');
-    return (parts[parts.length - 1] || '').trim();
-  }
-  return raw;
-}
-
-function parseGuidePlanLines(lines) {
-  if (!Array.isArray(lines)) return [];
-  const parsed = [];
-  lines.forEach((line) => {
-    const text = String(line || '').trim();
-    if (!text) return;
-    const match = guideCountRE.exec(text);
-    if (!match) return;
-    const qty = Number.parseInt(match[1], 10);
-    if (!qty || qty < 1) return;
-    const name = extractGuideCardName(match[2]);
+function parseGuidePlanCounts(counts) {
+  if (!counts || typeof counts !== 'object') return [];
+  return Object.entries(counts).map(([name, rawQty]) => {
+    const qty = Number.parseInt(String(rawQty), 10);
     const key = normalizeName(name);
-    if (!key) return;
-    parsed.push({ qty, key });
-  });
-  return parsed;
+    if (!key || !Number.isFinite(qty) || qty < 1) return null;
+    return { qty, key };
+  }).filter(Boolean);
 }
 
 function findCardIndex(cards, key) {
@@ -58,8 +36,8 @@ export function computeDeckView(deck, guide, applySideboard) {
     };
   }
 
-  const ins = parseGuidePlanLines(guide.in);
-  const outs = parseGuidePlanLines(guide.out);
+  const ins = parseGuidePlanCounts(guide?.plan?.in);
+  const outs = parseGuidePlanCounts(guide?.plan?.out);
 
   ins.forEach((entry) => {
     const sideIdx = findCardIndex(sideCards, entry.key);

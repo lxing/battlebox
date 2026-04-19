@@ -1,0 +1,13 @@
+{
+  "status": "plan",
+  "plan": {
+    "in": {
+      "Cave-In": 2,
+      "Pyrokinesis": 4
+    },
+    "out": {
+      "Careful Study": 2,
+      "Daze": 4
+    }
+  }
+}

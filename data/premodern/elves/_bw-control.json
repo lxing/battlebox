@@ -1,0 +1,16 @@
+{
+  "status": "plan",
+  "plan": {
+    "in": {
+      "Caller of the Claw": 1,
+      "Genesis": 1,
+      "Winter Orb": 2
+    },
+    "out": {
+      "Deranged Hermit": 1,
+      "Masticore": 1,
+      "Wellwisher": 1,
+      "Yavimaya Granger": 1
+    }
+  }
+}

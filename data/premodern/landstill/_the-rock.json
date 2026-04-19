@@ -1,0 +1,17 @@
+{
+  "status": "plan",
+  "plan": {
+    "in": {
+      "Disenchant": 1,
+      "Phyrexian Furnace": 1,
+      "Seal of Cleansing": 1,
+      "Wrath of God": 1
+    },
+    "out": {
+      "Forbid": 1,
+      "Impulse": 1,
+      "Standstill": 1,
+      "Stifle": 1
+    }
+  }
+}

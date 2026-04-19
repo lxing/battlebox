@@ -307,18 +307,22 @@ type FileFingerprint struct {
 	Hash string `json:"hash"`
 }
 
-// MatchupGuide stores parsed sideboard plans and matchup prose.
+// GuidePlan stores structured sideboard swaps keyed by canonical card name.
+type GuidePlan struct {
+	// Sideboard cards to bring in, keyed by exact card name.
+	In map[string]int `json:"in"`
+	// Mainboard cards to take out, keyed by exact card name.
+	Out map[string]int `json:"out"`
+}
+
+// MatchupGuide stores structured sideboard plans and matchup prose.
 type MatchupGuide struct {
-	// Raw markdown source for this matchup guide.
-	Raw string `json:"raw,omitempty"`
-	// Parsed guide intent status.
-	Status string `json:"status,omitempty"`
-	// Sideboard cards to bring in.
-	In []string `json:"in,omitempty"`
-	// Mainboard cards to take out.
-	Out []string `json:"out,omitempty"`
-	// Freeform matchup prose below the in/out block.
-	Text string `json:"text,omitempty"`
+	// Explicit guide intent status: todo, no_changes, or plan.
+	Status string `json:"status"`
+	// Structured sideboard swap plan.
+	Plan GuidePlan `json:"plan"`
+	// Freeform matchup prose rendered as markdown.
+	Notes string `json:"notes_md,omitempty"`
 	// Build-time guide warnings intended for frontend annotation.
 	Warnings []string `json:"warnings,omitempty"`
 }

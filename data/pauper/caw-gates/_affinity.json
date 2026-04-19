@@ -1,0 +1,13 @@
+{
+  "status": "plan",
+  "plan": {
+    "in": {
+      "Dust to Dust": 4,
+      "Gorilla Shaman": 2
+    },
+    "out": {
+      "Counterspell": 4,
+      "Prismatic Strands": 2
+    }
+  }
+}

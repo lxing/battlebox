@@ -1,0 +1,12 @@
+{
+  "status": "plan",
+  "plan": {
+    "in": {
+      "Anarchy": 2
+    },
+    "out": {
+      "Fireblast": 1,
+      "Mogg Fanatic": 1
+    }
+  }
+}

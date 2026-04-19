@@ -1,0 +1,19 @@
+{
+  "status": "plan",
+  "plan": {
+    "in": {
+      "Annul": 2,
+      "Disenchant": 3,
+      "Engineered Plague": 2,
+      "Pyroclasm": 2,
+      "Ray of Revelation": 1
+    },
+    "out": {
+      "Daze": 1,
+      "Fire / Ice": 2,
+      "Psychatog": 2,
+      "Sleight of Hand": 1,
+      "Swords to Plowshares": 4
+    }
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "status": "plan",
+  "plan": {
+    "in": {
+      "Nantuko Vigilante": 1,
+      "Naturalize": 1,
+      "Tormod's Crypt": 2
+    },
+    "out": {
+      "Chainer's Edict": 1,
+      "Smother": 1,
+      "Vendetta": 1,
+      "Wall of Blossoms": 1
+    }
+  }
+}

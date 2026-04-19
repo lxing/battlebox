@@ -1,6 +1,0 @@
-+2 [[Cast Down]]
-+2 [[Cast into the Fire]]
-+1 [[Blue Elemental Blast]]
--2 [[Galvanic Blast]]
--2 [[Nihil Spellbomb]]
--1 [[Reckoner's Bargain]]

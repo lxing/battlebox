@@ -1,0 +1,16 @@
+{
+  "status": "plan",
+  "plan": {
+    "in": {
+      "Annul": 3,
+      "Parallax Tide": 3,
+      "Powder Keg": 1
+    },
+    "out": {
+      "Daze": 3,
+      "Foil": 1,
+      "Opt": 2,
+      "Portent": 1
+    }
+  }
+}

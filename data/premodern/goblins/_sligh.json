@@ -1,0 +1,12 @@
+{
+  "status": "plan",
+  "plan": {
+    "in": {
+      "Pyrokinesis": 2
+    },
+    "out": {
+      "Goblin King": 1,
+      "Skirk Prospector": 1
+    }
+  }
+}
