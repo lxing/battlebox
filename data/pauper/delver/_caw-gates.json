@@ -2,11 +2,10 @@
   "status": "plan",
   "plan": {
     "in": {
-      "Dispel": 2
+      "Dispel": 1
     },
     "out": {
-      "Consider": 1,
-      "Deem Inferior": 1
+      "Sleep of the Dead": 1
     }
   }
 }

@@ -1,7 +1,9 @@
 {
-  "status": "todo",
+  "status": "plan",
   "plan": {
-    "in": {},
+    "in": {
+      "Fiery Cannonade": 2
+    },
     "out": {}
   }
 }

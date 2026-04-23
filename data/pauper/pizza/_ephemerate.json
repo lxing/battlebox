@@ -1,7 +1,12 @@
 {
-  "status": "todo",
+  "status": "plan",
   "plan": {
-    "in": {},
-    "out": {}
+    "in": {
+      "Pyroblast": 2
+    },
+    "out": {
+      "Brainstorm": 1,
+      "Cryogen Relic": 1
+    }
   }
 }

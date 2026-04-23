@@ -80,7 +80,7 @@
     },
     {
       "name": "Toxin Analysis",
-      "qty": 2
+      "qty": 3
     },
     {
       "name": "Utrom Monitor",
@@ -109,11 +109,11 @@
       "qty": 1
     },
     {
-      "name": "Pyroblast",
+      "name": "Red Elemental Blast",
       "qty": 4
     },
     {
-      "name": "Red Elemental Blast",
+      "name": "Pyroblast",
       "qty": 1
     },
     {

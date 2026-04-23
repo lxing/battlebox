@@ -1,7 +1,11 @@
 {
-  "status": "todo",
+  "status": "plan",
   "plan": {
-    "in": {},
-    "out": {}
+    "in": {
+      "End the Festivities": 1
+    },
+    "out": {
+      "Experimental Synthesizer": 1
+    }
   }
 }

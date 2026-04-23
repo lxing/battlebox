@@ -2,8 +2,11 @@
   "status": "plan",
   "plan": {
     "in": {
-      "Journey to Nowhere": 2
+      "Journey to Nowhere": 2,
+      "Ramosian Rally": 1
     },
-    "out": {}
+    "out": {
+      "Militia Bugler": 3
+    }
   }
 }

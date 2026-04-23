@@ -1,7 +1,12 @@
 {
-  "status": "todo",
+  "status": "plan",
   "plan": {
-    "in": {},
-    "out": {}
+    "in": {
+      "Red Elemental Blast": 4
+    },
+    "out": {
+      "End the Festivities": 1,
+      "Experimental Synthesizer": 3
+    }
   }
 }

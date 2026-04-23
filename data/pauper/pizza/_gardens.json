@@ -1,7 +1,11 @@
 {
-  "status": "todo",
+  "status": "plan",
   "plan": {
-    "in": {},
-    "out": {}
+    "in": {
+      "Negate": 1
+    },
+    "out": {
+      "Cryogen Relic": 1
+    }
   }
 }

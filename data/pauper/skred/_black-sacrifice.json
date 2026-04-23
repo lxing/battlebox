@@ -1,7 +1,13 @@
 {
-  "status": "todo",
+  "status": "plan",
   "plan": {
-    "in": {},
-    "out": {}
+    "in": {
+      "Breath Weapon": 1,
+      "Cast into the Fire": 1
+    },
+    "out": {
+      "Lose Focus": 1,
+      "Spell Pierce": 1
+    }
   }
 }

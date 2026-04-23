@@ -2,10 +2,10 @@
   "status": "plan",
   "plan": {
     "in": {
-      "Gut Shot": 3
+      "Gut Shot": 2
     },
     "out": {
-      "Spell Pierce": 3
+      "Dispel": 2
     }
   }
 }

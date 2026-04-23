@@ -1,7 +1,13 @@
 {
-  "status": "todo",
+  "status": "plan",
   "plan": {
-    "in": {},
-    "out": {}
+    "in": {
+      "Breath Weapon": 3
+    },
+    "out": {
+      "Brainstorm": 1,
+      "Negate": 1,
+      "Tamiyo's Safekeeping": 1
+    }
   }
 }

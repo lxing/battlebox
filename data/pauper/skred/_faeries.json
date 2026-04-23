@@ -1,7 +1,14 @@
 {
-  "status": "todo",
+  "status": "plan",
   "plan": {
-    "in": {},
-    "out": {}
+    "in": {
+      "Breath Weapon": 1,
+      "Pyroblast": 4
+    },
+    "out": {
+      "Counterspell": 2,
+      "Lightning Bolt": 2,
+      "Lose Focus": 1
+    }
   }
 }

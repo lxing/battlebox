@@ -1,7 +1,15 @@
 {
-  "status": "todo",
+  "status": "plan",
   "plan": {
-    "in": {},
-    "out": {}
+    "in": {
+      "Journey to Nowhere": 2,
+      "Palace Sentinels": 1,
+      "Standard Bearer": 3
+    },
+    "out": {
+      "Lunarch Veteran / Luminous Phantom": 2,
+      "Militia Bugler": 3,
+      "Prismatic Strands": 1
+    }
   }
 }

@@ -1,7 +1,15 @@
 {
-  "status": "todo",
+  "status": "plan",
   "plan": {
-    "in": {},
-    "out": {}
+    "in": {
+      "Breath Weapon": 3,
+      "Pyroblast": 2
+    },
+    "out": {
+      "Brainstorm": 1,
+      "Cryogen Relic": 1,
+      "Mystical Teachings": 2,
+      "Perilous Research": 1
+    }
   }
 }

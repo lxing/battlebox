@@ -6,7 +6,10 @@
       "Pyroblast": 4
     },
     "out": {
-      "Breath Weapon": 2
+      "Breath Weapon": 2,
+      "Lightning Bolt": 1,
+      "Murmuring Mystic": 1,
+      "Spell Pierce": 2
     }
   }
 }

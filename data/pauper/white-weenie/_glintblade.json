@@ -3,11 +3,12 @@
   "plan": {
     "in": {
       "Dust to Dust": 4,
-      "Revoke Existence": 3
+      "Journey to Nowhere": 2
     },
     "out": {
       "Battle Screech": 1,
-      "Guardians' Pledge": 3
+      "Guardians' Pledge": 2,
+      "Militia Bugler": 3
     }
   }
 }

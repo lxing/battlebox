@@ -1,7 +1,13 @@
 {
-  "status": "todo",
+  "status": "plan",
   "plan": {
-    "in": {},
-    "out": {}
+    "in": {
+      "Annul": 2,
+      "Cast into the Fire": 2
+    },
+    "out": {
+      "Breath Weapon": 2,
+      "Lightning Bolt": 2
+    }
   }
 }

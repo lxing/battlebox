@@ -3,11 +3,12 @@
   "plan": {
     "in": {
       "Annul": 3,
-      "Dispel": 2
+      "Dispel": 1
     },
     "out": {
-      "Consider": 1,
-      "Deem Inferior": 4
+      "Deem Inferior": 2,
+      "Mental Note": 1,
+      "Sleep of the Dead": 1
     }
   }
 }

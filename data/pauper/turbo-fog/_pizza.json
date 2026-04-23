@@ -1,7 +1,14 @@
 {
-  "status": "todo",
+  "status": "plan",
   "plan": {
-    "in": {},
-    "out": {}
+    "in": {
+      "Lose Focus": 2,
+      "Unable to Scream": 2
+    },
+    "out": {
+      "Fog": 1,
+      "Tangle": 1,
+      "Weather the Storm": 2
+    }
   }
 }

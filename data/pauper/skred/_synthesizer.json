@@ -2,13 +2,17 @@
   "status": "plan",
   "plan": {
     "in": {
+      "Breath Weapon": 1,
+      "Campfire": 2,
       "Cast into the Fire": 2,
       "Hydroblast": 4
     },
     "out": {
       "Azure Fleet Admiral": 1,
+      "Counterspell": 2,
       "Crimson Fleet Commodore": 1,
       "Lose Focus": 1,
+      "Skred": 1,
       "Spell Pierce": 3
     }
   }

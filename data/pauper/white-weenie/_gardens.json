@@ -2,11 +2,10 @@
   "status": "plan",
   "plan": {
     "in": {
-      "Journey to Nowhere": 2,
-      "Lone Missionary": 2
+      "Journey to Nowhere": 2
     },
     "out": {
-      "Guardians' Pledge": 3
+      "Guardians' Pledge": 2
     }
   }
 }

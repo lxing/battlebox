@@ -6,9 +6,11 @@
       "Hydroblast": 4
     },
     "out": {
-      "Consider": 1,
-      "Deem Inferior": 4,
-      "Deep Analysis": 2
+      "Deem Inferior": 2,
+      "Deep Analysis": 1,
+      "Dispel": 2,
+      "Mental Note": 1,
+      "Sleep of the Dead": 1
     }
   }
 }

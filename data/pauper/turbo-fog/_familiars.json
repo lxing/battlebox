@@ -1,7 +1,15 @@
 {
-  "status": "todo",
+  "status": "plan",
   "plan": {
-    "in": {},
-    "out": {}
+    "in": {
+      "Dispel": 3,
+      "Relic of Progenitus": 2
+    },
+    "out": {
+      "Arcane Denial": 1,
+      "Disrupt": 2,
+      "Fog": 1,
+      "Weather the Storm": 1
+    }
   }
 }

@@ -1,7 +1,14 @@
 {
-  "status": "todo",
+  "status": "plan",
   "plan": {
-    "in": {},
-    "out": {}
+    "in": {
+      "Flaring Pain": 1,
+      "Red Elemental Blast": 4
+    },
+    "out": {
+      "Clockwork Percussionist": 1,
+      "End the Festivities": 1,
+      "Experimental Synthesizer": 3
+    }
   }
 }

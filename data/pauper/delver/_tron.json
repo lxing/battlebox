@@ -1,7 +1,13 @@
 {
-  "status": "todo",
+  "status": "plan",
   "plan": {
-    "in": {},
-    "out": {}
+    "in": {
+      "Annul": 3
+    },
+    "out": {
+      "Cryptic Serpent": 1,
+      "Deep Analysis": 1,
+      "Dispel": 1
+    }
   }
 }

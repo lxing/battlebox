@@ -2,11 +2,14 @@
   "status": "plan",
   "plan": {
     "in": {
+      "Campfire": 2,
       "Hydroblast": 4
     },
     "out": {
+      "Counterspell": 1,
+      "Lightning Bolt": 3,
       "Lose Focus": 1,
-      "Spell Pierce": 3
+      "Spell Pierce": 1
     }
   }
 }

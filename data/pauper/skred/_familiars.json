@@ -1,7 +1,13 @@
 {
-  "status": "todo",
+  "status": "plan",
   "plan": {
-    "in": {},
-    "out": {}
+    "in": {
+      "Pyroblast": 4
+    },
+    "out": {
+      "Breath Weapon": 2,
+      "Lose Focus": 1,
+      "Tolarian Terror": 1
+    }
   }
 }

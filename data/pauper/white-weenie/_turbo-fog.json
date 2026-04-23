@@ -1,9 +1,7 @@
 {
-  "status": "plan",
+  "status": "no_changes",
   "plan": {
-    "in": {
-      "Journey to Nowhere": 2
-    },
+    "in": {},
     "out": {}
   }
 }

@@ -7,8 +7,10 @@
     },
     "out": {
       "Counterspell": 1,
-      "Deem Inferior": 4,
-      "Deep Analysis": 2
+      "Deem Inferior": 2,
+      "Deep Analysis": 1,
+      "Dispel": 2,
+      "Sleep of the Dead": 1
     }
   }
 }

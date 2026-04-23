@@ -1,7 +1,12 @@
 {
-  "status": "todo",
+  "status": "plan",
   "plan": {
-    "in": {},
-    "out": {}
+    "in": {
+      "Dispel": 3
+    },
+    "out": {
+      "Arcane Denial": 1,
+      "Weather the Storm": 2
+    }
   }
 }

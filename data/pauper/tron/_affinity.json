@@ -1,7 +1,13 @@
 {
-  "status": "todo",
+  "status": "plan",
   "plan": {
-    "in": {},
-    "out": {}
+    "in": {
+      "Deglamer": 3,
+      "Whispersilk Cloak": 1
+    },
+    "out": {
+      "Bramble Wurm": 1,
+      "Relic of Progenitus": 3
+    }
   }
 }

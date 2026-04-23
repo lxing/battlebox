@@ -1,7 +1,13 @@
 {
-  "status": "todo",
+  "status": "plan",
   "plan": {
-    "in": {},
-    "out": {}
+    "in": {
+      "Gut Shot": 4
+    },
+    "out": {
+      "Brainstorm": 1,
+      "Cryptic Serpent": 1,
+      "Sleep of the Dead": 2
+    }
   }
 }

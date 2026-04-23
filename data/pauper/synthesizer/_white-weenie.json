@@ -1,7 +1,13 @@
 {
-  "status": "todo",
+  "status": "plan",
   "plan": {
-    "in": {},
-    "out": {}
+    "in": {
+      "End the Festivities": 2,
+      "Relic of Progenitus": 2
+    },
+    "out": {
+      "Chain Lightning": 1,
+      "Experimental Synthesizer": 3
+    }
   }
 }

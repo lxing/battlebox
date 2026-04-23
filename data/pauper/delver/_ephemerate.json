@@ -2,12 +2,13 @@
   "status": "plan",
   "plan": {
     "in": {
-      "Dispel": 2,
+      "Dispel": 1,
       "Hydroblast": 4
     },
     "out": {
       "Counterspell": 2,
-      "Deem Inferior": 4
+      "Deem Inferior": 2,
+      "Sleep of the Dead": 1
     }
   }
 }

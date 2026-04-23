@@ -1,7 +1,11 @@
 {
-  "status": "todo",
+  "status": "plan",
   "plan": {
-    "in": {},
-    "out": {}
+    "in": {
+      "Relic of Progenitus": 1
+    },
+    "out": {
+      "End the Festivities": 1
+    }
   }
 }

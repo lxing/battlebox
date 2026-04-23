@@ -1,7 +1,14 @@
 {
-  "status": "todo",
+  "status": "plan",
   "plan": {
-    "in": {},
-    "out": {}
+    "in": {
+      "Lose Focus": 2,
+      "Relic of Progenitus": 2
+    },
+    "out": {
+      "Behold the Multiverse": 1,
+      "Disrupt": 2,
+      "Fog": 1
+    }
   }
 }

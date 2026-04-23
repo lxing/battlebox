@@ -6,9 +6,10 @@
       "Dispel": 1
     },
     "out": {
-      "Consider": 1,
-      "Deep Analysis": 2,
-      "Murmuring Mystic": 1
+      "Deep Analysis": 1,
+      "Dispel": 1,
+      "Mental Note": 1,
+      "Sleep of the Dead": 1
     }
   }
 }
