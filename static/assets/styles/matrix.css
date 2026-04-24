@@ -64,6 +64,11 @@
   padding: 0.25rem 0;
 }
 
+.matrix-total-head,
+.matrix-total-cell {
+  border-right: 4px solid #000 !important;
+}
+
 .matrix-row-head {
   position: sticky;
   left: 0;

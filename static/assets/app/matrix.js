@@ -119,9 +119,9 @@ export function createMatrixController({
       const totalCellHtml = (
         totalPercent === null || totalWins === null || totalMatches === null || totalMatches === 0
       )
-        ? '<td class="matrix-cell matrix-cell-empty">-</td>'
+        ? '<td class="matrix-cell matrix-cell-empty matrix-total-cell">-</td>'
         : `
-          <td class="matrix-cell matrix-cell-band-${totalBand}" title="Total ${totalPercent}% WR (${totalWins}/${totalMatches})">
+          <td class="matrix-cell matrix-cell-band-${totalBand} matrix-total-cell" title="Total ${totalPercent}% WR (${totalWins}/${totalMatches})">
             <div class="matrix-cell-main">${totalPercent}%</div>
             <div class="matrix-cell-record">${totalWins}/${totalMatches}</div>
           </td>
@@ -182,7 +182,7 @@ export function createMatrixController({
             <thead>
               <tr>
                 <th class="matrix-corner"></th>
-                <th scope="col" class="matrix-col-head"><span class="matrix-col-head-text">Total</span></th>
+                <th scope="col" class="matrix-col-head matrix-total-head"><span class="matrix-col-head-text">Total</span></th>
                 ${colHeadHtml}
               </tr>
             </thead>
