@@ -8,25 +8,15 @@ import (
 	"fmt"
 	"os"
 	"path/filepath"
-	"strings"
 )
 
-func buildIndexOutput(dataDir string, deckWarningAnnotations map[string]map[string]deckWarningAnnotations) (IndexOutput, error) {
+func buildIndexOutput(sources BuildSources, deckWarningAnnotations map[string]map[string]deckWarningAnnotations) (IndexOutput, error) {
 	var indexOutput IndexOutput
 
-	battleboxDirs, err := orderedBattleboxDirs(dataDir)
-	if err != nil {
-		return indexOutput, err
-	}
-
-	for _, bbDir := range battleboxDirs {
-		if !bbDir.IsDir() {
-			continue
-		}
-		bbPath := filepath.Join(dataDir, bbDir.Name())
-		bbManifest := loadBattleboxManifest(filepath.Join(bbPath, "manifest.json"))
+	for _, bbSource := range sources.Battleboxes {
+		bbManifest := bbSource.Manifest
 		indexEntry := BattleboxIndex{
-			Slug:                    bbDir.Name(),
+			Slug:                    bbSource.Slug,
 			Name:                    bbManifest.Name,
 			Description:             bbManifest.Description,
 			DeckCountLabel:          bbManifest.DeckCountLabel,
@@ -38,50 +28,35 @@ func buildIndexOutput(dataDir string, deckWarningAnnotations map[string]map[stri
 			Decks:                   []DeckIndex{},
 		}
 
-		deckDirs, err := buildFiles.ReadDir(bbPath)
-		if err != nil {
-			return indexOutput, fmt.Errorf("reading decks for %s: %w", bbDir.Name(), err)
+		if bbSource.DeckReadErr != nil {
+			return indexOutput, fmt.Errorf("reading decks for %s: %w", bbSource.Slug, bbSource.DeckReadErr)
 		}
-		for _, deckDir := range deckDirs {
-			if !deckDir.IsDir() {
-				continue
+
+		for _, deckSource := range bbSource.Decks {
+			if deckSource.ManifestErr != nil {
+				return indexOutput, fmt.Errorf("reading manifest %s: %w", filepath.Join(deckSource.Path, "manifest.json"), deckSource.ManifestErr)
 			}
-			manifestPath := filepath.Join(bbPath, deckDir.Name(), "manifest.json")
-			manifestData, err := buildFiles.ReadFile(manifestPath)
-			if err != nil {
-				return indexOutput, fmt.Errorf("reading manifest %s: %w", manifestPath, err)
-			}
-			var manifest Manifest
-			if err := json.Unmarshal(manifestData, &manifest); err != nil {
-				return indexOutput, fmt.Errorf("parsing manifest %s: %w", manifestPath, err)
-			}
-			manifest.Icon = strings.TrimSpace(manifest.Icon)
-			manifest.UIProfile = strings.TrimSpace(manifest.UIProfile)
+			manifest := deckSource.Manifest
 
 			uiProfile, err := resolveDeckUIProfile(manifest, bbManifest)
 			if err != nil {
-				return indexOutput, fmt.Errorf("resolving ui profile for %s: %w", manifestPath, err)
+				return indexOutput, fmt.Errorf("resolving ui profile for %s: %w", filepath.Join(deckSource.Path, "manifest.json"), err)
 			}
 			cardCount := countCards(manifest.Cards)
 
 			hasEmptyGuideWarnings := false
 			hasGuideWarnings := false
-			if battleboxWarnings, ok := deckWarningAnnotations[bbDir.Name()]; ok {
-				if deckWarnings, ok := battleboxWarnings[deckDir.Name()]; ok {
+			if battleboxWarnings, ok := deckWarningAnnotations[bbSource.Slug]; ok {
+				if deckWarnings, ok := battleboxWarnings[deckSource.Slug]; ok {
 					for _, guideWarnings := range deckWarnings.Guides {
-						for _, warning := range guideWarnings {
-							if warning == "empty" {
-								hasEmptyGuideWarnings = true
-								continue
-							}
-							hasGuideWarnings = true
-						}
+						hasEmptyGuideWarnings = hasEmptyGuideWarnings || guideWarnings.Todo
+						hasGuideWarnings = hasGuideWarnings || guideWarnings.HasOtherWarnings()
 					}
 				}
 			}
 
 			indexEntry.Decks = append(indexEntry.Decks, DeckIndex{
-				Slug:                  deckDir.Name(),
+				Slug:                  deckSource.Slug,
 				Name:                  manifest.Name,
 				Icon:                  manifest.Icon,
 				Colors:                manifest.Colors,

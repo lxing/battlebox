@@ -1,7 +1,6 @@
 package buildtool
 
 import (
-	"encoding/json"
 	"fmt"
 	"os"
 	"path/filepath"
@@ -47,9 +46,92 @@ type validationParseCache struct {
 	guides  map[string]guideParseCacheEntry
 }
 
+type ValidationWarningKind string
+
+const (
+	ValidationWarningInput                    ValidationWarningKind = "input"
+	ValidationWarningMainboardCount           ValidationWarningKind = "mainboard_count"
+	ValidationWarningDeckMissingPrinting      ValidationWarningKind = "deck_missing_printing"
+	ValidationWarningUnreferencedDeckPrinting ValidationWarningKind = "unreferenced_deck_printing"
+	ValidationWarningUnreferencedBoxPrinting  ValidationWarningKind = "unreferenced_battlebox_printing"
+	ValidationWarningPrimerMissingPrinting    ValidationWarningKind = "primer_missing_printing"
+	ValidationWarningTodoGuide                ValidationWarningKind = "todo_guide"
+	ValidationWarningMalformedGuide           ValidationWarningKind = "malformed_guide"
+	ValidationWarningGuideMissingPrinting     ValidationWarningKind = "guide_missing_printing"
+)
+
+type ValidationWarning struct {
+	Kind      ValidationWarningKind
+	Battlebox string
+	Deck      string
+	Opponent  string
+	Card      string
+	Detail    string
+	Actual    int
+	Expected  int
+}
+
+func (w ValidationWarning) String() string {
+	switch w.Kind {
+	case ValidationWarningInput:
+		if w.Deck == "" {
+			return fmt.Sprintf("Validator input error (%s): %s", w.Battlebox, w.Detail)
+		}
+		if w.Detail == "" {
+			return fmt.Sprintf("Validator input error (%s/%s): %s", w.Battlebox, w.Deck, w.Card)
+		}
+		return fmt.Sprintf("Validator input error (%s/%s): %s", w.Battlebox, w.Deck, w.Detail)
+	case ValidationWarningMainboardCount:
+		return fmt.Sprintf("%s/%s mainboard count is %d (expected %d)", w.Battlebox, w.Deck, w.Actual, w.Expected)
+	case ValidationWarningDeckMissingPrinting:
+		return fmt.Sprintf("Deck card missing printing (%s/%s): %s", w.Battlebox, w.Deck, w.Card)
+	case ValidationWarningUnreferencedDeckPrinting:
+		return fmt.Sprintf("Unreferenced deck printing (%s/%s): %s", w.Battlebox, w.Deck, w.Card)
+	case ValidationWarningUnreferencedBoxPrinting:
+		return fmt.Sprintf("Unreferenced battlebox printing (%s): %s", w.Battlebox, w.Card)
+	case ValidationWarningPrimerMissingPrinting:
+		return fmt.Sprintf("Primer missing printing (%s/%s): %s", w.Battlebox, w.Deck, w.Card)
+	case ValidationWarningTodoGuide:
+		return fmt.Sprintf("TODO sideboard guide (%s/%s -> %s)", w.Battlebox, w.Deck, w.Opponent)
+	case ValidationWarningMalformedGuide:
+		return fmt.Sprintf("Malformed sideboard plan (%s/%s -> %s): %s", w.Battlebox, w.Deck, w.Opponent, w.Detail)
+	case ValidationWarningGuideMissingPrinting:
+		return fmt.Sprintf("Matchup guide missing printing (%s/%s -> %s): %s", w.Battlebox, w.Deck, w.Opponent, w.Card)
+	default:
+		return w.Detail
+	}
+}
+
+func sortedValidationWarningStrings(warnings []ValidationWarning) []string {
+	out := make([]string, 0, len(warnings))
+	for _, warning := range warnings {
+		out = append(out, warning.String())
+	}
+	sort.Strings(out)
+	return out
+}
+
 type deckWarningAnnotations struct {
 	Primer []string
-	Guides map[string][]string
+	Guides map[string]guideWarningAnnotations
+}
+
+type guideWarningAnnotations struct {
+	Todo     bool
+	Messages []string
+}
+
+func (a guideWarningAnnotations) OutputWarnings() []string {
+	out := []string{}
+	if a.Todo {
+		out = append(out, "empty")
+	}
+	out = append(out, a.Messages...)
+	return out
+}
+
+func (a guideWarningAnnotations) HasOtherWarnings() bool {
+	return len(a.Messages) > 0
 }
 
 var parseCache = validationParseCache{
@@ -142,17 +224,28 @@ func isGuidePlanEmpty(guide MatchupGuide) bool {
 	return len(guide.Plan.In) == 0 && len(guide.Plan.Out) == 0
 }
 
-func collectGuideWarnings(guide MatchupGuide, battleboxSlug, deckSlug, opponentSlug string, mainboard, sideboard map[string]guideCardInfo) ([]string, []string) {
-	var warnings []string
-	var annotations []string
+func collectGuideWarnings(guide MatchupGuide, battleboxSlug, deckSlug, opponentSlug string, mainboard, sideboard map[string]guideCardInfo) ([]ValidationWarning, guideWarningAnnotations) {
+	var warnings []ValidationWarning
+	var annotations guideWarningAnnotations
 
 	if guide.Status == GuideStatusTodo {
-		warnings = append(warnings, fmt.Sprintf("TODO sideboard guide (%s/%s -> %s)", battleboxSlug, deckSlug, opponentSlug))
-		annotations = append(annotations, "empty")
+		warnings = append(warnings, ValidationWarning{
+			Kind:      ValidationWarningTodoGuide,
+			Battlebox: battleboxSlug,
+			Deck:      deckSlug,
+			Opponent:  opponentSlug,
+		})
+		annotations.Todo = true
 	}
 	if err := validateGuide(guide, mainboard, sideboard); err != nil {
-		warnings = append(warnings, fmt.Sprintf("Malformed sideboard plan (%s/%s -> %s): %v", battleboxSlug, deckSlug, opponentSlug, err))
-		annotations = append(annotations, err.Error())
+		warnings = append(warnings, ValidationWarning{
+			Kind:      ValidationWarningMalformedGuide,
+			Battlebox: battleboxSlug,
+			Deck:      deckSlug,
+			Opponent:  opponentSlug,
+			Detail:    err.Error(),
+		})
+		annotations.Messages = append(annotations.Messages, err.Error())
 	}
 
 	return warnings, annotations
@@ -288,11 +381,11 @@ func appendDeckWarningAnnotation(annotations map[string]map[string]*deckWarningA
 	}
 	deckWarnings, ok := decks[deckSlug]
 	if !ok {
-		deckWarnings = &deckWarningAnnotations{Guides: make(map[string][]string)}
+		deckWarnings = &deckWarningAnnotations{Guides: make(map[string]guideWarningAnnotations)}
 		decks[deckSlug] = deckWarnings
 	}
 	if deckWarnings.Guides == nil {
-		deckWarnings.Guides = make(map[string][]string)
+		deckWarnings.Guides = make(map[string]guideWarningAnnotations)
 	}
 	return deckWarnings
 }
@@ -312,9 +405,12 @@ func finalizeDeckWarningAnnotations(raw map[string]map[string]*deckWarningAnnota
 				Primer: append([]string(nil), warnings.Primer...),
 			}
 			if len(warnings.Guides) > 0 {
-				deckOut.Guides = make(map[string][]string, len(warnings.Guides))
+				deckOut.Guides = make(map[string]guideWarningAnnotations, len(warnings.Guides))
 				for opponentSlug, guideWarnings := range warnings.Guides {
-					deckOut.Guides[opponentSlug] = append([]string(nil), guideWarnings...)
+					deckOut.Guides[opponentSlug] = guideWarningAnnotations{
+						Todo:     guideWarnings.Todo,
+						Messages: append([]string(nil), guideWarnings.Messages...),
+					}
 				}
 			}
 			bbOut[deckSlug] = deckOut
@@ -324,7 +420,13 @@ func finalizeDeckWarningAnnotations(raw map[string]map[string]*deckWarningAnnota
 	return out
 }
 
-func validatePrintingsUsage(dataDir string, projectPrintings map[string]string, battleboxDirs []os.DirEntry) ([]string, map[string]map[string]deckWarningAnnotations) {
+func addGuideAnnotation(annotations map[string]map[string]*deckWarningAnnotations, bbSlug, deckSlug, opponentSlug string, update func(guideWarningAnnotations) guideWarningAnnotations) {
+	deckWarnings := appendDeckWarningAnnotation(annotations, bbSlug, deckSlug)
+	current := deckWarnings.Guides[opponentSlug]
+	deckWarnings.Guides[opponentSlug] = update(current)
+}
+
+func validatePrintingsUsage(sources BuildSources) ([]ValidationWarning, map[string]map[string]deckWarningAnnotations) {
 	type deckContext struct {
 		slug            string
 		path            string
@@ -335,41 +437,36 @@ func validatePrintingsUsage(dataDir string, projectPrintings map[string]string, 
 		guideFiles      []string
 	}
 
-	var warnings []string
+	var warnings []ValidationWarning
 	annotations := make(map[string]map[string]*deckWarningAnnotations)
 
-	for _, bbDir := range battleboxDirs {
-		if !bbDir.IsDir() {
+	for _, bbSource := range sources.Battleboxes {
+		bbSlug := bbSource.Slug
+		if bbSource.DeckReadErr != nil {
+			warnings = append(warnings, ValidationWarning{
+				Kind:      ValidationWarningInput,
+				Battlebox: bbSlug,
+				Detail:    bbSource.DeckReadErr.Error(),
+			})
 			continue
 		}
-		bbSlug := bbDir.Name()
-		bbPath := filepath.Join(dataDir, bbSlug)
-		bbPrintings := loadPrintings(filepath.Join(bbPath, printingsFileName))
-		mergedBattleboxPrintings := mergePrintings(projectPrintings, bbPrintings)
-
-		deckDirs, err := buildFiles.ReadDir(bbPath)
-		if err != nil {
-			warnings = append(warnings, fmt.Sprintf("Validator input error (%s): %v", bbSlug, err))
-			continue
-		}
-		deckDirEntries := dirEntriesToOS(deckDirs)
 
 		decks := make(map[string]deckContext)
 		battleboxUsedCards := make(map[string]struct{})
 
-		for _, deckDir := range deckDirEntries {
-			if !deckDir.IsDir() {
+		for _, deckSource := range bbSource.Decks {
+			deckSlug := deckSource.Slug
+			if deckSource.ManifestErr != nil {
+				warnings = append(warnings, ValidationWarning{
+					Kind:      ValidationWarningInput,
+					Battlebox: bbSlug,
+					Deck:      deckSlug,
+					Detail:    deckSource.ManifestErr.Error(),
+				})
 				continue
 			}
-			deckSlug := deckDir.Name()
-			deckPath := filepath.Join(bbPath, deckSlug)
 
-			manifest, err := loadManifestSource(filepath.Join(deckPath, "manifest.json"))
-			if err != nil {
-				warnings = append(warnings, fmt.Sprintf("Validator input error (%s/%s): %v", bbSlug, deckSlug, err))
-				continue
-			}
-
+			manifest := deckSource.Manifest
 			deckCards := collectManifestCards(manifest)
 			mainboardIndex := indexCards(manifest.Cards)
 			sideboardIndex := indexCards(manifest.Sideboard)
@@ -379,49 +476,60 @@ func validatePrintingsUsage(dataDir string, projectPrintings map[string]string, 
 			}
 			expectedMainboardTotal := expectedMainboardCount(bbSlug, deckSlug)
 			if mainboardTotal != expectedMainboardTotal {
-				warnings = append(warnings, fmt.Sprintf("%s/%s mainboard count is %d (expected %d)", bbSlug, deckSlug, mainboardTotal, expectedMainboardTotal))
+				warnings = append(warnings, ValidationWarning{
+					Kind:      ValidationWarningMainboardCount,
+					Battlebox: bbSlug,
+					Deck:      deckSlug,
+					Actual:    mainboardTotal,
+					Expected:  expectedMainboardTotal,
+				})
 			}
 			for key := range deckCards {
 				battleboxUsedCards[key] = struct{}{}
 			}
 
-			deckPrintings := loadPrintings(filepath.Join(deckPath, printingsFileName))
-			mergedDeckPrintings := mergePrintings(mergedBattleboxPrintings, deckPrintings)
-
 			for _, card := range manifest.Cards {
-				checkDeckCardPrinting(&warnings, bbSlug, deckSlug, card.Name, mergedDeckPrintings)
+				checkDeckCardPrinting(&warnings, bbSlug, deckSlug, card.Name, deckSource.MergedPrintings)
 			}
 			for _, card := range manifest.Sideboard {
-				checkDeckCardPrinting(&warnings, bbSlug, deckSlug, card.Name, mergedDeckPrintings)
+				checkDeckCardPrinting(&warnings, bbSlug, deckSlug, card.Name, deckSource.MergedPrintings)
 			}
 
-			for key := range deckPrintings {
+			for key := range deckSource.Printings {
 				if _, ok := deckCards[key]; ok {
 					continue
 				}
 				if _, ok := basicLandPrintingKeys[key]; ok {
 					continue
 				}
-				warnings = append(warnings, fmt.Sprintf("Unreferenced deck printing (%s/%s): %s", bbSlug, deckSlug, key))
+				warnings = append(warnings, ValidationWarning{
+					Kind:      ValidationWarningUnreferencedDeckPrinting,
+					Battlebox: bbSlug,
+					Deck:      deckSlug,
+					Card:      key,
+				})
 			}
 
-			guideFiles := listGuideFiles(deckPath)
 			decks[deckSlug] = deckContext{
 				slug:            deckSlug,
-				path:            deckPath,
-				mergedPrintings: mergedDeckPrintings,
+				path:            deckSource.Path,
+				mergedPrintings: deckSource.MergedPrintings,
 				deckCards:       deckCards,
 				mainboardIndex:  mainboardIndex,
 				sideboardIndex:  sideboardIndex,
-				guideFiles:      guideFiles,
+				guideFiles:      deckSource.GuideFiles,
 			}
 		}
 
-		for key := range bbPrintings {
+		for key := range bbSource.Printings {
 			if _, ok := battleboxUsedCards[key]; ok {
 				continue
 			}
-			warnings = append(warnings, fmt.Sprintf("Unreferenced battlebox printing (%s): %s", bbSlug, key))
+			warnings = append(warnings, ValidationWarning{
+				Kind:      ValidationWarningUnreferencedBoxPrinting,
+				Battlebox: bbSlug,
+				Card:      key,
+			})
 		}
 
 		for _, ctx := range decks {
@@ -433,13 +541,23 @@ func validatePrintingsUsage(dataDir string, projectPrintings map[string]string, 
 						continue
 					}
 					if _, ok := ctx.deckCards[key]; !ok {
-						warnings = append(warnings, fmt.Sprintf("Primer missing printing (%s/%s): %s", bbSlug, ctx.slug, ref))
+						warnings = append(warnings, ValidationWarning{
+							Kind:      ValidationWarningPrimerMissingPrinting,
+							Battlebox: bbSlug,
+							Deck:      ctx.slug,
+							Card:      ref,
+						})
 						deckWarnings := appendDeckWarningAnnotation(annotations, bbSlug, ctx.slug)
 						deckWarnings.Primer = append(deckWarnings.Primer, ref)
 						continue
 					}
 					if _, ok := ctx.mergedPrintings[key]; !ok {
-						warnings = append(warnings, fmt.Sprintf("Primer missing printing (%s/%s): %s", bbSlug, ctx.slug, ref))
+						warnings = append(warnings, ValidationWarning{
+							Kind:      ValidationWarningPrimerMissingPrinting,
+							Battlebox: bbSlug,
+							Deck:      ctx.slug,
+							Card:      ref,
+						})
 						deckWarnings := appendDeckWarningAnnotation(annotations, bbSlug, ctx.slug)
 						deckWarnings.Primer = append(deckWarnings.Primer, ref)
 					}
@@ -452,14 +570,22 @@ func validatePrintingsUsage(dataDir string, projectPrintings map[string]string, 
 
 				_, guide, proseRefs, err := loadGuideCached(guideFile)
 				if err != nil {
-					warnings = append(warnings, fmt.Sprintf("Validator input error (%s/%s): %s", bbSlug, ctx.slug, filepath.Base(guideFile)))
+					warnings = append(warnings, ValidationWarning{
+						Kind:      ValidationWarningInput,
+						Battlebox: bbSlug,
+						Deck:      ctx.slug,
+						Detail:    filepath.Base(guideFile),
+					})
 					continue
 				}
 				guideWarnings, guideAnnotations := collectGuideWarnings(guide, bbSlug, ctx.slug, opponentSlug, ctx.mainboardIndex, ctx.sideboardIndex)
 				warnings = append(warnings, guideWarnings...)
-				if len(guideAnnotations) > 0 {
-					deckWarnings := appendDeckWarningAnnotation(annotations, bbSlug, ctx.slug)
-					deckWarnings.Guides[opponentSlug] = append(deckWarnings.Guides[opponentSlug], guideAnnotations...)
+				if guideAnnotations.Todo || guideAnnotations.HasOtherWarnings() {
+					addGuideAnnotation(annotations, bbSlug, ctx.slug, opponentSlug, func(current guideWarningAnnotations) guideWarningAnnotations {
+						current.Todo = current.Todo || guideAnnotations.Todo
+						current.Messages = append(current.Messages, guideAnnotations.Messages...)
+						return current
+					})
 				}
 
 				// Avoid duplicate noise with sideboard-plan validation:
@@ -477,15 +603,22 @@ func validatePrintingsUsage(dataDir string, projectPrintings map[string]string, 
 							continue
 						}
 					}
-					warnings = append(warnings, fmt.Sprintf("Matchup guide missing printing (%s/%s -> %s): %s", bbSlug, ctx.slug, opponentSlug, ref))
-					deckWarnings := appendDeckWarningAnnotation(annotations, bbSlug, ctx.slug)
-					deckWarnings.Guides[opponentSlug] = append(deckWarnings.Guides[opponentSlug], ref)
+					warnings = append(warnings, ValidationWarning{
+						Kind:      ValidationWarningGuideMissingPrinting,
+						Battlebox: bbSlug,
+						Deck:      ctx.slug,
+						Opponent:  opponentSlug,
+						Card:      ref,
+					})
+					addGuideAnnotation(annotations, bbSlug, ctx.slug, opponentSlug, func(current guideWarningAnnotations) guideWarningAnnotations {
+						current.Messages = append(current.Messages, ref)
+						return current
+					})
 				}
 			}
 		}
 	}
 
-	sort.Strings(warnings)
 	return warnings, finalizeDeckWarningAnnotations(annotations)
 }
 
@@ -496,18 +629,6 @@ func expectedMainboardCount(battleboxSlug, deckSlug string) int {
 		}
 	}
 	return 60
-}
-
-func loadManifestSource(path string) (Manifest, error) {
-	data, err := buildFiles.ReadFile(path)
-	if err != nil {
-		return Manifest{}, err
-	}
-	var manifest Manifest
-	if err := json.Unmarshal(data, &manifest); err != nil {
-		return Manifest{}, err
-	}
-	return manifest, nil
 }
 
 func collectManifestCards(manifest Manifest) map[string]struct{} {
@@ -527,7 +648,7 @@ func collectManifestCards(manifest Manifest) map[string]struct{} {
 	return out
 }
 
-func checkDeckCardPrinting(warnings *[]string, battlebox, deck, name string, mergedPrintings map[string]string) {
+func checkDeckCardPrinting(warnings *[]ValidationWarning, battlebox, deck, name string, mergedPrintings map[string]string) {
 	key := normalizeName(name)
 	if key == "" {
 		return
@@ -535,7 +656,12 @@ func checkDeckCardPrinting(warnings *[]string, battlebox, deck, name string, mer
 	if _, ok := mergedPrintings[key]; ok {
 		return
 	}
-	*warnings = append(*warnings, fmt.Sprintf("Deck card missing printing (%s/%s): %s", battlebox, deck, name))
+	*warnings = append(*warnings, ValidationWarning{
+		Kind:      ValidationWarningDeckMissingPrinting,
+		Battlebox: battlebox,
+		Deck:      deck,
+		Card:      name,
+	})
 }
 
 func listGuideFiles(deckPath string) []string {

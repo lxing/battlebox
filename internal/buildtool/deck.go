@@ -6,29 +6,29 @@ import (
 	"strings"
 )
 
-func processDeck(deckPath, slug, battlebox string, printings map[string]string, bbManifest BattleboxManifest) (*Deck, error) {
-	manifestPath := filepath.Join(deckPath, "manifest.json")
-	manifest, err := loadManifest(manifestPath)
-	if err != nil {
-		return nil, fmt.Errorf("reading manifest: %w", err)
+func processDeck(bbSource BattleboxSource, deckSource DeckSource, annotations map[string]map[string]deckWarningAnnotations) (*Deck, error) {
+	if deckSource.ManifestErr != nil {
+		manifestPath := filepath.Join(deckSource.Path, "manifest.json")
+		return nil, fmt.Errorf("reading manifest %s: %w", manifestPath, deckSource.ManifestErr)
 	}
+	manifest := cloneManifest(deckSource.Manifest)
 	draftPresetRefs := append([]string(nil), manifest.DraftPresets...)
 	for _, presetID := range draftPresetRefs {
-		if _, ok := bbManifest.Presets[presetID]; !ok {
+		if _, ok := bbSource.Manifest.Presets[presetID]; !ok {
 			return nil, fmt.Errorf("unknown draft preset reference %q", presetID)
 		}
 	}
 
-	uiProfile, err := resolveDeckUIProfile(manifest, bbManifest)
+	uiProfile, err := resolveDeckUIProfile(manifest, bbSource.Manifest)
 	if err != nil {
 		return nil, err
 	}
 
-	enrichManifestCards(&manifest, battlebox, slug, printings, bbManifest.LandSubtypes, nil)
+	enrichManifestCards(&manifest, bbSource.Slug, deckSource.Slug, deckSource.MergedPrintings, bbSource.Manifest.LandSubtypes, nil)
 	cardCount := countCards(manifest.Cards)
 
 	deck := &Deck{
-		Slug:           slug,
+		Slug:           deckSource.Slug,
 		Name:           manifest.Name,
 		Icon:           manifest.Icon,
 		Colors:         manifest.Colors,
@@ -57,51 +57,63 @@ func processDeck(deckPath, slug, battlebox string, printings map[string]string, 
 			deck.Printings[key] = card.Printing
 		}
 	}
-	addBasicLandPrintings(deck.Printings, printings)
+	addBasicLandPrintings(deck.Printings, deckSource.MergedPrintings)
 
-	stagedManifest, hasStagedManifest, err := loadStagedManifest(battlebox, slug)
+	stagedManifest, hasStagedManifest, err := loadStagedManifest(bbSource.Slug, deckSource.Slug)
 	if err != nil {
 		return nil, err
 	}
 	if hasStagedManifest {
-		enrichManifestCards(&stagedManifest, battlebox, slug, printings, bbManifest.LandSubtypes, nil)
+		enrichManifestCards(&stagedManifest, bbSource.Slug, deckSource.Slug, deckSource.MergedPrintings, bbSource.Manifest.LandSubtypes, nil)
 		deck.Diff = buildDeckDiff(manifest, stagedManifest)
 	}
 
-	// Read primer
-	primerPath := filepath.Join(deckPath, "primer.md")
-	if primerRaw, _, err := loadPrimerCached(primerPath); err == nil {
+	if primerRaw, _, err := loadPrimerCached(deckSource.PrimerPath); err == nil {
 		deck.Primer = strings.TrimSpace(primerRaw)
 	}
 
-	// Read sideboard guides
-	entries, _ := buildFiles.ReadDir(deckPath)
-	for _, entry := range entries {
-		name := entry.Name()
-		if name == "primer.md" || name == "manifest.json" || name == "printings.json" || !strings.HasSuffix(name, ".json") {
-			continue
-		}
-		// Matchup guides are stored as underscored files (e.g. _elves.json)
-		// so guide files sort after manifest/primer in directory listings.
-		if !strings.HasPrefix(name, "_") {
-			continue
-		}
-		guidePath := filepath.Join(deckPath, name)
+	for _, guidePath := range deckSource.GuideFiles {
 		_, guide, _, err := loadGuideCached(guidePath)
 		if err != nil {
 			return nil, fmt.Errorf("parsing guide %s: %w", guidePath, err)
 		}
+		name := filepath.Base(guidePath)
 		opponentSlug := strings.TrimPrefix(strings.TrimSuffix(name, ".json"), "_")
 		if opponentSlug == "" {
 			continue
 		}
-		if opponentSlug == slug {
+		if opponentSlug == deckSource.Slug {
 			continue
 		}
 		deck.Guides[opponentSlug] = guide
 	}
 
+	applyDeckWarningAnnotations(deck, bbSource.Slug, annotations)
+
 	return deck, nil
+}
+
+func applyDeckWarningAnnotations(deck *Deck, battleboxSlug string, annotations map[string]map[string]deckWarningAnnotations) {
+	if deck == nil {
+		return
+	}
+	battleboxWarnings, ok := annotations[battleboxSlug]
+	if !ok {
+		return
+	}
+	deckWarnings, ok := battleboxWarnings[deck.Slug]
+	if !ok {
+		return
+	}
+	deck.PrimerWarnings = append([]string(nil), deckWarnings.Primer...)
+	for opponentSlug, guideWarnings := range deckWarnings.Guides {
+		guide, ok := deck.Guides[opponentSlug]
+		if !ok {
+			continue
+		}
+		guide.Warnings = guideWarnings.OutputWarnings()
+		deck.Guides[opponentSlug] = guide
+	}
 }
 
 func applyCubeLandSubtypes(cards []Card, battlebox string, subtypeByName map[string]string) {

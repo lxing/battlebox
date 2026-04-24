@@ -30,7 +30,7 @@ func TestCollectGuideWarningsNoChangesGuideHasNoWarnings(t *testing.T) {
 	if len(warnings) != 0 {
 		t.Fatalf("expected no warnings, got %v", warnings)
 	}
-	if len(annotations) != 0 {
+	if annotations.Todo || annotations.HasOtherWarnings() {
 		t.Fatalf("expected no annotations, got %v", annotations)
 	}
 }
@@ -54,12 +54,14 @@ func TestCollectGuideWarningsTodoGuideAddsEmptyAnnotation(t *testing.T) {
 	)
 
 	expectedWarnings := []string{"TODO sideboard guide (pauper/elves -> delver)"}
-	if !reflect.DeepEqual(warnings, expectedWarnings) {
+	if warningStrings := sortedValidationWarningStrings(warnings); !reflect.DeepEqual(warningStrings, expectedWarnings) {
 		t.Fatalf("expected warnings %v, got %v", expectedWarnings, warnings)
 	}
-	expectedAnnotations := []string{"empty"}
-	if !reflect.DeepEqual(annotations, expectedAnnotations) {
-		t.Fatalf("expected annotations %v, got %v", expectedAnnotations, annotations)
+	if !annotations.Todo {
+		t.Fatalf("expected todo annotation, got %v", annotations)
+	}
+	if annotations.HasOtherWarnings() {
+		t.Fatalf("expected no non-todo annotations, got %v", annotations)
 	}
 }
 
@@ -86,11 +88,11 @@ func TestCollectGuideWarningsMalformedPlanAddsValidationError(t *testing.T) {
 	)
 
 	expectedWarnings := []string{"Malformed sideboard plan (pauper/elves -> delver): IN/OUT mismatch: 2 in vs 1 out"}
-	if !reflect.DeepEqual(warnings, expectedWarnings) {
+	if warningStrings := sortedValidationWarningStrings(warnings); !reflect.DeepEqual(warningStrings, expectedWarnings) {
 		t.Fatalf("expected warnings %v, got %v", expectedWarnings, warnings)
 	}
 	expectedAnnotations := []string{"IN/OUT mismatch: 2 in vs 1 out"}
-	if !reflect.DeepEqual(annotations, expectedAnnotations) {
-		t.Fatalf("expected annotations %v, got %v", expectedAnnotations, annotations)
+	if !reflect.DeepEqual(annotations.Messages, expectedAnnotations) {
+		t.Fatalf("expected annotations %v, got %v", expectedAnnotations, annotations.Messages)
 	}
 }
