@@ -221,7 +221,7 @@ func buildBattleboxes(sources BuildSources, dirtySlugs []string, annotations map
 			Presets:                 cloneDraftPresets(bbManifest.Presets),
 			Combos:                  []Combo{},
 			Decks:                   []Deck{},
-			Banned:                  loadBanned(filepath.Join(bbSource.Path, "banned.json")),
+			Banned:                  append([]string(nil), bbManifest.Banned...),
 		}
 
 		for _, deckSource := range bbSource.Decks {

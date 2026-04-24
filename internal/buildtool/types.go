@@ -187,6 +187,8 @@ type BattleboxManifest struct {
 	Presets map[string]DraftPreset `json:"presets,omitempty"`
 	// Optional combo library shared across decks in this battlebox.
 	Combos []ComboManifest `json:"combos,omitempty"`
+	// Optional banned card names for warning indicators.
+	Banned []string `json:"banned,omitempty"`
 	// Optional manual land subtype taxonomy keyed by card name.
 	LandSubtypes map[string]string `json:"land_subtypes,omitempty"`
 }

@@ -1,6 +1,9 @@
 {
   "name": "🪄 Premodern",
   "description": "Relive the golden age of Magic. Old borders, classic strategies, sensible aesthetics, solid gameplay.",
+  "banned": [
+    "Parallax Tide"
+  ],
   "combos": [
     {
       "id": "survival-package",

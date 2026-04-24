@@ -24,6 +24,9 @@ type DeckSource struct {
 	Path            string
 	Manifest        Manifest
 	ManifestErr     error
+	StagedManifest  Manifest
+	HasStaged       bool
+	StagedErr       error
 	Printings       map[string]string
 	MergedPrintings map[string]string
 	GuideFiles      []string
@@ -67,11 +70,15 @@ func loadBuildSources(dataDir string, projectPrintings map[string]string, battle
 			deckPath := filepath.Join(bbPath, deckSlug)
 			deckPrintings := loadPrintings(filepath.Join(deckPath, printingsFileName))
 			manifest, manifestErr := loadManifest(filepath.Join(deckPath, "manifest.json"))
+			stagedManifest, hasStaged, stagedErr := loadOptionalManifest(filepath.Join("staging", bbSlug, deckSlug, "manifest.json"))
 			bbSource.Decks = append(bbSource.Decks, DeckSource{
 				Slug:            deckSlug,
 				Path:            deckPath,
 				Manifest:        manifest,
 				ManifestErr:     manifestErr,
+				StagedManifest:  stagedManifest,
+				HasStaged:       hasStaged,
+				StagedErr:       stagedErr,
 				Printings:       deckPrintings,
 				MergedPrintings: mergePrintings(mergedBattleboxPrintings, deckPrintings),
 				GuideFiles:      listGuideFiles(deckPath),

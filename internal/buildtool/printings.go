@@ -25,25 +25,6 @@ func loadPrintings(path string) map[string]string {
 	return normalized
 }
 
-func loadBanned(path string) []string {
-	data, err := buildFiles.ReadFile(path)
-	if err != nil {
-		return nil
-	}
-	var raw []string
-	if err := json.Unmarshal(data, &raw); err != nil {
-		return nil
-	}
-	out := make([]string, 0, len(raw))
-	for _, name := range raw {
-		trimmed := strings.TrimSpace(name)
-		if trimmed != "" {
-			out = append(out, trimmed)
-		}
-	}
-	return out
-}
-
 func loadBattleboxManifest(path string) BattleboxManifest {
 	data, err := buildFiles.ReadFile(path)
 	if err != nil {
@@ -56,6 +37,16 @@ func loadBattleboxManifest(path string) BattleboxManifest {
 	manifest.Name = strings.TrimSpace(manifest.Name)
 	manifest.Description = strings.TrimSpace(manifest.Description)
 	manifest.DeckCountLabel = strings.TrimSpace(manifest.DeckCountLabel)
+	if len(manifest.Banned) > 0 {
+		banned := make([]string, 0, len(manifest.Banned))
+		for _, name := range manifest.Banned {
+			trimmed := strings.TrimSpace(name)
+			if trimmed != "" {
+				banned = append(banned, trimmed)
+			}
+		}
+		manifest.Banned = banned
+	}
 	if len(manifest.LandSubtypes) > 0 {
 		normalized := make(map[string]string, len(manifest.LandSubtypes))
 		for name, subtype := range manifest.LandSubtypes {

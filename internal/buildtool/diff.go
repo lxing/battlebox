@@ -3,7 +3,6 @@ package buildtool
 import (
 	"encoding/json"
 	"fmt"
-	"path/filepath"
 	"sort"
 	"strings"
 )
@@ -24,14 +23,13 @@ func loadManifest(path string) (Manifest, error) {
 	return manifest, nil
 }
 
-func loadStagedManifest(battlebox, slug string) (Manifest, bool, error) {
-	path := filepath.Join("staging", battlebox, slug, "manifest.json")
+func loadOptionalManifest(path string) (Manifest, bool, error) {
 	if !fileExists(path) {
 		return Manifest{}, false, nil
 	}
 	manifest, err := loadManifest(path)
 	if err != nil {
-		return Manifest{}, false, fmt.Errorf("reading staged manifest: %w", err)
+		return Manifest{}, false, err
 	}
 	return manifest, true, nil
 }

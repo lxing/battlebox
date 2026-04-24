@@ -59,11 +59,11 @@ func processDeck(bbSource BattleboxSource, deckSource DeckSource, annotations ma
 	}
 	addBasicLandPrintings(deck.Printings, deckSource.MergedPrintings)
 
-	stagedManifest, hasStagedManifest, err := loadStagedManifest(bbSource.Slug, deckSource.Slug)
-	if err != nil {
-		return nil, err
+	if deckSource.StagedErr != nil {
+		return nil, fmt.Errorf("reading staged manifest: %w", deckSource.StagedErr)
 	}
-	if hasStagedManifest {
+	if deckSource.HasStaged {
+		stagedManifest := cloneManifest(deckSource.StagedManifest)
 		enrichManifestCards(&stagedManifest, bbSource.Slug, deckSource.Slug, deckSource.MergedPrintings, bbSource.Manifest.LandSubtypes, nil)
 		deck.Diff = buildDeckDiff(manifest, stagedManifest)
 	}
