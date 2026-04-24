@@ -1,11 +1,7 @@
 {
-  "status": "plan",
+  "status": "todo",
   "plan": {
-    "in": {
-      "Disenchant": 1
-    },
-    "out": {
-      "Decree of Justice": 1
-    }
+    "in": {},
+    "out": {}
   }
 }

@@ -1,16 +1,7 @@
 {
-  "status": "plan",
+  "status": "todo",
   "plan": {
-    "in": {
-      "Akroma's Vengeance": 1,
-      "Aura of Silence": 2,
-      "Disenchant": 2
-    },
-    "out": {
-      "Decree of Justice": 1,
-      "Exalted Angel": 1,
-      "Gerrard's Verdict": 1,
-      "Wrath of God": 2
-    }
+    "in": {},
+    "out": {}
   }
 }

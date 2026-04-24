@@ -1,15 +1,7 @@
 {
-  "status": "plan",
+  "status": "todo",
   "plan": {
-    "in": {
-      "Akroma's Vengeance": 1,
-      "Aura of Silence": 2,
-      "Disenchant": 2,
-      "Haunting Echoes": 1
-    },
-    "out": {
-      "Swords to Plowshares": 4,
-      "Wrath of God": 2
-    }
+    "in": {},
+    "out": {}
   }
 }

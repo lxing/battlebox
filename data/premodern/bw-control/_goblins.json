@@ -1,17 +1,7 @@
 {
-  "status": "plan",
+  "status": "todo",
   "plan": {
-    "in": {
-      "Circle of Protection: Red": 1,
-      "Engineered Plague": 2,
-      "Infest": 2,
-      "Silver Knight": 2
-    },
-    "out": {
-      "Duress": 4,
-      "Gerrard's Verdict": 1,
-      "Phyrexian Furnace": 1,
-      "Skeletal Scrying": 1
-    }
+    "in": {},
+    "out": {}
   }
 }

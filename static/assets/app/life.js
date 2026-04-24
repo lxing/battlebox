@@ -462,6 +462,7 @@ export function createLifeCounter(container, startingLife = 20) {
     const visible = state.tokenVisible[player][tokenId] === true;
     if (visible) {
       state.tokenVisible[player][tokenId] = false;
+      state.tokens[player][tokenId] = null;
       state.tokenOrder[player] = state.tokenOrder[player].filter((value) => value !== tokenId);
       tokenMenuOpen[player] = false;
       renderTokenMenus();

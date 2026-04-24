@@ -86,44 +86,32 @@
   ],
   "sideboard": [
     {
-      "name": "Akroma's Vengeance",
-      "qty": 1
-    },
-    {
       "name": "Aura of Silence",
       "qty": 2
     },
     {
       "name": "Circle of Protection: Red",
-      "qty": 1
-    },
-    {
-      "name": "Disenchant",
-      "qty": 2
+      "qty": 4
     },
     {
       "name": "Engineered Plague",
       "qty": 2
     },
     {
-      "name": "Haunting Echoes",
-      "qty": 1
-    },
-    {
-      "name": "Infest",
+      "name": "Phyrexian Arena",
       "qty": 2
     },
     {
-      "name": "Silver Knight",
+      "name": "Phyrexian Furnace",
+      "qty": 1
+    },
+    {
+      "name": "Seal of Cleansing",
       "qty": 2
     },
     {
       "name": "Tormod's Crypt",
-      "qty": 1
-    },
-    {
-      "name": "Warmth",
-      "qty": 1
+      "qty": 2
     }
   ],
   "difficulty_tags": [

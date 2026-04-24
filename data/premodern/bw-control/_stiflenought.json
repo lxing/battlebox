@@ -1,14 +1,7 @@
 {
-  "status": "plan",
+  "status": "todo",
   "plan": {
-    "in": {
-      "Aura of Silence": 2,
-      "Disenchant": 2
-    },
-    "out": {
-      "Decree of Justice": 2,
-      "Phyrexian Furnace": 1,
-      "Wrath of God": 1
-    }
+    "in": {},
+    "out": {}
   }
 }
