@@ -1,6 +1,6 @@
 {
-  "name": "Synthesizer",
-  "sleeve_color": "Red",
+  "name": "Rally",
+  "source_url": "https://www.mtggoldfish.com/deck/7694935",
   "colors": "r",
   "tags": [
     "aggro"
@@ -65,6 +65,10 @@
   ],
   "sideboard": [
     {
+      "name": "Cast into the Fire",
+      "qty": 4
+    },
+    {
       "name": "End the Festivities",
       "qty": 2
     },
@@ -74,15 +78,15 @@
     },
     {
       "name": "Red Elemental Blast",
-      "qty": 4
+      "qty": 3
     },
     {
       "name": "Relic of Progenitus",
-      "qty": 4
+      "qty": 3
     },
     {
-      "name": "Cast into the Fire",
-      "qty": 4
+      "name": "Searing Blaze",
+      "qty": 2
     }
   ],
   "difficulty_tags": [

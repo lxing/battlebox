@@ -87,7 +87,7 @@
         "matches": 35,
         "wr": 0.4
       },
-      "synthesizer": {
+      "rally": {
         "ci_high": 0.58,
         "ci_low": 0.43,
         "matches": 168,
@@ -197,7 +197,7 @@
         "matches": 12,
         "wr": 0.75
       },
-      "synthesizer": {
+      "rally": {
         "ci_high": 0.57,
         "ci_low": 0.32,
         "matches": 68,
@@ -307,7 +307,7 @@
         "matches": 6,
         "wr": 0.83
       },
-      "synthesizer": {
+      "rally": {
         "ci_high": 0.76,
         "ci_low": 0.42,
         "matches": 35,
@@ -417,7 +417,7 @@
         "matches": 15,
         "wr": 0.73
       },
-      "synthesizer": {
+      "rally": {
         "ci_high": 0.67,
         "ci_low": 0.46,
         "matches": 90,
@@ -527,7 +527,7 @@
         "matches": 34,
         "wr": 0.56
       },
-      "synthesizer": {
+      "rally": {
         "ci_high": 0.49,
         "ci_low": 0.36,
         "matches": 223,
@@ -637,7 +637,7 @@
         "matches": 19,
         "wr": 0.16
       },
-      "synthesizer": {
+      "rally": {
         "ci_high": 0.53,
         "ci_low": 0.36,
         "matches": 143,
@@ -747,7 +747,7 @@
         "matches": 7,
         "wr": 0.86
       },
-      "synthesizer": {
+      "rally": {
         "ci_high": 0.68,
         "ci_low": 0.24,
         "matches": 22,
@@ -857,7 +857,7 @@
         "matches": 10,
         "wr": 0.6
       },
-      "synthesizer": {
+      "rally": {
         "ci_high": 0.48,
         "ci_low": 0.28,
         "matches": 100,
@@ -967,7 +967,7 @@
         "matches": 8,
         "wr": 0.5
       },
-      "synthesizer": {
+      "rally": {
         "ci_high": 0.68,
         "ci_low": 0.39,
         "matches": 52,
@@ -1077,7 +1077,7 @@
         "matches": 14,
         "wr": 0.71
       },
-      "synthesizer": {
+      "rally": {
         "ci_high": 0.51,
         "ci_low": 0.27,
         "matches": 70,
@@ -1187,7 +1187,7 @@
         "matches": 5,
         "wr": 0.4
       },
-      "synthesizer": {
+      "rally": {
         "ci_high": 0.72,
         "ci_low": 0.4,
         "matches": 39,
@@ -1297,7 +1297,7 @@
         "matches": 24,
         "wr": 0.54
       },
-      "synthesizer": {
+      "rally": {
         "ci_high": 0.42,
         "ci_low": 0.27,
         "matches": 154,
@@ -1407,7 +1407,7 @@
         "matches": 2,
         "wr": 0.5
       },
-      "synthesizer": {
+      "rally": {
         "ci_high": 0.85,
         "ci_low": 0.05,
         "matches": 5,
@@ -1511,7 +1511,7 @@
         "matches": 17,
         "wr": 0.53
       },
-      "synthesizer": {
+      "rally": {
         "ci_high": 0.72,
         "ci_low": 0.52,
         "matches": 104,
@@ -1621,7 +1621,7 @@
         "matches": 17,
         "wr": 0.47
       },
-      "synthesizer": {
+      "rally": {
         "ci_high": 0.77,
         "ci_low": 0.32,
         "matches": 20,
@@ -1646,7 +1646,7 @@
         "wr": 0.6
       }
     },
-    "synthesizer": {
+    "rally": {
       "affinity": {
         "ci_high": 0.57,
         "ci_low": 0.42,
@@ -1847,7 +1847,7 @@
         "matches": 6,
         "wr": 0.67
       },
-      "synthesizer": {
+      "rally": {
         "ci_high": 0.88,
         "ci_low": 0.54,
         "matches": 30,
@@ -1951,7 +1951,7 @@
         "matches": 3,
         "wr": 0.0
       },
-      "synthesizer": {
+      "rally": {
         "ci_high": 0.91,
         "ci_low": 0.39,
         "matches": 13,
@@ -2061,7 +2061,7 @@
         "matches": 20,
         "wr": 0.4
       },
-      "synthesizer": {
+      "rally": {
         "ci_high": 0.75,
         "ci_low": 0.58,
         "matches": 133,
@@ -2167,7 +2167,7 @@
       "wins": 124,
       "wr": 0.4825
     },
-    "synthesizer": {
+    "rally": {
       "matches": 1469,
       "wins": 748,
       "wr": 0.5092
