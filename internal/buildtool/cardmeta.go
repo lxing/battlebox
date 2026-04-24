@@ -39,11 +39,9 @@ func loadCardCache() {
 
 	// Legacy cache format: map[string]string (printing -> type)
 	var legacy map[string]string
-	if err := json.Unmarshal(data, &legacy); err != nil {
-		return
+	if err := json.Unmarshal(data, &legacy); err == nil {
+		cardCache = map[string]cardMeta{}
 	}
-	_ = legacy
-	cardCache = map[string]cardMeta{}
 }
 
 func saveCardCache() {

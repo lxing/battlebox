@@ -271,7 +271,7 @@ func loadGuideCached(path string) (string, MatchupGuide, []string, error) {
 	entry := guideParseCacheEntry{err: err}
 	if err == nil {
 		entry.raw = string(data)
-		entry.parsed, entry.err = parseGuide(entry.raw)
+		entry.parsed, entry.err = ParseGuideJSON(entry.raw)
 		if entry.err == nil {
 			entry.proseRefs = extractCardRefs(entry.parsed.Notes)
 		}

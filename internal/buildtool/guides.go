@@ -91,10 +91,6 @@ func FormatGuideJSON(guide MatchupGuide) ([]byte, error) {
 	return json.MarshalIndent(payload, "", "  ")
 }
 
-func parseGuide(raw string) (MatchupGuide, error) {
-	return ParseGuideJSON(raw)
-}
-
 func indexCards(cards []Card) map[string]guideCardInfo {
 	index := make(map[string]guideCardInfo, len(cards))
 	for _, card := range cards {

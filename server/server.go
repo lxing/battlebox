@@ -1,8 +1,6 @@
 package main
 
 import (
-	"crypto/rand"
-	"encoding/binary"
 	"encoding/json"
 	"errors"
 	"fmt"
@@ -351,8 +349,8 @@ func (h *draftHub) handleWS(w http.ResponseWriter, r *http.Request) {
 }
 
 func randomRoomID() string {
-	left := roomIDAdjectives[randomInt(len(roomIDAdjectives))]
-	right := roomIDNouns[randomInt(len(roomIDNouns))]
+	left := roomIDAdjectives[randomIndex(len(roomIDAdjectives))]
+	right := roomIDNouns[randomIndex(len(roomIDNouns))]
 	return left + "-" + right
 }
 
@@ -364,17 +362,6 @@ func (h *draftHub) nextRoomIDLocked() string {
 		}
 	}
 	return fmt.Sprintf("room-%d", time.Now().UnixNano())
-}
-
-func randomInt(max int) int {
-	if max <= 1 {
-		return 0
-	}
-	var raw [2]byte
-	if _, err := rand.Read(raw[:]); err != nil {
-		return int(time.Now().UnixNano() % int64(max))
-	}
-	return int(binary.BigEndian.Uint16(raw[:])) % max
 }
 
 var roomIDAdjectives = []string{

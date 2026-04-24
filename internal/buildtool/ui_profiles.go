@@ -144,8 +144,8 @@ func normalizeBattleboxDraftPresets(manifest *BattleboxManifest) {
 		if preset.SeatCount <= 0 || preset.PackCount <= 0 || preset.PackSize <= 0 {
 			continue
 		}
-		passPattern := normalizeDraftPassPattern(preset.PackSize, preset.PassPattern)
-		if len(passPattern) == 0 {
+		passPattern, err := NormalizeDraftPassPattern(preset.PackSize, preset.PassPattern)
+		if err != nil {
 			continue
 		}
 		normalized[name] = DraftPreset{
@@ -156,14 +156,6 @@ func normalizeBattleboxDraftPresets(manifest *BattleboxManifest) {
 		}
 	}
 	manifest.Presets = normalized
-}
-
-func normalizeDraftPassPattern(packSize int, raw []int) []int {
-	pattern, err := NormalizeDraftPassPattern(packSize, raw)
-	if err != nil {
-		return nil
-	}
-	return pattern
 }
 
 func NormalizeDraftPassPattern(packSize int, raw []int) ([]int, error) {
