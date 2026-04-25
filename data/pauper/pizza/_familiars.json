@@ -2,12 +2,10 @@
   "status": "plan",
   "plan": {
     "in": {
-      "Pyroblast": 2,
-      "Weather the Storm": 1
+      "Pyroblast": 2
     },
     "out": {
       "Brainstorm": 1,
-      "Mystical Teachings": 1,
       "Tamiyo's Safekeeping": 1
     }
   }

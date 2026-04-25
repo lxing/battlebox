@@ -1,7 +1,16 @@
 {
-  "status": "todo",
+  "status": "plan",
   "plan": {
-    "in": {},
-    "out": {}
+    "in": {
+      "Cast Down": 2,
+      "Pyroblast": 1,
+      "Red Elemental Blast": 4
+    },
+    "out": {
+      "Blood Fountain": 2,
+      "Galvanic Blast": 2,
+      "Reckoner's Bargain": 1,
+      "Sewer-veillance Cam": 2
+    }
   }
 }

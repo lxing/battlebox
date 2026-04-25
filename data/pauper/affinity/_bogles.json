@@ -2,11 +2,10 @@
   "status": "plan",
   "plan": {
     "in": {
-      "Pyroblast": 1,
-      "Red Elemental Blast": 1
+      "Extract a Confession": 2
     },
     "out": {
-      "Cast Down": 2
+      "Sewer-veillance Cam": 2
     }
   }
 }

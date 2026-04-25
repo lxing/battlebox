@@ -2,13 +2,10 @@
   "status": "plan",
   "plan": {
     "in": {
-      "Cast into the Fire": 2,
-      "Gorilla Shaman": 4
+      "Cast into the Fire": 1
     },
     "out": {
-      "Galvanic Blast": 1,
-      "Krark-Clan Shaman": 3,
-      "Toxin Analysis": 2
+      "Sewer-veillance Cam": 1
     }
   }
 }

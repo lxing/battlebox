@@ -10,10 +10,6 @@
   "view": "nosideboard",
   "cards": [
     {
-      "name": "Bloodforged Battle-Axe",
-      "qty": 1
-    },
-    {
       "name": "Caves of Koilos",
       "qty": 4
     },
@@ -23,7 +19,7 @@
     },
     {
       "name": "Damn",
-      "qty": 3
+      "qty": 2
     },
     {
       "name": "Darkstar Augur",
@@ -43,7 +39,7 @@
     },
     {
       "name": "Lunar Convocation",
-      "qty": 4
+      "qty": 3
     },
     {
       "name": "Marsh Flats",
@@ -74,6 +70,10 @@
       "qty": 1
     },
     {
+      "name": "Silverquill Charm",
+      "qty": 3
+    },
+    {
       "name": "Silent Clearing",
       "qty": 1
     },
@@ -83,7 +83,7 @@
     },
     {
       "name": "Swamp",
-      "qty": 1
+      "qty": 2
     },
     {
       "name": "Swords to Plowshares",
@@ -91,10 +91,6 @@
     },
     {
       "name": "The Wandering Emperor",
-      "qty": 1
-    },
-    {
-      "name": "Vorpal Sword",
       "qty": 1
     },
     {

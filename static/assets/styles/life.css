@@ -138,6 +138,182 @@
   color: var(--color-white);
 }
 
+.life-mana-menu {
+  --mana-toggle-size: var(--token-counter-height);
+  --mana-gap: 0.2rem;
+  --mana-avatar-gutter: 3.4rem;
+  position: absolute;
+  z-index: 4;
+  top: var(--token-edge-inset);
+  right: var(--token-edge-inset);
+  left: var(--token-edge-inset);
+  height: var(--mana-toggle-size);
+}
+
+.life-player-bottom .life-mana-menu {
+  left: calc(var(--token-edge-inset) + var(--mana-avatar-gutter));
+}
+
+.life-player-top .life-mana-menu {
+  right: calc(var(--token-edge-inset) + var(--mana-avatar-gutter));
+}
+
+.life-mana-menu-button {
+  position: absolute;
+  top: 0;
+  right: 0;
+  z-index: 3;
+  width: var(--mana-toggle-size);
+  min-width: var(--mana-toggle-size);
+  height: var(--mana-toggle-size);
+  min-height: var(--mana-toggle-size);
+  padding: 0;
+  border: 1px solid var(--color-gray);
+  border-radius: var(--radius-md);
+  background: var(--color-surface);
+  color: var(--color-white);
+  font-size: 1.25rem;
+  line-height: 1;
+}
+
+.life-mana-menu-button.active {
+  background: var(--color-blue);
+  border-color: var(--color-blue);
+  color: var(--color-white);
+}
+
+.life-mana-panel {
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: 0;
+  z-index: 2;
+  padding-right: calc(var(--mana-toggle-size) + var(--mana-gap));
+}
+
+.life-mana-panel[hidden] {
+  display: none !important;
+}
+
+.life-mana-grid {
+  display: grid;
+  grid-template-columns: repeat(8, minmax(0, 1fr));
+  grid-auto-rows: var(--mana-toggle-size);
+  gap: var(--mana-gap);
+  padding: 0.2rem;
+  border: 1px solid var(--color-gray);
+  border-radius: var(--radius-md);
+  background: var(--color-surface);
+  box-shadow: 0 0.45rem 1rem rgba(0, 0, 0, 0.32);
+}
+
+.life-mana-button,
+.life-mana-reset {
+  position: relative;
+  display: grid;
+  grid-template-rows: 1fr 1fr;
+  align-items: center;
+  justify-items: center;
+  width: 100%;
+  min-width: 0;
+  height: var(--mana-toggle-size);
+  min-height: var(--mana-toggle-size);
+  padding: 0.18rem 0.1rem;
+  border: 1px solid var(--color-gray);
+  border-radius: var(--radius-md);
+  color: var(--color-white);
+  line-height: 1;
+  overflow: hidden;
+}
+
+.life-mana-button::after {
+  content: '';
+  position: absolute;
+  left: 0.38rem;
+  right: 0.38rem;
+  top: 50%;
+  height: 1px;
+  background: currentColor;
+  opacity: 0.24;
+}
+
+.life-mana-symbol {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 1.15rem;
+  min-height: 1.15rem;
+  border-radius: 999px;
+  font-size: 0.68rem;
+  font-weight: 800;
+  line-height: 1;
+}
+
+.life-mana-symbol-img {
+  display: block;
+  width: 1.16rem;
+  height: 1.16rem;
+  object-fit: contain;
+}
+
+.life-mana-symbol-storm .life-mana-symbol-img {
+  filter: drop-shadow(0 0 1px rgba(0, 0, 0, 0.45));
+}
+
+.life-mana-total {
+  position: relative;
+  z-index: 1;
+  font-size: 1.08rem;
+  font-weight: 800;
+  line-height: 1;
+}
+
+.life-mana-storm {
+  background: #d2691e;
+  border-color: #ff8c00;
+}
+
+.life-mana-w {
+  background: #fffbd5;
+  border-color: #f0e68c;
+  color: #1a1a1a;
+}
+
+.life-mana-u {
+  background: #0e68ab;
+  border-color: #6bb6ff;
+}
+
+.life-mana-b {
+  background: #2e1a47;
+  border-color: #6a4c93;
+}
+
+.life-mana-r {
+  background: #d3202a;
+  border-color: #ff6b6b;
+}
+
+.life-mana-g {
+  background: #00752e;
+  border-color: #33cc33;
+}
+
+.life-mana-c,
+.life-mana-reset {
+  background: #cac5c0;
+  border-color: #a8a29e;
+  color: #1a1a1a;
+}
+
+.life-mana-reset {
+  grid-template-rows: 1fr;
+  font-size: 1.35rem;
+  font-weight: 800;
+}
+
 .life-token-counters {
   --token-counter-gap: 0.22rem;
   --token-counter-cols: 3;

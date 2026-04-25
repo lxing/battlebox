@@ -7,52 +7,52 @@
   ],
   "cards": [
     {
+      "name": "Alpine Meadow",
+      "qty": 1
+    },
+    {
       "name": "Archaeomancer",
       "qty": 2
     },
     {
       "name": "Augur of Bolas",
-      "qty": 3
+      "qty": 4
+    },
+    {
+      "name": "Bender's Waterskin",
+      "qty": 2
     },
     {
       "name": "Brainstorm",
-      "qty": 4
-    },
-    {
-      "name": "Breath Weapon",
       "qty": 1
-    },
-    {
-      "name": "Cast into the Fire",
-      "qty": 1
-    },
-    {
-      "name": "Cleansing Wildfire",
-      "qty": 4
     },
     {
       "name": "Counterspell",
       "qty": 4
     },
     {
-      "name": "Destroy Evil",
-      "qty": 1
-    },
-    {
-      "name": "Dawnbringer Cleric",
-      "qty": 1
+      "name": "Dispel",
+      "qty": 2
     },
     {
       "name": "Ephemerate",
-      "qty": 3
+      "qty": 4
+    },
+    {
+      "name": "Ethereal Haze",
+      "qty": 1
     },
     {
       "name": "Glacial Floodplain",
       "qty": 1
     },
     {
+      "name": "Late to Dinner",
+      "qty": 1
+    },
+    {
       "name": "Snow-Covered Island",
-      "qty": 5
+      "qty": 7
     },
     {
       "name": "Lórien Revealed",
@@ -68,14 +68,18 @@
     },
     {
       "name": "Mulldrifter",
-      "qty": 3
+      "qty": 4
     },
     {
       "name": "Murmuring Mystic",
-      "qty": 2
+      "qty": 1
     },
     {
       "name": "Perilous Landscape",
+      "qty": 4
+    },
+    {
+      "name": "Preordain",
       "qty": 3
     },
     {
@@ -83,16 +87,8 @@
       "qty": 1
     },
     {
-      "name": "Rustvale Bridge",
-      "qty": 4
-    },
-    {
-      "name": "Silverbluff Bridge",
-      "qty": 4
-    },
-    {
       "name": "Skred",
-      "qty": 3
+      "qty": 4
     },
     {
       "name": "Thraben Charm",
@@ -100,7 +96,7 @@
     },
     {
       "name": "Volatile Fjord",
-      "qty": 1
+      "qty": 4
     },
     {
       "name": "Union of the Third Path",
@@ -110,18 +106,26 @@
   "sideboard": [
     {
       "name": "Blue Elemental Blast",
-      "qty": 3
-    },
-    {
-      "name": "Breath Weapon",
-      "qty": 1
+      "qty": 4
     },
     {
       "name": "Cast into the Fire",
-      "qty": 2
+      "qty": 3
     },
     {
       "name": "Annul",
+      "qty": 1
+    },
+    {
+      "name": "Cleansing Wildfire",
+      "qty": 1
+    },
+    {
+      "name": "Envelop",
+      "qty": 1
+    },
+    {
+      "name": "Ethereal Haze",
       "qty": 1
     },
     {
@@ -129,19 +133,7 @@
       "qty": 3
     },
     {
-      "name": "Dispel",
-      "qty": 1
-    },
-    {
       "name": "Stonehorn Dignitary",
-      "qty": 1
-    },
-    {
-      "name": "Standard Bearer",
-      "qty": 2
-    },
-    {
-      "name": "Union of the Third Path",
       "qty": 1
     }
   ],

@@ -3,10 +3,10 @@
   "plan": {
     "in": {
       "Cast Down": 2,
-      "Cast into the Fire": 2
+      "Cast into the Fire": 1
     },
     "out": {
-      "Blood Fountain": 2,
+      "Blood Fountain": 1,
       "Nihil Spellbomb": 2
     }
   }

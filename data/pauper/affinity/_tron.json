@@ -1,7 +1,13 @@
 {
-  "status": "todo",
+  "status": "plan",
   "plan": {
-    "in": {},
-    "out": {}
+    "in": {
+      "Cast Down": 2,
+      "Extract a Confession": 2
+    },
+    "out": {
+      "Krark-Clan Shaman": 3,
+      "Reckoner's Bargain": 1
+    }
   }
 }

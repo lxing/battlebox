@@ -2,12 +2,10 @@
   "status": "plan",
   "plan": {
     "in": {
-      "Cast into the Fire": 2,
       "Pyroblast": 1,
       "Red Elemental Blast": 4
     },
     "out": {
-      "Cast Down": 2,
       "Galvanic Blast": 3,
       "Toxin Analysis": 2
     }

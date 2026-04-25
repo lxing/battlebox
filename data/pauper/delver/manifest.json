@@ -66,11 +66,7 @@
   "sideboard": [
     {
       "name": "Annul",
-      "qty": 3
-    },
-    {
-      "name": "Blue Elemental Blast",
-      "qty": 3
+      "qty": 4
     },
     {
       "name": "Dispel",
@@ -83,6 +79,10 @@
     {
       "name": "Hydroblast",
       "qty": 4
+    },
+    {
+      "name": "Murmuring Mystic",
+      "qty": 2
     }
   ],
   "difficulty_tags": [

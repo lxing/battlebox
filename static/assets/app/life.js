@@ -12,6 +12,8 @@ const RESET_HIGHLIGHT_MS = 10000;
 const RESET_CONFIRM_WINDOW_MS = 2500;
 const TOKEN_MIN = 0;
 const TOKEN_MAX = 20;
+const MANA_MIN = 0;
+const MANA_MAX = 99;
 const TOKEN_TYPES = [
   { id: 'blood', icon: '🩸', label: 'Blood' },
   { id: 'treasure', icon: '💰', label: 'Treasure' },
@@ -20,6 +22,16 @@ const TOKEN_TYPES = [
   { id: 'map', icon: '🗺️', label: 'Map' },
 ];
 const TOKEN_IDS = TOKEN_TYPES.map((token) => token.id);
+const MANA_TYPES = [
+  { id: 'storm', label: 'Storm', symbolFile: 'storm' },
+  { id: 'w', label: 'White', symbolFile: 'w' },
+  { id: 'u', label: 'Blue', symbolFile: 'u' },
+  { id: 'b', label: 'Black', symbolFile: 'b' },
+  { id: 'r', label: 'Red', symbolFile: 'r' },
+  { id: 'g', label: 'Green', symbolFile: 'g' },
+  { id: 'c', label: 'Colorless', symbolFile: 'c' },
+];
+const MANA_IDS = MANA_TYPES.map((mana) => mana.id);
 
 function resolveTokenCounterGrid(visibleCount) {
   if (visibleCount <= 2) {
@@ -47,8 +59,19 @@ function createTokenMap(initialValue) {
   }, {});
 }
 
+function createManaMap(initialValue) {
+  return MANA_IDS.reduce((acc, manaId) => {
+    acc[manaId] = initialValue;
+    return acc;
+  }, {});
+}
+
 function clampTokenCount(value) {
   return Math.max(TOKEN_MIN, Math.min(TOKEN_MAX, value));
+}
+
+function clampManaCount(value) {
+  return Math.max(MANA_MIN, Math.min(MANA_MAX, value));
 }
 
 function parseTokenCount(value) {
@@ -60,6 +83,12 @@ function parseTokenCount(value) {
 
 function parseTokenVisible(value) {
   return value === true;
+}
+
+function parseManaCount(value) {
+  const parsed = Number.parseInt(String(value), 10);
+  if (Number.isNaN(parsed)) return 0;
+  return clampManaCount(parsed);
 }
 
 function parseTokenCounts(value) {
@@ -76,6 +105,14 @@ function parseTokenVisibility(value) {
     visible[tokenId] = parseTokenVisible(value?.[tokenId]);
   });
   return visible;
+}
+
+function parseManaCounts(value) {
+  const counts = createManaMap(0);
+  MANA_IDS.forEach((manaId) => {
+    counts[manaId] = parseManaCount(value?.[manaId]);
+  });
+  return counts;
 }
 
 function parseTokenOrder(value) {
@@ -103,6 +140,14 @@ function serializeTokenVisibility(value) {
     visible[tokenId] = value?.[tokenId] === true;
   });
   return visible;
+}
+
+function serializeManaCounts(value) {
+  const counts = createManaMap(0);
+  MANA_IDS.forEach((manaId) => {
+    counts[manaId] = parseManaCount(value?.[manaId]);
+  });
+  return counts;
 }
 
 function buildTokenToggleGridHtml(player) {
@@ -133,6 +178,29 @@ function buildTokenTickersHtml(player) {
   return `<div class="life-token-counters life-token-counters-${player}" data-life-token-counters="${player}" data-life-control>${tickers}</div>`;
 }
 
+function buildManaPoolHtml(player) {
+  const buttons = MANA_TYPES.map((mana) => {
+    const glyph = `<span class="life-mana-symbol life-mana-symbol-${mana.id}" aria-hidden="true"><img class="life-mana-symbol-img" src="/assets/mana/${mana.symbolFile}.svg" alt=""></span>`;
+    return `
+      <button type="button" class="static-button life-mana-button life-mana-${mana.id}" data-life-mana-button data-player="${player}" data-mana="${mana.id}" data-life-control aria-label="Adjust player ${player === 'p1' ? '1' : '2'} ${mana.label.toLowerCase()} counter">
+        ${glyph}
+        <span class="life-mana-total" data-life-mana-total data-player="${player}" data-mana="${mana.id}">0</span>
+      </button>
+    `;
+  }).join('');
+  return `
+    <div class="life-mana-menu life-mana-menu-${player}" data-life-mana-menu="${player}" data-life-control>
+      <button type="button" class="static-button life-mana-menu-button" data-life-mana-menu-trigger="${player}" data-life-control aria-label="Toggle player ${player === 'p1' ? '1' : '2'} mana and storm counters" aria-expanded="false">✦</button>
+      <div class="life-mana-panel life-mana-panel-${player}" data-life-mana-panel="${player}" data-life-control hidden>
+        <div class="life-mana-grid">
+          ${buttons}
+          <button type="button" class="static-button life-mana-reset" data-life-mana-reset="${player}" data-life-control aria-label="Reset player ${player === 'p1' ? '1' : '2'} mana and storm counters">↺</button>
+        </div>
+      </div>
+    </div>
+  `;
+}
+
 function readLifeState(startingLife) {
   const fallback = {
     p1: startingLife,
@@ -150,6 +218,10 @@ function readLifeState(startingLife) {
     tokenOrder: {
       p1: [],
       p2: [],
+    },
+    mana: {
+      p1: createManaMap(0),
+      p2: createManaMap(0),
     },
   };
   try {
@@ -172,6 +244,10 @@ function readLifeState(startingLife) {
       tokenOrder: {
         p1: parseTokenOrder(parsed?.tokenOrder?.p1),
         p2: parseTokenOrder(parsed?.tokenOrder?.p2),
+      },
+      mana: {
+        p1: parseManaCounts(parsed?.mana?.p1),
+        p2: parseManaCounts(parsed?.mana?.p2),
       },
     };
   } catch (_) {
@@ -200,6 +276,10 @@ function writeLifeState(state) {
           p1: parseTokenOrder(state.tokenOrder?.p1),
           p2: parseTokenOrder(state.tokenOrder?.p2),
         },
+        mana: {
+          p1: serializeManaCounts(state.mana?.p1),
+          p2: serializeManaCounts(state.mana?.p2),
+        },
       })
     );
   } catch (_) {
@@ -225,6 +305,27 @@ function getLifeInteraction(panel, event) {
   return { player, step };
 }
 
+function getManaInteraction(button, event) {
+  if (!(button instanceof HTMLElement)) return null;
+  if (!event.isPrimary) return null;
+  if (event.pointerType === 'mouse' && event.button !== 0) return null;
+
+  const rect = button.getBoundingClientRect();
+  if (!rect.height) return null;
+
+  const player = button.dataset.player === 'p2' ? 'p2' : 'p1';
+  const manaId = button.dataset.mana;
+  if (!MANA_IDS.includes(manaId)) return null;
+
+  const physicalY = event.clientY - rect.top;
+  // The top panel is rotated 180deg, so vertical hit zones are mirrored.
+  const logicalY = player === 'p2' ? (rect.height - physicalY) : physicalY;
+  const isAdd = logicalY < (rect.height / 2);
+  const step = isAdd ? 1 : -1;
+
+  return { player, manaId, step };
+}
+
 function bindControlAction(button, onActivate) {
   if (!(button instanceof HTMLElement) || typeof onActivate !== 'function') return;
 
@@ -241,6 +342,7 @@ export function createLifeCounter(container, startingLife = 20) {
   container.innerHTML = `
     <div class="life-counter" aria-label="Life counter">
       <section class="life-player life-player-top" data-player="p2" aria-label="Player 2 life total">
+        ${buildManaPoolHtml('p2')}
         ${buildTokenToggleGridHtml('p2')}
         ${buildTokenTickersHtml('p2')}
         <span class="life-player-icon life-player-icon-p2" aria-hidden="true">🐭</span>
@@ -256,6 +358,7 @@ export function createLifeCounter(container, startingLife = 20) {
         <button type="button" class="static-button life-control-button" id="life-right-button" aria-label="Open initiative tracker">♿️</button>
       </section>
       <section class="life-player life-player-bottom" data-player="p1" aria-label="Player 1 life total">
+        ${buildManaPoolHtml('p1')}
         ${buildTokenToggleGridHtml('p1')}
         ${buildTokenTickersHtml('p1')}
         <span class="life-player-icon life-player-icon-p1" aria-hidden="true">🐿️</span>
@@ -319,6 +422,34 @@ export function createLifeCounter(container, startingLife = 20) {
     p1: createTokenMap(null),
     p2: createTokenMap(null),
   };
+  const manaMenuButtons = {
+    p1: null,
+    p2: null,
+  };
+  const manaMenuPanels = {
+    p1: null,
+    p2: null,
+  };
+  const manaMenuContainers = {
+    p1: null,
+    p2: null,
+  };
+  const manaMenuOpen = {
+    p1: false,
+    p2: false,
+  };
+  const manaButtons = {
+    p1: createManaMap(null),
+    p2: createManaMap(null),
+  };
+  const manaTotals = {
+    p1: createManaMap(null),
+    p2: createManaMap(null),
+  };
+  const manaResetButtons = {
+    p1: null,
+    p2: null,
+  };
   container.querySelectorAll('[data-life-token-toggle]').forEach((button) => {
     const player = button.dataset.player === 'p2' ? 'p2' : 'p1';
     const tokenId = button.dataset.token;
@@ -352,6 +483,34 @@ export function createLifeCounter(container, startingLife = 20) {
     const tokenId = total.dataset.token;
     if (!TOKEN_IDS.includes(tokenId)) return;
     tokenTotals[player][tokenId] = total;
+  });
+  container.querySelectorAll('[data-life-mana-menu]').forEach((menu) => {
+    const player = menu.dataset.lifeManaMenu === 'p2' ? 'p2' : 'p1';
+    manaMenuContainers[player] = menu;
+  });
+  container.querySelectorAll('[data-life-mana-menu-trigger]').forEach((button) => {
+    const player = button.dataset.lifeManaMenuTrigger === 'p2' ? 'p2' : 'p1';
+    manaMenuButtons[player] = button;
+  });
+  container.querySelectorAll('[data-life-mana-panel]').forEach((panel) => {
+    const player = panel.dataset.lifeManaPanel === 'p2' ? 'p2' : 'p1';
+    manaMenuPanels[player] = panel;
+  });
+  container.querySelectorAll('[data-life-mana-button]').forEach((button) => {
+    const player = button.dataset.player === 'p2' ? 'p2' : 'p1';
+    const manaId = button.dataset.mana;
+    if (!MANA_IDS.includes(manaId)) return;
+    manaButtons[player][manaId] = button;
+  });
+  container.querySelectorAll('[data-life-mana-total]').forEach((total) => {
+    const player = total.dataset.player === 'p2' ? 'p2' : 'p1';
+    const manaId = total.dataset.mana;
+    if (!MANA_IDS.includes(manaId)) return;
+    manaTotals[player][manaId] = total;
+  });
+  container.querySelectorAll('[data-life-mana-reset]').forEach((button) => {
+    const player = button.dataset.lifeManaReset === 'p2' ? 'p2' : 'p1';
+    manaResetButtons[player] = button;
   });
 
   const render = () => {
@@ -441,6 +600,35 @@ export function createLifeCounter(container, startingLife = 20) {
       }
     });
   };
+  const renderMana = () => {
+    ['p1', 'p2'].forEach((player) => {
+      MANA_IDS.forEach((manaId) => {
+        const total = manaTotals[player][manaId];
+        const value = parseManaCount(state.mana?.[player]?.[manaId]);
+        if (total) {
+          total.textContent = String(value);
+        }
+      });
+    });
+  };
+  const renderManaMenus = () => {
+    ['p1', 'p2'].forEach((player) => {
+      const button = manaMenuButtons[player];
+      const panel = manaMenuPanels[player];
+      const menu = manaMenuContainers[player];
+      const open = manaMenuOpen[player] === true;
+      if (menu) {
+        menu.classList.toggle('open', open);
+      }
+      if (panel) {
+        panel.hidden = !open;
+      }
+      if (button) {
+        button.classList.toggle('active', open);
+        button.setAttribute('aria-expanded', open ? 'true' : 'false');
+      }
+    });
+  };
   const initiativeOverlay = createInitiativeOverlay(container, state, () => {
     writeLifeState(state);
     renderInitiative();
@@ -456,6 +644,18 @@ export function createLifeCounter(container, startingLife = 20) {
     const next = clampTokenCount(current + delta);
     state.tokens[player][tokenId] = next;
     renderTokens();
+    writeLifeState(state);
+  };
+  const applyManaDelta = (player, manaId, delta) => {
+    state.mana[player][manaId] = clampManaCount(parseManaCount(state.mana[player][manaId]) + delta);
+    renderMana();
+    writeLifeState(state);
+  };
+  const resetMana = (player) => {
+    state.mana[player] = createManaMap(0);
+    manaMenuOpen[player] = false;
+    renderMana();
+    renderManaMenus();
     writeLifeState(state);
   };
   const toggleTokenTicker = (player, tokenId) => {
@@ -485,6 +685,10 @@ export function createLifeCounter(container, startingLife = 20) {
     tokenMenuOpen[player] = !tokenMenuOpen[player];
     renderTokenMenus();
   };
+  const toggleManaMenu = (player) => {
+    manaMenuOpen[player] = !manaMenuOpen[player];
+    renderManaMenus();
+  };
 
   const resetGameState = () => {
     state.p1 = startingLife;
@@ -503,13 +707,21 @@ export function createLifeCounter(container, startingLife = 20) {
       p1: [],
       p2: [],
     };
+    state.mana = {
+      p1: createManaMap(0),
+      p2: createManaMap(0),
+    };
     tokenMenuOpen.p1 = false;
     tokenMenuOpen.p2 = false;
+    manaMenuOpen.p1 = false;
+    manaMenuOpen.p2 = false;
     render();
     renderMonarch();
     renderInitiative();
     renderTokenMenus();
     renderTokens();
+    renderMana();
+    renderManaMenus();
     writeLifeState(state);
     initiativeOverlay.sync();
   };
@@ -625,6 +837,15 @@ export function createLifeCounter(container, startingLife = 20) {
       applyTokenDelta(player, tokenId, delta);
     });
   };
+  const onManaPointerDown = (event) => {
+    const button = event.currentTarget;
+    const interaction = getManaInteraction(button, event);
+    if (!interaction) return;
+    const { player, manaId } = interaction;
+    startHoldInteraction(event, button, interaction, (delta) => {
+      applyManaDelta(player, manaId, delta);
+    });
+  };
 
   const onPointerUp = (event) => {
     if (!activeHold || activeHold.pointerId !== event.pointerId) return;
@@ -674,6 +895,25 @@ export function createLifeCounter(container, startingLife = 20) {
         toggleTokenTicker(player, tokenId);
       });
     });
+    const manaMenuButton = manaMenuButtons[player];
+    bindControlAction(manaMenuButton, () => {
+      toggleManaMenu(player);
+    });
+    MANA_IDS.forEach((manaId) => {
+      const button = manaButtons[player][manaId];
+      if (!button) return;
+      button.addEventListener('pointerdown', onManaPointerDown);
+      button.addEventListener('pointerup', onPointerUp);
+      button.addEventListener('pointercancel', onPointerCancel);
+      button.addEventListener('lostpointercapture', onPointerCancel);
+      button.addEventListener('click', (event) => {
+        event.preventDefault();
+        event.stopPropagation();
+      });
+    });
+    bindControlAction(manaResetButtons[player], () => {
+      resetMana(player);
+    });
   });
 
   bindControlAction(resetButton, () => {
@@ -702,5 +942,7 @@ export function createLifeCounter(container, startingLife = 20) {
   renderInitiative();
   renderTokenMenus();
   renderTokens();
+  renderMana();
+  renderManaMenus();
   initiativeOverlay.sync();
 }
