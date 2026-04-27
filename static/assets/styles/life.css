@@ -67,7 +67,7 @@
 
 .life-token-menu {
   position: absolute;
-  z-index: 2;
+  z-index: 5;
   right: var(--token-edge-inset);
   bottom: var(--token-edge-inset);
 }
@@ -141,27 +141,23 @@
 .life-mana-menu {
   --mana-toggle-size: var(--token-counter-height);
   --mana-gap: 0.2rem;
-  --mana-avatar-gutter: 3.4rem;
   position: absolute;
-  z-index: 4;
+  z-index: 3;
   top: var(--token-edge-inset);
   right: var(--token-edge-inset);
+  bottom: var(--token-edge-inset);
   left: var(--token-edge-inset);
-  height: var(--mana-toggle-size);
+  pointer-events: none;
 }
 
-.life-player-bottom .life-mana-menu {
-  left: calc(var(--token-edge-inset) + var(--mana-avatar-gutter));
-}
-
-.life-player-top .life-mana-menu {
-  right: calc(var(--token-edge-inset) + var(--mana-avatar-gutter));
+.life-mana-menu.open {
+  z-index: 4;
 }
 
 .life-mana-menu-button {
   position: absolute;
-  top: 0;
   right: 0;
+  bottom: calc(var(--token-toggle-size) + var(--token-toggle-gap));
   z-index: 3;
   width: var(--mana-toggle-size);
   min-width: var(--mana-toggle-size);
@@ -174,6 +170,7 @@
   color: var(--color-white);
   font-size: 1.25rem;
   line-height: 1;
+  pointer-events: auto;
 }
 
 .life-mana-menu-button.active {
@@ -187,8 +184,9 @@
   top: 0;
   right: 0;
   left: 0;
+  height: max(30%, calc(var(--mana-toggle-size) * 1.55));
   z-index: 2;
-  padding-right: calc(var(--mana-toggle-size) + var(--mana-gap));
+  pointer-events: auto;
 }
 
 .life-mana-panel[hidden] {
@@ -197,10 +195,11 @@
 
 .life-mana-grid {
   display: grid;
-  grid-template-columns: repeat(8, minmax(0, 1fr));
-  grid-auto-rows: var(--mana-toggle-size);
+  grid-template-columns: repeat(9, minmax(0, 1fr));
+  grid-auto-rows: minmax(0, 1fr);
   gap: var(--mana-gap);
-  padding: 0.2rem;
+  height: 100%;
+  padding: 0.28rem;
   border: 1px solid var(--color-gray);
   border-radius: var(--radius-md);
   background: var(--color-surface);
@@ -208,7 +207,8 @@
 }
 
 .life-mana-button,
-.life-mana-reset {
+.life-mana-reset,
+.life-mana-close {
   position: relative;
   display: grid;
   grid-template-rows: 1fr 1fr;
@@ -216,8 +216,8 @@
   justify-items: center;
   width: 100%;
   min-width: 0;
-  height: var(--mana-toggle-size);
-  min-height: var(--mana-toggle-size);
+  height: 100%;
+  min-height: 0;
   padding: 0.18rem 0.1rem;
   border: 1px solid var(--color-gray);
   border-radius: var(--radius-md);
@@ -302,13 +302,15 @@
 }
 
 .life-mana-c,
-.life-mana-reset {
+.life-mana-reset,
+.life-mana-close {
   background: #cac5c0;
   border-color: #a8a29e;
   color: #1a1a1a;
 }
 
-.life-mana-reset {
+.life-mana-reset,
+.life-mana-close {
   grid-template-rows: 1fr;
   font-size: 1.35rem;
   font-weight: 800;
@@ -386,43 +388,47 @@
 .life-token-center {
   position: relative;
   z-index: 1;
-  display: grid;
-  grid-template-rows: auto auto;
-  align-content: center;
-  justify-items: center;
-  align-items: center;
+  display: block;
+  width: 100%;
+  min-width: 0;
   height: 100%;
-  padding: clamp(0.02rem, 0.01rem + 0.2vh, 0.24rem) 0;
-  gap: clamp(0.04rem, 0.03rem + 0.18vh, 0.26rem);
+  padding: 0;
 }
 
 .life-token-total {
-  font-size: clamp(1.02rem, 0.94rem + 0.35vh, 1.36rem);
-  font-weight: 700;
+  position: absolute;
+  top: 50%;
+  left: 66.666%;
+  transform: translate(-50%, -50%);
+  min-width: 1ch;
+  font-size: clamp(1.06rem, 0.98rem + 0.36vh, 1.42rem);
+  font-weight: 800;
   line-height: 1;
+  letter-spacing: 0.02em;
 }
 
 .life-token-icon {
-  position: static;
-  font-size: clamp(0.87rem, 0.8rem + 0.24vh, 1.16rem);
+  position: absolute;
+  top: 50%;
+  left: 33.333%;
+  transform: translate(-50%, -50%);
+  font-size: clamp(0.98rem, 0.9rem + 0.24vh, 1.22rem);
   line-height: 1;
-  opacity: 0.8;
+  opacity: 0.88;
   pointer-events: none;
 }
 
 .life-token-ticker-tall .life-token-center {
-  grid-template-rows: 1fr 1fr;
-  align-content: stretch;
-  padding: clamp(0.14rem, 0.08rem + 0.34vh, 0.46rem) 0;
-  gap: clamp(0.16rem, 0.1rem + 0.4vh, 0.56rem);
+  width: 100%;
+  padding: 0;
 }
 
 .life-token-ticker-tall .life-token-total {
-  font-size: clamp(1.08rem, 1rem + 0.36vh, 1.4rem);
+  font-size: clamp(1.18rem, 1.08rem + 0.4vh, 1.54rem);
 }
 
 .life-token-ticker-tall .life-token-icon {
-  font-size: clamp(0.95rem, 0.87rem + 0.26vh, 1.2rem);
+  font-size: clamp(1.1rem, 1rem + 0.28vh, 1.36rem);
 }
 
 .life-player-random-highlight {

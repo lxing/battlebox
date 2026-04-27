@@ -23,13 +23,13 @@ const TOKEN_TYPES = [
 ];
 const TOKEN_IDS = TOKEN_TYPES.map((token) => token.id);
 const MANA_TYPES = [
-  { id: 'storm', label: 'Storm', symbolFile: 'storm' },
   { id: 'w', label: 'White', symbolFile: 'w' },
   { id: 'u', label: 'Blue', symbolFile: 'u' },
   { id: 'b', label: 'Black', symbolFile: 'b' },
   { id: 'r', label: 'Red', symbolFile: 'r' },
   { id: 'g', label: 'Green', symbolFile: 'g' },
   { id: 'c', label: 'Colorless', symbolFile: 'c' },
+  { id: 'storm', label: 'Storm', symbolFile: 'storm' },
 ];
 const MANA_IDS = MANA_TYPES.map((mana) => mana.id);
 
@@ -190,11 +190,12 @@ function buildManaPoolHtml(player) {
   }).join('');
   return `
     <div class="life-mana-menu life-mana-menu-${player}" data-life-mana-menu="${player}" data-life-control>
-      <button type="button" class="static-button life-mana-menu-button" data-life-mana-menu-trigger="${player}" data-life-control aria-label="Toggle player ${player === 'p1' ? '1' : '2'} mana and storm counters" aria-expanded="false">✦</button>
+      <button type="button" class="static-button life-mana-menu-button" data-life-mana-menu-trigger="${player}" data-life-control aria-label="Toggle player ${player === 'p1' ? '1' : '2'} mana and storm counters" aria-expanded="false">🌈</button>
       <div class="life-mana-panel life-mana-panel-${player}" data-life-mana-panel="${player}" data-life-control hidden>
         <div class="life-mana-grid">
           ${buttons}
           <button type="button" class="static-button life-mana-reset" data-life-mana-reset="${player}" data-life-control aria-label="Reset player ${player === 'p1' ? '1' : '2'} mana and storm counters">↺</button>
+          <button type="button" class="static-button life-mana-close" data-life-mana-close="${player}" data-life-control aria-label="Close player ${player === 'p1' ? '1' : '2'} mana and storm counters">×</button>
         </div>
       </div>
     </div>
@@ -450,6 +451,10 @@ export function createLifeCounter(container, startingLife = 20) {
     p1: null,
     p2: null,
   };
+  const manaCloseButtons = {
+    p1: null,
+    p2: null,
+  };
   container.querySelectorAll('[data-life-token-toggle]').forEach((button) => {
     const player = button.dataset.player === 'p2' ? 'p2' : 'p1';
     const tokenId = button.dataset.token;
@@ -511,6 +516,10 @@ export function createLifeCounter(container, startingLife = 20) {
   container.querySelectorAll('[data-life-mana-reset]').forEach((button) => {
     const player = button.dataset.lifeManaReset === 'p2' ? 'p2' : 'p1';
     manaResetButtons[player] = button;
+  });
+  container.querySelectorAll('[data-life-mana-close]').forEach((button) => {
+    const player = button.dataset.lifeManaClose === 'p2' ? 'p2' : 'p1';
+    manaCloseButtons[player] = button;
   });
 
   const render = () => {
@@ -653,10 +662,12 @@ export function createLifeCounter(container, startingLife = 20) {
   };
   const resetMana = (player) => {
     state.mana[player] = createManaMap(0);
-    manaMenuOpen[player] = false;
     renderMana();
-    renderManaMenus();
     writeLifeState(state);
+  };
+  const closeManaMenu = (player) => {
+    manaMenuOpen[player] = false;
+    renderManaMenus();
   };
   const toggleTokenTicker = (player, tokenId) => {
     const visible = state.tokenVisible[player][tokenId] === true;
@@ -913,6 +924,9 @@ export function createLifeCounter(container, startingLife = 20) {
     });
     bindControlAction(manaResetButtons[player], () => {
       resetMana(player);
+    });
+    bindControlAction(manaCloseButtons[player], () => {
+      closeManaMenu(player);
     });
   });
 
