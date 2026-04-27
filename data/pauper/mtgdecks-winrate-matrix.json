@@ -15,6 +15,12 @@
         "matches": 51,
         "wr": 0.59
       },
+      "cycle-storm": {
+        "ci_high": 0.76,
+        "ci_low": 0.39,
+        "matches": 29,
+        "wr": 0.59
+      },
       "caw-gates": {
         "ci_high": 0.53,
         "ci_low": 0.34,
@@ -75,6 +81,12 @@
         "matches": 20,
         "wr": 0.3
       },
+      "rally": {
+        "ci_high": 0.58,
+        "ci_low": 0.43,
+        "matches": 168,
+        "wr": 0.51
+      },
       "ramp": {
         "ci_high": 0.6,
         "ci_low": 0.41,
@@ -86,12 +98,6 @@
         "ci_low": 0.24,
         "matches": 35,
         "wr": 0.4
-      },
-      "rally": {
-        "ci_high": 0.58,
-        "ci_low": 0.43,
-        "matches": 168,
-        "wr": 0.51
       },
       "tron": {
         "ci_high": 0.35,
@@ -123,6 +129,12 @@
         "ci_high": 0.77,
         "ci_low": 0.23,
         "matches": 14,
+        "wr": 0.5
+      },
+      "cycle-storm": {
+        "ci_high": 0.84,
+        "ci_low": 0.16,
+        "matches": 8,
         "wr": 0.5
       },
       "caw-gates": {
@@ -185,6 +197,12 @@
         "matches": 2,
         "wr": 1.0
       },
+      "rally": {
+        "ci_high": 0.57,
+        "ci_low": 0.32,
+        "matches": 68,
+        "wr": 0.44
+      },
       "ramp": {
         "ci_high": 0.73,
         "ci_low": 0.42,
@@ -196,12 +214,6 @@
         "ci_low": 0.43,
         "matches": 12,
         "wr": 0.75
-      },
-      "rally": {
-        "ci_high": 0.57,
-        "ci_low": 0.32,
-        "matches": 68,
-        "wr": 0.44
       },
       "tron": {
         "ci_high": 0.71,
@@ -234,6 +246,12 @@
         "ci_low": 0.23,
         "matches": 14,
         "wr": 0.5
+      },
+      "cycle-storm": {
+        "ci_high": 0.6,
+        "ci_low": 0.0,
+        "matches": 4,
+        "wr": 0.0
       },
       "caw-gates": {
         "ci_high": 0.38,
@@ -295,6 +313,12 @@
         "matches": 3,
         "wr": 0.33
       },
+      "rally": {
+        "ci_high": 0.76,
+        "ci_low": 0.42,
+        "matches": 35,
+        "wr": 0.6
+      },
       "ramp": {
         "ci_high": 0.89,
         "ci_low": 0.61,
@@ -306,12 +330,6 @@
         "ci_low": 0.36,
         "matches": 6,
         "wr": 0.83
-      },
-      "rally": {
-        "ci_high": 0.76,
-        "ci_low": 0.42,
-        "matches": 35,
-        "wr": 0.6
       },
       "tron": {
         "ci_high": 0.97,
@@ -332,6 +350,116 @@
         "wr": 0.43
       }
     },
+    "cycle-storm": {
+      "affinity": {
+        "ci_high": 0.61,
+        "ci_low": 0.24,
+        "matches": 29,
+        "wr": 0.41
+      },
+      "black-sacrifice": {
+        "ci_high": 0.84,
+        "ci_low": 0.16,
+        "matches": 8,
+        "wr": 0.5
+      },
+      "bogles": {
+        "ci_high": 1.0,
+        "ci_low": 0.4,
+        "matches": 4,
+        "wr": 1.0
+      },
+      "caw-gates": {
+        "ci_high": 0.75,
+        "ci_low": 0.19,
+        "matches": 13,
+        "wr": 0.46
+      },
+      "delver": {
+        "ci_high": 0.72,
+        "ci_low": 0.15,
+        "matches": 12,
+        "wr": 0.42
+      },
+      "elves": {
+        "ci_high": 0.97,
+        "ci_low": 0.74,
+        "matches": 36,
+        "wr": 0.89
+      },
+      "ephemerate": {
+        "ci_high": 0.84,
+        "ci_low": 0.0,
+        "matches": 2,
+        "wr": 0.0
+      },
+      "faeries": {
+        "ci_high": 0.69,
+        "ci_low": 0.11,
+        "matches": 11,
+        "wr": 0.36
+      },
+      "familiars": {
+        "ci_high": 1.0,
+        "ci_low": 0.59,
+        "matches": 7,
+        "wr": 1.0
+      },
+      "gardens": {
+        "ci_high": 0.76,
+        "ci_low": 0.09,
+        "matches": 8,
+        "wr": 0.38
+      },
+      "glintblade": {
+        "ci_high": 0.97,
+        "ci_low": 0.35,
+        "matches": 8,
+        "wr": 0.75
+      },
+      "madness-burn": {
+        "ci_high": 0.9,
+        "ci_low": 0.44,
+        "matches": 17,
+        "wr": 0.71
+      },
+      "pizza": {
+        "ci_high": 1.0,
+        "ci_low": 0.02,
+        "matches": 1,
+        "wr": 1.0
+      },
+      "rally": {
+        "ci_high": 0.82,
+        "ci_low": 0.33,
+        "matches": 17,
+        "wr": 0.59
+      },
+      "ramp": {
+        "ci_high": 0.98,
+        "ci_low": 0.57,
+        "matches": 14,
+        "wr": 0.86
+      },
+      "skred": {
+        "ci_high": 0.81,
+        "ci_low": 0.01,
+        "matches": 4,
+        "wr": 0.25
+      },
+      "tron": {
+        "ci_high": 1.0,
+        "ci_low": 0.68,
+        "matches": 15,
+        "wr": 0.93
+      },
+      "white-weenie": {
+        "ci_high": 0.77,
+        "ci_low": 0.23,
+        "matches": 14,
+        "wr": 0.5
+      }
+    },
     "caw-gates": {
       "affinity": {
         "ci_high": 0.66,
@@ -350,6 +478,12 @@
         "ci_low": 0.62,
         "matches": 34,
         "wr": 0.79
+      },
+      "cycle-storm": {
+        "ci_high": 0.81,
+        "ci_low": 0.25,
+        "matches": 13,
+        "wr": 0.54
       },
       "delver": {
         "ci_high": 0.7,
@@ -405,6 +539,12 @@
         "matches": 2,
         "wr": 0.5
       },
+      "rally": {
+        "ci_high": 0.67,
+        "ci_low": 0.46,
+        "matches": 90,
+        "wr": 0.57
+      },
       "ramp": {
         "ci_high": 0.55,
         "ci_low": 0.31,
@@ -416,12 +556,6 @@
         "ci_low": 0.45,
         "matches": 15,
         "wr": 0.73
-      },
-      "rally": {
-        "ci_high": 0.67,
-        "ci_low": 0.46,
-        "matches": 90,
-        "wr": 0.57
       },
       "tron": {
         "ci_high": 0.7,
@@ -460,6 +594,12 @@
         "ci_low": 0.59,
         "matches": 70,
         "wr": 0.71
+      },
+      "cycle-storm": {
+        "ci_high": 0.85,
+        "ci_low": 0.28,
+        "matches": 12,
+        "wr": 0.58
       },
       "caw-gates": {
         "ci_high": 0.47,
@@ -515,6 +655,12 @@
         "matches": 4,
         "wr": 0.25
       },
+      "rally": {
+        "ci_high": 0.49,
+        "ci_low": 0.36,
+        "matches": 223,
+        "wr": 0.43
+      },
       "ramp": {
         "ci_high": 0.62,
         "ci_low": 0.46,
@@ -526,12 +672,6 @@
         "ci_low": 0.38,
         "matches": 34,
         "wr": 0.56
-      },
-      "rally": {
-        "ci_high": 0.49,
-        "ci_low": 0.36,
-        "matches": 223,
-        "wr": 0.43
       },
       "tron": {
         "ci_high": 0.64,
@@ -570,6 +710,12 @@
         "ci_low": 0.6,
         "matches": 50,
         "wr": 0.74
+      },
+      "cycle-storm": {
+        "ci_high": 0.26,
+        "ci_low": 0.03,
+        "matches": 36,
+        "wr": 0.11
       },
       "caw-gates": {
         "ci_high": 0.69,
@@ -625,6 +771,12 @@
         "matches": 10,
         "wr": 0.5
       },
+      "rally": {
+        "ci_high": 0.53,
+        "ci_low": 0.36,
+        "matches": 143,
+        "wr": 0.44
+      },
       "ramp": {
         "ci_high": 0.7,
         "ci_low": 0.54,
@@ -636,12 +788,6 @@
         "ci_low": 0.03,
         "matches": 19,
         "wr": 0.16
-      },
-      "rally": {
-        "ci_high": 0.53,
-        "ci_low": 0.36,
-        "matches": 143,
-        "wr": 0.44
       },
       "tron": {
         "ci_high": 0.89,
@@ -680,6 +826,12 @@
         "ci_low": 0.01,
         "matches": 4,
         "wr": 0.25
+      },
+      "cycle-storm": {
+        "ci_high": 1.0,
+        "ci_low": 0.16,
+        "matches": 2,
+        "wr": 1.0
       },
       "caw-gates": {
         "ci_high": 0.93,
@@ -735,6 +887,12 @@
         "matches": 3,
         "wr": 0.33
       },
+      "rally": {
+        "ci_high": 0.68,
+        "ci_low": 0.24,
+        "matches": 22,
+        "wr": 0.45
+      },
       "ramp": {
         "ci_high": 0.62,
         "ci_low": 0.14,
@@ -746,12 +904,6 @@
         "ci_low": 0.42,
         "matches": 7,
         "wr": 0.86
-      },
-      "rally": {
-        "ci_high": 0.68,
-        "ci_low": 0.24,
-        "matches": 22,
-        "wr": 0.45
       },
       "tron": {
         "ci_high": 0.88,
@@ -790,6 +942,12 @@
         "ci_low": 0.53,
         "matches": 24,
         "wr": 0.75
+      },
+      "cycle-storm": {
+        "ci_high": 0.89,
+        "ci_low": 0.31,
+        "matches": 11,
+        "wr": 0.64
       },
       "caw-gates": {
         "ci_high": 0.58,
@@ -845,6 +1003,12 @@
         "matches": 2,
         "wr": 0.5
       },
+      "rally": {
+        "ci_high": 0.48,
+        "ci_low": 0.28,
+        "matches": 100,
+        "wr": 0.38
+      },
       "ramp": {
         "ci_high": 0.46,
         "ci_low": 0.22,
@@ -856,12 +1020,6 @@
         "ci_low": 0.26,
         "matches": 10,
         "wr": 0.6
-      },
-      "rally": {
-        "ci_high": 0.48,
-        "ci_low": 0.28,
-        "matches": 100,
-        "wr": 0.38
       },
       "tron": {
         "ci_high": 0.7,
@@ -900,6 +1058,12 @@
         "ci_low": 0.21,
         "matches": 22,
         "wr": 0.41
+      },
+      "cycle-storm": {
+        "ci_high": 0.41,
+        "ci_low": 0.0,
+        "matches": 7,
+        "wr": 0.0
       },
       "caw-gates": {
         "ci_high": 0.81,
@@ -955,6 +1119,12 @@
         "matches": 3,
         "wr": 0.33
       },
+      "rally": {
+        "ci_high": 0.68,
+        "ci_low": 0.39,
+        "matches": 52,
+        "wr": 0.54
+      },
       "ramp": {
         "ci_high": 0.44,
         "ci_low": 0.13,
@@ -966,12 +1136,6 @@
         "ci_low": 0.16,
         "matches": 8,
         "wr": 0.5
-      },
-      "rally": {
-        "ci_high": 0.68,
-        "ci_low": 0.39,
-        "matches": 52,
-        "wr": 0.54
       },
       "tron": {
         "ci_high": 0.83,
@@ -1010,6 +1174,12 @@
         "ci_low": 0.33,
         "matches": 26,
         "wr": 0.54
+      },
+      "cycle-storm": {
+        "ci_high": 0.91,
+        "ci_low": 0.24,
+        "matches": 8,
+        "wr": 0.63
       },
       "caw-gates": {
         "ci_high": 0.61,
@@ -1065,6 +1235,12 @@
         "matches": 4,
         "wr": 0.5
       },
+      "rally": {
+        "ci_high": 0.51,
+        "ci_low": 0.27,
+        "matches": 70,
+        "wr": 0.39
+      },
       "ramp": {
         "ci_high": 0.42,
         "ci_low": 0.18,
@@ -1076,12 +1252,6 @@
         "ci_low": 0.42,
         "matches": 14,
         "wr": 0.71
-      },
-      "rally": {
-        "ci_high": 0.51,
-        "ci_low": 0.27,
-        "matches": 70,
-        "wr": 0.39
       },
       "tron": {
         "ci_high": 0.61,
@@ -1120,6 +1290,12 @@
         "ci_low": 0.36,
         "matches": 6,
         "wr": 0.83
+      },
+      "cycle-storm": {
+        "ci_high": 0.65,
+        "ci_low": 0.03,
+        "matches": 8,
+        "wr": 0.25
       },
       "caw-gates": {
         "ci_high": 0.77,
@@ -1175,6 +1351,12 @@
         "matches": 2,
         "wr": 0.5
       },
+      "rally": {
+        "ci_high": 0.72,
+        "ci_low": 0.4,
+        "matches": 39,
+        "wr": 0.56
+      },
       "ramp": {
         "ci_high": 0.65,
         "ci_low": 0.25,
@@ -1186,12 +1368,6 @@
         "ci_low": 0.05,
         "matches": 5,
         "wr": 0.4
-      },
-      "rally": {
-        "ci_high": 0.72,
-        "ci_low": 0.4,
-        "matches": 39,
-        "wr": 0.56
       },
       "tron": {
         "ci_high": 0.72,
@@ -1230,6 +1406,12 @@
         "ci_low": 0.23,
         "matches": 43,
         "wr": 0.37
+      },
+      "cycle-storm": {
+        "ci_high": 0.56,
+        "ci_low": 0.1,
+        "matches": 17,
+        "wr": 0.29
       },
       "caw-gates": {
         "ci_high": 0.4,
@@ -1285,6 +1467,12 @@
         "matches": 4,
         "wr": 0.0
       },
+      "rally": {
+        "ci_high": 0.42,
+        "ci_low": 0.27,
+        "matches": 154,
+        "wr": 0.34
+      },
       "ramp": {
         "ci_high": 0.53,
         "ci_low": 0.31,
@@ -1296,12 +1484,6 @@
         "ci_low": 0.33,
         "matches": 24,
         "wr": 0.54
-      },
-      "rally": {
-        "ci_high": 0.42,
-        "ci_low": 0.27,
-        "matches": 154,
-        "wr": 0.34
       },
       "tron": {
         "ci_high": 0.38,
@@ -1340,6 +1522,12 @@
         "ci_low": 0.09,
         "matches": 3,
         "wr": 0.67
+      },
+      "cycle-storm": {
+        "ci_high": 0.98,
+        "ci_low": 0.0,
+        "matches": 1,
+        "wr": 0.0
       },
       "caw-gates": {
         "ci_high": 0.99,
@@ -1395,6 +1583,12 @@
         "matches": 4,
         "wr": 1.0
       },
+      "rally": {
+        "ci_high": 0.85,
+        "ci_low": 0.05,
+        "matches": 5,
+        "wr": 0.4
+      },
       "ramp": {
         "ci_high": 0.82,
         "ci_low": 0.1,
@@ -1407,12 +1601,6 @@
         "matches": 2,
         "wr": 0.5
       },
-      "rally": {
-        "ci_high": 0.85,
-        "ci_low": 0.05,
-        "matches": 5,
-        "wr": 0.4
-      },
       "tron": {
         "ci_high": 0.93,
         "ci_low": 0.07,
@@ -1423,226 +1611,6 @@
         "ci_high": 0.95,
         "ci_low": 0.15,
         "matches": 5,
-        "wr": 0.6
-      }
-    },
-    "ramp": {
-      "affinity": {
-        "ci_high": 0.59,
-        "ci_low": 0.4,
-        "matches": 109,
-        "wr": 0.5
-      },
-      "black-sacrifice": {
-        "ci_high": 0.58,
-        "ci_low": 0.27,
-        "matches": 43,
-        "wr": 0.42
-      },
-      "bogles": {
-        "ci_high": 0.39,
-        "ci_low": 0.11,
-        "matches": 39,
-        "wr": 0.23
-      },
-      "caw-gates": {
-        "ci_high": 0.69,
-        "ci_low": 0.45,
-        "matches": 68,
-        "wr": 0.57
-      },
-      "delver": {
-        "ci_high": 0.54,
-        "ci_low": 0.38,
-        "matches": 158,
-        "wr": 0.46
-      },
-      "elves": {
-        "ci_high": 0.46,
-        "ci_low": 0.3,
-        "matches": 144,
-        "wr": 0.38
-      },
-      "ephemerate": {
-        "ci_high": 0.86,
-        "ci_low": 0.38,
-        "matches": 17,
-        "wr": 0.65
-      },
-      "faeries": {
-        "ci_high": 0.78,
-        "ci_low": 0.54,
-        "matches": 66,
-        "wr": 0.67
-      },
-      "familiars": {
-        "ci_high": 0.87,
-        "ci_low": 0.56,
-        "matches": 34,
-        "wr": 0.74
-      },
-      "gardens": {
-        "ci_high": 0.82,
-        "ci_low": 0.58,
-        "matches": 59,
-        "wr": 0.71
-      },
-      "glintblade": {
-        "ci_high": 0.75,
-        "ci_low": 0.35,
-        "matches": 27,
-        "wr": 0.56
-      },
-      "madness-burn": {
-        "ci_high": 0.69,
-        "ci_low": 0.47,
-        "matches": 89,
-        "wr": 0.58
-      },
-      "pizza": {
-        "ci_high": 0.9,
-        "ci_low": 0.18,
-        "matches": 7,
-        "wr": 0.57
-      },
-      "skred": {
-        "ci_high": 0.77,
-        "ci_low": 0.28,
-        "matches": 17,
-        "wr": 0.53
-      },
-      "rally": {
-        "ci_high": 0.72,
-        "ci_low": 0.52,
-        "matches": 104,
-        "wr": 0.63
-      },
-      "tron": {
-        "ci_high": 0.77,
-        "ci_low": 0.37,
-        "matches": 26,
-        "wr": 0.58
-      },
-      "turbo-fog": {
-        "ci_high": 0.85,
-        "ci_low": 0.05,
-        "matches": 5,
-        "wr": 0.4
-      },
-      "white-weenie": {
-        "ci_high": 0.68,
-        "ci_low": 0.46,
-        "matches": 84,
-        "wr": 0.57
-      }
-    },
-    "skred": {
-      "affinity": {
-        "ci_high": 0.76,
-        "ci_low": 0.42,
-        "matches": 35,
-        "wr": 0.6
-      },
-      "black-sacrifice": {
-        "ci_high": 0.57,
-        "ci_low": 0.05,
-        "matches": 12,
-        "wr": 0.25
-      },
-      "bogles": {
-        "ci_high": 0.64,
-        "ci_low": 0.0,
-        "matches": 6,
-        "wr": 0.17
-      },
-      "caw-gates": {
-        "ci_high": 0.55,
-        "ci_low": 0.08,
-        "matches": 15,
-        "wr": 0.27
-      },
-      "delver": {
-        "ci_high": 0.62,
-        "ci_low": 0.27,
-        "matches": 34,
-        "wr": 0.44
-      },
-      "elves": {
-        "ci_high": 0.97,
-        "ci_low": 0.6,
-        "matches": 19,
-        "wr": 0.84
-      },
-      "ephemerate": {
-        "ci_high": 0.58,
-        "ci_low": 0.0,
-        "matches": 7,
-        "wr": 0.14
-      },
-      "faeries": {
-        "ci_high": 0.74,
-        "ci_low": 0.12,
-        "matches": 10,
-        "wr": 0.4
-      },
-      "familiars": {
-        "ci_high": 0.84,
-        "ci_low": 0.16,
-        "matches": 8,
-        "wr": 0.5
-      },
-      "gardens": {
-        "ci_high": 0.58,
-        "ci_low": 0.08,
-        "matches": 14,
-        "wr": 0.29
-      },
-      "glintblade": {
-        "ci_high": 0.95,
-        "ci_low": 0.15,
-        "matches": 5,
-        "wr": 0.6
-      },
-      "madness-burn": {
-        "ci_high": 0.67,
-        "ci_low": 0.26,
-        "matches": 24,
-        "wr": 0.46
-      },
-      "pizza": {
-        "ci_high": 0.99,
-        "ci_low": 0.01,
-        "matches": 2,
-        "wr": 0.5
-      },
-      "ramp": {
-        "ci_high": 0.72,
-        "ci_low": 0.23,
-        "matches": 17,
-        "wr": 0.47
-      },
-      "rally": {
-        "ci_high": 0.77,
-        "ci_low": 0.32,
-        "matches": 20,
-        "wr": 0.55
-      },
-      "tron": {
-        "ci_high": 0.78,
-        "ci_low": 0.04,
-        "matches": 6,
-        "wr": 0.33
-      },
-      "turbo-fog": {
-        "ci_high": 1.0,
-        "ci_low": 0.29,
-        "matches": 3,
-        "wr": 1.0
-      },
-      "white-weenie": {
-        "ci_high": 0.81,
-        "ci_low": 0.36,
-        "matches": 20,
         "wr": 0.6
       }
     },
@@ -1664,6 +1632,12 @@
         "ci_low": 0.24,
         "matches": 35,
         "wr": 0.4
+      },
+      "cycle-storm": {
+        "ci_high": 0.67,
+        "ci_low": 0.18,
+        "matches": 17,
+        "wr": 0.41
       },
       "caw-gates": {
         "ci_high": 0.54,
@@ -1756,6 +1730,238 @@
         "wr": 0.33
       }
     },
+    "ramp": {
+      "affinity": {
+        "ci_high": 0.59,
+        "ci_low": 0.4,
+        "matches": 109,
+        "wr": 0.5
+      },
+      "black-sacrifice": {
+        "ci_high": 0.58,
+        "ci_low": 0.27,
+        "matches": 43,
+        "wr": 0.42
+      },
+      "bogles": {
+        "ci_high": 0.39,
+        "ci_low": 0.11,
+        "matches": 39,
+        "wr": 0.23
+      },
+      "cycle-storm": {
+        "ci_high": 0.43,
+        "ci_low": 0.02,
+        "matches": 14,
+        "wr": 0.14
+      },
+      "caw-gates": {
+        "ci_high": 0.69,
+        "ci_low": 0.45,
+        "matches": 68,
+        "wr": 0.57
+      },
+      "delver": {
+        "ci_high": 0.54,
+        "ci_low": 0.38,
+        "matches": 158,
+        "wr": 0.46
+      },
+      "elves": {
+        "ci_high": 0.46,
+        "ci_low": 0.3,
+        "matches": 144,
+        "wr": 0.38
+      },
+      "ephemerate": {
+        "ci_high": 0.86,
+        "ci_low": 0.38,
+        "matches": 17,
+        "wr": 0.65
+      },
+      "faeries": {
+        "ci_high": 0.78,
+        "ci_low": 0.54,
+        "matches": 66,
+        "wr": 0.67
+      },
+      "familiars": {
+        "ci_high": 0.87,
+        "ci_low": 0.56,
+        "matches": 34,
+        "wr": 0.74
+      },
+      "gardens": {
+        "ci_high": 0.82,
+        "ci_low": 0.58,
+        "matches": 59,
+        "wr": 0.71
+      },
+      "glintblade": {
+        "ci_high": 0.75,
+        "ci_low": 0.35,
+        "matches": 27,
+        "wr": 0.56
+      },
+      "madness-burn": {
+        "ci_high": 0.69,
+        "ci_low": 0.47,
+        "matches": 89,
+        "wr": 0.58
+      },
+      "pizza": {
+        "ci_high": 0.9,
+        "ci_low": 0.18,
+        "matches": 7,
+        "wr": 0.57
+      },
+      "rally": {
+        "ci_high": 0.72,
+        "ci_low": 0.52,
+        "matches": 104,
+        "wr": 0.63
+      },
+      "skred": {
+        "ci_high": 0.77,
+        "ci_low": 0.28,
+        "matches": 17,
+        "wr": 0.53
+      },
+      "tron": {
+        "ci_high": 0.77,
+        "ci_low": 0.37,
+        "matches": 26,
+        "wr": 0.58
+      },
+      "turbo-fog": {
+        "ci_high": 0.85,
+        "ci_low": 0.05,
+        "matches": 5,
+        "wr": 0.4
+      },
+      "white-weenie": {
+        "ci_high": 0.68,
+        "ci_low": 0.46,
+        "matches": 84,
+        "wr": 0.57
+      }
+    },
+    "skred": {
+      "affinity": {
+        "ci_high": 0.76,
+        "ci_low": 0.42,
+        "matches": 35,
+        "wr": 0.6
+      },
+      "black-sacrifice": {
+        "ci_high": 0.57,
+        "ci_low": 0.05,
+        "matches": 12,
+        "wr": 0.25
+      },
+      "bogles": {
+        "ci_high": 0.64,
+        "ci_low": 0.0,
+        "matches": 6,
+        "wr": 0.17
+      },
+      "cycle-storm": {
+        "ci_high": 0.99,
+        "ci_low": 0.19,
+        "matches": 4,
+        "wr": 0.75
+      },
+      "caw-gates": {
+        "ci_high": 0.55,
+        "ci_low": 0.08,
+        "matches": 15,
+        "wr": 0.27
+      },
+      "delver": {
+        "ci_high": 0.62,
+        "ci_low": 0.27,
+        "matches": 34,
+        "wr": 0.44
+      },
+      "elves": {
+        "ci_high": 0.97,
+        "ci_low": 0.6,
+        "matches": 19,
+        "wr": 0.84
+      },
+      "ephemerate": {
+        "ci_high": 0.58,
+        "ci_low": 0.0,
+        "matches": 7,
+        "wr": 0.14
+      },
+      "faeries": {
+        "ci_high": 0.74,
+        "ci_low": 0.12,
+        "matches": 10,
+        "wr": 0.4
+      },
+      "familiars": {
+        "ci_high": 0.84,
+        "ci_low": 0.16,
+        "matches": 8,
+        "wr": 0.5
+      },
+      "gardens": {
+        "ci_high": 0.58,
+        "ci_low": 0.08,
+        "matches": 14,
+        "wr": 0.29
+      },
+      "glintblade": {
+        "ci_high": 0.95,
+        "ci_low": 0.15,
+        "matches": 5,
+        "wr": 0.6
+      },
+      "madness-burn": {
+        "ci_high": 0.67,
+        "ci_low": 0.26,
+        "matches": 24,
+        "wr": 0.46
+      },
+      "pizza": {
+        "ci_high": 0.99,
+        "ci_low": 0.01,
+        "matches": 2,
+        "wr": 0.5
+      },
+      "rally": {
+        "ci_high": 0.77,
+        "ci_low": 0.32,
+        "matches": 20,
+        "wr": 0.55
+      },
+      "ramp": {
+        "ci_high": 0.72,
+        "ci_low": 0.23,
+        "matches": 17,
+        "wr": 0.47
+      },
+      "tron": {
+        "ci_high": 0.78,
+        "ci_low": 0.04,
+        "matches": 6,
+        "wr": 0.33
+      },
+      "turbo-fog": {
+        "ci_high": 1.0,
+        "ci_low": 0.29,
+        "matches": 3,
+        "wr": 1.0
+      },
+      "white-weenie": {
+        "ci_high": 0.81,
+        "ci_low": 0.36,
+        "matches": 20,
+        "wr": 0.6
+      }
+    },
     "tron": {
       "affinity": {
         "ci_high": 0.93,
@@ -1774,6 +1980,12 @@
         "ci_low": 0.03,
         "matches": 10,
         "wr": 0.2
+      },
+      "cycle-storm": {
+        "ci_high": 0.32,
+        "ci_low": 0.0,
+        "matches": 15,
+        "wr": 0.07
       },
       "caw-gates": {
         "ci_high": 0.93,
@@ -1835,6 +2047,12 @@
         "matches": 4,
         "wr": 0.5
       },
+      "rally": {
+        "ci_high": 0.88,
+        "ci_low": 0.54,
+        "matches": 30,
+        "wr": 0.73
+      },
       "ramp": {
         "ci_high": 0.63,
         "ci_low": 0.23,
@@ -1846,12 +2064,6 @@
         "ci_low": 0.22,
         "matches": 6,
         "wr": 0.67
-      },
-      "rally": {
-        "ci_high": 0.88,
-        "ci_low": 0.54,
-        "matches": 30,
-        "wr": 0.73
       },
       "turbo-fog": {
         "ci_high": 0.98,
@@ -1939,6 +2151,12 @@
         "matches": 16,
         "wr": 0.38
       },
+      "rally": {
+        "ci_high": 0.91,
+        "ci_low": 0.39,
+        "matches": 13,
+        "wr": 0.69
+      },
       "ramp": {
         "ci_high": 0.95,
         "ci_low": 0.15,
@@ -1950,12 +2168,6 @@
         "ci_low": 0.0,
         "matches": 3,
         "wr": 0.0
-      },
-      "rally": {
-        "ci_high": 0.91,
-        "ci_low": 0.39,
-        "matches": 13,
-        "wr": 0.69
       },
       "tron": {
         "ci_high": 1.0,
@@ -1988,6 +2200,12 @@
         "ci_low": 0.37,
         "matches": 30,
         "wr": 0.57
+      },
+      "cycle-storm": {
+        "ci_high": 0.77,
+        "ci_low": 0.23,
+        "matches": 14,
+        "wr": 0.5
       },
       "caw-gates": {
         "ci_high": 0.65,
@@ -2049,6 +2267,12 @@
         "matches": 5,
         "wr": 0.4
       },
+      "rally": {
+        "ci_high": 0.75,
+        "ci_low": 0.58,
+        "matches": 133,
+        "wr": 0.67
+      },
       "ramp": {
         "ci_high": 0.54,
         "ci_low": 0.32,
@@ -2060,12 +2284,6 @@
         "ci_low": 0.19,
         "matches": 20,
         "wr": 0.4
-      },
-      "rally": {
-        "ci_high": 0.75,
-        "ci_low": 0.58,
-        "matches": 133,
-        "wr": 0.67
       },
       "tron": {
         "ci_high": 0.45,
@@ -2082,100 +2300,101 @@
     }
   },
   "point_updates": {
+    "cycle-storm": "2026-04-26T07:25:43Z",
     "pizza": "2026-04-23T13:20:07Z",
     "tron": "2026-04-13T05:16:23Z"
   },
   "source": "https://mtgdecks.net/Pauper/winrates",
   "totals": {
     "affinity": {
-      "matches": 1604,
-      "wins": 784,
-      "wr": 0.4888
+      "matches": 1633,
+      "wins": 801,
+      "wr": 0.4905
     },
     "black-sacrifice": {
-      "matches": 617,
-      "wins": 298,
-      "wr": 0.483
+      "matches": 625,
+      "wins": 302,
+      "wr": 0.4832
     },
     "bogles": {
-      "matches": 473,
+      "matches": 477,
       "wins": 208,
-      "wr": 0.4397
+      "wr": 0.4361
     },
-    "broodscale": {
-      "matches": 0,
-      "wins": 0,
-      "wr": 0.0
+    "cycle-storm": {
+      "matches": 220,
+      "wins": 140,
+      "wr": 0.6364
     },
     "caw-gates": {
-      "matches": 850,
-      "wins": 462,
+      "matches": 863,
+      "wins": 469,
       "wr": 0.5435
     },
     "delver": {
-      "matches": 1891,
-      "wins": 847,
-      "wr": 0.4479
+      "matches": 1903,
+      "wins": 854,
+      "wr": 0.4488
     },
     "elves": {
-      "matches": 1466,
-      "wins": 853,
-      "wr": 0.5819
+      "matches": 1502,
+      "wins": 857,
+      "wr": 0.5706
     },
     "ephemerate": {
-      "matches": 251,
-      "wins": 130,
-      "wr": 0.5179
+      "matches": 253,
+      "wins": 132,
+      "wr": 0.5217
     },
     "faeries": {
-      "matches": 790,
-      "wins": 381,
-      "wr": 0.4823
+      "matches": 801,
+      "wins": 388,
+      "wr": 0.4844
     },
     "familiars": {
-      "matches": 625,
+      "matches": 632,
       "wins": 287,
-      "wr": 0.4592
+      "wr": 0.4541
     },
     "gardens": {
-      "matches": 662,
-      "wins": 308,
-      "wr": 0.4653
+      "matches": 670,
+      "wins": 313,
+      "wr": 0.4672
     },
     "glintblade": {
-      "matches": 367,
-      "wins": 186,
-      "wr": 0.5068
+      "matches": 375,
+      "wins": 188,
+      "wr": 0.5013
     },
     "madness-burn": {
-      "matches": 1260,
-      "wins": 585,
-      "wr": 0.4643
+      "matches": 1277,
+      "wins": 590,
+      "wr": 0.462
     },
     "pizza": {
-      "matches": 82,
+      "matches": 83,
       "wins": 48,
-      "wr": 0.5854
-    },
-    "ramp": {
-      "matches": 1096,
-      "wins": 581,
-      "wr": 0.5301
-    },
-    "skred": {
-      "matches": 257,
-      "wins": 124,
-      "wr": 0.4825
+      "wr": 0.5783
     },
     "rally": {
-      "matches": 1469,
-      "wins": 748,
-      "wr": 0.5092
+      "matches": 1486,
+      "wins": 755,
+      "wr": 0.5081
+    },
+    "ramp": {
+      "matches": 1110,
+      "wins": 583,
+      "wr": 0.5252
+    },
+    "skred": {
+      "matches": 261,
+      "wins": 127,
+      "wr": 0.4866
     },
     "tron": {
-      "matches": 321,
-      "wins": 191,
-      "wr": 0.595
+      "matches": 336,
+      "wins": 192,
+      "wr": 0.5714
     },
     "turbo-fog": {
       "matches": 125,
@@ -2183,9 +2402,9 @@
       "wr": 0.528
     },
     "white-weenie": {
-      "matches": 1054,
-      "wins": 546,
-      "wr": 0.518
+      "matches": 1068,
+      "wins": 553,
+      "wr": 0.5178
     }
   }
 }

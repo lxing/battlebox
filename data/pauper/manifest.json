@@ -127,19 +127,28 @@
       "text": ""
     },
     {
-      "id": "broodscale",
+      "id": "cycle-storm",
       "types": [
+        "engine",
         "finisher"
       ],
       "cards": [
         [
-          "Basking Broodscale"
+          "Drannith Stinger",
+          "Drannith Healer"
         ],
         [
-          "Sadistic Glee"
+          "Street Wraith",
+          "Monstrous Carabid",
+          "Imposing Vantasaur",
+          "Horror of the Broken Lands",
+          "Barren Moor"
         ],
         [
-          "Nadier's Nightblade"
+          "Songs of the Damned",
+          "Dark Ritual",
+          "Cabal Ritual",
+          "Reaping the Graves"
         ]
       ],
       "text": ""
