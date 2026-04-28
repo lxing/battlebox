@@ -1,4 +1,4 @@
-Cycle through half your deck, turn the graveyard into mana, and finish with repeated drains from [[Drannith Stinger]] or a giant recursive threat. This is one of the least fair things in the Pauper box, but it asks for careful sequencing every turn.
+Cycle Storm is a graveyard-fueled ritual deck that churns through cyclers, converts the yard into mana with [[Songs of the Damned]], and wins by looping value until [[Drannith Stinger]] drains the opponent out. It is one of the most intricate combo decks in the Pauper box, rewarding careful sequencing, resource counting, and patience.
 
 ### Early game
 Prioritize setting up your mana and stocking the graveyard. Free or cheap cyclers like [[Street Wraith]], [[Monstrous Carabid]], [[Imposing Vantasaur]], and [[Barren Moor]] are your fuel, while [[Lotus Petal]], [[Dark Ritual]], and [[Cabal Ritual]] let you convert that setup into a combo turn very quickly.

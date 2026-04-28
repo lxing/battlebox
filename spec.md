@@ -4,19 +4,25 @@
 A reference website for Magic: The Gathering battleboxes. Provides decklists, sideboard guides, and primers for quick pickup play.
 
 ## Scope
-- 3 battleboxes: Pauper, Premodern, Bloomburrow Tribal
+- 5 battleboxes: Bloomburrow, Pauper, Premodern, Shared, and Cube
 - Bloomburrow: 11 decks (no sideboards)
-- Pauper/Premodern: 15 decks each (with sideboards)
+- Pauper: 20 decks (with sideboards and matchup guides)
+- Premodern: 20 decks (with sideboards and matchup guides)
+- Shared: 2 shared-library variants
+- Cube: 6 cube configurations with in-app draft support
 
 ## Features
 - **Decklist view** with card images (via Scryfall)
 - **Sideboard guides** against other decks in the battlebox
 - **Deck primer** covering playstyle and key combos
 - **Card hover preview** for inline card references
-- **Offline support** via PWA, heavily cached
+- **Winrate matrix** for supported battleboxes
+- **Combo library** for supported battleboxes
+- **Remote draft rooms** for cube play
+- **Aggressive static caching** for built JSON and frontend assets
 
 ## Tech Stack
-- Go backend (single binary, embedded static files)
+- Go backend (single binary serving `static/` plus runtime APIs)
 - Hosted on fly.io
 - Static-first, aggressive caching
 - Build script combines data + markdown into JSON for serving

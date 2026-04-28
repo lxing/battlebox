@@ -26,7 +26,7 @@ At runtime, the browser loads `index.json` plus battlebox-specific payloads, the
 - `data/<battlebox>/manifest.json`: Battlebox metadata and UI policy.
 - `data/<battlebox>/printings.json`: Battlebox printings overrides.
 - `data/<battlebox>/banned.json`: Optional banned list used for UI tags.
-- `data/<battlebox>/mtgdecks-winrate-matrix.json`: Optional matrix source copied to static output.
+- `data/<battlebox>/mtgdecks-winrate-matrix.json`: Optional matrix source mirrored to frontend winrate output.
 
 Battlebox manifest supports:
 - Display metadata (`name`, `description`).
@@ -66,7 +66,7 @@ Core flow in `internal/buildtool/Main()`:
    - Enrich cards with type bucket, mana cost/value, double-faced flag.
    - Build per-battlebox output payload.
 6. Write `static/data/<battlebox>.json` plus gzip sidecar.
-7. Optionally mirror matrix JSON to `static/data/<battlebox>/mtgdecks-winrate-matrix.json` plus gzip.
+7. Optionally mirror matrix JSON to `static/data/<battlebox>/winrate.json` plus gzip.
 8. Rebuild `static/data/index.json` (always when build is not skipped), attach `build_id`, and write gzip sidecar.
 9. Persist incremental stamp to `tmp/build-stamps.json`.
 
@@ -116,6 +116,9 @@ Server entrypoint: `server/main.go`.
 - `GET/PUT /api/source-guide?bb=<slug>&deck=<slug>&opponent=<slug>`
   - Reads/writes structured matchup guide source files in `data/.../_<opponent>.json`.
   - Returns parsed guide JSON shape used by the editor UI.
+- `GET/PUT /api/source-primer?bb=<slug>&deck=<slug>`
+  - Reads/writes raw primer markdown in `data/.../primer.md`.
+  - Used by the dev-only source editor UI.
 - Draft subsystem:
   - `GET/POST /api/draft/rooms`
   - `GET /api/draft/lobby/events` (SSE)
@@ -165,12 +168,13 @@ Main frontend modules:
 Frontend data-loading behavior:
 - Loads `/data/index.json` first.
 - Loads `/data/<battlebox>.json` on demand.
-- Loads `/data/<battlebox>/mtgdecks-winrate-matrix.json` on demand.
+- Loads `/data/<battlebox>/winrate.json` on demand.
 - Appends cache-busting query param based on `build_id` from index.
 - Prefers `.gz` payload fetch + browser `DecompressionStream` fallback to plain JSON.
 
 Guide editing behavior:
-- Uses `/api/source-guide` to fetch and save raw matchup markdown.
+- Uses `/api/source-guide` to fetch and save structured matchup guide JSON.
+- Uses `/api/source-primer` to fetch and save raw primer markdown.
 - Saves to source files under `data/`, then forces reload.
 
 ## Deployment and Local Dev
