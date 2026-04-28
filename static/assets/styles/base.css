@@ -11,10 +11,10 @@
   --decklist-label-font-size: 0.75rem;
   --decklist-label-padding-left: calc(2ch + 0.05rem);
 
-  --color-black: #000;
-  --color-surface: #1f1f35;
-  --color-white: #fff;
-  --color-gray: #888;
+  --color-black: #0e141b;
+  --color-surface: #1d2833;
+  --color-white: #edf3f8;
+  --color-gray: #8ea0b2;
   --color-blue: #396eb8;
   --color-red: #c84d4d;
   --color-light-green: #63a96a;
@@ -23,8 +23,8 @@
   --color-purple: #7f59b4;
   --color-orange: #d97a1b;
   --color-transparent: transparent;
-  --color-overlay: rgba(0, 0, 0, 0.68);
-  --color-shadow: rgba(0, 0, 0, 0.5);
+  --color-overlay: rgba(8, 13, 18, 0.76);
+  --color-shadow: rgba(5, 9, 13, 0.42);
 
   --z-preview: 2000;
   --z-qr-overlay: 2300;
@@ -186,6 +186,9 @@ input[type='reset'] {
   color: var(--color-white);
   border: 1px solid var(--color-gray);
   border-radius: var(--radius-md);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.05),
+    0 1px 0 rgba(0, 0, 0, 0.16);
   font-size: var(--font-size-sm);
   cursor: pointer;
   text-decoration: none;
@@ -212,6 +215,11 @@ input[type='reset'] {
   outline: none;
 }
 
+.action-button:hover:not(:disabled),
+.static-button:hover:not(:disabled) {
+  border-color: var(--color-white);
+}
+
 .back {
   display: inline-block;
   color: var(--color-gray);
@@ -233,6 +241,7 @@ h1 {
   border-bottom: 1px solid var(--color-gray);
   padding-bottom: 0.35rem;
   gap: 0.4rem;
+  color: var(--color-white);
 }
 
 h2 {
