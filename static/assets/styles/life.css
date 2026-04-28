@@ -69,7 +69,7 @@
   position: absolute;
   z-index: 5;
   right: var(--token-edge-inset);
-  bottom: var(--token-edge-inset);
+  bottom: calc(var(--token-edge-inset) + var(--token-toggle-size) + var(--token-toggle-gap));
 }
 
 .life-token-menu-button {
@@ -157,7 +157,7 @@
 .life-mana-menu-button {
   position: absolute;
   right: 0;
-  bottom: calc(var(--token-toggle-size) + var(--token-toggle-gap));
+  bottom: 0;
   z-index: 3;
   width: var(--mana-toggle-size);
   min-width: var(--mana-toggle-size);

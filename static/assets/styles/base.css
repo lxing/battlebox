@@ -8,8 +8,9 @@
   --pane-gap: 0.32rem;
   --radius-md: 6px;
   --font-size-sm: 0.85rem;
+  --card-qty-width: 2ch;
   --decklist-label-font-size: 0.75rem;
-  --decklist-label-padding-left: calc(2ch + 0.05rem);
+  --decklist-label-padding-left: calc(var(--card-qty-width) * 0.5);
 
   --color-black: #000;
   --color-surface: #1f1f35;

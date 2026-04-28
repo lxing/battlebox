@@ -224,12 +224,12 @@ export function renderGuideContent(mdPlan, mdProse, guide, options = {}) {
   html += `
     <div class="guide-plan${editablePlan ? ' is-editable' : ''}">
       <div class="guide-plan-col">
-        <div class="guide-plan-title">In (${guide?.plan ? inTotal : legacyInTotal})</div>
-        <ul class="guide-plan-list">${ins.length ? renderItems(ins, 'in') : renderNone()}</ul>
+        <div class="card-group-label guide-plan-title">In (${guide?.plan ? inTotal : legacyInTotal})</div>
+        <ul class="guide-plan-list card-list">${ins.length ? renderItems(ins, 'in') : renderNone()}</ul>
       </div>
       <div class="guide-plan-col">
-        <div class="guide-plan-title">Out (${guide?.plan ? outTotal : legacyOutTotal})</div>
-        <ul class="guide-plan-list">${outs.length ? renderItems(outs, 'out') : renderNone()}</ul>
+        <div class="card-group-label guide-plan-title">Out (${guide?.plan ? outTotal : legacyOutTotal})</div>
+        <ul class="guide-plan-list card-list">${outs.length ? renderItems(outs, 'out') : renderNone()}</ul>
       </div>
     </div>
   `;

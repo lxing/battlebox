@@ -622,9 +622,9 @@
 
 .card-qty {
   color: var(--color-gray);
-  width: 2ch;
+  width: var(--card-qty-width);
   text-align: right;
-  flex: 0 0 2ch;
+  flex: 0 0 var(--card-qty-width);
   font-size: 0.74rem;
   line-height: 1.5;
 }
@@ -978,15 +978,7 @@ details.collapsible[open] summary::after {
 .guide-plan-col {
   background: var(--color-black);
   border-radius: var(--radius-md);
-  padding: 0.5rem 0.6rem;
-}
-
-.guide-plan-title {
-  text-transform: uppercase;
-  font-size: 0.7rem;
-  color: var(--color-gray);
-  letter-spacing: 0.04em;
-  margin-bottom: 0.25rem;
+  padding: 0.5rem 0.6rem 0.5rem 0.24rem;
 }
 
 .guide-plan-list {
@@ -996,21 +988,11 @@ details.collapsible[open] summary::after {
 }
 
 .guide-plan-list li {
-  margin: 0.25rem 0;
-  font-size: 0.74rem;
+  margin: 0;
 }
 
-.guide-plan-card-row > .card {
-  font-size: 0.74rem;
-}
-
-.guide-plan-card-row {
-  gap: 0.16rem;
-}
-
-.guide-plan-card-row > .card-qty {
-  width: 1.3ch;
-  flex: 0 0 1.3ch;
+.guide-plan-title {
+  margin-bottom: 0.16rem;
 }
 
 .guide-plan.is-editable .guide-plan-item.is-editable {
