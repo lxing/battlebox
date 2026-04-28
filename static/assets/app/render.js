@@ -200,11 +200,25 @@ export function renderGuideContent(mdPlan, mdProse, guide, options = {}) {
     return sum + (match ? Number.parseInt(match[1], 10) : 0);
   }, 0) : outTotal;
 
+  const renderGuidePlanLine = (line) => {
+    const rawLine = String(line || '').trim();
+    const match = /^(\d+)\s+\[\[([^\]]+)\]\]$/.exec(rawLine);
+    if (!match) {
+      return mdPlan.renderInline(rawLine);
+    }
+    const qty = match[1];
+    const rawRef = match[2].trim();
+    if (!rawRef) {
+      return mdPlan.renderInline(rawLine);
+    }
+    return `<div class="card-row guide-plan-card-row"><span class="card-qty">${qty}</span>${mdPlan.renderInline(`[[${rawRef}]]`)}</div>`;
+  };
+
   const renderItems = (items, zone) => items.map((item, idx) => {
     const attrs = editablePlan
       ? ` class="guide-plan-item is-editable" data-guide-zone="${zone}" data-guide-index="${idx}" data-guide-key="${escapeHtml(item.key || '')}"`
       : '';
-    return `<li${attrs}>${mdPlan.renderInline(item.line)}</li>`;
+    return `<li${attrs}>${renderGuidePlanLine(item.line)}</li>`;
   }).join('');
   const renderNone = () => `<li class="guide-plan-none">None</li>`;
   html += `

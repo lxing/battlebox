@@ -1000,6 +1000,19 @@ details.collapsible[open] summary::after {
   font-size: 0.74rem;
 }
 
+.guide-plan-card-row > .card {
+  font-size: 0.74rem;
+}
+
+.guide-plan-card-row {
+  gap: 0.16rem;
+}
+
+.guide-plan-card-row > .card-qty {
+  width: 1.3ch;
+  flex: 0 0 1.3ch;
+}
+
 .guide-plan.is-editable .guide-plan-item.is-editable {
   cursor: pointer;
   user-select: none;
