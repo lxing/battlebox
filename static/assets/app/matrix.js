@@ -52,11 +52,32 @@ export function createMatrixController({
   function maybeAutoScrollHighlightedCell() {
     if (!ui.matrixPane || ui.matrixPane.hidden) return false;
     if (!state.pendingAutoScrollKey) return false;
-    const highlightedCell = ui.matrixPane.querySelector('.matrix-cell-matchup[data-cell-key]');
-    if (!highlightedCell) return false;
+    const scrollBox = ui.matrixPane.querySelector('.matrix-scroll');
+    const highlightedCell = ui.matrixPane.querySelector('[data-cell-key]');
+    if (!scrollBox || !highlightedCell) return false;
     const cellKey = highlightedCell.dataset.cellKey || '';
     if (!cellKey || cellKey !== state.pendingAutoScrollKey) return false;
-    highlightedCell.scrollIntoView({ block: 'nearest', inline: 'nearest', behavior: 'auto' });
+
+    const scrollRect = scrollBox.getBoundingClientRect();
+    const cellRect = highlightedCell.getBoundingClientRect();
+    const stickyRowHead = ui.matrixPane.querySelector('.matrix-row-head');
+    const stickyColHead = ui.matrixPane.querySelector('.matrix-col-head');
+    const leftInset = Math.ceil(stickyRowHead?.getBoundingClientRect().width || 0) + 12;
+    const topInset = Math.ceil(stickyColHead?.getBoundingClientRect().height || 0) + 12;
+    const nextLeft = Math.max(
+      0,
+      scrollBox.scrollLeft + (cellRect.left - scrollRect.left) - leftInset,
+    );
+    const nextTop = Math.max(
+      0,
+      scrollBox.scrollTop + (cellRect.top - scrollRect.top) - topInset,
+    );
+
+    scrollBox.scrollTo({
+      left: nextLeft,
+      top: nextTop,
+      behavior: 'auto',
+    });
     state.lastAutoScrollKey = cellKey;
     state.pendingAutoScrollKey = '';
     return true;
@@ -95,10 +116,11 @@ export function createMatrixController({
 
     const normalizedSelectedDeckSlug = normalizeName(selectedDeckSlug || '');
     const normalizedSelectedMatchupSlug = normalizeName(selectedMatchupSlug || '');
+    const autoScrollColSlug = normalizedSelectedMatchupSlug || normalizedSelectedDeckSlug;
     const selectedCellKey = (
-      normalizedSelectedDeckSlug && normalizedSelectedMatchupSlug
+      normalizedSelectedDeckSlug && autoScrollColSlug
     )
-      ? `${battlebox.slug}:${normalizedSelectedDeckSlug}:${normalizedSelectedMatchupSlug}`
+      ? `${battlebox.slug}:${normalizedSelectedDeckSlug}:${autoScrollColSlug}`
       : '';
     const colHeadHtml = orderedDecks.map((deck) => {
       const colSlug = normalizeName(deck.slug);
@@ -129,6 +151,12 @@ export function createMatrixController({
 
       const cellHtml = orderedDecks.map((colDeck) => {
         const colSlug = normalizeName(colDeck.slug);
+        const isAutoScrollCell = (
+          normalizedSelectedDeckSlug &&
+          autoScrollColSlug &&
+          rowSlug === normalizedSelectedDeckSlug &&
+          colSlug === autoScrollColSlug
+        );
         const isSelectedMatchupCell = (
           normalizedSelectedDeckSlug &&
           normalizedSelectedMatchupSlug &&
@@ -144,7 +172,7 @@ export function createMatrixController({
             isMatchupCol ? 'matrix-cell-col-matchup' : '',
             isSelectedMatchupCell ? 'matrix-cell-matchup' : '',
           ].filter(Boolean).join(' ');
-          const selectedCellAttr = isSelectedMatchupCell ? ` data-cell-key="${selectedCellKey}"` : '';
+          const selectedCellAttr = isAutoScrollCell ? ` data-cell-key="${selectedCellKey}"` : '';
           return `<td class="${cellClass}"${selectedCellAttr}>-</td>`;
         }
         const matches = Number.isFinite(result.matches) ? result.matches : 0;
@@ -158,7 +186,7 @@ export function createMatrixController({
           isMatchupCol ? 'matrix-cell-col-matchup' : '',
           isSelectedMatchupCell ? 'matrix-cell-matchup' : '',
         ].filter(Boolean).join(' ');
-        const selectedCellAttr = isSelectedMatchupCell ? ` data-cell-key="${selectedCellKey}"` : '';
+        const selectedCellAttr = isAutoScrollCell ? ` data-cell-key="${selectedCellKey}"` : '';
         return `
           <td class="${cellClass}" title="${title}"${selectedCellAttr}>
             <div class="matrix-cell-main">${percent}%</div>
@@ -202,6 +230,9 @@ export function createMatrixController({
     if (state.lastAutoScrollKey !== selectedCellKey) {
       state.pendingAutoScrollKey = selectedCellKey;
       maybeAutoScrollHighlightedCell();
+      requestAnimationFrame(() => {
+        maybeAutoScrollHighlightedCell();
+      });
     }
   }
 
