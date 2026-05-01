@@ -1401,7 +1401,6 @@ async function renderDeck(bbSlug, deckSlug, selectedGuide, sortMode, sortDirecti
       <summary class="panel-title">Decklist</summary>
       <div class="collapsible-body">
         <div id="decklist-body">
-          ${renderDecklistGrid(deckView)}
         </div>
         ${showDeckToolbar ? `
           <div class="decklist-toolbar">

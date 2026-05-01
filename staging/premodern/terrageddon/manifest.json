@@ -1,0 +1,151 @@
+{
+  "name": "TerraGeddon",
+  "source_url": "https://www.mtggoldfish.com/deck/7759950",
+  "colors": "wurg",
+  "tags": [
+    "aggro"
+  ],
+  "cards": [
+    {
+      "name": "Anurid Brushhopper",
+      "qty": 1
+    },
+    {
+      "name": "Armageddon",
+      "qty": 4
+    },
+    {
+      "name": "Battlefield Forge",
+      "qty": 1
+    },
+    {
+      "name": "Call of the Herd",
+      "qty": 3
+    },
+    {
+      "name": "City of Traitors",
+      "qty": 1
+    },
+    {
+      "name": "Disenchant",
+      "qty": 1
+    },
+    {
+      "name": "Fire // Ice",
+      "qty": 2
+    },
+    {
+      "name": "Forest",
+      "qty": 2
+    },
+    {
+      "name": "Gemstone Mine",
+      "qty": 4
+    },
+    {
+      "name": "Karplusan Forest",
+      "qty": 1
+    },
+    {
+      "name": "Mox Diamond",
+      "qty": 4
+    },
+    {
+      "name": "Naturalize",
+      "qty": 1
+    },
+    {
+      "name": "Nimble Mongoose",
+      "qty": 3
+    },
+    {
+      "name": "Plains",
+      "qty": 2
+    },
+    {
+      "name": "Rishadan Port",
+      "qty": 2
+    },
+    {
+      "name": "Rith's Grove",
+      "qty": 1
+    },
+    {
+      "name": "Swords to Plowshares",
+      "qty": 4
+    },
+    {
+      "name": "Sylvan Library",
+      "qty": 4
+    },
+    {
+      "name": "Terravore",
+      "qty": 4
+    },
+    {
+      "name": "Tranquil Thicket",
+      "qty": 1
+    },
+    {
+      "name": "Treetop Village",
+      "qty": 2
+    },
+    {
+      "name": "Treva's Ruins",
+      "qty": 1
+    },
+    {
+      "name": "Wasteland",
+      "qty": 4
+    },
+    {
+      "name": "Weathered Wayfarer",
+      "qty": 3
+    },
+    {
+      "name": "Windswept Heath",
+      "qty": 4
+    }
+  ],
+  "sideboard": [
+    {
+      "name": "Aura of Silence",
+      "qty": 1
+    },
+    {
+      "name": "Cursed Totem",
+      "qty": 1
+    },
+    {
+      "name": "Meddling Mage",
+      "qty": 4
+    },
+    {
+      "name": "Pyroblast",
+      "qty": 1
+    },
+    {
+      "name": "Pyroclasm",
+      "qty": 3
+    },
+    {
+      "name": "Ray of Revelation",
+      "qty": 1
+    },
+    {
+      "name": "Red Elemental Blast",
+      "qty": 1
+    },
+    {
+      "name": "Tormod's Crypt",
+      "qty": 1
+    },
+    {
+      "name": "Zuran Orb",
+      "qty": 2
+    }
+  ],
+  "difficulty_tags": [
+    "intermediate"
+  ]
+}

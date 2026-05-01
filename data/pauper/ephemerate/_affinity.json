@@ -2,11 +2,13 @@
   "status": "plan",
   "plan": {
     "in": {
-      "Cast into the Fire": 2
+      "Annul": 1,
+      "Cast into the Fire": 2,
+      "Ethereal Haze": 1
     },
     "out": {
-      "Dawnbringer Cleric": 1,
-      "Lightning Bolt": 1
+      "Dispel": 2,
+      "Lightning Bolt": 2
     }
   }
 }

@@ -1,7 +1,11 @@
 {
-  "status": "todo",
+  "status": "plan",
   "plan": {
-    "in": {},
-    "out": {}
+    "in": {
+      "Annul": 2
+    },
+    "out": {
+      "Skred": 2
+    }
   }
 }

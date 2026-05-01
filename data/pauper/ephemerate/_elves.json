@@ -2,15 +2,13 @@
   "status": "plan",
   "plan": {
     "in": {
-      "Breath Weapon": 1,
       "Cast into the Fire": 2,
-      "Standard Bearer": 2,
+      "Ethereal Haze": 1,
       "Stonehorn Dignitary": 1
     },
     "out": {
-      "Counterspell": 3,
-      "Dawnbringer Cleric": 1,
-      "Murmuring Mystic": 1,
+      "Counterspell": 1,
+      "Dispel": 2,
       "Union of the Third Path": 1
     }
   }

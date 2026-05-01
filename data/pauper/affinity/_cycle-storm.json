@@ -1,7 +1,13 @@
 {
-  "status": "todo",
+  "status": "plan",
   "plan": {
-    "in": {},
-    "out": {}
+    "in": {
+      "Cast into the Fire": 1,
+      "Unexpected Fangs": 1
+    },
+    "out": {
+      "Sewer-veillance Cam": 1,
+      "Toxin Analysis": 1
+    }
   }
 }

@@ -1,7 +1,11 @@
 {
-  "status": "todo",
+  "status": "plan",
   "plan": {
-    "in": {},
-    "out": {}
+    "in": {
+      "Breath Weapon": 1
+    },
+    "out": {
+      "Guardian of the Guildpact": 1
+    }
   }
 }

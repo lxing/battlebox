@@ -1,7 +1,12 @@
 {
-  "status": "todo",
+  "status": "plan",
   "plan": {
-    "in": {},
-    "out": {}
+    "in": {
+      "Relic of Progenitus": 1,
+      "Weather the Storm": 2
+    },
+    "out": {
+      "Ram Through": 3
+    }
   }
 }

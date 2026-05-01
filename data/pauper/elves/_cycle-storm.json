@@ -1,7 +1,12 @@
 {
-  "status": "todo",
+  "status": "plan",
   "plan": {
-    "in": {},
-    "out": {}
+    "in": {
+      "Heritage Reclamation": 3
+    },
+    "out": {
+      "Lead the Stampede": 1,
+      "Masked Vandal": 2
+    }
   }
 }

@@ -3,15 +3,12 @@
   "plan": {
     "in": {
       "Annul": 1,
-      "Breath Weapon": 1,
-      "Standard Bearer": 2,
-      "Stonehorn Dignitary": 1,
-      "Union of the Third Path": 1
+      "Ethereal Haze": 1,
+      "Stonehorn Dignitary": 1
     },
     "out": {
-      "Cast into the Fire": 1,
       "Lightning Bolt": 2,
-      "Skred": 3
+      "Skred": 1
     }
   }
 }

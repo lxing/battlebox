@@ -1,7 +1,13 @@
 {
-  "status": "todo",
+  "status": "plan",
   "plan": {
-    "in": {},
-    "out": {}
+    "in": {
+      "Annul": 1,
+      "Envelop": 1
+    },
+    "out": {
+      "Ethereal Haze": 1,
+      "Late to Dinner": 1
+    }
   }
 }

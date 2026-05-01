@@ -1,7 +1,15 @@
 {
-  "status": "todo",
+  "status": "plan",
   "plan": {
-    "in": {},
-    "out": {}
+    "in": {
+      "Duress": 4,
+      "Thraben Charm": 1
+    },
+    "out": {
+      "Anchovy \u0026 Banana Pizza": 1,
+      "Cast Down": 1,
+      "Suffocating Fumes": 1,
+      "Tithing Blade / Consuming Sepulcher": 2
+    }
   }
 }

@@ -1,0 +1,139 @@
+{
+  "name": "UG Madness",
+  "source_url": "https://www.mtggoldfish.com/deck/7757852",
+  "colors": "ug",
+  "tags": [
+    "tempo"
+  ],
+  "cards": [
+    {
+      "name": "Anger",
+      "qty": 1
+    },
+    {
+      "name": "Arrogant Wurm",
+      "qty": 2
+    },
+    {
+      "name": "Basking Rootwalla",
+      "qty": 4
+    },
+    {
+      "name": "Careful Study",
+      "qty": 4
+    },
+    {
+      "name": "Counterspell",
+      "qty": 2
+    },
+    {
+      "name": "Daze",
+      "qty": 2
+    },
+    {
+      "name": "Forest",
+      "qty": 2
+    },
+    {
+      "name": "Frantic Search",
+      "qty": 1
+    },
+    {
+      "name": "Gaea's Cradle",
+      "qty": 1
+    },
+    {
+      "name": "Gilded Drake",
+      "qty": 1
+    },
+    {
+      "name": "Intuition",
+      "qty": 1
+    },
+    {
+      "name": "Island",
+      "qty": 7
+    },
+    {
+      "name": "Lightning Bolt",
+      "qty": 4
+    },
+    {
+      "name": "Mountain",
+      "qty": 2
+    },
+    {
+      "name": "Roar of the Wurm",
+      "qty": 2
+    },
+    {
+      "name": "Squee, Goblin Nabob",
+      "qty": 4
+    },
+    {
+      "name": "Survival of the Fittest",
+      "qty": 4
+    },
+    {
+      "name": "Waterfront Bouncer",
+      "qty": 1
+    },
+    {
+      "name": "Wasteland",
+      "qty": 2
+    },
+    {
+      "name": "Wild Mongrel",
+      "qty": 4
+    },
+    {
+      "name": "Wonder",
+      "qty": 1
+    },
+    {
+      "name": "Wooded Foothills",
+      "qty": 4
+    },
+    {
+      "name": "Yavimaya Coast",
+      "qty": 4
+    }
+  ],
+  "sideboard": [
+    {
+      "name": "Blue Elemental Blast",
+      "qty": 2
+    },
+    {
+      "name": "Gaea's Blessing",
+      "qty": 1
+    },
+    {
+      "name": "Hydroblast",
+      "qty": 1
+    },
+    {
+      "name": "Naturalize",
+      "qty": 2
+    },
+    {
+      "name": "Pyroclasm",
+      "qty": 4
+    },
+    {
+      "name": "Reverent Silence",
+      "qty": 2
+    },
+    {
+      "name": "Tormod's Crypt",
+      "qty": 2
+    },
+    {
+      "name": "Tranquil Domain",
+      "qty": 1
+    }
+  ],
+  "difficulty_tags": [
+    "intermediate"
+  ]
+}

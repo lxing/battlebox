@@ -1,7 +1,14 @@
 {
-  "status": "todo",
+  "status": "plan",
   "plan": {
-    "in": {},
-    "out": {}
+    "in": {
+      "Envelop": 1,
+      "Ethereal Haze": 1,
+      "Stonehorn Dignitary": 1
+    },
+    "out": {
+      "Brainstorm": 1,
+      "Lightning Bolt": 2
+    }
   }
 }

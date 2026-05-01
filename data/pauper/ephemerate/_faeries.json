@@ -1,7 +1,11 @@
 {
-  "status": "todo",
+  "status": "plan",
   "plan": {
-    "in": {},
-    "out": {}
+    "in": {
+      "Pyroblast": 3
+    },
+    "out": {
+      "Counterspell": 3
+    }
   }
 }

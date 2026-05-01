@@ -1,7 +1,14 @@
 {
-  "status": "todo",
+  "status": "plan",
   "plan": {
-    "in": {},
-    "out": {}
+    "in": {
+      "Annul": 2,
+      "Dispel": 1,
+      "Gut Shot": 1
+    },
+    "out": {
+      "Deem Inferior": 2,
+      "Sleep of the Dead": 2
+    }
   }
 }
