@@ -9,10 +9,18 @@ At runtime, the browser loads `index.json` plus battlebox-specific payloads, the
 - `data/`: Source of truth for battleboxes and decks.
 - `internal/buildtool/`: Build pipeline implementation.
 - `scripts/build.go`: Build entrypoint (`go run scripts/build.go`).
+- `pyproject.toml`: `uv`-managed Python helper dependencies.
 - `server/`: HTTP server and draft subsystem.
 - `static/`: Frontend assets plus generated JSON outputs.
 - `tmp/build-stamps.json`: Incremental build stamp cache.
 - `.card-types.json`: Scryfall-derived card metadata cache.
+
+## Python Tooling
+
+- Python helper scripts are managed with `uv`, not manual `venv` activation.
+- Install/sync helper dependencies with `uv sync`.
+- Run helper scripts with `uv run ...` (for example `uv run scripts/fetch_moxfield.py ...`).
+- The pinned default interpreter lives in `.python-version`.
 
 ## Data Model (Source of Truth)
 

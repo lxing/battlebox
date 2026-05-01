@@ -111,4 +111,4 @@ Guide status values:
 - `todo`: Guide not yet written
 
 ## Scripts
-- `scripts/fetch_moxfield.py`: Import decks from Moxfield URLs
+- `uv run scripts/fetch_moxfield.py`: Import decks from Moxfield URLs

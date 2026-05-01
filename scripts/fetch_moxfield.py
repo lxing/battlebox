@@ -3,10 +3,10 @@
 Fetch a Moxfield deck and emit battlebox JSON format.
 
 Usage:
-    python scripts/fetch_moxfield.py <moxfield_url> [--battlebox <name>]
+    uv run scripts/fetch_moxfield.py <moxfield_url> [--battlebox <name>]
 
 Example:
-    python scripts/fetch_moxfield.py https://moxfield.com/decks/QSifD7k--ke2T87qL1PqPg --battlebox bloomburrow
+    uv run scripts/fetch_moxfield.py https://moxfield.com/decks/QSifD7k--ke2T87qL1PqPg --battlebox bloomburrow
 """
 
 import argparse
