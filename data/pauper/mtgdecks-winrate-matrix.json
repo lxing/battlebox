@@ -3,7 +3,7 @@
   "format": "pauper",
   "matchups": {
     "affinity": {
-      "black-sacrifice": {
+      "sacrifice": {
         "ci_high": 0.76,
         "ci_low": 0.54,
         "matches": 81,
@@ -15,17 +15,17 @@
         "matches": 51,
         "wr": 0.59
       },
-      "cycle-storm": {
-        "ci_high": 0.76,
-        "ci_low": 0.39,
-        "matches": 29,
-        "wr": 0.59
-      },
       "caw-gates": {
         "ci_high": 0.53,
         "ci_low": 0.34,
         "matches": 111,
         "wr": 0.43
+      },
+      "cycle-storm": {
+        "ci_high": 0.76,
+        "ci_low": 0.39,
+        "matches": 29,
+        "wr": 0.59
       },
       "delver": {
         "ci_high": 0.6,
@@ -68,6 +68,12 @@
         "ci_low": 0.26,
         "matches": 45,
         "wr": 0.4
+      },
+      "inside-out": {
+        "ci_high": 0.64,
+        "ci_low": 0.0,
+        "matches": 6,
+        "wr": 0.17
       },
       "madness-burn": {
         "ci_high": 0.56,
@@ -118,7 +124,7 @@
         "wr": 0.42
       }
     },
-    "black-sacrifice": {
+    "sacrifice": {
       "affinity": {
         "ci_high": 0.46,
         "ci_low": 0.24,
@@ -131,17 +137,17 @@
         "matches": 14,
         "wr": 0.5
       },
-      "cycle-storm": {
-        "ci_high": 0.84,
-        "ci_low": 0.16,
-        "matches": 8,
-        "wr": 0.5
-      },
       "caw-gates": {
         "ci_high": 0.66,
         "ci_low": 0.31,
         "matches": 33,
         "wr": 0.48
+      },
+      "cycle-storm": {
+        "ci_high": 0.84,
+        "ci_low": 0.16,
+        "matches": 8,
+        "wr": 0.5
       },
       "delver": {
         "ci_high": 0.72,
@@ -184,6 +190,12 @@
         "ci_low": 0.25,
         "matches": 13,
         "wr": 0.54
+      },
+      "inside-out": {
+        "ci_high": 1.0,
+        "ci_low": 0.4,
+        "matches": 4,
+        "wr": 1.0
       },
       "madness-burn": {
         "ci_high": 0.63,
@@ -241,23 +253,23 @@
         "matches": 51,
         "wr": 0.41
       },
-      "black-sacrifice": {
+      "sacrifice": {
         "ci_high": 0.77,
         "ci_low": 0.23,
         "matches": 14,
         "wr": 0.5
-      },
-      "cycle-storm": {
-        "ci_high": 0.6,
-        "ci_low": 0.0,
-        "matches": 4,
-        "wr": 0.0
       },
       "caw-gates": {
         "ci_high": 0.38,
         "ci_low": 0.09,
         "matches": 34,
         "wr": 0.21
+      },
+      "cycle-storm": {
+        "ci_high": 0.6,
+        "ci_low": 0.0,
+        "matches": 4,
+        "wr": 0.0
       },
       "delver": {
         "ci_high": 0.41,
@@ -300,6 +312,12 @@
         "ci_low": 0.0,
         "matches": 6,
         "wr": 0.17
+      },
+      "inside-out": {
+        "ci_high": 1.0,
+        "ci_low": 0.16,
+        "matches": 2,
+        "wr": 1.0
       },
       "madness-burn": {
         "ci_high": 0.77,
@@ -350,116 +368,6 @@
         "wr": 0.43
       }
     },
-    "cycle-storm": {
-      "affinity": {
-        "ci_high": 0.61,
-        "ci_low": 0.24,
-        "matches": 29,
-        "wr": 0.41
-      },
-      "black-sacrifice": {
-        "ci_high": 0.84,
-        "ci_low": 0.16,
-        "matches": 8,
-        "wr": 0.5
-      },
-      "bogles": {
-        "ci_high": 1.0,
-        "ci_low": 0.4,
-        "matches": 4,
-        "wr": 1.0
-      },
-      "caw-gates": {
-        "ci_high": 0.75,
-        "ci_low": 0.19,
-        "matches": 13,
-        "wr": 0.46
-      },
-      "delver": {
-        "ci_high": 0.72,
-        "ci_low": 0.15,
-        "matches": 12,
-        "wr": 0.42
-      },
-      "elves": {
-        "ci_high": 0.97,
-        "ci_low": 0.74,
-        "matches": 36,
-        "wr": 0.89
-      },
-      "ephemerate": {
-        "ci_high": 0.84,
-        "ci_low": 0.0,
-        "matches": 2,
-        "wr": 0.0
-      },
-      "faeries": {
-        "ci_high": 0.69,
-        "ci_low": 0.11,
-        "matches": 11,
-        "wr": 0.36
-      },
-      "familiars": {
-        "ci_high": 1.0,
-        "ci_low": 0.59,
-        "matches": 7,
-        "wr": 1.0
-      },
-      "gardens": {
-        "ci_high": 0.76,
-        "ci_low": 0.09,
-        "matches": 8,
-        "wr": 0.38
-      },
-      "glintblade": {
-        "ci_high": 0.97,
-        "ci_low": 0.35,
-        "matches": 8,
-        "wr": 0.75
-      },
-      "madness-burn": {
-        "ci_high": 0.9,
-        "ci_low": 0.44,
-        "matches": 17,
-        "wr": 0.71
-      },
-      "pizza": {
-        "ci_high": 1.0,
-        "ci_low": 0.02,
-        "matches": 1,
-        "wr": 1.0
-      },
-      "rally": {
-        "ci_high": 0.82,
-        "ci_low": 0.33,
-        "matches": 17,
-        "wr": 0.59
-      },
-      "ramp": {
-        "ci_high": 0.98,
-        "ci_low": 0.57,
-        "matches": 14,
-        "wr": 0.86
-      },
-      "skred": {
-        "ci_high": 0.81,
-        "ci_low": 0.01,
-        "matches": 4,
-        "wr": 0.25
-      },
-      "tron": {
-        "ci_high": 1.0,
-        "ci_low": 0.68,
-        "matches": 15,
-        "wr": 0.93
-      },
-      "white-weenie": {
-        "ci_high": 0.77,
-        "ci_low": 0.23,
-        "matches": 14,
-        "wr": 0.5
-      }
-    },
     "caw-gates": {
       "affinity": {
         "ci_high": 0.66,
@@ -467,7 +375,7 @@
         "matches": 111,
         "wr": 0.57
       },
-      "black-sacrifice": {
+      "sacrifice": {
         "ci_high": 0.69,
         "ci_low": 0.34,
         "matches": 33,
@@ -527,6 +435,12 @@
         "matches": 14,
         "wr": 0.5
       },
+      "inside-out": {
+        "ci_high": 1.0,
+        "ci_low": 0.02,
+        "matches": 1,
+        "wr": 1.0
+      },
       "madness-burn": {
         "ci_high": 0.84,
         "ci_low": 0.6,
@@ -576,6 +490,122 @@
         "wr": 0.49
       }
     },
+    "cycle-storm": {
+      "affinity": {
+        "ci_high": 0.61,
+        "ci_low": 0.24,
+        "matches": 29,
+        "wr": 0.41
+      },
+      "sacrifice": {
+        "ci_high": 0.84,
+        "ci_low": 0.16,
+        "matches": 8,
+        "wr": 0.5
+      },
+      "bogles": {
+        "ci_high": 1.0,
+        "ci_low": 0.4,
+        "matches": 4,
+        "wr": 1.0
+      },
+      "caw-gates": {
+        "ci_high": 0.75,
+        "ci_low": 0.19,
+        "matches": 13,
+        "wr": 0.46
+      },
+      "delver": {
+        "ci_high": 0.72,
+        "ci_low": 0.15,
+        "matches": 12,
+        "wr": 0.42
+      },
+      "elves": {
+        "ci_high": 0.97,
+        "ci_low": 0.74,
+        "matches": 36,
+        "wr": 0.89
+      },
+      "ephemerate": {
+        "ci_high": 0.84,
+        "ci_low": 0.0,
+        "matches": 2,
+        "wr": 0.0
+      },
+      "faeries": {
+        "ci_high": 0.69,
+        "ci_low": 0.11,
+        "matches": 11,
+        "wr": 0.36
+      },
+      "familiars": {
+        "ci_high": 1.0,
+        "ci_low": 0.59,
+        "matches": 7,
+        "wr": 1.0
+      },
+      "gardens": {
+        "ci_high": 0.76,
+        "ci_low": 0.09,
+        "matches": 8,
+        "wr": 0.38
+      },
+      "glintblade": {
+        "ci_high": 0.97,
+        "ci_low": 0.35,
+        "matches": 8,
+        "wr": 0.75
+      },
+      "inside-out": {
+        "ci_high": 0.98,
+        "ci_low": 0.0,
+        "matches": 1,
+        "wr": 0.0
+      },
+      "madness-burn": {
+        "ci_high": 0.9,
+        "ci_low": 0.44,
+        "matches": 17,
+        "wr": 0.71
+      },
+      "pizza": {
+        "ci_high": 1.0,
+        "ci_low": 0.02,
+        "matches": 1,
+        "wr": 1.0
+      },
+      "rally": {
+        "ci_high": 0.82,
+        "ci_low": 0.33,
+        "matches": 17,
+        "wr": 0.59
+      },
+      "ramp": {
+        "ci_high": 0.98,
+        "ci_low": 0.57,
+        "matches": 14,
+        "wr": 0.86
+      },
+      "skred": {
+        "ci_high": 0.81,
+        "ci_low": 0.01,
+        "matches": 4,
+        "wr": 0.25
+      },
+      "tron": {
+        "ci_high": 1.0,
+        "ci_low": 0.68,
+        "matches": 15,
+        "wr": 0.93
+      },
+      "white-weenie": {
+        "ci_high": 0.77,
+        "ci_low": 0.23,
+        "matches": 14,
+        "wr": 0.5
+      }
+    },
     "delver": {
       "affinity": {
         "ci_high": 0.54,
@@ -583,7 +613,7 @@
         "matches": 232,
         "wr": 0.47
       },
-      "black-sacrifice": {
+      "sacrifice": {
         "ci_high": 0.5,
         "ci_low": 0.28,
         "matches": 78,
@@ -595,17 +625,17 @@
         "matches": 70,
         "wr": 0.71
       },
-      "cycle-storm": {
-        "ci_high": 0.85,
-        "ci_low": 0.28,
-        "matches": 12,
-        "wr": 0.58
-      },
       "caw-gates": {
         "ci_high": 0.47,
         "ci_low": 0.3,
         "matches": 134,
         "wr": 0.38
+      },
+      "cycle-storm": {
+        "ci_high": 0.85,
+        "ci_low": 0.28,
+        "matches": 12,
+        "wr": 0.58
       },
       "elves": {
         "ci_high": 0.36,
@@ -642,6 +672,12 @@
         "ci_low": 0.24,
         "matches": 38,
         "wr": 0.39
+      },
+      "inside-out": {
+        "ci_high": 0.82,
+        "ci_low": 0.1,
+        "matches": 7,
+        "wr": 0.43
       },
       "madness-burn": {
         "ci_high": 0.55,
@@ -699,7 +735,7 @@
         "matches": 164,
         "wr": 0.6
       },
-      "black-sacrifice": {
+      "sacrifice": {
         "ci_high": 0.57,
         "ci_low": 0.32,
         "matches": 65,
@@ -711,17 +747,17 @@
         "matches": 50,
         "wr": 0.74
       },
-      "cycle-storm": {
-        "ci_high": 0.26,
-        "ci_low": 0.03,
-        "matches": 36,
-        "wr": 0.11
-      },
       "caw-gates": {
         "ci_high": 0.69,
         "ci_low": 0.49,
         "matches": 101,
         "wr": 0.59
+      },
+      "cycle-storm": {
+        "ci_high": 0.26,
+        "ci_low": 0.03,
+        "matches": 36,
+        "wr": 0.11
       },
       "delver": {
         "ci_high": 0.76,
@@ -758,6 +794,12 @@
         "ci_low": 0.51,
         "matches": 33,
         "wr": 0.7
+      },
+      "inside-out": {
+        "ci_high": 0.91,
+        "ci_low": 0.01,
+        "matches": 3,
+        "wr": 0.33
       },
       "madness-burn": {
         "ci_high": 0.67,
@@ -815,7 +857,7 @@
         "matches": 25,
         "wr": 0.36
       },
-      "black-sacrifice": {
+      "sacrifice": {
         "ci_high": 0.86,
         "ci_low": 0.21,
         "matches": 9,
@@ -827,17 +869,17 @@
         "matches": 4,
         "wr": 0.25
       },
-      "cycle-storm": {
-        "ci_high": 1.0,
-        "ci_low": 0.16,
-        "matches": 2,
-        "wr": 1.0
-      },
       "caw-gates": {
         "ci_high": 0.93,
         "ci_low": 0.35,
         "matches": 10,
         "wr": 0.7
+      },
+      "cycle-storm": {
+        "ci_high": 1.0,
+        "ci_low": 0.16,
+        "matches": 2,
+        "wr": 1.0
       },
       "delver": {
         "ci_high": 0.73,
@@ -931,7 +973,7 @@
         "matches": 88,
         "wr": 0.42
       },
-      "black-sacrifice": {
+      "sacrifice": {
         "ci_high": 0.76,
         "ci_low": 0.42,
         "matches": 35,
@@ -943,17 +985,17 @@
         "matches": 24,
         "wr": 0.75
       },
-      "cycle-storm": {
-        "ci_high": 0.89,
-        "ci_low": 0.31,
-        "matches": 11,
-        "wr": 0.64
-      },
       "caw-gates": {
         "ci_high": 0.58,
         "ci_low": 0.23,
         "matches": 33,
         "wr": 0.39
+      },
+      "cycle-storm": {
+        "ci_high": 0.89,
+        "ci_low": 0.31,
+        "matches": 11,
+        "wr": 0.64
       },
       "delver": {
         "ci_high": 0.72,
@@ -1047,7 +1089,7 @@
         "matches": 75,
         "wr": 0.45
       },
-      "black-sacrifice": {
+      "sacrifice": {
         "ci_high": 0.76,
         "ci_low": 0.37,
         "matches": 28,
@@ -1059,17 +1101,17 @@
         "matches": 22,
         "wr": 0.41
       },
-      "cycle-storm": {
-        "ci_high": 0.41,
-        "ci_low": 0.0,
-        "matches": 7,
-        "wr": 0.0
-      },
       "caw-gates": {
         "ci_high": 0.81,
         "ci_low": 0.51,
         "matches": 40,
         "wr": 0.68
+      },
+      "cycle-storm": {
+        "ci_high": 0.41,
+        "ci_low": 0.0,
+        "matches": 7,
+        "wr": 0.0
       },
       "delver": {
         "ci_high": 0.46,
@@ -1106,6 +1148,12 @@
         "ci_low": 0.17,
         "matches": 11,
         "wr": 0.45
+      },
+      "inside-out": {
+        "ci_high": 1.0,
+        "ci_low": 0.02,
+        "matches": 1,
+        "wr": 1.0
       },
       "madness-burn": {
         "ci_high": 0.5,
@@ -1163,7 +1211,7 @@
         "matches": 75,
         "wr": 0.47
       },
-      "black-sacrifice": {
+      "sacrifice": {
         "ci_high": 0.72,
         "ci_low": 0.28,
         "matches": 22,
@@ -1175,17 +1223,17 @@
         "matches": 26,
         "wr": 0.54
       },
-      "cycle-storm": {
-        "ci_high": 0.91,
-        "ci_low": 0.24,
-        "matches": 8,
-        "wr": 0.63
-      },
       "caw-gates": {
         "ci_high": 0.61,
         "ci_low": 0.27,
         "matches": 37,
         "wr": 0.43
+      },
+      "cycle-storm": {
+        "ci_high": 0.91,
+        "ci_low": 0.24,
+        "matches": 8,
+        "wr": 0.63
       },
       "delver": {
         "ci_high": 0.61,
@@ -1222,6 +1270,12 @@
         "ci_low": 0.22,
         "matches": 21,
         "wr": 0.43
+      },
+      "inside-out": {
+        "ci_high": 0.98,
+        "ci_low": 0.0,
+        "matches": 1,
+        "wr": 0.0
       },
       "madness-burn": {
         "ci_high": 0.47,
@@ -1279,7 +1333,7 @@
         "matches": 45,
         "wr": 0.6
       },
-      "black-sacrifice": {
+      "sacrifice": {
         "ci_high": 0.75,
         "ci_low": 0.19,
         "matches": 13,
@@ -1291,17 +1345,17 @@
         "matches": 6,
         "wr": 0.83
       },
-      "cycle-storm": {
-        "ci_high": 0.65,
-        "ci_low": 0.03,
-        "matches": 8,
-        "wr": 0.25
-      },
       "caw-gates": {
         "ci_high": 0.77,
         "ci_low": 0.23,
         "matches": 14,
         "wr": 0.5
+      },
+      "cycle-storm": {
+        "ci_high": 0.65,
+        "ci_low": 0.03,
+        "matches": 8,
+        "wr": 0.25
       },
       "delver": {
         "ci_high": 0.76,
@@ -1338,6 +1392,12 @@
         "ci_low": 0.34,
         "matches": 21,
         "wr": 0.57
+      },
+      "inside-out": {
+        "ci_high": 0.84,
+        "ci_low": 0.0,
+        "matches": 2,
+        "wr": 0.0
       },
       "madness-burn": {
         "ci_high": 0.59,
@@ -1388,6 +1448,92 @@
         "wr": 0.52
       }
     },
+    "inside-out": {
+      "affinity": {
+        "ci_high": 1.0,
+        "ci_low": 0.36,
+        "matches": 6,
+        "wr": 0.83
+      },
+      "sacrifice": {
+        "ci_high": 0.6,
+        "ci_low": 0.0,
+        "matches": 4,
+        "wr": 0.0
+      },
+      "bogles": {
+        "ci_high": 0.84,
+        "ci_low": 0.0,
+        "matches": 2,
+        "wr": 0.0
+      },
+      "caw-gates": {
+        "ci_high": 0.98,
+        "ci_low": 0.0,
+        "matches": 1,
+        "wr": 0.0
+      },
+      "cycle-storm": {
+        "ci_high": 1.0,
+        "ci_low": 0.02,
+        "matches": 1,
+        "wr": 1.0
+      },
+      "delver": {
+        "ci_high": 0.9,
+        "ci_low": 0.18,
+        "matches": 7,
+        "wr": 0.57
+      },
+      "elves": {
+        "ci_high": 0.99,
+        "ci_low": 0.09,
+        "matches": 3,
+        "wr": 0.67
+      },
+      "familiars": {
+        "ci_high": 0.98,
+        "ci_low": 0.0,
+        "matches": 1,
+        "wr": 0.0
+      },
+      "gardens": {
+        "ci_high": 1.0,
+        "ci_low": 0.02,
+        "matches": 1,
+        "wr": 1.0
+      },
+      "glintblade": {
+        "ci_high": 1.0,
+        "ci_low": 0.16,
+        "matches": 2,
+        "wr": 1.0
+      },
+      "madness-burn": {
+        "ci_high": 0.71,
+        "ci_low": 0.0,
+        "matches": 3,
+        "wr": 0.0
+      },
+      "rally": {
+        "ci_high": 0.99,
+        "ci_low": 0.09,
+        "matches": 3,
+        "wr": 0.67
+      },
+      "tron": {
+        "ci_high": 1.0,
+        "ci_low": 0.16,
+        "matches": 2,
+        "wr": 1.0
+      },
+      "white-weenie": {
+        "ci_high": 1.0,
+        "ci_low": 0.29,
+        "matches": 3,
+        "wr": 1.0
+      }
+    },
     "madness-burn": {
       "affinity": {
         "ci_high": 0.61,
@@ -1395,7 +1541,7 @@
         "matches": 138,
         "wr": 0.52
       },
-      "black-sacrifice": {
+      "sacrifice": {
         "ci_high": 0.64,
         "ci_low": 0.37,
         "matches": 59,
@@ -1407,17 +1553,17 @@
         "matches": 43,
         "wr": 0.37
       },
-      "cycle-storm": {
-        "ci_high": 0.56,
-        "ci_low": 0.1,
-        "matches": 17,
-        "wr": 0.29
-      },
       "caw-gates": {
         "ci_high": 0.4,
         "ci_low": 0.16,
         "matches": 56,
         "wr": 0.27
+      },
+      "cycle-storm": {
+        "ci_high": 0.56,
+        "ci_low": 0.1,
+        "matches": 17,
+        "wr": 0.29
       },
       "delver": {
         "ci_high": 0.59,
@@ -1460,6 +1606,12 @@
         "ci_low": 0.41,
         "matches": 40,
         "wr": 0.58
+      },
+      "inside-out": {
+        "ci_high": 1.0,
+        "ci_low": 0.29,
+        "matches": 3,
+        "wr": 1.0
       },
       "pizza": {
         "ci_high": 0.6,
@@ -1511,7 +1663,7 @@
         "matches": 20,
         "wr": 0.7
       },
-      "black-sacrifice": {
+      "sacrifice": {
         "ci_high": 0.84,
         "ci_low": 0.0,
         "matches": 2,
@@ -1523,17 +1675,17 @@
         "matches": 3,
         "wr": 0.67
       },
-      "cycle-storm": {
-        "ci_high": 0.98,
-        "ci_low": 0.0,
-        "matches": 1,
-        "wr": 0.0
-      },
       "caw-gates": {
         "ci_high": 0.99,
         "ci_low": 0.01,
         "matches": 2,
         "wr": 0.5
+      },
+      "cycle-storm": {
+        "ci_high": 0.98,
+        "ci_low": 0.0,
+        "matches": 1,
+        "wr": 0.0
       },
       "delver": {
         "ci_high": 0.99,
@@ -1621,7 +1773,7 @@
         "matches": 168,
         "wr": 0.49
       },
-      "black-sacrifice": {
+      "sacrifice": {
         "ci_high": 0.68,
         "ci_low": 0.43,
         "matches": 68,
@@ -1633,17 +1785,17 @@
         "matches": 35,
         "wr": 0.4
       },
-      "cycle-storm": {
-        "ci_high": 0.67,
-        "ci_low": 0.18,
-        "matches": 17,
-        "wr": 0.41
-      },
       "caw-gates": {
         "ci_high": 0.54,
         "ci_low": 0.33,
         "matches": 90,
         "wr": 0.43
+      },
+      "cycle-storm": {
+        "ci_high": 0.67,
+        "ci_low": 0.18,
+        "matches": 17,
+        "wr": 0.41
       },
       "delver": {
         "ci_high": 0.64,
@@ -1686,6 +1838,12 @@
         "ci_low": 0.28,
         "matches": 39,
         "wr": 0.44
+      },
+      "inside-out": {
+        "ci_high": 0.91,
+        "ci_low": 0.01,
+        "matches": 3,
+        "wr": 0.33
       },
       "madness-burn": {
         "ci_high": 0.73,
@@ -1737,7 +1895,7 @@
         "matches": 109,
         "wr": 0.5
       },
-      "black-sacrifice": {
+      "sacrifice": {
         "ci_high": 0.58,
         "ci_low": 0.27,
         "matches": 43,
@@ -1749,17 +1907,17 @@
         "matches": 39,
         "wr": 0.23
       },
-      "cycle-storm": {
-        "ci_high": 0.43,
-        "ci_low": 0.02,
-        "matches": 14,
-        "wr": 0.14
-      },
       "caw-gates": {
         "ci_high": 0.69,
         "ci_low": 0.45,
         "matches": 68,
         "wr": 0.57
+      },
+      "cycle-storm": {
+        "ci_high": 0.43,
+        "ci_low": 0.02,
+        "matches": 14,
+        "wr": 0.14
       },
       "delver": {
         "ci_high": 0.54,
@@ -1853,7 +2011,7 @@
         "matches": 35,
         "wr": 0.6
       },
-      "black-sacrifice": {
+      "sacrifice": {
         "ci_high": 0.57,
         "ci_low": 0.05,
         "matches": 12,
@@ -1865,17 +2023,17 @@
         "matches": 6,
         "wr": 0.17
       },
-      "cycle-storm": {
-        "ci_high": 0.99,
-        "ci_low": 0.19,
-        "matches": 4,
-        "wr": 0.75
-      },
       "caw-gates": {
         "ci_high": 0.55,
         "ci_low": 0.08,
         "matches": 15,
         "wr": 0.27
+      },
+      "cycle-storm": {
+        "ci_high": 0.99,
+        "ci_low": 0.19,
+        "matches": 4,
+        "wr": 0.75
       },
       "delver": {
         "ci_high": 0.62,
@@ -1969,7 +2127,7 @@
         "matches": 34,
         "wr": 0.82
       },
-      "black-sacrifice": {
+      "sacrifice": {
         "ci_high": 0.76,
         "ci_low": 0.29,
         "matches": 19,
@@ -1981,17 +2139,17 @@
         "matches": 10,
         "wr": 0.2
       },
-      "cycle-storm": {
-        "ci_high": 0.32,
-        "ci_low": 0.0,
-        "matches": 15,
-        "wr": 0.07
-      },
       "caw-gates": {
         "ci_high": 0.93,
         "ci_low": 0.3,
         "matches": 9,
         "wr": 0.67
+      },
+      "cycle-storm": {
+        "ci_high": 0.32,
+        "ci_low": 0.0,
+        "matches": 15,
+        "wr": 0.07
       },
       "delver": {
         "ci_high": 0.74,
@@ -2034,6 +2192,12 @@
         "ci_low": 0.28,
         "matches": 12,
         "wr": 0.58
+      },
+      "inside-out": {
+        "ci_high": 0.84,
+        "ci_low": 0.0,
+        "matches": 2,
+        "wr": 0.0
       },
       "madness-burn": {
         "ci_high": 0.89,
@@ -2085,7 +2249,7 @@
         "matches": 19,
         "wr": 0.47
       },
-      "black-sacrifice": {
+      "sacrifice": {
         "ci_high": 0.99,
         "ci_low": 0.19,
         "matches": 4,
@@ -2189,7 +2353,7 @@
         "matches": 134,
         "wr": 0.58
       },
-      "black-sacrifice": {
+      "sacrifice": {
         "ci_high": 0.84,
         "ci_low": 0.5,
         "matches": 32,
@@ -2201,17 +2365,17 @@
         "matches": 30,
         "wr": 0.57
       },
-      "cycle-storm": {
-        "ci_high": 0.77,
-        "ci_low": 0.23,
-        "matches": 14,
-        "wr": 0.5
-      },
       "caw-gates": {
         "ci_high": 0.65,
         "ci_low": 0.37,
         "matches": 55,
         "wr": 0.51
+      },
+      "cycle-storm": {
+        "ci_high": 0.77,
+        "ci_low": 0.23,
+        "matches": 14,
+        "wr": 0.5
       },
       "delver": {
         "ci_high": 0.72,
@@ -2254,6 +2418,12 @@
         "ci_low": 0.28,
         "matches": 25,
         "wr": 0.48
+      },
+      "inside-out": {
+        "ci_high": 0.71,
+        "ci_low": 0.0,
+        "matches": 3,
+        "wr": 0.0
       },
       "madness-burn": {
         "ci_high": 0.63,
@@ -2301,45 +2471,46 @@
   },
   "point_updates": {
     "cycle-storm": "2026-04-26T07:25:43Z",
+    "inside-out": "2026-05-01T17:07:53Z",
     "pizza": "2026-04-23T13:20:07Z",
     "tron": "2026-04-13T05:16:23Z"
   },
   "source": "https://mtgdecks.net/Pauper/winrates",
   "totals": {
     "affinity": {
-      "matches": 1633,
-      "wins": 801,
-      "wr": 0.4905
+      "matches": 1639,
+      "wins": 802,
+      "wr": 0.4893
     },
-    "black-sacrifice": {
-      "matches": 625,
-      "wins": 302,
-      "wr": 0.4832
+    "sacrifice": {
+      "matches": 629,
+      "wins": 306,
+      "wr": 0.4865
     },
     "bogles": {
-      "matches": 477,
-      "wins": 208,
-      "wr": 0.4361
-    },
-    "cycle-storm": {
-      "matches": 220,
-      "wins": 140,
-      "wr": 0.6364
+      "matches": 479,
+      "wins": 210,
+      "wr": 0.4384
     },
     "caw-gates": {
-      "matches": 863,
-      "wins": 469,
-      "wr": 0.5435
+      "matches": 864,
+      "wins": 470,
+      "wr": 0.544
+    },
+    "cycle-storm": {
+      "matches": 221,
+      "wins": 140,
+      "wr": 0.6335
     },
     "delver": {
-      "matches": 1903,
-      "wins": 854,
-      "wr": 0.4488
+      "matches": 1910,
+      "wins": 857,
+      "wr": 0.4487
     },
     "elves": {
-      "matches": 1502,
-      "wins": 857,
-      "wr": 0.5706
+      "matches": 1505,
+      "wins": 858,
+      "wr": 0.5701
     },
     "ephemerate": {
       "matches": 253,
@@ -2352,24 +2523,29 @@
       "wr": 0.4844
     },
     "familiars": {
-      "matches": 632,
-      "wins": 287,
-      "wr": 0.4541
+      "matches": 633,
+      "wins": 288,
+      "wr": 0.455
     },
     "gardens": {
-      "matches": 670,
+      "matches": 671,
       "wins": 313,
-      "wr": 0.4672
+      "wr": 0.4665
     },
     "glintblade": {
-      "matches": 375,
+      "matches": 377,
       "wins": 188,
-      "wr": 0.5013
+      "wr": 0.4987
+    },
+    "inside-out": {
+      "matches": 39,
+      "wins": 22,
+      "wr": 0.5641
     },
     "madness-burn": {
-      "matches": 1277,
-      "wins": 590,
-      "wr": 0.462
+      "matches": 1280,
+      "wins": 593,
+      "wr": 0.4633
     },
     "pizza": {
       "matches": 83,
@@ -2377,9 +2553,9 @@
       "wr": 0.5783
     },
     "rally": {
-      "matches": 1486,
-      "wins": 755,
-      "wr": 0.5081
+      "matches": 1489,
+      "wins": 756,
+      "wr": 0.5077
     },
     "ramp": {
       "matches": 1110,
@@ -2392,9 +2568,9 @@
       "wr": 0.4866
     },
     "tron": {
-      "matches": 336,
+      "matches": 338,
       "wins": 192,
-      "wr": 0.5714
+      "wr": 0.568
     },
     "turbo-fog": {
       "matches": 125,
@@ -2402,9 +2578,9 @@
       "wr": 0.528
     },
     "white-weenie": {
-      "matches": 1068,
+      "matches": 1071,
       "wins": 553,
-      "wr": 0.5178
+      "wr": 0.5163
     }
   }
 }
