@@ -2,11 +2,13 @@
   "status": "plan",
   "plan": {
     "in": {
-      "Annul": 3
+      "Annul": 4,
+      "Dispel": 3
     },
     "out": {
+      "Counterspell": 4,
       "Deem Inferior": 2,
-      "Dispel": 1
+      "Mental Note": 1
     }
   }
 }

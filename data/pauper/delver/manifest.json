@@ -1,5 +1,6 @@
 {
   "name": "Delver",
+  "source_url": "https://www.mtggoldfish.com/deck/7760931",
   "sleeve_color": "Blue Bird",
   "colors": "u",
   "tags": [
@@ -20,7 +21,7 @@
     },
     {
       "name": "Deem Inferior",
-      "qty": 2
+      "qty": 3
     },
     {
       "name": "Deep Analysis",
@@ -31,12 +32,12 @@
       "qty": 4
     },
     {
-      "name": "Dispel",
-      "qty": 3
-    },
-    {
       "name": "Island",
       "qty": 16
+    },
+    {
+      "name": "Murmuring Mystic",
+      "qty": 2
     },
     {
       "name": "Lórien Revealed",
@@ -70,7 +71,7 @@
     },
     {
       "name": "Dispel",
-      "qty": 1
+      "qty": 3
     },
     {
       "name": "Gut Shot",
@@ -79,10 +80,6 @@
     {
       "name": "Hydroblast",
       "qty": 4
-    },
-    {
-      "name": "Murmuring Mystic",
-      "qty": 2
     }
   ],
   "difficulty_tags": [
