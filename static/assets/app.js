@@ -1280,7 +1280,9 @@ async function renderDeck(bbSlug, deckSlug, selectedGuide, sortMode, sortDirecti
   const hasPrimerWarnings = Array.isArray(deck.primer_warnings) && deck.primer_warnings.length > 0;
   const bannedNames = Array.isArray(bb.banned) ? bb.banned : [];
   const bannedSet = new Set(bannedNames.map(normalizeName));
-  const guideKeys = Object.keys(deck.guides || {});
+  // Keep guide data loaded, but hide the panel until we want to maintain it again.
+  const matchupGuidesEnabled = false;
+  const guideKeys = matchupGuidesEnabled ? Object.keys(deck.guides || {}) : [];
   const initialGuide = guideKeys.length
     ? (selectedGuide && guideKeys.includes(selectedGuide) ? selectedGuide : guideKeys[0])
     : '';

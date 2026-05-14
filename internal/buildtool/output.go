@@ -44,28 +44,15 @@ func buildIndexOutput(sources BuildSources, deckWarningAnnotations map[string]ma
 			}
 			cardCount := countCards(manifest.Cards)
 
-			hasEmptyGuideWarnings := false
-			hasGuideWarnings := false
-			if battleboxWarnings, ok := deckWarningAnnotations[bbSource.Slug]; ok {
-				if deckWarnings, ok := battleboxWarnings[deckSource.Slug]; ok {
-					for _, guideWarnings := range deckWarnings.Guides {
-						hasEmptyGuideWarnings = hasEmptyGuideWarnings || guideWarnings.Todo
-						hasGuideWarnings = hasGuideWarnings || guideWarnings.HasOtherWarnings()
-					}
-				}
-			}
-
 			indexEntry.Decks = append(indexEntry.Decks, DeckIndex{
-				Slug:                  deckSource.Slug,
-				Name:                  manifest.Name,
-				Icon:                  manifest.Icon,
-				Colors:                manifest.Colors,
-				Tags:                  normalizeDeckTags(manifest.Tags),
-				DifficultyTags:        normalizeDifficultyTags(manifest.DifficultyTags),
-				UI:                    uiProfile,
-				CardCount:             cardCount,
-				HasEmptyGuideWarnings: hasEmptyGuideWarnings,
-				HasGuideWarnings:      hasGuideWarnings,
+				Slug:           deckSource.Slug,
+				Name:           manifest.Name,
+				Icon:           manifest.Icon,
+				Colors:         manifest.Colors,
+				Tags:           normalizeDeckTags(manifest.Tags),
+				DifficultyTags: normalizeDifficultyTags(manifest.DifficultyTags),
+				UI:             uiProfile,
+				CardCount:      cardCount,
 			})
 		}
 
