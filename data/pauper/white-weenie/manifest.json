@@ -11,12 +11,16 @@
       "qty": 4
     },
     {
+      "name": "Boros Garrison",
+      "qty": 3
+    },
+    {
       "name": "Guardians' Pledge",
       "qty": 3
     },
     {
       "name": "Idyllic Grange",
-      "qty": 2
+      "qty": 1
     },
     {
       "name": "Kor Skyfisher",
@@ -40,7 +44,7 @@
     },
     {
       "name": "Plains",
-      "qty": 19
+      "qty": 17
     },
     {
       "name": "Prismatic Strands",

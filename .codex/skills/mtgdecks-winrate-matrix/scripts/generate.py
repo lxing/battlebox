@@ -177,6 +177,92 @@ def prune_mirror_matchups(
     return cleaned
 
 
+def coerce_cell_updates(raw_updates: object) -> Dict[str, Dict[str, str]]:
+    if not isinstance(raw_updates, dict):
+        return {}
+
+    updates: Dict[str, Dict[str, str]] = {}
+    for from_slug, row in raw_updates.items():
+        if not isinstance(from_slug, str) or not isinstance(row, dict):
+            continue
+        next_row = {
+            to_slug: timestamp
+            for to_slug, timestamp in row.items()
+            if isinstance(to_slug, str) and isinstance(timestamp, str)
+        }
+        if next_row:
+            updates[from_slug] = next_row
+    return updates
+
+
+def timestamp_all_cells(
+    matchups: Dict[str, Dict[str, Dict[str, float | int]]],
+    timestamp: str,
+) -> Dict[str, Dict[str, str]]:
+    return {
+        from_slug: {to_slug: timestamp for to_slug in row}
+        for from_slug, row in matchups.items()
+        if row
+    }
+
+
+def stamp_slug_cells(
+    cell_updates: Dict[str, Dict[str, str]],
+    matchups: Dict[str, Dict[str, Dict[str, float | int]]],
+    target_slug: str,
+    timestamp: str,
+) -> None:
+    target_row = matchups.get(target_slug, {})
+    if target_row:
+        row_updates = cell_updates.setdefault(target_slug, {})
+        for to_slug in target_row:
+            row_updates[to_slug] = timestamp
+
+    for from_slug, row in matchups.items():
+        if from_slug == target_slug:
+            continue
+        if target_slug in row:
+            cell_updates.setdefault(from_slug, {})[target_slug] = timestamp
+
+
+def prune_cell_updates(
+    cell_updates: Dict[str, Dict[str, str]],
+    matchups: Dict[str, Dict[str, Dict[str, float | int]]],
+) -> Dict[str, Dict[str, str]]:
+    pruned: Dict[str, Dict[str, str]] = {}
+    for from_slug, row in matchups.items():
+        update_row = cell_updates.get(from_slug, {})
+        next_row = {
+            to_slug: update_row[to_slug]
+            for to_slug in row
+            if to_slug in update_row
+        }
+        if next_row:
+            pruned[from_slug] = next_row
+    return pruned
+
+
+def build_existing_cell_updates(existing_payload: Dict[str, object]) -> Dict[str, Dict[str, str]]:
+    matchups = coerce_matchups(existing_payload.get("matchups"))
+    cell_updates = coerce_cell_updates(existing_payload.get("cell_updates"))
+    if cell_updates:
+        return prune_cell_updates(cell_updates, matchups)
+
+    fetched_at = existing_payload.get("fetched_at")
+    if isinstance(fetched_at, str):
+        cell_updates = timestamp_all_cells(matchups, fetched_at)
+    else:
+        cell_updates = {}
+
+    point_updates = existing_payload.get("point_updates")
+    if isinstance(point_updates, dict):
+        for slug, timestamp in point_updates.items():
+            if isinstance(slug, str) and isinstance(timestamp, str):
+                stamp_slug_cells(cell_updates, matchups, slug, timestamp)
+
+    return prune_cell_updates(cell_updates, matchups)
+
+
 def compute_totals(
     matchups: Dict[str, Dict[str, Dict[str, float | int]]],
     slugs: list[str],
@@ -274,6 +360,7 @@ def build_matrix(config: FormatConfig, fetched_at: str) -> Dict[str, object]:
         "source": source,
         "fetched_at": fetched_at,
         "matchups": matchups,
+        "cell_updates": timestamp_all_cells(matchups, fetched_at),
         "totals": totals,
     }
 
@@ -359,16 +446,25 @@ def merge_point_update(
     merged_matchups = prune_mirror_matchups(merged_matchups)
     merged_matchups = {slug: row for slug, row in merged_matchups.items() if row}
 
+    timestamp = fresh_payload.get("fetched_at")
+    if not isinstance(timestamp, str):
+        timestamp = datetime.now(timezone.utc).replace(microsecond=0).isoformat().replace("+00:00", "Z")
+    cell_updates = build_existing_cell_updates(existing_payload)
+    cell_updates = prune_cell_updates(cell_updates, merged_matchups)
+    stamp_slug_cells(cell_updates, merged_matchups, target_slug, timestamp)
+    cell_updates = prune_cell_updates(cell_updates, merged_matchups)
+
     payload = dict(existing_payload)
     payload["format"] = fresh_payload.get("format", config.name)
     payload["source"] = fresh_payload.get("source", alias_doc["source"])
     payload["matchups"] = merged_matchups
+    payload["cell_updates"] = cell_updates
     payload["totals"] = compute_totals(merged_matchups, slugs)
 
     point_updates = payload.get("point_updates")
     if not isinstance(point_updates, dict):
         point_updates = {}
-    point_updates[target_slug] = fresh_payload.get("fetched_at")
+    point_updates[target_slug] = timestamp
     payload["point_updates"] = dict(sorted(point_updates.items()))
 
     if "fetched_at" not in payload and fresh_payload.get("fetched_at"):

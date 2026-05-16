@@ -33,7 +33,7 @@ description: Fetch and normalize MTGDecks winrate data into a slug-only matchup 
 - Point update for one slug:
   - `python3 .codex/skills/mtgdecks-winrate-matrix/scripts/generate.py --update-slug black-sacrifice pauper`
   - This updates only the target row, reverse `other -> target` cells, and recomputed totals in the existing local matrix file.
-  - Point updates preserve the file's last full-refresh `fetched_at` and record the targeted refresh time under `point_updates.<slug>`.
+  - Point updates preserve the file's last full-refresh `fetched_at`, record the targeted refresh time under `point_updates.<slug>`, and stamp every touched directed cell under `cell_updates.<from_slug>.<to_slug>`.
 - Dry-run either mode first when the user asks to test or when you want to verify scope safely:
   - `python3 .codex/skills/mtgdecks-winrate-matrix/scripts/generate.py --dry-run pauper`
   - `python3 .codex/skills/mtgdecks-winrate-matrix/scripts/generate.py --dry-run --update-slug black-sacrifice pauper`
@@ -87,6 +87,11 @@ Emit JSON with this structure (meta layer only):
         "ci_high": 0.58
       }
     }
+  },
+  "cell_updates": {
+    "affinity": {
+      "bogles": "2026-02-10T00:00:00Z"
+    }
   }
 }
 ```
@@ -100,6 +105,7 @@ Field guidance:
 - `totals.<slug>.matches`: sum of matchup sample sizes across all opponents.
 - `totals.<slug>.wr`: `wins / matches` as decimal in `[0,1]` (or `0` when no matches).
 - `matchups`: directed matrix keyed by slug `from -> to`.
+- `cell_updates`: backend bookkeeping keyed by the same directed cell shape as `matchups`; each value is the timestamp for that specific cell's latest fetch/update. The frontend UI does not depend on this field.
 
 ## Data Sources
 - MTGDecks winrates pages:

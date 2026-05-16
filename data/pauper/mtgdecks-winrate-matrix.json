@@ -22,10 +22,10 @@
         "wr": 0.43
       },
       "cycle-storm": {
-        "ci_high": 0.76,
-        "ci_low": 0.39,
-        "matches": 29,
-        "wr": 0.59
+        "ci_high": 0.8,
+        "ci_low": 0.46,
+        "matches": 34,
+        "wr": 0.65
       },
       "delver": {
         "ci_high": 0.6,
@@ -70,10 +70,10 @@
         "wr": 0.4
       },
       "inside-out": {
-        "ci_high": 0.64,
+        "ci_high": 0.52,
         "ci_low": 0.0,
-        "matches": 6,
-        "wr": 0.17
+        "matches": 5,
+        "wr": 0.0
       },
       "madness-burn": {
         "ci_high": 0.56,
@@ -144,10 +144,10 @@
         "wr": 0.48
       },
       "cycle-storm": {
-        "ci_high": 0.84,
-        "ci_low": 0.16,
-        "matches": 8,
-        "wr": 0.5
+        "ci_high": 0.79,
+        "ci_low": 0.14,
+        "matches": 9,
+        "wr": 0.44
       },
       "delver": {
         "ci_high": 0.72,
@@ -193,8 +193,8 @@
       },
       "inside-out": {
         "ci_high": 1.0,
-        "ci_low": 0.4,
-        "matches": 4,
+        "ci_low": 0.29,
+        "matches": 3,
         "wr": 1.0
       },
       "madness-burn": {
@@ -388,10 +388,10 @@
         "wr": 0.79
       },
       "cycle-storm": {
-        "ci_high": 0.81,
-        "ci_low": 0.25,
-        "matches": 13,
-        "wr": 0.54
+        "ci_high": 0.84,
+        "ci_low": 0.32,
+        "matches": 15,
+        "wr": 0.6
       },
       "delver": {
         "ci_high": 0.7,
@@ -492,16 +492,10 @@
     },
     "cycle-storm": {
       "affinity": {
-        "ci_high": 0.61,
-        "ci_low": 0.24,
-        "matches": 29,
-        "wr": 0.41
-      },
-      "sacrifice": {
-        "ci_high": 0.84,
-        "ci_low": 0.16,
-        "matches": 8,
-        "wr": 0.5
+        "ci_high": 0.54,
+        "ci_low": 0.2,
+        "matches": 34,
+        "wr": 0.35
       },
       "bogles": {
         "ci_high": 1.0,
@@ -510,22 +504,22 @@
         "wr": 1.0
       },
       "caw-gates": {
-        "ci_high": 0.75,
-        "ci_low": 0.19,
-        "matches": 13,
-        "wr": 0.46
+        "ci_high": 0.68,
+        "ci_low": 0.16,
+        "matches": 15,
+        "wr": 0.4
       },
       "delver": {
-        "ci_high": 0.72,
-        "ci_low": 0.15,
-        "matches": 12,
-        "wr": 0.42
+        "ci_high": 0.68,
+        "ci_low": 0.16,
+        "matches": 15,
+        "wr": 0.4
       },
       "elves": {
-        "ci_high": 0.97,
+        "ci_high": 0.96,
         "ci_low": 0.74,
-        "matches": 36,
-        "wr": 0.89
+        "matches": 42,
+        "wr": 0.88
       },
       "ephemerate": {
         "ci_high": 0.84,
@@ -534,28 +528,28 @@
         "wr": 0.0
       },
       "faeries": {
-        "ci_high": 0.69,
-        "ci_low": 0.11,
-        "matches": 11,
-        "wr": 0.36
+        "ci_high": 0.61,
+        "ci_low": 0.09,
+        "matches": 13,
+        "wr": 0.31
       },
       "familiars": {
         "ci_high": 1.0,
-        "ci_low": 0.59,
-        "matches": 7,
-        "wr": 1.0
+        "ci_low": 0.47,
+        "matches": 8,
+        "wr": 0.88
       },
       "gardens": {
-        "ci_high": 0.76,
-        "ci_low": 0.09,
-        "matches": 8,
-        "wr": 0.38
+        "ci_high": 0.79,
+        "ci_low": 0.14,
+        "matches": 9,
+        "wr": 0.44
       },
       "glintblade": {
-        "ci_high": 0.97,
-        "ci_low": 0.35,
-        "matches": 8,
-        "wr": 0.75
+        "ci_high": 0.89,
+        "ci_low": 0.31,
+        "matches": 11,
+        "wr": 0.64
       },
       "inside-out": {
         "ci_high": 0.98,
@@ -564,28 +558,34 @@
         "wr": 0.0
       },
       "madness-burn": {
-        "ci_high": 0.9,
-        "ci_low": 0.44,
-        "matches": 17,
-        "wr": 0.71
+        "ci_high": 0.88,
+        "ci_low": 0.46,
+        "matches": 20,
+        "wr": 0.7
       },
       "pizza": {
-        "ci_high": 1.0,
-        "ci_low": 0.02,
-        "matches": 1,
-        "wr": 1.0
+        "ci_high": 0.81,
+        "ci_low": 0.01,
+        "matches": 4,
+        "wr": 0.25
       },
       "rally": {
-        "ci_high": 0.82,
-        "ci_low": 0.33,
-        "matches": 17,
-        "wr": 0.59
+        "ci_high": 0.78,
+        "ci_low": 0.34,
+        "matches": 21,
+        "wr": 0.57
       },
       "ramp": {
-        "ci_high": 0.98,
-        "ci_low": 0.57,
-        "matches": 14,
-        "wr": 0.86
+        "ci_high": 0.9,
+        "ci_low": 0.47,
+        "matches": 18,
+        "wr": 0.72
+      },
+      "sacrifice": {
+        "ci_high": 0.86,
+        "ci_low": 0.21,
+        "matches": 9,
+        "wr": 0.56
       },
       "skred": {
         "ci_high": 0.81,
@@ -595,14 +595,20 @@
       },
       "tron": {
         "ci_high": 1.0,
-        "ci_low": 0.68,
-        "matches": 15,
-        "wr": 0.93
+        "ci_low": 0.7,
+        "matches": 16,
+        "wr": 0.94
+      },
+      "turbo-fog": {
+        "ci_high": 0.98,
+        "ci_low": 0.0,
+        "matches": 1,
+        "wr": 0.0
       },
       "white-weenie": {
-        "ci_high": 0.77,
-        "ci_low": 0.23,
-        "matches": 14,
+        "ci_high": 0.74,
+        "ci_low": 0.26,
+        "matches": 18,
         "wr": 0.5
       }
     },
@@ -632,10 +638,10 @@
         "wr": 0.38
       },
       "cycle-storm": {
-        "ci_high": 0.85,
-        "ci_low": 0.28,
-        "matches": 12,
-        "wr": 0.58
+        "ci_high": 0.84,
+        "ci_low": 0.32,
+        "matches": 15,
+        "wr": 0.6
       },
       "elves": {
         "ci_high": 0.36,
@@ -755,9 +761,9 @@
       },
       "cycle-storm": {
         "ci_high": 0.26,
-        "ci_low": 0.03,
-        "matches": 36,
-        "wr": 0.11
+        "ci_low": 0.04,
+        "matches": 42,
+        "wr": 0.12
       },
       "delver": {
         "ci_high": 0.76,
@@ -992,10 +998,10 @@
         "wr": 0.39
       },
       "cycle-storm": {
-        "ci_high": 0.89,
-        "ci_low": 0.31,
-        "matches": 11,
-        "wr": 0.64
+        "ci_high": 0.91,
+        "ci_low": 0.39,
+        "matches": 13,
+        "wr": 0.69
       },
       "delver": {
         "ci_high": 0.72,
@@ -1108,10 +1114,10 @@
         "wr": 0.68
       },
       "cycle-storm": {
-        "ci_high": 0.41,
+        "ci_high": 0.53,
         "ci_low": 0.0,
-        "matches": 7,
-        "wr": 0.0
+        "matches": 8,
+        "wr": 0.13
       },
       "delver": {
         "ci_high": 0.46,
@@ -1230,10 +1236,10 @@
         "wr": 0.43
       },
       "cycle-storm": {
-        "ci_high": 0.91,
-        "ci_low": 0.24,
-        "matches": 8,
-        "wr": 0.63
+        "ci_high": 0.86,
+        "ci_low": 0.21,
+        "matches": 9,
+        "wr": 0.56
       },
       "delver": {
         "ci_high": 0.61,
@@ -1352,10 +1358,10 @@
         "wr": 0.5
       },
       "cycle-storm": {
-        "ci_high": 0.65,
-        "ci_low": 0.03,
-        "matches": 8,
-        "wr": 0.25
+        "ci_high": 0.69,
+        "ci_low": 0.11,
+        "matches": 11,
+        "wr": 0.36
       },
       "delver": {
         "ci_high": 0.76,
@@ -1451,15 +1457,9 @@
     "inside-out": {
       "affinity": {
         "ci_high": 1.0,
-        "ci_low": 0.36,
-        "matches": 6,
-        "wr": 0.83
-      },
-      "sacrifice": {
-        "ci_high": 0.6,
-        "ci_low": 0.0,
-        "matches": 4,
-        "wr": 0.0
+        "ci_low": 0.48,
+        "matches": 5,
+        "wr": 1.0
       },
       "bogles": {
         "ci_high": 0.84,
@@ -1517,9 +1517,15 @@
       },
       "rally": {
         "ci_high": 0.99,
-        "ci_low": 0.09,
+        "ci_low": 0.01,
+        "matches": 2,
+        "wr": 0.5
+      },
+      "sacrifice": {
+        "ci_high": 0.71,
+        "ci_low": 0.0,
         "matches": 3,
-        "wr": 0.67
+        "wr": 0.0
       },
       "tron": {
         "ci_high": 1.0,
@@ -1560,10 +1566,10 @@
         "wr": 0.27
       },
       "cycle-storm": {
-        "ci_high": 0.56,
-        "ci_low": 0.1,
-        "matches": 17,
-        "wr": 0.29
+        "ci_high": 0.54,
+        "ci_low": 0.12,
+        "matches": 20,
+        "wr": 0.3
       },
       "delver": {
         "ci_high": 0.59,
@@ -1682,10 +1688,10 @@
         "wr": 0.5
       },
       "cycle-storm": {
-        "ci_high": 0.98,
-        "ci_low": 0.0,
-        "matches": 1,
-        "wr": 0.0
+        "ci_high": 0.99,
+        "ci_low": 0.19,
+        "matches": 4,
+        "wr": 0.75
       },
       "delver": {
         "ci_high": 0.99,
@@ -1792,10 +1798,10 @@
         "wr": 0.43
       },
       "cycle-storm": {
-        "ci_high": 0.67,
-        "ci_low": 0.18,
-        "matches": 17,
-        "wr": 0.41
+        "ci_high": 0.66,
+        "ci_low": 0.22,
+        "matches": 21,
+        "wr": 0.43
       },
       "delver": {
         "ci_high": 0.64,
@@ -1840,10 +1846,10 @@
         "wr": 0.44
       },
       "inside-out": {
-        "ci_high": 0.91,
+        "ci_high": 0.99,
         "ci_low": 0.01,
-        "matches": 3,
-        "wr": 0.33
+        "matches": 2,
+        "wr": 0.5
       },
       "madness-burn": {
         "ci_high": 0.73,
@@ -1914,10 +1920,10 @@
         "wr": 0.57
       },
       "cycle-storm": {
-        "ci_high": 0.43,
-        "ci_low": 0.02,
-        "matches": 14,
-        "wr": 0.14
+        "ci_high": 0.53,
+        "ci_low": 0.1,
+        "matches": 18,
+        "wr": 0.28
       },
       "delver": {
         "ci_high": 0.54,
@@ -2146,10 +2152,10 @@
         "wr": 0.67
       },
       "cycle-storm": {
-        "ci_high": 0.32,
+        "ci_high": 0.3,
         "ci_low": 0.0,
-        "matches": 15,
-        "wr": 0.07
+        "matches": 16,
+        "wr": 0.06
       },
       "delver": {
         "ci_high": 0.74,
@@ -2344,6 +2350,12 @@
         "ci_low": 0.29,
         "matches": 7,
         "wr": 0.71
+      },
+      "cycle-storm": {
+        "ci_high": 1.0,
+        "ci_low": 0.02,
+        "matches": 1,
+        "wr": 1.0
       }
     },
     "white-weenie": {
@@ -2372,9 +2384,9 @@
         "wr": 0.51
       },
       "cycle-storm": {
-        "ci_high": 0.77,
-        "ci_low": 0.23,
-        "matches": 14,
+        "ci_high": 0.74,
+        "ci_low": 0.26,
+        "matches": 18,
         "wr": 0.5
       },
       "delver": {
@@ -2469,23 +2481,473 @@
       }
     }
   },
+  "cell_updates": {
+    "affinity": {
+      "sacrifice": "2026-04-13T03:57:03Z",
+      "bogles": "2026-04-13T03:57:03Z",
+      "caw-gates": "2026-04-13T03:57:03Z",
+      "cycle-storm": "2026-05-15T06:02:44Z",
+      "delver": "2026-04-13T03:57:03Z",
+      "elves": "2026-04-13T03:57:03Z",
+      "ephemerate": "2026-04-13T03:57:03Z",
+      "faeries": "2026-04-13T03:57:03Z",
+      "familiars": "2026-04-13T03:57:03Z",
+      "gardens": "2026-04-13T03:57:03Z",
+      "glintblade": "2026-04-13T03:57:03Z",
+      "inside-out": "2026-05-15T05:08:36Z",
+      "madness-burn": "2026-04-13T03:57:03Z",
+      "pizza": "2026-04-23T13:20:07Z",
+      "rally": "2026-04-13T03:57:03Z",
+      "ramp": "2026-04-13T03:57:03Z",
+      "skred": "2026-04-13T03:57:03Z",
+      "tron": "2026-04-13T05:16:23Z",
+      "turbo-fog": "2026-04-13T03:57:03Z",
+      "white-weenie": "2026-04-13T03:57:03Z"
+    },
+    "sacrifice": {
+      "affinity": "2026-04-13T03:57:03Z",
+      "bogles": "2026-04-13T03:57:03Z",
+      "caw-gates": "2026-04-13T03:57:03Z",
+      "cycle-storm": "2026-05-15T06:02:44Z",
+      "delver": "2026-04-13T03:57:03Z",
+      "elves": "2026-04-13T03:57:03Z",
+      "ephemerate": "2026-04-13T03:57:03Z",
+      "faeries": "2026-04-13T03:57:03Z",
+      "familiars": "2026-04-13T03:57:03Z",
+      "gardens": "2026-04-13T03:57:03Z",
+      "glintblade": "2026-04-13T03:57:03Z",
+      "inside-out": "2026-05-15T05:08:36Z",
+      "madness-burn": "2026-04-13T03:57:03Z",
+      "pizza": "2026-04-23T13:20:07Z",
+      "rally": "2026-04-13T03:57:03Z",
+      "ramp": "2026-04-13T03:57:03Z",
+      "skred": "2026-04-13T03:57:03Z",
+      "tron": "2026-04-13T05:16:23Z",
+      "turbo-fog": "2026-04-13T03:57:03Z",
+      "white-weenie": "2026-04-13T03:57:03Z"
+    },
+    "bogles": {
+      "affinity": "2026-04-13T03:57:03Z",
+      "sacrifice": "2026-04-13T03:57:03Z",
+      "caw-gates": "2026-04-13T03:57:03Z",
+      "cycle-storm": "2026-05-15T06:02:44Z",
+      "delver": "2026-04-13T03:57:03Z",
+      "elves": "2026-04-13T03:57:03Z",
+      "ephemerate": "2026-04-13T03:57:03Z",
+      "faeries": "2026-04-13T03:57:03Z",
+      "familiars": "2026-04-13T03:57:03Z",
+      "gardens": "2026-04-13T03:57:03Z",
+      "glintblade": "2026-04-13T03:57:03Z",
+      "inside-out": "2026-05-15T05:08:36Z",
+      "madness-burn": "2026-04-13T03:57:03Z",
+      "pizza": "2026-04-23T13:20:07Z",
+      "rally": "2026-04-13T03:57:03Z",
+      "ramp": "2026-04-13T03:57:03Z",
+      "skred": "2026-04-13T03:57:03Z",
+      "tron": "2026-04-13T05:16:23Z",
+      "turbo-fog": "2026-04-13T03:57:03Z",
+      "white-weenie": "2026-04-13T03:57:03Z"
+    },
+    "caw-gates": {
+      "affinity": "2026-04-13T03:57:03Z",
+      "sacrifice": "2026-04-13T03:57:03Z",
+      "bogles": "2026-04-13T03:57:03Z",
+      "cycle-storm": "2026-05-15T06:02:44Z",
+      "delver": "2026-04-13T03:57:03Z",
+      "elves": "2026-04-13T03:57:03Z",
+      "ephemerate": "2026-04-13T03:57:03Z",
+      "faeries": "2026-04-13T03:57:03Z",
+      "familiars": "2026-04-13T03:57:03Z",
+      "gardens": "2026-04-13T03:57:03Z",
+      "glintblade": "2026-04-13T03:57:03Z",
+      "inside-out": "2026-05-15T05:08:36Z",
+      "madness-burn": "2026-04-13T03:57:03Z",
+      "pizza": "2026-04-23T13:20:07Z",
+      "rally": "2026-04-13T03:57:03Z",
+      "ramp": "2026-04-13T03:57:03Z",
+      "skred": "2026-04-13T03:57:03Z",
+      "tron": "2026-04-13T05:16:23Z",
+      "turbo-fog": "2026-04-13T03:57:03Z",
+      "white-weenie": "2026-04-13T03:57:03Z"
+    },
+    "cycle-storm": {
+      "affinity": "2026-05-15T06:02:44Z",
+      "bogles": "2026-05-15T06:02:44Z",
+      "caw-gates": "2026-05-15T06:02:44Z",
+      "delver": "2026-05-15T06:02:44Z",
+      "elves": "2026-05-15T06:02:44Z",
+      "ephemerate": "2026-05-15T06:02:44Z",
+      "faeries": "2026-05-15T06:02:44Z",
+      "familiars": "2026-05-15T06:02:44Z",
+      "gardens": "2026-05-15T06:02:44Z",
+      "glintblade": "2026-05-15T06:02:44Z",
+      "inside-out": "2026-05-15T05:08:36Z",
+      "madness-burn": "2026-05-15T06:02:44Z",
+      "pizza": "2026-04-23T13:20:07Z",
+      "rally": "2026-05-15T06:02:44Z",
+      "ramp": "2026-05-15T06:02:44Z",
+      "sacrifice": "2026-05-15T06:02:44Z",
+      "skred": "2026-05-15T06:02:44Z",
+      "tron": "2026-04-13T05:16:23Z",
+      "turbo-fog": "2026-05-15T06:02:44Z",
+      "white-weenie": "2026-05-15T06:02:44Z"
+    },
+    "delver": {
+      "affinity": "2026-04-13T03:57:03Z",
+      "sacrifice": "2026-04-13T03:57:03Z",
+      "bogles": "2026-04-13T03:57:03Z",
+      "caw-gates": "2026-04-13T03:57:03Z",
+      "cycle-storm": "2026-05-15T06:02:44Z",
+      "elves": "2026-04-13T03:57:03Z",
+      "ephemerate": "2026-04-13T03:57:03Z",
+      "faeries": "2026-04-13T03:57:03Z",
+      "familiars": "2026-04-13T03:57:03Z",
+      "gardens": "2026-04-13T03:57:03Z",
+      "glintblade": "2026-04-13T03:57:03Z",
+      "inside-out": "2026-05-15T05:08:36Z",
+      "madness-burn": "2026-04-13T03:57:03Z",
+      "pizza": "2026-04-23T13:20:07Z",
+      "rally": "2026-04-13T03:57:03Z",
+      "ramp": "2026-04-13T03:57:03Z",
+      "skred": "2026-04-13T03:57:03Z",
+      "tron": "2026-04-13T05:16:23Z",
+      "turbo-fog": "2026-04-13T03:57:03Z",
+      "white-weenie": "2026-04-13T03:57:03Z"
+    },
+    "elves": {
+      "affinity": "2026-04-13T03:57:03Z",
+      "sacrifice": "2026-04-13T03:57:03Z",
+      "bogles": "2026-04-13T03:57:03Z",
+      "caw-gates": "2026-04-13T03:57:03Z",
+      "cycle-storm": "2026-05-15T06:02:44Z",
+      "delver": "2026-04-13T03:57:03Z",
+      "ephemerate": "2026-04-13T03:57:03Z",
+      "faeries": "2026-04-13T03:57:03Z",
+      "familiars": "2026-04-13T03:57:03Z",
+      "gardens": "2026-04-13T03:57:03Z",
+      "glintblade": "2026-04-13T03:57:03Z",
+      "inside-out": "2026-05-15T05:08:36Z",
+      "madness-burn": "2026-04-13T03:57:03Z",
+      "pizza": "2026-04-23T13:20:07Z",
+      "rally": "2026-04-13T03:57:03Z",
+      "ramp": "2026-04-13T03:57:03Z",
+      "skred": "2026-04-13T03:57:03Z",
+      "tron": "2026-04-13T05:16:23Z",
+      "turbo-fog": "2026-04-13T03:57:03Z",
+      "white-weenie": "2026-04-13T03:57:03Z"
+    },
+    "ephemerate": {
+      "affinity": "2026-04-13T03:57:03Z",
+      "sacrifice": "2026-04-13T03:57:03Z",
+      "bogles": "2026-04-13T03:57:03Z",
+      "caw-gates": "2026-04-13T03:57:03Z",
+      "cycle-storm": "2026-05-15T06:02:44Z",
+      "delver": "2026-04-13T03:57:03Z",
+      "elves": "2026-04-13T03:57:03Z",
+      "faeries": "2026-04-13T03:57:03Z",
+      "familiars": "2026-04-13T03:57:03Z",
+      "gardens": "2026-04-13T03:57:03Z",
+      "glintblade": "2026-04-13T03:57:03Z",
+      "madness-burn": "2026-04-13T03:57:03Z",
+      "pizza": "2026-04-23T13:20:07Z",
+      "rally": "2026-04-13T03:57:03Z",
+      "ramp": "2026-04-13T03:57:03Z",
+      "skred": "2026-04-13T03:57:03Z",
+      "tron": "2026-04-13T05:16:23Z",
+      "turbo-fog": "2026-04-13T03:57:03Z",
+      "white-weenie": "2026-04-13T03:57:03Z"
+    },
+    "faeries": {
+      "affinity": "2026-04-13T03:57:03Z",
+      "sacrifice": "2026-04-13T03:57:03Z",
+      "bogles": "2026-04-13T03:57:03Z",
+      "caw-gates": "2026-04-13T03:57:03Z",
+      "cycle-storm": "2026-05-15T06:02:44Z",
+      "delver": "2026-04-13T03:57:03Z",
+      "elves": "2026-04-13T03:57:03Z",
+      "ephemerate": "2026-04-13T03:57:03Z",
+      "familiars": "2026-04-13T03:57:03Z",
+      "gardens": "2026-04-13T03:57:03Z",
+      "glintblade": "2026-04-13T03:57:03Z",
+      "madness-burn": "2026-04-13T03:57:03Z",
+      "pizza": "2026-04-23T13:20:07Z",
+      "rally": "2026-04-13T03:57:03Z",
+      "ramp": "2026-04-13T03:57:03Z",
+      "skred": "2026-04-13T03:57:03Z",
+      "tron": "2026-04-13T05:16:23Z",
+      "turbo-fog": "2026-04-13T03:57:03Z",
+      "white-weenie": "2026-04-13T03:57:03Z"
+    },
+    "familiars": {
+      "affinity": "2026-04-13T03:57:03Z",
+      "sacrifice": "2026-04-13T03:57:03Z",
+      "bogles": "2026-04-13T03:57:03Z",
+      "caw-gates": "2026-04-13T03:57:03Z",
+      "cycle-storm": "2026-05-15T06:02:44Z",
+      "delver": "2026-04-13T03:57:03Z",
+      "elves": "2026-04-13T03:57:03Z",
+      "ephemerate": "2026-04-13T03:57:03Z",
+      "faeries": "2026-04-13T03:57:03Z",
+      "gardens": "2026-04-13T03:57:03Z",
+      "glintblade": "2026-04-13T03:57:03Z",
+      "inside-out": "2026-05-15T05:08:36Z",
+      "madness-burn": "2026-04-13T03:57:03Z",
+      "pizza": "2026-04-23T13:20:07Z",
+      "rally": "2026-04-13T03:57:03Z",
+      "ramp": "2026-04-13T03:57:03Z",
+      "skred": "2026-04-13T03:57:03Z",
+      "tron": "2026-04-13T05:16:23Z",
+      "turbo-fog": "2026-04-13T03:57:03Z",
+      "white-weenie": "2026-04-13T03:57:03Z"
+    },
+    "gardens": {
+      "affinity": "2026-04-13T03:57:03Z",
+      "sacrifice": "2026-04-13T03:57:03Z",
+      "bogles": "2026-04-13T03:57:03Z",
+      "caw-gates": "2026-04-13T03:57:03Z",
+      "cycle-storm": "2026-05-15T06:02:44Z",
+      "delver": "2026-04-13T03:57:03Z",
+      "elves": "2026-04-13T03:57:03Z",
+      "ephemerate": "2026-04-13T03:57:03Z",
+      "faeries": "2026-04-13T03:57:03Z",
+      "familiars": "2026-04-13T03:57:03Z",
+      "glintblade": "2026-04-13T03:57:03Z",
+      "inside-out": "2026-05-15T05:08:36Z",
+      "madness-burn": "2026-04-13T03:57:03Z",
+      "pizza": "2026-04-23T13:20:07Z",
+      "rally": "2026-04-13T03:57:03Z",
+      "ramp": "2026-04-13T03:57:03Z",
+      "skred": "2026-04-13T03:57:03Z",
+      "tron": "2026-04-13T05:16:23Z",
+      "turbo-fog": "2026-04-13T03:57:03Z",
+      "white-weenie": "2026-04-13T03:57:03Z"
+    },
+    "glintblade": {
+      "affinity": "2026-04-13T03:57:03Z",
+      "sacrifice": "2026-04-13T03:57:03Z",
+      "bogles": "2026-04-13T03:57:03Z",
+      "caw-gates": "2026-04-13T03:57:03Z",
+      "cycle-storm": "2026-05-15T06:02:44Z",
+      "delver": "2026-04-13T03:57:03Z",
+      "elves": "2026-04-13T03:57:03Z",
+      "ephemerate": "2026-04-13T03:57:03Z",
+      "faeries": "2026-04-13T03:57:03Z",
+      "familiars": "2026-04-13T03:57:03Z",
+      "gardens": "2026-04-13T03:57:03Z",
+      "inside-out": "2026-05-15T05:08:36Z",
+      "madness-burn": "2026-04-13T03:57:03Z",
+      "pizza": "2026-04-23T13:20:07Z",
+      "rally": "2026-04-13T03:57:03Z",
+      "ramp": "2026-04-13T03:57:03Z",
+      "skred": "2026-04-13T03:57:03Z",
+      "tron": "2026-04-13T05:16:23Z",
+      "turbo-fog": "2026-04-13T03:57:03Z",
+      "white-weenie": "2026-04-13T03:57:03Z"
+    },
+    "inside-out": {
+      "affinity": "2026-05-15T05:08:36Z",
+      "bogles": "2026-05-15T05:08:36Z",
+      "caw-gates": "2026-05-15T05:08:36Z",
+      "cycle-storm": "2026-05-15T05:08:36Z",
+      "delver": "2026-05-15T05:08:36Z",
+      "elves": "2026-05-15T05:08:36Z",
+      "familiars": "2026-05-15T05:08:36Z",
+      "gardens": "2026-05-15T05:08:36Z",
+      "glintblade": "2026-05-15T05:08:36Z",
+      "madness-burn": "2026-05-15T05:08:36Z",
+      "rally": "2026-05-15T05:08:36Z",
+      "sacrifice": "2026-05-15T05:08:36Z",
+      "tron": "2026-04-13T05:16:23Z",
+      "white-weenie": "2026-05-15T05:08:36Z"
+    },
+    "madness-burn": {
+      "affinity": "2026-04-13T03:57:03Z",
+      "sacrifice": "2026-04-13T03:57:03Z",
+      "bogles": "2026-04-13T03:57:03Z",
+      "caw-gates": "2026-04-13T03:57:03Z",
+      "cycle-storm": "2026-05-15T06:02:44Z",
+      "delver": "2026-04-13T03:57:03Z",
+      "elves": "2026-04-13T03:57:03Z",
+      "ephemerate": "2026-04-13T03:57:03Z",
+      "faeries": "2026-04-13T03:57:03Z",
+      "familiars": "2026-04-13T03:57:03Z",
+      "gardens": "2026-04-13T03:57:03Z",
+      "glintblade": "2026-04-13T03:57:03Z",
+      "inside-out": "2026-05-15T05:08:36Z",
+      "pizza": "2026-04-23T13:20:07Z",
+      "rally": "2026-04-13T03:57:03Z",
+      "ramp": "2026-04-13T03:57:03Z",
+      "skred": "2026-04-13T03:57:03Z",
+      "tron": "2026-04-13T05:16:23Z",
+      "turbo-fog": "2026-04-13T03:57:03Z",
+      "white-weenie": "2026-04-13T03:57:03Z"
+    },
+    "pizza": {
+      "affinity": "2026-04-23T13:20:07Z",
+      "sacrifice": "2026-04-23T13:20:07Z",
+      "bogles": "2026-04-23T13:20:07Z",
+      "caw-gates": "2026-04-23T13:20:07Z",
+      "cycle-storm": "2026-04-23T13:20:07Z",
+      "delver": "2026-04-23T13:20:07Z",
+      "elves": "2026-04-23T13:20:07Z",
+      "ephemerate": "2026-04-23T13:20:07Z",
+      "faeries": "2026-04-23T13:20:07Z",
+      "familiars": "2026-04-23T13:20:07Z",
+      "gardens": "2026-04-23T13:20:07Z",
+      "glintblade": "2026-04-23T13:20:07Z",
+      "madness-burn": "2026-04-23T13:20:07Z",
+      "rally": "2026-04-23T13:20:07Z",
+      "ramp": "2026-04-23T13:20:07Z",
+      "skred": "2026-04-23T13:20:07Z",
+      "tron": "2026-04-13T05:16:23Z",
+      "white-weenie": "2026-04-23T13:20:07Z"
+    },
+    "rally": {
+      "affinity": "2026-04-13T03:57:03Z",
+      "sacrifice": "2026-04-13T03:57:03Z",
+      "bogles": "2026-04-13T03:57:03Z",
+      "caw-gates": "2026-04-13T03:57:03Z",
+      "cycle-storm": "2026-05-15T06:02:44Z",
+      "delver": "2026-04-13T03:57:03Z",
+      "elves": "2026-04-13T03:57:03Z",
+      "ephemerate": "2026-04-13T03:57:03Z",
+      "faeries": "2026-04-13T03:57:03Z",
+      "familiars": "2026-04-13T03:57:03Z",
+      "gardens": "2026-04-13T03:57:03Z",
+      "glintblade": "2026-04-13T03:57:03Z",
+      "inside-out": "2026-05-15T05:08:36Z",
+      "madness-burn": "2026-04-13T03:57:03Z",
+      "pizza": "2026-04-23T13:20:07Z",
+      "ramp": "2026-04-13T03:57:03Z",
+      "skred": "2026-04-13T03:57:03Z",
+      "tron": "2026-04-13T05:16:23Z",
+      "turbo-fog": "2026-04-13T03:57:03Z",
+      "white-weenie": "2026-04-13T03:57:03Z"
+    },
+    "ramp": {
+      "affinity": "2026-04-13T03:57:03Z",
+      "sacrifice": "2026-04-13T03:57:03Z",
+      "bogles": "2026-04-13T03:57:03Z",
+      "caw-gates": "2026-04-13T03:57:03Z",
+      "cycle-storm": "2026-05-15T06:02:44Z",
+      "delver": "2026-04-13T03:57:03Z",
+      "elves": "2026-04-13T03:57:03Z",
+      "ephemerate": "2026-04-13T03:57:03Z",
+      "faeries": "2026-04-13T03:57:03Z",
+      "familiars": "2026-04-13T03:57:03Z",
+      "gardens": "2026-04-13T03:57:03Z",
+      "glintblade": "2026-04-13T03:57:03Z",
+      "madness-burn": "2026-04-13T03:57:03Z",
+      "pizza": "2026-04-23T13:20:07Z",
+      "rally": "2026-04-13T03:57:03Z",
+      "skred": "2026-04-13T03:57:03Z",
+      "tron": "2026-04-13T05:16:23Z",
+      "turbo-fog": "2026-04-13T03:57:03Z",
+      "white-weenie": "2026-04-13T03:57:03Z"
+    },
+    "skred": {
+      "affinity": "2026-04-13T03:57:03Z",
+      "sacrifice": "2026-04-13T03:57:03Z",
+      "bogles": "2026-04-13T03:57:03Z",
+      "caw-gates": "2026-04-13T03:57:03Z",
+      "cycle-storm": "2026-05-15T06:02:44Z",
+      "delver": "2026-04-13T03:57:03Z",
+      "elves": "2026-04-13T03:57:03Z",
+      "ephemerate": "2026-04-13T03:57:03Z",
+      "faeries": "2026-04-13T03:57:03Z",
+      "familiars": "2026-04-13T03:57:03Z",
+      "gardens": "2026-04-13T03:57:03Z",
+      "glintblade": "2026-04-13T03:57:03Z",
+      "madness-burn": "2026-04-13T03:57:03Z",
+      "pizza": "2026-04-23T13:20:07Z",
+      "rally": "2026-04-13T03:57:03Z",
+      "ramp": "2026-04-13T03:57:03Z",
+      "tron": "2026-04-13T05:16:23Z",
+      "turbo-fog": "2026-04-13T03:57:03Z",
+      "white-weenie": "2026-04-13T03:57:03Z"
+    },
+    "tron": {
+      "affinity": "2026-04-13T05:16:23Z",
+      "sacrifice": "2026-04-13T05:16:23Z",
+      "bogles": "2026-04-13T05:16:23Z",
+      "caw-gates": "2026-04-13T05:16:23Z",
+      "cycle-storm": "2026-04-13T05:16:23Z",
+      "delver": "2026-04-13T05:16:23Z",
+      "elves": "2026-04-13T05:16:23Z",
+      "ephemerate": "2026-04-13T05:16:23Z",
+      "faeries": "2026-04-13T05:16:23Z",
+      "familiars": "2026-04-13T05:16:23Z",
+      "gardens": "2026-04-13T05:16:23Z",
+      "glintblade": "2026-04-13T05:16:23Z",
+      "inside-out": "2026-04-13T05:16:23Z",
+      "madness-burn": "2026-04-13T05:16:23Z",
+      "pizza": "2026-04-13T05:16:23Z",
+      "rally": "2026-04-13T05:16:23Z",
+      "ramp": "2026-04-13T05:16:23Z",
+      "skred": "2026-04-13T05:16:23Z",
+      "turbo-fog": "2026-04-13T05:16:23Z",
+      "white-weenie": "2026-04-13T05:16:23Z"
+    },
+    "turbo-fog": {
+      "affinity": "2026-04-13T03:57:03Z",
+      "sacrifice": "2026-04-13T03:57:03Z",
+      "bogles": "2026-04-13T03:57:03Z",
+      "caw-gates": "2026-04-13T03:57:03Z",
+      "delver": "2026-04-13T03:57:03Z",
+      "elves": "2026-04-13T03:57:03Z",
+      "ephemerate": "2026-04-13T03:57:03Z",
+      "faeries": "2026-04-13T03:57:03Z",
+      "familiars": "2026-04-13T03:57:03Z",
+      "gardens": "2026-04-13T03:57:03Z",
+      "glintblade": "2026-04-13T03:57:03Z",
+      "madness-burn": "2026-04-13T03:57:03Z",
+      "rally": "2026-04-13T03:57:03Z",
+      "ramp": "2026-04-13T03:57:03Z",
+      "skred": "2026-04-13T03:57:03Z",
+      "tron": "2026-04-13T05:16:23Z",
+      "white-weenie": "2026-04-13T03:57:03Z",
+      "cycle-storm": "2026-05-15T06:02:44Z"
+    },
+    "white-weenie": {
+      "affinity": "2026-04-13T03:57:03Z",
+      "sacrifice": "2026-04-13T03:57:03Z",
+      "bogles": "2026-04-13T03:57:03Z",
+      "caw-gates": "2026-04-13T03:57:03Z",
+      "cycle-storm": "2026-05-15T06:02:44Z",
+      "delver": "2026-04-13T03:57:03Z",
+      "elves": "2026-04-13T03:57:03Z",
+      "ephemerate": "2026-04-13T03:57:03Z",
+      "faeries": "2026-04-13T03:57:03Z",
+      "familiars": "2026-04-13T03:57:03Z",
+      "gardens": "2026-04-13T03:57:03Z",
+      "glintblade": "2026-04-13T03:57:03Z",
+      "inside-out": "2026-05-15T05:08:36Z",
+      "madness-burn": "2026-04-13T03:57:03Z",
+      "pizza": "2026-04-23T13:20:07Z",
+      "rally": "2026-04-13T03:57:03Z",
+      "ramp": "2026-04-13T03:57:03Z",
+      "skred": "2026-04-13T03:57:03Z",
+      "tron": "2026-04-13T05:16:23Z",
+      "turbo-fog": "2026-04-13T03:57:03Z"
+    }
+  },
   "point_updates": {
-    "cycle-storm": "2026-04-26T07:25:43Z",
-    "inside-out": "2026-05-01T17:07:53Z",
+    "cycle-storm": "2026-05-15T06:02:44Z",
+    "inside-out": "2026-05-15T05:08:36Z",
     "pizza": "2026-04-23T13:20:07Z",
     "tron": "2026-04-13T05:16:23Z"
   },
   "source": "https://mtgdecks.net/Pauper/winrates",
   "totals": {
     "affinity": {
-      "matches": 1639,
-      "wins": 802,
-      "wr": 0.4893
+      "matches": 1643,
+      "wins": 806,
+      "wr": 0.4906
     },
     "sacrifice": {
       "matches": 629,
-      "wins": 306,
-      "wr": 0.4865
+      "wins": 305,
+      "wr": 0.4849
     },
     "bogles": {
       "matches": 479,
@@ -2493,24 +2955,24 @@
       "wr": 0.4384
     },
     "caw-gates": {
-      "matches": 864,
-      "wins": 470,
-      "wr": 0.544
+      "matches": 866,
+      "wins": 472,
+      "wr": 0.545
     },
     "cycle-storm": {
-      "matches": 221,
-      "wins": 140,
-      "wr": 0.6335
+      "matches": 265,
+      "wins": 157,
+      "wr": 0.5925
     },
     "delver": {
-      "matches": 1910,
-      "wins": 857,
-      "wr": 0.4487
+      "matches": 1913,
+      "wins": 859,
+      "wr": 0.449
     },
     "elves": {
-      "matches": 1505,
-      "wins": 858,
-      "wr": 0.5701
+      "matches": 1511,
+      "wins": 859,
+      "wr": 0.5685
     },
     "ephemerate": {
       "matches": 253,
@@ -2518,49 +2980,49 @@
       "wr": 0.5217
     },
     "faeries": {
-      "matches": 801,
-      "wins": 388,
-      "wr": 0.4844
+      "matches": 803,
+      "wins": 390,
+      "wr": 0.4857
     },
     "familiars": {
-      "matches": 633,
-      "wins": 288,
-      "wr": 0.455
+      "matches": 634,
+      "wins": 289,
+      "wr": 0.4558
     },
     "gardens": {
-      "matches": 671,
+      "matches": 672,
       "wins": 313,
-      "wr": 0.4665
+      "wr": 0.4658
     },
     "glintblade": {
-      "matches": 377,
-      "wins": 188,
-      "wr": 0.4987
+      "matches": 380,
+      "wins": 190,
+      "wr": 0.5
     },
     "inside-out": {
-      "matches": 39,
-      "wins": 22,
-      "wr": 0.5641
+      "matches": 36,
+      "wins": 21,
+      "wr": 0.5833
     },
     "madness-burn": {
-      "matches": 1280,
-      "wins": 593,
-      "wr": 0.4633
+      "matches": 1283,
+      "wins": 594,
+      "wr": 0.463
     },
     "pizza": {
-      "matches": 83,
-      "wins": 48,
-      "wr": 0.5783
+      "matches": 86,
+      "wins": 51,
+      "wr": 0.593
     },
     "rally": {
-      "matches": 1489,
-      "wins": 756,
-      "wr": 0.5077
+      "matches": 1492,
+      "wins": 758,
+      "wr": 0.508
     },
     "ramp": {
-      "matches": 1110,
-      "wins": 583,
-      "wr": 0.5252
+      "matches": 1114,
+      "wins": 586,
+      "wr": 0.526
     },
     "skred": {
       "matches": 261,
@@ -2568,18 +3030,18 @@
       "wr": 0.4866
     },
     "tron": {
-      "matches": 338,
+      "matches": 339,
       "wins": 192,
-      "wr": 0.568
+      "wr": 0.5664
     },
     "turbo-fog": {
-      "matches": 125,
-      "wins": 66,
-      "wr": 0.528
+      "matches": 126,
+      "wins": 67,
+      "wr": 0.5317
     },
     "white-weenie": {
-      "matches": 1071,
-      "wins": 553,
+      "matches": 1075,
+      "wins": 555,
       "wr": 0.5163
     }
   }

@@ -1,15 +1,11 @@
 {
   "name": "Ephemerate",
-  "source_url": "https://www.mtggoldfish.com/deck/7728906",
+  "source_url": "https://www.mtggoldfish.com/deck/7782777",
   "colors": "wur",
   "tags": [
     "control"
   ],
   "cards": [
-    {
-      "name": "Alpine Meadow",
-      "qty": 1
-    },
     {
       "name": "Archaeomancer",
       "qty": 2
@@ -19,12 +15,8 @@
       "qty": 4
     },
     {
-      "name": "Bender's Waterskin",
-      "qty": 2
-    },
-    {
       "name": "Brainstorm",
-      "qty": 1
+      "qty": 2
     },
     {
       "name": "Counterspell",
@@ -36,22 +28,14 @@
     },
     {
       "name": "Ephemerate",
-      "qty": 4
+      "qty": 3
     },
     {
-      "name": "Ethereal Haze",
-      "qty": 1
+      "name": "Fanged Flames",
+      "qty": 2
     },
     {
       "name": "Glacial Floodplain",
-      "qty": 1
-    },
-    {
-      "name": "Late to Dinner",
-      "qty": 1
-    },
-    {
-      "name": "Lightning Bolt",
       "qty": 2
     },
     {
@@ -60,11 +44,11 @@
     },
     {
       "name": "Mulldrifter",
-      "qty": 4
+      "qty": 3
     },
     {
       "name": "Murmuring Mystic",
-      "qty": 1
+      "qty": 2
     },
     {
       "name": "Perilous Landscape",
@@ -72,7 +56,11 @@
     },
     {
       "name": "Preordain",
-      "qty": 3
+      "qty": 4
+    },
+    {
+      "name": "Ride's End",
+      "qty": 2
     },
     {
       "name": "Skred",
@@ -80,57 +68,49 @@
     },
     {
       "name": "Snow-Covered Island",
-      "qty": 7
+      "qty": 8
     },
     {
       "name": "Snow-Covered Mountain",
-      "qty": 1
+      "qty": 2
     },
     {
       "name": "Snow-Covered Plains",
-      "qty": 1
-    },
-    {
-      "name": "Thraben Charm",
-      "qty": 1
+      "qty": 2
     },
     {
       "name": "Union of the Third Path",
-      "qty": 1
+      "qty": 2
     },
     {
       "name": "Volatile Fjord",
-      "qty": 4
+      "qty": 2
     }
   ],
   "sideboard": [
     {
       "name": "Annul",
-      "qty": 1
-    },
-    {
-      "name": "Cast into the Fire",
       "qty": 3
     },
     {
-      "name": "Cleansing Wildfire",
-      "qty": 1
+      "name": "Breath Weapon",
+      "qty": 2
+    },
+    {
+      "name": "Destroy Evil",
+      "qty": 2
     },
     {
       "name": "Envelop",
-      "qty": 1
+      "qty": 2
     },
     {
-      "name": "Ethereal Haze",
-      "qty": 1
-    },
-    {
-      "name": "Blue Elemental Blast",
-      "qty": 4
+      "name": "Hydroblast",
+      "qty": 3
     },
     {
       "name": "Pyroblast",
-      "qty": 4
+      "qty": 3
     }
   ],
   "difficulty_tags": [
