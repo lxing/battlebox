@@ -1,0 +1,84 @@
+{
+  "name": "Madness Burn",
+  "source_url": "https://www.mtggoldfish.com/deck/7807649",
+  "sleeve_color": "Iris Bloom",
+  "colors": "br",
+  "tags": [
+    "aggro"
+  ],
+  "cards": [
+    {
+      "name": "Alms of the Vein",
+      "qty": 4
+    },
+    {
+      "name": "Faithless Looting",
+      "qty": 4
+    },
+    {
+      "name": "Fiery Temper",
+      "qty": 4
+    },
+    {
+      "name": "Grab the Prize",
+      "qty": 4
+    },
+    {
+      "name": "Highway Robbery",
+      "qty": 4
+    },
+    {
+      "name": "Jagged Barrens",
+      "qty": 4
+    },
+    {
+      "name": "Kitchen Imp",
+      "qty": 4
+    },
+    {
+      "name": "Lightning Bolt",
+      "qty": 4
+    },
+    {
+      "name": "Mountain",
+      "qty": 11
+    },
+    {
+      "name": "Sneaky Snacker",
+      "qty": 4
+    },
+    {
+      "name": "Swamp",
+      "qty": 5
+    },
+    {
+      "name": "Vampire's Kiss",
+      "qty": 4
+    },
+    {
+      "name": "Voldaren Epicure",
+      "qty": 4
+    }
+  ],
+  "sideboard": [
+    {
+      "name": "Duress",
+      "qty": 3
+    },
+    {
+      "name": "Electrickery",
+      "qty": 4
+    },
+    {
+      "name": "Extract a Confession",
+      "qty": 4
+    },
+    {
+      "name": "Nihil Spellbomb",
+      "qty": 4
+    }
+  ],
+  "difficulty_tags": [
+    "intermediate"
+  ]
+}

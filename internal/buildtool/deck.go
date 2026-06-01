@@ -64,7 +64,8 @@ func processDeck(bbSource BattleboxSource, deckSource DeckSource, annotations ma
 	}
 	if deckSource.HasStaged {
 		stagedManifest := cloneManifest(deckSource.StagedManifest)
-		enrichManifestCards(&stagedManifest, bbSource.Slug, deckSource.Slug, deckSource.MergedPrintings, bbSource.Manifest.LandSubtypes, nil)
+		stagedPrintings := mergePrintings(deckSource.MergedPrintings, deckSource.StagedPrintings)
+		enrichManifestCards(&stagedManifest, bbSource.Slug, deckSource.Slug, stagedPrintings, bbSource.Manifest.LandSubtypes, nil)
 		deck.Diff = buildDeckDiff(manifest, stagedManifest)
 	}
 
