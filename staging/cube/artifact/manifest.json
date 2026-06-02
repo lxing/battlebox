@@ -355,6 +355,10 @@
       "qty": 1
     },
     {
+      "name": "Syr Ginger, the Meal Ender",
+      "qty": 1
+    },
+    {
       "name": "Technodrome",
       "qty": 1
     },
@@ -392,10 +396,6 @@
     },
     {
       "name": "Sojourner's Companion",
-      "qty": 1
-    },
-    {
-      "name": "Tezzeret, Cruel Captain",
       "qty": 1
     },
     {
@@ -503,11 +503,19 @@
       "qty": 1
     },
     {
+      "name": "Prophetic Prism",
+      "qty": 1
+    },
+    {
       "name": "Servo Schematic",
       "qty": 1
     },
     {
       "name": "Smuggler's Copter",
+      "qty": 1
+    },
+    {
+      "name": "The Ooze",
       "qty": 1
     },
     {
@@ -671,10 +679,6 @@
       "qty": 1
     },
     {
-      "name": "City of Brass",
-      "qty": 1
-    },
-    {
       "name": "Darksteel Citadel",
       "qty": 1
     },
@@ -692,10 +696,6 @@
     },
     {
       "name": "Inventors' Fair",
-      "qty": 1
-    },
-    {
-      "name": "Mana Confluence",
       "qty": 1
     },
     {
