@@ -19,6 +19,10 @@
       "qty": 1
     },
     {
+      "name": "Elite Interceptor",
+      "qty": 1
+    },
+    {
       "name": "Novice Inspector",
       "qty": 1
     },
@@ -87,10 +91,6 @@
       "qty": 1
     },
     {
-      "name": "Raise the Alarm",
-      "qty": 1
-    },
-    {
       "name": "Sunlance",
       "qty": 1
     },
@@ -119,11 +119,23 @@
       "qty": 1
     },
     {
+      "name": "Thermo-Alchemist",
+      "qty": 1
+    },
+    {
+      "name": "Serum Visionary",
+      "qty": 1
+    },
+    {
       "name": "Archaeomancer",
       "qty": 1
     },
     {
       "name": "Murmuring Mystic",
+      "qty": 1
+    },
+    {
+      "name": "Travel Preparations",
       "qty": 1
     },
     {
@@ -155,11 +167,11 @@
       "qty": 1
     },
     {
-      "name": "Repeal",
+      "name": "Counterspell",
       "qty": 1
     },
     {
-      "name": "Counterspell",
+      "name": "Lose Focus",
       "qty": 1
     },
     {
@@ -183,6 +195,10 @@
       "qty": 1
     },
     {
+      "name": "Quick Study",
+      "qty": 1
+    },
+    {
       "name": "Gitaxian Probe",
       "qty": 1
     },
@@ -199,23 +215,7 @@
       "qty": 1
     },
     {
-      "name": "Serum Visions",
-      "qty": 1
-    },
-    {
-      "name": "Compulsive Research",
-      "qty": 1
-    },
-    {
-      "name": "Of One Mind",
-      "qty": 1
-    },
-    {
-      "name": "Seize the Secrets",
-      "qty": 1
-    },
-    {
-      "name": "L\u00f3rien Revealed",
+      "name": "Lórien Revealed",
       "qty": 1
     },
     {
@@ -279,7 +279,7 @@
       "qty": 1
     },
     {
-      "name": "Troll of Khazad-d\u00fbm",
+      "name": "Troll of Khazad-dûm",
       "qty": 1
     },
     {
@@ -315,7 +315,7 @@
       "qty": 1
     },
     {
-      "name": "Black Mage's Rod",
+      "name": "Evincar's Justice",
       "qty": 1
     },
     {
@@ -335,11 +335,7 @@
       "qty": 1
     },
     {
-      "name": "Erebor Flamesmith",
-      "qty": 1
-    },
-    {
-      "name": "Firebrand Archer",
+      "name": "Voldaren Epicure",
       "qty": 1
     },
     {
@@ -351,15 +347,11 @@
       "qty": 1
     },
     {
-      "name": "Thermo-Alchemist",
+      "name": "Orcish Hellraiser",
       "qty": 1
     },
     {
       "name": "Guttersnipe",
-      "qty": 1
-    },
-    {
-      "name": "Mysidian Elder",
       "qty": 1
     },
     {
@@ -371,6 +363,10 @@
       "qty": 1
     },
     {
+      "name": "Falkenrath Celebrants",
+      "qty": 1
+    },
+    {
       "name": "Oliphaunt",
       "qty": 1
     },
@@ -379,15 +375,11 @@
       "qty": 1
     },
     {
-      "name": "Lava Dart",
-      "qty": 1
-    },
-    {
       "name": "Lightning Bolt",
       "qty": 1
     },
     {
-      "name": "Laughing Mad",
+      "name": "Brimstone Volley",
       "qty": 1
     },
     {
@@ -403,7 +395,7 @@
       "qty": 1
     },
     {
-      "name": "Faithless Looting",
+      "name": "Fireball",
       "qty": 1
     },
     {
@@ -415,7 +407,15 @@
       "qty": 1
     },
     {
+      "name": "Boiling Earth",
+      "qty": 1
+    },
+    {
       "name": "Rolling Thunder",
+      "qty": 1
+    },
+    {
+      "name": "Arc Lightning",
       "qty": 1
     },
     {
@@ -423,7 +423,7 @@
       "qty": 1
     },
     {
-      "name": "Red Mage's Rapier",
+      "name": "Experimental Synthesizer",
       "qty": 1
     },
     {
@@ -432,6 +432,10 @@
     },
     {
       "name": "Nimble Mongoose",
+      "qty": 1
+    },
+    {
+      "name": "Nyxborn Hydra",
       "qty": 1
     },
     {
@@ -519,10 +523,6 @@
       "qty": 1
     },
     {
-      "name": "Saproling Migration",
-      "qty": 1
-    },
-    {
       "name": "Rancor",
       "qty": 1
     },
@@ -543,11 +543,11 @@
       "qty": 1
     },
     {
-      "name": "Judge's Familiar",
+      "name": "Curse of Chains",
       "qty": 1
     },
     {
-      "name": "Curse of Chains",
+      "name": "Deputy of Acquittals",
       "qty": 1
     },
     {
@@ -567,19 +567,19 @@
       "qty": 1
     },
     {
-      "name": "Manamorphose",
-      "qty": 1
-    },
-    {
       "name": "Writhing Chrysalis",
       "qty": 1
     },
     {
-      "name": "Travel Preparations",
+      "name": "Scuzzback Marauders",
       "qty": 1
     },
     {
       "name": "Armadillo Cloak",
+      "qty": 1
+    },
+    {
+      "name": "Captured by Lagacs",
       "qty": 1
     },
     {
@@ -595,11 +595,11 @@
       "qty": 1
     },
     {
-      "name": "Tempest Angler",
+      "name": "Fire // Ice",
       "qty": 1
     },
     {
-      "name": "Fire // Ice",
+      "name": "Stadium Tidalmage",
       "qty": 1
     },
     {
@@ -611,7 +611,7 @@
       "qty": 1
     },
     {
-      "name": "Keldon Strike Team",
+      "name": "Pursue the Past",
       "qty": 1
     },
     {
@@ -623,7 +623,7 @@
       "qty": 1
     },
     {
-      "name": "Pond Prophet",
+      "name": "Embrace the Paradox",
       "qty": 1
     },
     {
@@ -711,6 +711,10 @@
       "qty": 1
     },
     {
+      "name": "Escape Tunnel",
+      "qty": 1
+    },
+    {
       "name": "Black Dragon Gate",
       "qty": 1
     },
@@ -720,10 +724,6 @@
     },
     {
       "name": "Cliffgate",
-      "qty": 1
-    },
-    {
-      "name": "Escape Tunnel",
       "qty": 1
     },
     {

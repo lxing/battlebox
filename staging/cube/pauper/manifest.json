@@ -119,6 +119,10 @@
       "qty": 1
     },
     {
+      "name": "Deluge Virtuoso",
+      "qty": 1
+    },
+    {
       "name": "Serum Visionary",
       "qty": 1
     },
@@ -128,6 +132,10 @@
     },
     {
       "name": "Murmuring Mystic",
+      "qty": 1
+    },
+    {
+      "name": "Spellbook Seeker",
       "qty": 1
     },
     {
@@ -160,10 +168,6 @@
     },
     {
       "name": "Counterspell",
-      "qty": 1
-    },
-    {
-      "name": "Daze",
       "qty": 1
     },
     {
@@ -208,10 +212,6 @@
     },
     {
       "name": "Preordain",
-      "qty": 1
-    },
-    {
-      "name": "Seize the Secrets",
       "qty": 1
     },
     {
@@ -715,23 +715,23 @@
       "qty": 1
     },
     {
-      "name": "Thriving Bluff",
+      "name": "Black Dragon Gate",
       "qty": 1
     },
     {
-      "name": "Thriving Grove",
+      "name": "Citadel Gate",
       "qty": 1
     },
     {
-      "name": "Thriving Heath",
+      "name": "Cliffgate",
       "qty": 1
     },
     {
-      "name": "Thriving Isle",
+      "name": "Manor Gate",
       "qty": 1
     },
     {
-      "name": "Thriving Moor",
+      "name": "Sea Gate",
       "qty": 1
     }
   ]

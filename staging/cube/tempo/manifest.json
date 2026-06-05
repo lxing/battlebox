@@ -1,10 +1,10 @@
 {
-  "name": "Modern",
-  "sleeve_color": "Blue",
-  "source_url": "https://cubecobra.com/cube/about/5f7365c9dc7295103b93a28b",
+  "name": "Tempo",
+  "sleeve_color": "Radiant Sun",
+  "source_url": "https://cubecobra.com/cube/about/60c7b3023b7623103ca84a22",
   "colors": "",
   "difficulty_tags": [
-    "beginner"
+    "expert"
   ],
   "tags": [
     "2p"
@@ -15,15 +15,39 @@
   ],
   "cards": [
     {
+      "name": "Esper Sentinel",
+      "qty": 1
+    },
+    {
       "name": "Giver of Runes",
       "qty": 1
     },
     {
-      "name": "Student of Warfare",
+      "name": "Guide of Souls",
+      "qty": 1
+    },
+    {
+      "name": "Mother of Runes",
+      "qty": 1
+    },
+    {
+      "name": "Novice Inspector",
+      "qty": 1
+    },
+    {
+      "name": "Ocelot Pride",
       "qty": 1
     },
     {
       "name": "Thraben Inspector",
+      "qty": 1
+    },
+    {
+      "name": "Clarion Spirit",
+      "qty": 1
+    },
+    {
+      "name": "Informed Inkwright",
       "qty": 1
     },
     {
@@ -35,10 +59,6 @@
       "qty": 1
     },
     {
-      "name": "Rhys, the Evermore",
-      "qty": 1
-    },
-    {
       "name": "Selfless Spirit",
       "qty": 1
     },
@@ -47,43 +67,19 @@
       "qty": 1
     },
     {
-      "name": "Blade Splicer",
+      "name": "Voice of Victory",
       "qty": 1
     },
     {
-      "name": "Elite Spellbinder",
+      "name": "Monastery Mentor",
       "qty": 1
     },
     {
-      "name": "Emeritus of Truce",
+      "name": "Ranger-Captain of Eos",
       "qty": 1
     },
     {
       "name": "Skyclave Apparition",
-      "qty": 1
-    },
-    {
-      "name": "Restoration Angel",
-      "qty": 1
-    },
-    {
-      "name": "Gideon, Ally of Zendikar",
-      "qty": 1
-    },
-    {
-      "name": "The Wandering Emperor",
-      "qty": 1
-    },
-    {
-      "name": "Gideon Jura",
-      "qty": 1
-    },
-    {
-      "name": "Elspeth, Sun's Champion",
-      "qty": 1
-    },
-    {
-      "name": "Erode",
       "qty": 1
     },
     {
@@ -95,15 +91,31 @@
       "qty": 1
     },
     {
-      "name": "Reprieve",
+      "name": "Prismatic Ending",
       "qty": 1
     },
     {
-      "name": "Ossification",
+      "name": "Legion's Landing",
       "qty": 1
     },
     {
-      "name": "Virtue of Loyalty",
+      "name": "Seam Rip",
+      "qty": 1
+    },
+    {
+      "name": "Static Prison",
+      "qty": 1
+    },
+    {
+      "name": "Delver of Secrets",
+      "qty": 1
+    },
+    {
+      "name": "Triton Wavebreaker",
+      "qty": 1
+    },
+    {
+      "name": "Drake Hatcher",
       "qty": 1
     },
     {
@@ -111,11 +123,11 @@
       "qty": 1
     },
     {
-      "name": "Malcolm, Alluring Scoundrel",
+      "name": "Kitsa, Otterball Elite",
       "qty": 1
     },
     {
-      "name": "Phantasmal Image",
+      "name": "Ledger Shredder",
       "qty": 1
     },
     {
@@ -123,43 +135,15 @@
       "qty": 1
     },
     {
-      "name": "Brazen Borrower",
+      "name": "Stormwing Entity",
       "qty": 1
     },
     {
-      "name": "Glen Elendra Guardian",
+      "name": "Brainstorm",
       "qty": 1
     },
     {
-      "name": "Skycoach Conductor",
-      "qty": 1
-    },
-    {
-      "name": "Tishana's Tidebinder",
-      "qty": 1
-    },
-    {
-      "name": "Vendilion Clique",
-      "qty": 1
-    },
-    {
-      "name": "High Fae Trickster",
-      "qty": 1
-    },
-    {
-      "name": "Phyrexian Metamorph",
-      "qty": 1
-    },
-    {
-      "name": "Mulldrifter",
-      "qty": 1
-    },
-    {
-      "name": "Horned Loch-Whale",
-      "qty": 1
-    },
-    {
-      "name": "Jace, the Mind Sculptor",
+      "name": "Consider",
       "qty": 1
     },
     {
@@ -167,27 +151,35 @@
       "qty": 1
     },
     {
-      "name": "Occult Epiphany",
+      "name": "Fractal Anomaly",
       "qty": 1
     },
     {
-      "name": "Spell Pierce",
+      "name": "Mental Misstep",
       "qty": 1
     },
     {
-      "name": "Counterspell",
+      "name": "Opt",
       "qty": 1
     },
     {
-      "name": "Mana Leak",
+      "name": "Spell Snare",
       "qty": 1
     },
     {
-      "name": "Miscalculation",
+      "name": "Stern Scolding",
       "qty": 1
     },
     {
-      "name": "Psionic Blast",
+      "name": "Vapor Snag",
+      "qty": 1
+    },
+    {
+      "name": "Daze",
+      "qty": 1
+    },
+    {
+      "name": "Gitaxian Probe",
       "qty": 1
     },
     {
@@ -195,15 +187,51 @@
       "qty": 1
     },
     {
+      "name": "Portent",
+      "qty": 1
+    },
+    {
       "name": "Preordain",
       "qty": 1
     },
     {
-      "name": "Evolved Sleeper",
+      "name": "Serum Visions",
+      "qty": 1
+    },
+    {
+      "name": "Astrologian's Planisphere",
+      "qty": 1
+    },
+    {
+      "name": "Stormchaser's Talent",
+      "qty": 1
+    },
+    {
+      "name": "Cecil, Dark Knight",
+      "qty": 1
+    },
+    {
+      "name": "Death's Shadow",
       "qty": 1
     },
     {
       "name": "Knight of the Ebon Legion",
+      "qty": 1
+    },
+    {
+      "name": "Lecturing Scornmage",
+      "qty": 1
+    },
+    {
+      "name": "Nethergoyf",
+      "qty": 1
+    },
+    {
+      "name": "Tinybones, the Pickpocket",
+      "qty": 1
+    },
+    {
+      "name": "Bloodghast",
       "qty": 1
     },
     {
@@ -215,11 +243,7 @@
       "qty": 1
     },
     {
-      "name": "Deep-Cavern Bat",
-      "qty": 1
-    },
-    {
-      "name": "Misery's Shadow",
+      "name": "Scourge of the Skyclaves",
       "qty": 1
     },
     {
@@ -227,39 +251,11 @@
       "qty": 1
     },
     {
-      "name": "Tenacious Underdog",
+      "name": "Spitting Dilophosaurus",
       "qty": 1
     },
     {
-      "name": "Murderous Rider",
-      "qty": 1
-    },
-    {
-      "name": "Qarsi Revenant",
-      "qty": 1
-    },
-    {
-      "name": "Ravenous Chupacabra",
-      "qty": 1
-    },
-    {
-      "name": "Harvester of Misery",
-      "qty": 1
-    },
-    {
-      "name": "Shriekmaw",
-      "qty": 1
-    },
-    {
-      "name": "Grave Titan",
-      "qty": 1
-    },
-    {
-      "name": "Liliana of the Veil",
-      "qty": 1
-    },
-    {
-      "name": "Sorin the Mirthless",
+      "name": "Cut Down",
       "qty": 1
     },
     {
@@ -267,15 +263,23 @@
       "qty": 1
     },
     {
+      "name": "Requiting Hex",
+      "qty": 1
+    },
+    {
+      "name": "Vendetta",
+      "qty": 1
+    },
+    {
       "name": "Bitter Triumph",
       "qty": 1
     },
     {
-      "name": "Sheoldred's Edict",
+      "name": "Dismember",
       "qty": 1
     },
     {
-      "name": "Fell the Profane",
+      "name": "Snuff Out",
       "qty": 1
     },
     {
@@ -291,31 +295,43 @@
       "qty": 1
     },
     {
+      "name": "The Last Ride",
+      "qty": 1
+    },
+    {
+      "name": "Dragon's Rage Channeler",
+      "qty": 1
+    },
+    {
       "name": "Grim Lavamancer",
       "qty": 1
     },
     {
-      "name": "Kellan, Planar Trailblazer",
+      "name": "Monastery Swiftspear",
       "qty": 1
     },
     {
-      "name": "Bloodthirsty Adversary",
+      "name": "Soul-Scar Mage",
       "qty": 1
     },
     {
-      "name": "Draconautics Engineer",
+      "name": "Abbot of Keral Keep",
       "qty": 1
     },
     {
-      "name": "Earthshaker Khenra",
+      "name": "Dreadhorde Arcanist",
       "qty": 1
     },
     {
-      "name": "Inti, Seneschal of the Sun",
+      "name": "Emberheart Challenger",
       "qty": 1
     },
     {
-      "name": "Kari Zev, Skyship Raider",
+      "name": "Slickshot Show-Off",
+      "qty": 1
+    },
+    {
+      "name": "Young Pyromancer",
       "qty": 1
     },
     {
@@ -323,35 +339,19 @@
       "qty": 1
     },
     {
-      "name": "Seasoned Pyromancer",
-      "qty": 1
-    },
-    {
-      "name": "Pia and Kiran Nalaar",
-      "qty": 1
-    },
-    {
-      "name": "Pyrogoyf",
-      "qty": 1
-    },
-    {
-      "name": "Glorybringer",
-      "qty": 1
-    },
-    {
-      "name": "Nova Hellkite",
-      "qty": 1
-    },
-    {
-      "name": "Overlord of the Boilerbilges",
-      "qty": 1
-    },
-    {
-      "name": "Chandra, Torch of Defiance",
-      "qty": 1
-    },
-    {
       "name": "Burst Lightning",
+      "qty": 1
+    },
+    {
+      "name": "Galvanic Discharge",
+      "qty": 1
+    },
+    {
+      "name": "Gut Shot",
+      "qty": 1
+    },
+    {
+      "name": "Lava Dart",
       "qty": 1
     },
     {
@@ -359,7 +359,11 @@
       "qty": 1
     },
     {
-      "name": "Sear",
+      "name": "Monstrous Rage",
+      "qty": 1
+    },
+    {
+      "name": "Fireblast",
       "qty": 1
     },
     {
@@ -367,27 +371,31 @@
       "qty": 1
     },
     {
-      "name": "Flame Slash",
+      "name": "Duel Tactics",
       "qty": 1
     },
     {
-      "name": "Light Up the Night",
+      "name": "Faithless Looting",
       "qty": 1
     },
     {
-      "name": "Obliterating Bolt",
+      "name": "Firebolt",
       "qty": 1
     },
     {
-      "name": "Fable of the Mirror-Breaker",
+      "name": "Heroes' Hangout",
       "qty": 1
     },
     {
-      "name": "Birds of Paradise",
+      "name": "Seal of Fire",
       "qty": 1
     },
     {
-      "name": "Elvish Mystic",
+      "name": "Ambitious Augmenter",
+      "qty": 1
+    },
+    {
+      "name": "Gnarlwood Dryad",
       "qty": 1
     },
     {
@@ -395,15 +403,23 @@
       "qty": 1
     },
     {
+      "name": "Nimble Mongoose",
+      "qty": 1
+    },
+    {
+      "name": "Pawpatch Recruit",
+      "qty": 1
+    },
+    {
       "name": "Bristly Bill, Spine Sower",
       "qty": 1
     },
     {
-      "name": "Den Protector",
+      "name": "Frenzied Baloth",
       "qty": 1
     },
     {
-      "name": "Environmental Scientist",
+      "name": "Nishoba Brawler",
       "qty": 1
     },
     {
@@ -419,19 +435,11 @@
       "qty": 1
     },
     {
-      "name": "Courser of Kruphix",
+      "name": "Eternal Witness",
       "qty": 1
     },
     {
-      "name": "Mutable Explorer",
-      "qty": 1
-    },
-    {
-      "name": "Nissa, Vastwood Seer",
-      "qty": 1
-    },
-    {
-      "name": "Sentinel of the Nameless City",
+      "name": "Managorger Hydra",
       "qty": 1
     },
     {
@@ -439,35 +447,31 @@
       "qty": 1
     },
     {
-      "name": "Polukranos, World Eater",
+      "name": "Mightform Harmonizer",
       "qty": 1
     },
     {
-      "name": "Questing Beast",
+      "name": "Wildgrowth Archaic",
       "qty": 1
     },
     {
-      "name": "Thragtusk",
+      "name": "Berserk",
       "qty": 1
     },
     {
-      "name": "Gruff Triplets",
+      "name": "Blossoming Defense",
       "qty": 1
     },
     {
-      "name": "Hornet Queen",
+      "name": "Mutagenic Growth",
       "qty": 1
     },
     {
-      "name": "Nissa, Voice of Zendikar",
+      "name": "Snakeskin Veil",
       "qty": 1
     },
     {
-      "name": "Garruk Wildspeaker",
-      "qty": 1
-    },
-    {
-      "name": "Nissa, Who Shakes the World",
+      "name": "Become Immense",
       "qty": 1
     },
     {
@@ -475,19 +479,35 @@
       "qty": 1
     },
     {
-      "name": "Walking Ballista",
+      "name": "Traverse the Ulvenwald",
       "qty": 1
     },
     {
-      "name": "No More Lies",
+      "name": "Rancor",
       "qty": 1
     },
     {
-      "name": "Supreme Verdict",
+      "name": "Hangarback Walker",
       "qty": 1
     },
     {
-      "name": "Teferi, Hero of Dominaria",
+      "name": "Engineered Explosives",
+      "qty": 1
+    },
+    {
+      "name": "Mishra's Bauble",
+      "qty": 1
+    },
+    {
+      "name": "Urza's Bauble",
+      "qty": 1
+    },
+    {
+      "name": "Smuggler's Copter",
+      "qty": 1
+    },
+    {
+      "name": "Unsettled Mariner",
       "qty": 1
     },
     {
@@ -495,11 +515,11 @@
       "qty": 1
     },
     {
-      "name": "Ertai Resurrected",
+      "name": "Drown in the Loch",
       "qty": 1
     },
     {
-      "name": "Silumgar's Command",
+      "name": "Sygg, River Cutthroat",
       "qty": 1
     },
     {
@@ -507,7 +527,7 @@
       "qty": 1
     },
     {
-      "name": "Dreadbore",
+      "name": "Kroxa, Titan of Death's Hunger",
       "qty": 1
     },
     {
@@ -515,15 +535,15 @@
       "qty": 1
     },
     {
-      "name": "Mawloc",
+      "name": "Manamorphose",
+      "qty": 1
+    },
+    {
+      "name": "Questing Druid",
       "qty": 1
     },
     {
       "name": "Bloodbraid Elf",
-      "qty": 1
-    },
-    {
-      "name": "Vibrance",
       "qty": 1
     },
     {
@@ -539,11 +559,11 @@
       "qty": 1
     },
     {
-      "name": "Damn",
+      "name": "Qasali Ambusher",
       "qty": 1
     },
     {
-      "name": "Tidehollow Sculler",
+      "name": "Silverquill Charm",
       "qty": 1
     },
     {
@@ -551,27 +571,27 @@
       "qty": 1
     },
     {
-      "name": "Izzet Charm",
+      "name": "Third Path Iconoclast",
       "qty": 1
     },
     {
-      "name": "Electrolyze",
+      "name": "Vibrant Outburst",
       "qty": 1
     },
     {
-      "name": "Roaring Furnace // Steaming Sauna",
+      "name": "Fire // Ice",
+      "qty": 1
+    },
+    {
+      "name": "Deathrite Shaman",
+      "qty": 1
+    },
+    {
+      "name": "Grim Flayer",
       "qty": 1
     },
     {
       "name": "Mosswood Dreadknight",
-      "qty": 1
-    },
-    {
-      "name": "Glissa Sunslayer",
-      "qty": 1
-    },
-    {
-      "name": "Professor Dellian Fel",
       "qty": 1
     },
     {
@@ -583,23 +603,11 @@
       "qty": 1
     },
     {
-      "name": "Ajani Vengeant",
+      "name": "Lightning Helix",
       "qty": 1
     },
     {
-      "name": "Growth Spiral",
-      "qty": 1
-    },
-    {
-      "name": "Hydroid Krasis",
-      "qty": 1
-    },
-    {
-      "name": "Kiora, the Crashing Wave",
-      "qty": 1
-    },
-    {
-      "name": "Celestial Colonnade",
+      "name": "Elusive Otter",
       "qty": 1
     },
     {
@@ -607,15 +615,11 @@
       "qty": 1
     },
     {
-      "name": "Seachrome Coast",
+      "name": "Meticulous Archive",
       "qty": 1
     },
     {
-      "name": "Creeping Tar Pit",
-      "qty": 1
-    },
-    {
-      "name": "Darkslick Shores",
+      "name": "Undercity Sewers",
       "qty": 1
     },
     {
@@ -623,23 +627,15 @@
       "qty": 1
     },
     {
-      "name": "Blackcleave Cliffs",
-      "qty": 1
-    },
-    {
       "name": "Blood Crypt",
       "qty": 1
     },
     {
-      "name": "Restless Vents",
+      "name": "Raucous Theater",
       "qty": 1
     },
     {
-      "name": "Copperline Gorge",
-      "qty": 1
-    },
-    {
-      "name": "Raging Ravine",
+      "name": "Commercial District",
       "qty": 1
     },
     {
@@ -647,11 +643,7 @@
       "qty": 1
     },
     {
-      "name": "Razorverge Thicket",
-      "qty": 1
-    },
-    {
-      "name": "Stirring Wildwood",
+      "name": "Lush Portico",
       "qty": 1
     },
     {
@@ -659,19 +651,11 @@
       "qty": 1
     },
     {
-      "name": "Concealed Courtyard",
-      "qty": 1
-    },
-    {
       "name": "Godless Shrine",
       "qty": 1
     },
     {
-      "name": "Shambling Vent",
-      "qty": 1
-    },
-    {
-      "name": "Spirebluff Canal",
+      "name": "Shadowy Backstreet",
       "qty": 1
     },
     {
@@ -679,11 +663,7 @@
       "qty": 1
     },
     {
-      "name": "Wandering Fumarole",
-      "qty": 1
-    },
-    {
-      "name": "Blooming Marsh",
+      "name": "Thundering Falls",
       "qty": 1
     },
     {
@@ -691,15 +671,11 @@
       "qty": 1
     },
     {
-      "name": "Restless Cottage",
+      "name": "Underground Mortuary",
       "qty": 1
     },
     {
-      "name": "Inspiring Vantage",
-      "qty": 1
-    },
-    {
-      "name": "Restless Bivouac",
+      "name": "Elegant Parlor",
       "qty": 1
     },
     {
@@ -707,19 +683,23 @@
       "qty": 1
     },
     {
-      "name": "Botanical Sanctum",
-      "qty": 1
-    },
-    {
       "name": "Breeding Pool",
       "qty": 1
     },
     {
-      "name": "Lumbering Falls",
+      "name": "Hedge Maze",
       "qty": 1
     },
     {
-      "name": "Fabled Passage",
+      "name": "Arid Mesa",
+      "qty": 1
+    },
+    {
+      "name": "Bloodstained Mire",
+      "qty": 1
+    },
+    {
+      "name": "Flooded Strand",
       "qty": 1
     },
     {
@@ -727,11 +707,31 @@
       "qty": 1
     },
     {
-      "name": "Multiversal Passage",
+      "name": "Marsh Flats",
       "qty": 1
     },
     {
-      "name": "Prismatic Vista",
+      "name": "Misty Rainforest",
+      "qty": 1
+    },
+    {
+      "name": "Polluted Delta",
+      "qty": 1
+    },
+    {
+      "name": "Scalding Tarn",
+      "qty": 1
+    },
+    {
+      "name": "Verdant Catacombs",
+      "qty": 1
+    },
+    {
+      "name": "Windswept Heath",
+      "qty": 1
+    },
+    {
+      "name": "Wooded Foothills",
       "qty": 1
     }
   ]

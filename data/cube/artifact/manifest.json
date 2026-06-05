@@ -199,7 +199,7 @@
       "qty": 1
     },
     {
-      "name": "Skullclamp",
+      "name": "Tezzeret, Cruel Captain",
       "qty": 1
     },
     {
@@ -443,6 +443,10 @@
       "qty": 1
     },
     {
+      "name": "Syr Ginger, the Meal Ender",
+      "qty": 1
+    },
+    {
       "name": "Vault Skirge",
       "qty": 1
     },
@@ -499,10 +503,6 @@
       "qty": 1
     },
     {
-      "name": "City of Brass",
-      "qty": 1
-    },
-    {
       "name": "Glimmervoid",
       "qty": 1
     },
@@ -512,10 +512,6 @@
     },
     {
       "name": "Inventors' Fair",
-      "qty": 1
-    },
-    {
-      "name": "Mana Confluence",
       "qty": 1
     },
     {
@@ -647,6 +643,10 @@
       "qty": 1
     },
     {
+      "name": "Prophetic Prism",
+      "qty": 1
+    },
+    {
       "name": "Nimblewright Schematic",
       "qty": 1
     },
@@ -671,7 +671,7 @@
       "qty": 1
     },
     {
-      "name": "Cut Down",
+      "name": "Glaze Fiend",
       "qty": 1
     },
     {
