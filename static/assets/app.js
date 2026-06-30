@@ -49,6 +49,10 @@ import {
   createMarkdownRenderer,
   renderGuideContent,
 } from './app/render.js';
+import {
+  hasDiffPlanEntries,
+  renderDiffZone,
+} from './app/diffPanel.js';
 import { renderDecklistGrid as renderSharedDecklistGrid } from './app/decklist.js';
 import {
   buildGuideCountMap,
@@ -1275,7 +1279,6 @@ async function renderDeck(bbSlug, deckSlug, selectedGuide, sortMode, sortDirecti
   };
   const deckUI = resolveDeckUI(deck);
   const mdSelf = createMarkdownRenderer([deckPrintings], [deckDoubleFaced]);
-  const mdDiff = createMarkdownRenderer([diffPrintings], [diffDoubleFaced]);
   const primerHtml = deck.primer ? mdSelf.render(deck.primer) : '<em>No primer yet</em>';
   const hasPrimerWarnings = Array.isArray(deck.primer_warnings) && deck.primer_warnings.length > 0;
   const bannedNames = Array.isArray(bb.banned) ? bb.banned : [];
@@ -1330,11 +1333,10 @@ async function renderDeck(bbSlug, deckSlug, selectedGuide, sortMode, sortDirecti
   const primerOpenAttr = (currentCollapsedMask & 2) === 0 ? ' open' : '';
   const matchupOpenAttr = currentCollapsedMask === 0 || (currentCollapsedMask & 4) === 0 ? ' open' : '';
   const diffOpenAttr = currentCollapsedMask === 0 || (currentCollapsedMask & 8) === 0 ? ' open' : '';
-  const hasDiffPlanEntries = (plan) => (
-    Array.isArray(plan?.in) && plan.in.length > 0
-  ) || (
-    Array.isArray(plan?.out) && plan.out.length > 0
-  );
+  const diffRenderOptions = {
+    printings: diffPrintings,
+    doubleFaced: diffDoubleFaced,
+  };
   const matchupGuidesHtml = guideKeys.length ? `
     <details id="matchup-details" class="collapsible matchup-guides"${matchupOpenAttr}>
       <summary class="panel-title">Matchup Guides</summary>
@@ -1367,16 +1369,16 @@ async function renderDeck(bbSlug, deckSlug, selectedGuide, sortMode, sortDirecti
       <div class="collapsible-body diff-panel">
         <div class="diff-section">
           <div class="diff-section-title">Mainboard</div>
-          <div class="guide-box">${renderGuideContent(mdDiff, mdDiff, deckDiff.mainboard || {})}</div>
+          <div class="guide-box">${renderDiffZone(deckDiff.mainboard || {}, diffRenderOptions)}</div>
         </div>
         <div class="diff-section">
           <div class="diff-section-title">Sideboard</div>
-          <div class="guide-box">${renderGuideContent(mdDiff, mdDiff, deckDiff.sideboard || {})}</div>
+          <div class="guide-box">${renderDiffZone(deckDiff.sideboard || {}, diffRenderOptions)}</div>
         </div>
         ${hasDiffPlanEntries(deckDiff.maybeboard) ? `
           <div class="diff-section">
             <div class="diff-section-title">Maybeboard</div>
-            <div class="guide-box">${renderGuideContent(mdDiff, mdDiff, deckDiff.maybeboard || {})}</div>
+            <div class="guide-box">${renderDiffZone(deckDiff.maybeboard || {}, diffRenderOptions)}</div>
           </div>
         ` : ''}
       </div>

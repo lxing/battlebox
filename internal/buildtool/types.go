@@ -333,12 +333,24 @@ type MatchupGuide struct {
 	Warnings []string `json:"warnings,omitempty"`
 }
 
+// DeckDiffCard stores one staged-vs-current card delta.
+type DeckDiffCard struct {
+	// Canonical card name from the manifest.
+	Name string `json:"name"`
+	// Number of copies added or removed.
+	Qty int `json:"qty"`
+	// Resolved printing key in "set/collector_number" format.
+	Printing string `json:"printing,omitempty"`
+	// True when Scryfall layout indicates a card with a back face.
+	DoubleFaced bool `json:"double_faced,omitempty"`
+}
+
 // DeckDiffPlan stores one zone's staged-vs-current additions and removals.
 type DeckDiffPlan struct {
 	// Cards added in the staged manifest relative to current source.
-	In []string `json:"in,omitempty"`
+	In []DeckDiffCard `json:"in,omitempty"`
 	// Cards removed from the staged manifest relative to current source.
-	Out []string `json:"out,omitempty"`
+	Out []DeckDiffCard `json:"out,omitempty"`
 }
 
 // DeckDiff stores a build-time manifest diff between current and staged source.
@@ -349,10 +361,6 @@ type DeckDiff struct {
 	Sideboard DeckDiffPlan `json:"sideboard"`
 	// Maybeboard additions/removals.
 	Maybeboard DeckDiffPlan `json:"maybeboard,omitempty"`
-	// Printing map used by frontend card refs in diff entries.
-	Printings map[string]string `json:"printings,omitempty"`
-	// Double-faced lookup used by frontend card previews in diff entries.
-	DoubleFaced map[string]bool `json:"double_faced,omitempty"`
 }
 
 // MissingPrinting tracks cards that lack merged printing mappings.

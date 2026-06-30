@@ -90,6 +90,19 @@ function resolveDoubleFaced(target, doubleFacedList) {
   return false;
 }
 
+export function renderCardRef({
+  name,
+  label = name,
+  printing = '',
+  doubleFaced = false,
+} = {}) {
+  const safeName = escapeHtml(name);
+  const safePrinting = escapeHtml(printing);
+  const renderedLabel = label === name ? safeName : String(label || '');
+  const doubleFacedAttr = doubleFaced ? ' data-double-faced="1"' : '';
+  return `<span class="card card-ref" data-name="${safeName}" data-printing="${safePrinting}"${doubleFacedAttr}>${renderedLabel}</span>`;
+}
+
 export function createMarkdownRenderer(printingsList, doubleFacedList) {
   const md = window.markdownit({
     html: false,
@@ -150,8 +163,12 @@ export function createMarkdownRenderer(printingsList, doubleFacedList) {
     const { display, target } = tokens[idx].meta;
     const printing = resolvePrinting(target, printingsList);
     const doubleFaced = resolveDoubleFaced(target, doubleFacedList);
-    const doubleFacedAttr = doubleFaced ? ' data-double-faced="1"' : '';
-    return `<span class="card card-ref" data-name="${target}" data-printing="${printing}"${doubleFacedAttr}>${md.utils.escapeHtml(display)}</span>`;
+    return renderCardRef({
+      name: target,
+      label: md.utils.escapeHtml(display),
+      printing,
+      doubleFaced,
+    });
   };
 
   md.renderer.rules.mana_token = (tokens, idx) => renderManaToken(tokens[idx].meta?.token);
@@ -244,10 +261,15 @@ export function renderGuideContent(mdPlan, mdProse, guide, options = {}) {
 function renderCardRow(card, bannedSet, highlightClass) {
   const banned = bannedSet && bannedSet.has(normalizeName(card.name));
   const bannedTag = banned ? '<span class="banned-inline-tag" title="Banned">🔨 BAN</span>' : '';
-  const doubleFacedAttr = card.double_faced ? ' data-double-faced="1"' : '';
   const manaCostHtml = renderManaCostSymbols(card.mana_cost);
   const rowClass = highlightClass ? `card-row ${highlightClass}` : 'card-row';
-  return `<div class="${rowClass}"><span class="card-qty">${card.qty}</span><span class="card card-ref" data-name="${card.name}" data-printing="${card.printing}"${doubleFacedAttr}><span class="card-hit">${card.name}${bannedTag}</span></span>${manaCostHtml}</div>`;
+  const label = `<span class="card-hit">${escapeHtml(card.name)}${bannedTag}</span>`;
+  return `<div class="${rowClass}"><span class="card-qty">${card.qty}</span>${renderCardRef({
+    name: card.name,
+    label,
+    printing: card.printing,
+    doubleFaced: card.double_faced,
+  })}${manaCostHtml}</div>`;
 }
 
 function compareCardsByManaThenName(a, b) {

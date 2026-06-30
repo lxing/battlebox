@@ -2,7 +2,6 @@ package buildtool
 
 import (
 	"encoding/json"
-	"fmt"
 	"sort"
 	"strings"
 )
@@ -67,75 +66,53 @@ type diffCardEntry struct {
 }
 
 func buildDeckDiff(current, staged Manifest) *DeckDiff {
-	diff := &DeckDiff{
+	return &DeckDiff{
 		Mainboard:  buildDeckDiffPlan(current.Cards, staged.Cards),
 		Sideboard:  buildDeckDiffPlan(current.Sideboard, staged.Sideboard),
 		Maybeboard: buildDeckDiffPlan(current.Maybeboard, staged.Maybeboard),
-		Printings:  map[string]string{},
 	}
-
-	addPreviewMeta := func(cards []Card) {
-		for _, card := range cards {
-			key := normalizeName(card.Name)
-			if key == "" {
-				continue
-			}
-			if strings.TrimSpace(card.Printing) != "" {
-				diff.Printings[key] = card.Printing
-			}
-			if card.DoubleFaced {
-				if diff.DoubleFaced == nil {
-					diff.DoubleFaced = map[string]bool{}
-				}
-				diff.DoubleFaced[key] = true
-			}
-		}
-	}
-
-	addPreviewMeta(current.Cards)
-	addPreviewMeta(current.Sideboard)
-	addPreviewMeta(current.Maybeboard)
-	addPreviewMeta(staged.Cards)
-	addPreviewMeta(staged.Sideboard)
-	addPreviewMeta(staged.Maybeboard)
-
-	if len(diff.Printings) == 0 {
-		diff.Printings = nil
-	}
-	return diff
 }
 
 func buildDeckDiffPlan(current, staged []Card) DeckDiffPlan {
 	currentIndex := indexDiffCards(current)
 	stagedIndex := indexDiffCards(staged)
 
-	var additions []string
-	var removals []string
+	var additions []DeckDiffCard
+	var removals []DeckDiffCard
 
 	for key, stagedEntry := range stagedIndex {
 		currentQty := currentIndex[key].Qty
 		if stagedEntry.Qty > currentQty {
-			additions = append(additions, formatDiffLine(stagedEntry.Name, stagedEntry.Qty-currentQty))
+			additions = append(additions, buildDeckDiffCard(stagedEntry, stagedEntry.Qty-currentQty))
 		}
 	}
 
 	for key, currentEntry := range currentIndex {
 		stagedQty := stagedIndex[key].Qty
 		if currentEntry.Qty > stagedQty {
-			removals = append(removals, formatDiffLine(currentEntry.Name, currentEntry.Qty-stagedQty))
+			removals = append(removals, buildDeckDiffCard(currentEntry, currentEntry.Qty-stagedQty))
 		}
 	}
 
 	sort.Slice(additions, func(i, j int) bool {
-		return diffLineSortKey(additions[i]) < diffLineSortKey(additions[j])
+		return normalizeName(additions[i].Name) < normalizeName(additions[j].Name)
 	})
 	sort.Slice(removals, func(i, j int) bool {
-		return diffLineSortKey(removals[i]) < diffLineSortKey(removals[j])
+		return normalizeName(removals[i].Name) < normalizeName(removals[j].Name)
 	})
 
 	return DeckDiffPlan{
 		In:  additions,
 		Out: removals,
+	}
+}
+
+func buildDeckDiffCard(entry diffCardEntry, qty int) DeckDiffCard {
+	return DeckDiffCard{
+		Name:        strings.TrimSpace(entry.Name),
+		Qty:         qty,
+		Printing:    strings.TrimSpace(entry.Printing),
+		DoubleFaced: entry.DoubleFaced,
 	}
 }
 
@@ -160,27 +137,4 @@ func indexDiffCards(cards []Card) map[string]diffCardEntry {
 		index[key] = entry
 	}
 	return index
-}
-
-func formatDiffLine(name string, qty int) string {
-	trimmed := strings.TrimSpace(name)
-	if trimmed == "" || qty < 1 {
-		return ""
-	}
-	return fmt.Sprintf("%d [[%s]]", qty, trimmed)
-}
-
-func diffLineSortKey(line string) string {
-	parts := guideCountRE.FindStringSubmatch(strings.TrimSpace(line))
-	if len(parts) != 3 {
-		return normalizeName(line)
-	}
-	name := strings.TrimSpace(parts[2])
-	if strings.HasPrefix(name, "[[") && strings.HasSuffix(name, "]]") {
-		inner := strings.TrimSpace(strings.TrimSuffix(strings.TrimPrefix(name, "[["), "]]"))
-		if pieces := strings.Split(inner, "|"); len(pieces) > 0 {
-			name = strings.TrimSpace(pieces[len(pieces)-1])
-		}
-	}
-	return normalizeName(name)
 }
