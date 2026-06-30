@@ -215,7 +215,7 @@
       "qty": 1
     },
     {
-      "name": "Lórien Revealed",
+      "name": "L\u00f3rien Revealed",
       "qty": 1
     },
     {
@@ -279,7 +279,7 @@
       "qty": 1
     },
     {
-      "name": "Troll of Khazad-dûm",
+      "name": "Troll of Khazad-d\u00fbm",
       "qty": 1
     },
     {
@@ -715,23 +715,23 @@
       "qty": 1
     },
     {
-      "name": "Black Dragon Gate",
+      "name": "Thriving Bluff",
       "qty": 1
     },
     {
-      "name": "Citadel Gate",
+      "name": "Thriving Grove",
       "qty": 1
     },
     {
-      "name": "Cliffgate",
+      "name": "Thriving Heath",
       "qty": 1
     },
     {
-      "name": "Manor Gate",
+      "name": "Thriving Isle",
       "qty": 1
     },
     {
-      "name": "Sea Gate",
+      "name": "Thriving Moor",
       "qty": 1
     }
   ]

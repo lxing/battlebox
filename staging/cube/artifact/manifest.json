@@ -515,10 +515,6 @@
       "qty": 1
     },
     {
-      "name": "The Ooze",
-      "qty": 1
-    },
-    {
       "name": "Throne of Geth",
       "qty": 1
     },
@@ -528,6 +524,10 @@
     },
     {
       "name": "Blasting Station",
+      "qty": 1
+    },
+    {
+      "name": "Iron Man Armor",
       "qty": 1
     },
     {

@@ -15,7 +15,7 @@
   ],
   "cards": [
     {
-      "name": "Esper Sentinel",
+      "name": "Elite Interceptor",
       "qty": 1
     },
     {
@@ -43,10 +43,6 @@
       "qty": 1
     },
     {
-      "name": "Clarion Spirit",
-      "qty": 1
-    },
-    {
       "name": "Informed Inkwright",
       "qty": 1
     },
@@ -56,14 +52,6 @@
     },
     {
       "name": "Luminarch Aspirant",
-      "qty": 1
-    },
-    {
-      "name": "Selfless Spirit",
-      "qty": 1
-    },
-    {
-      "name": "Tithe Taker",
       "qty": 1
     },
     {
@@ -83,6 +71,18 @@
       "qty": 1
     },
     {
+      "name": "Solitude",
+      "qty": 1
+    },
+    {
+      "name": "Ephemerate",
+      "qty": 1
+    },
+    {
+      "name": "Gods Willing",
+      "qty": 1
+    },
+    {
       "name": "Path to Exile",
       "qty": 1
     },
@@ -91,19 +91,15 @@
       "qty": 1
     },
     {
+      "name": "Apostle's Blessing",
+      "qty": 1
+    },
+    {
       "name": "Prismatic Ending",
       "qty": 1
     },
     {
-      "name": "Legion's Landing",
-      "qty": 1
-    },
-    {
       "name": "Seam Rip",
-      "qty": 1
-    },
-    {
-      "name": "Static Prison",
       "qty": 1
     },
     {
@@ -148,10 +144,6 @@
     },
     {
       "name": "Fading Hope",
-      "qty": 1
-    },
-    {
-      "name": "Fractal Anomaly",
       "qty": 1
     },
     {
@@ -219,10 +211,6 @@
       "qty": 1
     },
     {
-      "name": "Lecturing Scornmage",
-      "qty": 1
-    },
-    {
       "name": "Nethergoyf",
       "qty": 1
     },
@@ -231,15 +219,15 @@
       "qty": 1
     },
     {
-      "name": "Bloodghast",
-      "qty": 1
-    },
-    {
       "name": "Caustic Bronco",
       "qty": 1
     },
     {
       "name": "Dark Confidant",
+      "qty": 1
+    },
+    {
+      "name": "Deep-Cavern Bat",
       "qty": 1
     },
     {
@@ -255,6 +243,14 @@
       "qty": 1
     },
     {
+      "name": "Grief",
+      "qty": 1
+    },
+    {
+      "name": "Street Wraith",
+      "qty": 1
+    },
+    {
       "name": "Cut Down",
       "qty": 1
     },
@@ -264,10 +260,6 @@
     },
     {
       "name": "Requiting Hex",
-      "qty": 1
-    },
-    {
-      "name": "Vendetta",
       "qty": 1
     },
     {
@@ -291,11 +283,11 @@
       "qty": 1
     },
     {
-      "name": "Thoughtseize",
+      "name": "Reanimate",
       "qty": 1
     },
     {
-      "name": "The Last Ride",
+      "name": "Thoughtseize",
       "qty": 1
     },
     {
@@ -343,10 +335,6 @@
       "qty": 1
     },
     {
-      "name": "Galvanic Discharge",
-      "qty": 1
-    },
-    {
       "name": "Gut Shot",
       "qty": 1
     },
@@ -388,10 +376,6 @@
     },
     {
       "name": "Seal of Fire",
-      "qty": 1
-    },
-    {
-      "name": "Ambitious Augmenter",
       "qty": 1
     },
     {
@@ -451,10 +435,6 @@
       "qty": 1
     },
     {
-      "name": "Wildgrowth Archaic",
-      "qty": 1
-    },
-    {
       "name": "Berserk",
       "qty": 1
     },
@@ -488,10 +468,6 @@
     },
     {
       "name": "Hangarback Walker",
-      "qty": 1
-    },
-    {
-      "name": "Engineered Explosives",
       "qty": 1
     },
     {
@@ -643,6 +619,10 @@
       "qty": 1
     },
     {
+      "name": "Horizon Canopy",
+      "qty": 1
+    },
+    {
       "name": "Lush Portico",
       "qty": 1
     },
@@ -659,11 +639,23 @@
       "qty": 1
     },
     {
+      "name": "Silent Clearing",
+      "qty": 1
+    },
+    {
+      "name": "Fiery Islet",
+      "qty": 1
+    },
+    {
       "name": "Steam Vents",
       "qty": 1
     },
     {
       "name": "Thundering Falls",
+      "qty": 1
+    },
+    {
+      "name": "Nurturing Peatland",
       "qty": 1
     },
     {
@@ -683,11 +675,19 @@
       "qty": 1
     },
     {
+      "name": "Sunbaked Canyon",
+      "qty": 1
+    },
+    {
       "name": "Breeding Pool",
       "qty": 1
     },
     {
       "name": "Hedge Maze",
+      "qty": 1
+    },
+    {
+      "name": "Waterlogged Grove",
       "qty": 1
     },
     {
@@ -732,6 +732,128 @@
     },
     {
       "name": "Wooded Foothills",
+      "qty": 1
+    }
+  ],
+  "maybeboard": [
+    {
+      "name": "Savannah Lions",
+      "qty": 1
+    },
+    {
+      "name": "Isolate",
+      "qty": 1
+    },
+    {
+      "name": "Apostle's Blessing",
+      "qty": 1
+    },
+    {
+      "name": "Mental Note",
+      "qty": 1
+    },
+    {
+      "name": "Stubborn Denial",
+      "qty": 1
+    },
+    {
+      "name": "Prohibit",
+      "qty": 1
+    },
+    {
+      "name": "Duress",
+      "qty": 1
+    },
+    {
+      "name": "Unearth",
+      "qty": 1
+    },
+    {
+      "name": "Dead Weight",
+      "qty": 1
+    },
+    {
+      "name": "Shock",
+      "qty": 1
+    },
+    {
+      "name": "Crash Through",
+      "qty": 1
+    },
+    {
+      "name": "Volcanic Hammer",
+      "qty": 1
+    },
+    {
+      "name": "Mutagenic Growth",
+      "qty": 1
+    },
+    {
+      "name": "Abundant Harvest",
+      "qty": 1
+    },
+    {
+      "name": "Rancor",
+      "qty": 1
+    },
+    {
+      "name": "Street Wraith",
+      "qty": 1
+    },
+    {
+      "name": "Cursed Scroll",
+      "qty": 1
+    },
+    {
+      "name": "Mortarpod",
+      "qty": 1
+    },
+    {
+      "name": "Hengegate Pathway",
+      "qty": 1
+    },
+    {
+      "name": "Clearwater Pathway",
+      "qty": 1
+    },
+    {
+      "name": "Blightstep Pathway",
+      "qty": 1
+    },
+    {
+      "name": "Cragcrown Pathway",
+      "qty": 1
+    },
+    {
+      "name": "Branchloft Pathway",
+      "qty": 1
+    },
+    {
+      "name": "Brightclimb Pathway",
+      "qty": 1
+    },
+    {
+      "name": "Riverglide Pathway",
+      "qty": 1
+    },
+    {
+      "name": "Darkbore Pathway",
+      "qty": 1
+    },
+    {
+      "name": "Needleverge Pathway",
+      "qty": 1
+    },
+    {
+      "name": "Barkchannel Pathway",
+      "qty": 1
+    },
+    {
+      "name": "Fabled Passage",
+      "qty": 1
+    },
+    {
+      "name": "Mishra's Factory",
       "qty": 1
     }
   ]
