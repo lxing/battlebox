@@ -734,5 +734,127 @@
       "name": "Skyclave Apparition",
       "qty": 1
     }
+  ],
+  "maybeboard": [
+    {
+      "name": "Savannah Lions",
+      "qty": 1
+    },
+    {
+      "name": "Isolate",
+      "qty": 1
+    },
+    {
+      "name": "Apostle's Blessing",
+      "qty": 1
+    },
+    {
+      "name": "Mental Note",
+      "qty": 1
+    },
+    {
+      "name": "Stubborn Denial",
+      "qty": 1
+    },
+    {
+      "name": "Prohibit",
+      "qty": 1
+    },
+    {
+      "name": "Duress",
+      "qty": 1
+    },
+    {
+      "name": "Unearth",
+      "qty": 1
+    },
+    {
+      "name": "Dead Weight",
+      "qty": 1
+    },
+    {
+      "name": "Shock",
+      "qty": 1
+    },
+    {
+      "name": "Crash Through",
+      "qty": 1
+    },
+    {
+      "name": "Volcanic Hammer",
+      "qty": 1
+    },
+    {
+      "name": "Mutagenic Growth",
+      "qty": 1
+    },
+    {
+      "name": "Abundant Harvest",
+      "qty": 1
+    },
+    {
+      "name": "Rancor",
+      "qty": 1
+    },
+    {
+      "name": "Street Wraith",
+      "qty": 1
+    },
+    {
+      "name": "Cursed Scroll",
+      "qty": 1
+    },
+    {
+      "name": "Mortarpod",
+      "qty": 1
+    },
+    {
+      "name": "Hengegate Pathway",
+      "qty": 1
+    },
+    {
+      "name": "Clearwater Pathway",
+      "qty": 1
+    },
+    {
+      "name": "Blightstep Pathway",
+      "qty": 1
+    },
+    {
+      "name": "Cragcrown Pathway",
+      "qty": 1
+    },
+    {
+      "name": "Branchloft Pathway",
+      "qty": 1
+    },
+    {
+      "name": "Brightclimb Pathway",
+      "qty": 1
+    },
+    {
+      "name": "Riverglide Pathway",
+      "qty": 1
+    },
+    {
+      "name": "Darkbore Pathway",
+      "qty": 1
+    },
+    {
+      "name": "Needleverge Pathway",
+      "qty": 1
+    },
+    {
+      "name": "Barkchannel Pathway",
+      "qty": 1
+    },
+    {
+      "name": "Fabled Passage",
+      "qty": 1
+    },
+    {
+      "name": "Mishra's Factory",
+      "qty": 1
+    }
   ]
 }

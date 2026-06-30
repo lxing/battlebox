@@ -6,7 +6,7 @@ description: Import a CubeCobra cube URL into battlebox deck source files by gen
 # CubeCobra Importer
 
 ## When to use
-- User provides a CubeCobra link/id and wants deck cards and printings populated.
+- User provides a CubeCobra link/id and wants deck cards, maybeboard cards, and printings populated.
 - User wants a script-based import path (not manual copy/paste).
 
 ## Workflow
@@ -17,13 +17,15 @@ description: Import a CubeCobra cube URL into battlebox deck source files by gen
 3. If the output looks right, run without `--dry-run` to write:
 - `data/<battlebox>/<deck-slug>/manifest.json`
 - `data/<battlebox>/<deck-slug>/printings.json`
-4. Confirm the resulting manifest/printings are source files under `data/**`.
+4. To refresh only a maybeboard from CubeCobra without changing the existing mainboard:
+- add `--only-maybeboard`
+5. Confirm the resulting manifest/printings are source files under `data/**`.
 
 ## Rules
 - Do not edit generated build outputs (`static/data/**`, `static/data.json`, `.card-types.json`) unless explicitly requested.
 - Use Scryfall collection lookups for printings; do not guess set/collector numbers.
 - If Scryfall cannot resolve one or more imported cards, stop and report unresolved cards.
-- Preserve existing manifest metadata fields by default; only replace `cards`.
+- Preserve existing manifest metadata fields by default; only replace `cards` and `maybeboard`.
 
 ## Examples
 - Dry run into existing pauper cube deck:

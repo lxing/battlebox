@@ -34,7 +34,7 @@ def slugify(value: str) -> str:
 
 def parse_cube_id(cube_input: str) -> str:
     cube_input = cube_input.strip()
-    m = re.search(r"/cube/list/([^/?#]+)", cube_input)
+    m = re.search(r"/cube/(?:list|about)/([^/?#]+)", cube_input)
     if m:
         return m.group(1)
     return cube_input
@@ -62,14 +62,26 @@ def chunked(items: list[Any], size: int) -> list[list[Any]]:
     return [items[i : i + size] for i in range(0, len(items), size)]
 
 
-def extract_cube_rows(cube: dict[str, Any]) -> list[dict[str, Any]]:
+def extract_cube_rows(cube: dict[str, Any], zone: str) -> list[dict[str, Any]]:
     cards = cube.get("cards")
     if not isinstance(cards, dict):
         raise ValueError("Cube payload missing cards object")
-    mainboard = cards.get("mainboard")
-    if not isinstance(mainboard, list):
-        raise ValueError("Cube payload missing cards.mainboard list")
-    return mainboard
+    rows = cards.get(zone)
+    if rows is None and zone == "maybeboard":
+        return []
+    if not isinstance(rows, list):
+        raise ValueError(f"Cube payload missing cards.{zone} list")
+    return rows
+
+
+def merge_key_to_names(
+    *sources: dict[tuple[str, str], set[str]],
+) -> dict[tuple[str, str], set[str]]:
+    out: dict[tuple[str, str], set[str]] = defaultdict(set)
+    for source in sources:
+        for key, names in source.items():
+            out[key].update(names)
+    return out
 
 
 def build_cards_and_identifiers(
@@ -169,6 +181,16 @@ def load_existing_manifest(path: Path) -> dict[str, Any] | None:
     return parsed
 
 
+def load_existing_printings(path: Path) -> dict[str, str]:
+    if not path.exists():
+        return {}
+    with path.open("r", encoding="utf-8") as f:
+        parsed = json.load(f)
+    if not isinstance(parsed, dict):
+        raise ValueError(f"Existing printings is not a JSON object: {path}")
+    return {str(k): str(v) for k, v in parsed.items()}
+
+
 def write_json(path: Path, payload: dict[str, Any]) -> None:
     with path.open("w", encoding="utf-8") as f:
         json.dump(payload, f, indent=2)
@@ -188,6 +210,11 @@ def main() -> int:
         help="Replace manifest object instead of preserving existing non-cards fields",
     )
     parser.add_argument(
+        "--only-maybeboard",
+        action="store_true",
+        help="Only update the existing manifest maybeboard and merge its resolved printings",
+    )
+    parser.add_argument(
         "--allow-cubecobra-fallback",
         action="store_true",
         help="Allow CubeCobra-provided set/collector fallback if Scryfall misses cards",
@@ -202,8 +229,18 @@ def main() -> int:
         raise ValueError("Cube payload missing name")
     cube_name = cube_name.strip()
 
-    rows = extract_cube_rows(cube)
-    cards, key_to_names, fallback_printings = build_cards_and_identifiers(rows)
+    mainboard_rows = extract_cube_rows(cube, "mainboard")
+    maybeboard_rows = extract_cube_rows(cube, "maybeboard")
+    cards, main_key_to_names, main_fallback_printings = build_cards_and_identifiers(mainboard_rows)
+    maybeboard, maybe_key_to_names, maybe_fallback_printings = build_cards_and_identifiers(maybeboard_rows)
+    if args.only_maybeboard:
+        key_to_names = maybe_key_to_names
+        fallback_printings = maybe_fallback_printings
+        cards_to_check = maybeboard
+    else:
+        key_to_names = merge_key_to_names(main_key_to_names, maybe_key_to_names)
+        fallback_printings = {**main_fallback_printings, **maybe_fallback_printings}
+        cards_to_check = [*cards, *maybeboard]
     resolved_printings, unresolved = resolve_printings_from_scryfall(key_to_names)
 
     if unresolved and not args.allow_cubecobra_fallback:
@@ -221,7 +258,7 @@ def main() -> int:
                 if fallback:
                     printings[name] = fallback
 
-    for card in cards:
+    for card in cards_to_check:
         if card["name"] not in printings:
             print(f"Error: no printing resolved for '{card['name']}'", file=sys.stderr)
             return 3
@@ -231,7 +268,12 @@ def main() -> int:
     manifest_path = target_dir / "manifest.json"
     printings_path = target_dir / "printings.json"
 
-    if args.replace_manifest_fields:
+    if args.only_maybeboard:
+        existing = load_existing_manifest(manifest_path)
+        if existing is None:
+            raise ValueError("--only-maybeboard requires an existing manifest")
+        manifest = existing
+    elif args.replace_manifest_fields:
         manifest: dict[str, Any] = {"name": cube_name, "colors": "", "cards": cards}
     else:
         existing = load_existing_manifest(manifest_path)
@@ -245,11 +287,23 @@ def main() -> int:
             if "colors" not in manifest:
                 manifest["colors"] = ""
 
-    sorted_printings = {name: printings[name] for name in sorted(printings)}
+    if maybeboard:
+        manifest["maybeboard"] = maybeboard
+    else:
+        manifest.pop("maybeboard", None)
+
+    if args.only_maybeboard:
+        merged_printings = load_existing_printings(printings_path)
+        merged_printings.update(printings)
+        sorted_printings = {name: merged_printings[name] for name in sorted(merged_printings)}
+    else:
+        sorted_printings = {name: printings[name] for name in sorted(printings)}
 
     print(f"Cube: {cube_name} ({cube_id})")
     print(f"Cards imported: {len(cards)}")
     print(f"Total copies: {sum(c['qty'] for c in cards)}")
+    print(f"Maybeboard cards imported: {len(maybeboard)}")
+    print(f"Maybeboard copies: {sum(c['qty'] for c in maybeboard)}")
     print(f"Printings resolved: {len(sorted_printings)}")
     print(f"Manifest path: {manifest_path}")
     print(f"Printings path: {printings_path}")

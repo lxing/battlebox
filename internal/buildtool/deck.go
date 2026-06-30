@@ -42,6 +42,7 @@ func processDeck(bbSource BattleboxSource, deckSource DeckSource, annotations ma
 		Printings:      map[string]string{},
 		Cards:          manifest.Cards,
 		Sideboard:      manifest.Sideboard,
+		Maybeboard:     manifest.Maybeboard,
 		Guides:         make(map[string]MatchupGuide),
 	}
 
@@ -52,6 +53,12 @@ func processDeck(bbSource BattleboxSource, deckSource DeckSource, annotations ma
 		}
 	}
 	for _, card := range manifest.Sideboard {
+		key := normalizeName(card.Name)
+		if key != "" {
+			deck.Printings[key] = card.Printing
+		}
+	}
+	for _, card := range manifest.Maybeboard {
 		key := normalizeName(card.Name)
 		if key != "" {
 			deck.Printings[key] = card.Printing

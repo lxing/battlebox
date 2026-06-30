@@ -89,6 +89,7 @@ export function buildDraftCardMetaMap(deck) {
 
   (Array.isArray(deck?.cards) ? deck.cards : []).forEach(addCard);
   (Array.isArray(deck?.sideboard) ? deck.sideboard : []).forEach(addCard);
+  (Array.isArray(deck?.maybeboard) ? deck.maybeboard : []).forEach(addCard);
   return map;
 }
 

@@ -734,5 +734,127 @@
       "name": "Prismatic Vista",
       "qty": 1
     }
+  ],
+  "maybeboard": [
+    {
+      "name": "Isamaru, Hound of Konda",
+      "qty": 1
+    },
+    {
+      "name": "Oblivion Ring",
+      "qty": 1
+    },
+    {
+      "name": "Faith's Fetters",
+      "qty": 1
+    },
+    {
+      "name": "Blink of an Eye",
+      "qty": 1
+    },
+    {
+      "name": "Disallow",
+      "qty": 1
+    },
+    {
+      "name": "Serum Visions",
+      "qty": 1
+    },
+    {
+      "name": "Disfigure",
+      "qty": 1
+    },
+    {
+      "name": "Hero's Downfall",
+      "qty": 1
+    },
+    {
+      "name": "Duress",
+      "qty": 1
+    },
+    {
+      "name": "Dragonmaster Outcast",
+      "qty": 1
+    },
+    {
+      "name": "Firedrinker Satyr",
+      "qty": 1
+    },
+    {
+      "name": "Char",
+      "qty": 1
+    },
+    {
+      "name": "Untamed Kavu",
+      "qty": 1
+    },
+    {
+      "name": "Utopia Tree",
+      "qty": 1
+    },
+    {
+      "name": "Bushwhack",
+      "qty": 1
+    },
+    {
+      "name": "Stonecoil Serpent",
+      "qty": 1
+    },
+    {
+      "name": "Phyrexian Revoker",
+      "qty": 1
+    },
+    {
+      "name": "Solemn Simulacrum",
+      "qty": 1
+    },
+    {
+      "name": "Sigil of Distinction",
+      "qty": 1
+    },
+    {
+      "name": "Temple of Enlightenment",
+      "qty": 1
+    },
+    {
+      "name": "Temple of Deceit",
+      "qty": 1
+    },
+    {
+      "name": "Temple of Malice",
+      "qty": 1
+    },
+    {
+      "name": "Temple of Abandon",
+      "qty": 1
+    },
+    {
+      "name": "Temple of Plenty",
+      "qty": 1
+    },
+    {
+      "name": "Temple of Silence",
+      "qty": 1
+    },
+    {
+      "name": "Temple of Epiphany",
+      "qty": 1
+    },
+    {
+      "name": "Temple of Malady",
+      "qty": 1
+    },
+    {
+      "name": "Temple of Triumph",
+      "qty": 1
+    },
+    {
+      "name": "Temple of Mystery",
+      "qty": 1
+    },
+    {
+      "name": "Fabled Passage",
+      "qty": 1
+    }
   ]
 }

@@ -1330,6 +1330,11 @@ async function renderDeck(bbSlug, deckSlug, selectedGuide, sortMode, sortDirecti
   const primerOpenAttr = (currentCollapsedMask & 2) === 0 ? ' open' : '';
   const matchupOpenAttr = currentCollapsedMask === 0 || (currentCollapsedMask & 4) === 0 ? ' open' : '';
   const diffOpenAttr = currentCollapsedMask === 0 || (currentCollapsedMask & 8) === 0 ? ' open' : '';
+  const hasDiffPlanEntries = (plan) => (
+    Array.isArray(plan?.in) && plan.in.length > 0
+  ) || (
+    Array.isArray(plan?.out) && plan.out.length > 0
+  );
   const matchupGuidesHtml = guideKeys.length ? `
     <details id="matchup-details" class="collapsible matchup-guides"${matchupOpenAttr}>
       <summary class="panel-title">Matchup Guides</summary>
@@ -1368,6 +1373,12 @@ async function renderDeck(bbSlug, deckSlug, selectedGuide, sortMode, sortDirecti
           <div class="diff-section-title">Sideboard</div>
           <div class="guide-box">${renderGuideContent(mdDiff, mdDiff, deckDiff.sideboard || {})}</div>
         </div>
+        ${hasDiffPlanEntries(deckDiff.maybeboard) ? `
+          <div class="diff-section">
+            <div class="diff-section-title">Maybeboard</div>
+            <div class="guide-box">${renderGuideContent(mdDiff, mdDiff, deckDiff.maybeboard || {})}</div>
+          </div>
+        ` : ''}
       </div>
     </details>
   ` : '';

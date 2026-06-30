@@ -494,6 +494,9 @@ func validatePrintingsUsage(sources BuildSources) ([]ValidationWarning, map[stri
 			for _, card := range manifest.Sideboard {
 				checkDeckCardPrinting(&warnings, bbSlug, deckSlug, card.Name, deckSource.MergedPrintings)
 			}
+			for _, card := range manifest.Maybeboard {
+				checkDeckCardPrinting(&warnings, bbSlug, deckSlug, card.Name, deckSource.MergedPrintings)
+			}
 
 			for key := range deckSource.Printings {
 				if _, ok := deckCards[key]; ok {
@@ -632,7 +635,7 @@ func expectedMainboardCount(battleboxSlug, deckSlug string) int {
 }
 
 func collectManifestCards(manifest Manifest) map[string]struct{} {
-	out := make(map[string]struct{}, len(manifest.Cards)+len(manifest.Sideboard))
+	out := make(map[string]struct{}, len(manifest.Cards)+len(manifest.Sideboard)+len(manifest.Maybeboard))
 	for _, card := range manifest.Cards {
 		key := normalizeName(card.Name)
 		if key != "" {
@@ -640,6 +643,12 @@ func collectManifestCards(manifest Manifest) map[string]struct{} {
 		}
 	}
 	for _, card := range manifest.Sideboard {
+		key := normalizeName(card.Name)
+		if key != "" {
+			out[key] = struct{}{}
+		}
+	}
+	for _, card := range manifest.Maybeboard {
 		key := normalizeName(card.Name)
 		if key != "" {
 			out[key] = struct{}{}

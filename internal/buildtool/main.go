@@ -173,6 +173,7 @@ func collectCardsForMetadata(sources BuildSources, dirtySlugs []string) ([]Card,
 			enrichManifestCards(&manifest, bbSource.Slug, deckSource.Slug, deckSource.MergedPrintings, bbSource.Manifest.LandSubtypes, &missing)
 			allCards = append(allCards, manifest.Cards...)
 			allCards = append(allCards, manifest.Sideboard...)
+			allCards = append(allCards, manifest.Maybeboard...)
 		}
 	}
 

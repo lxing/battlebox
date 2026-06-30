@@ -24,6 +24,7 @@ function cloneCardWithQty(card, qty) {
 export function computeDeckView(deck, guide, applySideboard) {
   const mainCards = Array.isArray(deck.cards) ? deck.cards.map(c => ({ ...c })) : [];
   const sideCards = Array.isArray(deck.sideboard) ? deck.sideboard.map(c => ({ ...c })) : [];
+  const maybeCards = Array.isArray(deck.maybeboard) ? deck.maybeboard.map(c => ({ ...c })) : [];
   const mainboardAdded = {};
   const sideboardFromMain = {};
 
@@ -31,6 +32,7 @@ export function computeDeckView(deck, guide, applySideboard) {
     return {
       mainCards,
       sideCards,
+      maybeCards,
       mainboardAdded,
       sideboardFromMain,
     };
@@ -80,6 +82,7 @@ export function computeDeckView(deck, guide, applySideboard) {
   return {
     mainCards: mainCards.filter(c => c.qty > 0),
     sideCards: sideCards.filter(c => c.qty > 0),
+    maybeCards,
     mainboardAdded,
     sideboardFromMain,
   };

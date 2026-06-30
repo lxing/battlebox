@@ -214,7 +214,7 @@ func buildComboPrintingLookup(decks []Deck) map[string]string {
 func buildDeckCardLookup(decks []Deck) map[string]map[string]struct{} {
 	out := make(map[string]map[string]struct{}, len(decks))
 	for _, deck := range decks {
-		seen := make(map[string]struct{}, len(deck.Cards)+len(deck.Sideboard))
+		seen := make(map[string]struct{}, len(deck.Cards)+len(deck.Sideboard)+len(deck.Maybeboard))
 		for _, card := range deck.Cards {
 			key := normalizeName(card.Name)
 			if key != "" {
@@ -222,6 +222,12 @@ func buildDeckCardLookup(decks []Deck) map[string]map[string]struct{} {
 			}
 		}
 		for _, card := range deck.Sideboard {
+			key := normalizeName(card.Name)
+			if key != "" {
+				seen[key] = struct{}{}
+			}
+		}
+		for _, card := range deck.Maybeboard {
 			key := normalizeName(card.Name)
 			if key != "" {
 				seen[key] = struct{}{}

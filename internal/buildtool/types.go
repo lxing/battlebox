@@ -49,6 +49,8 @@ type Manifest struct {
 	Cards []Card `json:"cards"`
 	// Optional sideboard entries from manifest.json.
 	Sideboard []Card `json:"sideboard,omitempty"`
+	// Optional maybeboard entries from manifest.json.
+	Maybeboard []Card `json:"maybeboard,omitempty"`
 }
 
 // DeckUISample configures sample-viewer behavior for a deck.
@@ -153,6 +155,8 @@ type Deck struct {
 	Cards []Card `json:"cards"`
 	// Sideboard cards with build-time enrichments.
 	Sideboard []Card `json:"sideboard,omitempty"`
+	// Maybeboard cards with build-time enrichments.
+	Maybeboard []Card `json:"maybeboard,omitempty"`
 	// Primer markdown text.
 	Primer string `json:"primer"`
 	// Build-time primer warnings intended for frontend annotation.
@@ -343,6 +347,8 @@ type DeckDiff struct {
 	Mainboard DeckDiffPlan `json:"mainboard"`
 	// Sideboard additions/removals.
 	Sideboard DeckDiffPlan `json:"sideboard"`
+	// Maybeboard additions/removals.
+	Maybeboard DeckDiffPlan `json:"maybeboard,omitempty"`
 	// Printing map used by frontend card refs in diff entries.
 	Printings map[string]string `json:"printings,omitempty"`
 	// Double-faced lookup used by frontend card previews in diff entries.

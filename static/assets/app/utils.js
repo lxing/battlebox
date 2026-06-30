@@ -166,6 +166,7 @@ export function buildDoubleFacedMap(deck) {
   };
   addCards(deck?.cards);
   addCards(deck?.sideboard);
+  addCards(deck?.maybeboard);
   return out;
 }
 

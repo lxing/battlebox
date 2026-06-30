@@ -37,28 +37,26 @@ func loadOptionalManifest(path string) (Manifest, bool, error) {
 func enrichManifestCards(manifest *Manifest, battlebox, slug string, printings map[string]string, subtypeByName map[string]string, missing *[]MissingPrinting) {
 	applyPrintings(manifest.Cards, printings, battlebox, slug, missing)
 	applyPrintings(manifest.Sideboard, printings, battlebox, slug, missing)
+	applyPrintings(manifest.Maybeboard, printings, battlebox, slug, missing)
 
-	for i := range manifest.Cards {
-		meta := cardCache[manifest.Cards[i].Printing]
-		manifest.Cards[i].Type = resolveCardType(manifest.Cards[i].Printing, meta.Type)
-		manifest.Cards[i].ManaCost = meta.ManaCost
-		manifest.Cards[i].ManaValue = meta.ManaValue
-		if meta.DoubleFaced != nil {
-			manifest.Cards[i].DoubleFaced = *meta.DoubleFaced
+	applyMeta := func(cards []Card) {
+		for i := range cards {
+			meta := cardCache[cards[i].Printing]
+			cards[i].Type = resolveCardType(cards[i].Printing, meta.Type)
+			cards[i].ManaCost = meta.ManaCost
+			cards[i].ManaValue = meta.ManaValue
+			if meta.DoubleFaced != nil {
+				cards[i].DoubleFaced = *meta.DoubleFaced
+			}
 		}
 	}
-	for i := range manifest.Sideboard {
-		meta := cardCache[manifest.Sideboard[i].Printing]
-		manifest.Sideboard[i].Type = resolveCardType(manifest.Sideboard[i].Printing, meta.Type)
-		manifest.Sideboard[i].ManaCost = meta.ManaCost
-		manifest.Sideboard[i].ManaValue = meta.ManaValue
-		if meta.DoubleFaced != nil {
-			manifest.Sideboard[i].DoubleFaced = *meta.DoubleFaced
-		}
-	}
+	applyMeta(manifest.Cards)
+	applyMeta(manifest.Sideboard)
+	applyMeta(manifest.Maybeboard)
 
 	applyCubeLandSubtypes(manifest.Cards, battlebox, subtypeByName)
 	applyCubeLandSubtypes(manifest.Sideboard, battlebox, subtypeByName)
+	applyCubeLandSubtypes(manifest.Maybeboard, battlebox, subtypeByName)
 }
 
 type diffCardEntry struct {
@@ -70,9 +68,10 @@ type diffCardEntry struct {
 
 func buildDeckDiff(current, staged Manifest) *DeckDiff {
 	diff := &DeckDiff{
-		Mainboard: buildDeckDiffPlan(current.Cards, staged.Cards),
-		Sideboard: buildDeckDiffPlan(current.Sideboard, staged.Sideboard),
-		Printings: map[string]string{},
+		Mainboard:  buildDeckDiffPlan(current.Cards, staged.Cards),
+		Sideboard:  buildDeckDiffPlan(current.Sideboard, staged.Sideboard),
+		Maybeboard: buildDeckDiffPlan(current.Maybeboard, staged.Maybeboard),
+		Printings:  map[string]string{},
 	}
 
 	addPreviewMeta := func(cards []Card) {
@@ -95,8 +94,10 @@ func buildDeckDiff(current, staged Manifest) *DeckDiff {
 
 	addPreviewMeta(current.Cards)
 	addPreviewMeta(current.Sideboard)
+	addPreviewMeta(current.Maybeboard)
 	addPreviewMeta(staged.Cards)
 	addPreviewMeta(staged.Sideboard)
+	addPreviewMeta(staged.Maybeboard)
 
 	if len(diff.Printings) == 0 {
 		diff.Printings = nil

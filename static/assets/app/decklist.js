@@ -66,6 +66,13 @@ function resolveCubeBucket(card) {
   return 'multicolor';
 }
 
+function resolveCubeMaybeboardBucket(card) {
+  const type = card.type || 'spell';
+  if (type === 'land') return 'land';
+  if (type === 'artifact') return 'artifact';
+  return resolveCubeBucket(card);
+}
+
 function formatLandSubtypeLabel(subtype) {
   const key = normalizeName(subtype || '');
   if (!key) return '';
@@ -173,6 +180,54 @@ function renderCubeLandGroups(cards, options) {
   return pieces.join('');
 }
 
+function renderCubeMaybeboard(cards, options) {
+  if (!cards || cards.length === 0) return '';
+  const buckets = {
+    white: [],
+    blue: [],
+    black: [],
+    red: [],
+    green: [],
+    multicolor: [],
+    colorless: [],
+    artifact: [],
+    land: [],
+  };
+
+  cards.forEach((card) => {
+    buckets[resolveCubeMaybeboardBucket(card)].push(card);
+  });
+
+  const groups = [
+    { key: 'white', label: 'White' },
+    { key: 'blue', label: 'Blue' },
+    { key: 'black', label: 'Black' },
+    { key: 'red', label: 'Red' },
+    { key: 'green', label: 'Green' },
+    { key: 'multicolor', label: 'Multicolor' },
+    { key: 'colorless', label: 'Colorless' },
+    { key: 'artifact', label: 'Artifacts' },
+    { key: 'land', label: 'Lands' },
+  ];
+
+  const groupHtml = groups.map((group) => (
+    renderCardGroup(
+      buckets[group.key],
+      group.label,
+      options.bannedSet,
+      null,
+      '',
+    )
+  )).join('');
+
+  return `
+    <div class="decklist-cube-maybeboard" data-deck-zone="maybeboard">
+      <div class="card-group-label decklist-cube-title">Maybeboard (${countCards(cards)})</div>
+      <div class="card-list decklist-cube-maybeboard-list">${groupHtml}</div>
+    </div>
+  `;
+}
+
 function renderCubeDecklist(deckView, options) {
   const buckets = {
     white: [],
@@ -232,6 +287,7 @@ function renderCubeDecklist(deckView, options) {
         ${columnHtml}
       </div>
     </div>
+    ${renderCubeMaybeboard(deckView.maybeCards, options)}
   `;
 }
 
@@ -272,6 +328,7 @@ export function renderDecklistGrid({
   const safeDeckView = deckView || {
     mainCards: [],
     sideCards: [],
+    maybeCards: [],
     mainboardAdded: {},
     sideboardFromMain: {},
   };

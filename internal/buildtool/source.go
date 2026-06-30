@@ -119,5 +119,6 @@ func cloneManifest(manifest Manifest) Manifest {
 	out.DraftPresets = append([]string(nil), manifest.DraftPresets...)
 	out.Cards = append([]Card(nil), manifest.Cards...)
 	out.Sideboard = append([]Card(nil), manifest.Sideboard...)
+	out.Maybeboard = append([]Card(nil), manifest.Maybeboard...)
 	return out
 }
